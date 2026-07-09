@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.vitepress/dist/
+.vitepress/cache/
+stdlib-docs*.json

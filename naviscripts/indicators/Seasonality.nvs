@@ -1,0 +1,434 @@
+﻿indicator("Seasonality", overlay: false, max_boxes_count: 500);
+
+let TT_SY: string = "The year to start seasonality calculations. box drawings start one year after this value.";
+let TT_PC: string = "The base color for boxes and table cells that show positive values.";
+let TT_NC: string = "The base color for boxes and table cells that show negative values.";
+let TT_CP: string = "The cutoff for maximum color intensity. Absolute values at or above this level have the same color.";
+let TT_WT: string = "The table width as a percentage of the pane where the table is located. If this value is 0, the width fits the contents of the table, and the table can be wider than the pane.";
+let TT_HG: string = "The table height as a percentage of the pane where the table is located. If this value is 0, the height fits the contents of the table, and the table can be taller than the pane.";
+let TT_SA: string = "Toggles the 'Avgs' row, which shows average change percentages for each month.";
+let TT_SD: string = "Toggles the 'StDev' row, which shows the standard deviation of each month's percentages.";
+let TT_SP: string = "Toggles the 'Pos%' row, which shows the percentage of positive changes in each month's column.";
+let TT_SM: string = "Specifies months to skip. Write months in the 'YYYY-MM' format, separated by commas and spaces.";
+
+let startYearInput: int = input.int(
+    2015,
+    "Starting year",
+    minval: 1800,
+    tooltip: TT_SY,
+    display: display.NONE
+);
+
+let COLOR_GRP: string = "Color settings";
+let posColorInput: color = color.new(
+    input.color(#089981, "Positive Color", group: COLOR_GRP, tooltip: TT_PC),
+    0
+);
+let negColorInput: color = color.new(
+    input.color(#F23745, "Negative Color", group: COLOR_GRP, tooltip: TT_NC),
+    0
+);
+let cutoffPercentInput: int = input.int(
+    10,
+    "Color intensity cutoff (%)",
+    group: COLOR_GRP,
+    tooltip: TT_CP,
+    display: display.NONE
+);
+
+let HEATMAP_GRP: string = "Heatmap settings";
+let tablePositionInput: string = input.string(
+    "Center",
+    "table Position",
+    options: ["Left", "Center", "Right"],
+    group: HEATMAP_GRP,
+    display: display.NONE
+);
+let tableWidthInput: float = input.float(
+    100,
+    "table Width (%)",
+    maxval: 100,
+    minval: 0,
+    group: HEATMAP_GRP,
+    tooltip: TT_WT,
+    display: display.NONE
+);
+let tableHeightInput: float = input.float(
+    95,
+    "table Height (%)",
+    maxval: 100,
+    minval: 0,
+    group: HEATMAP_GRP,
+    tooltip: TT_HG,
+    display: display.NONE
+);
+let showAvgInput: bool = input.bool(
+    true,
+    "Show Averages",
+    group: HEATMAP_GRP,
+    tooltip: TT_SA
+);
+let showStDevInput: bool = input.bool(
+    true,
+    "Show Standard Deviation",
+    group: HEATMAP_GRP,
+    tooltip: TT_SD
+);
+let showPosInput: bool = input.bool(
+    true,
+    "Show Percent Positive",
+    group: HEATMAP_GRP,
+    tooltip: TT_SP
+);
+let showMetrics: bool = showAvgInput or showStDevInput or showPosInput;
+
+let ADD_GRP: string = "Additional settings";
+let skippedMonthsInput: string = input.text_area(
+    "YYYY-MM, YYYY-MM",
+    "Ignored months",
+    group: ADD_GRP,
+    tooltip: TT_SM
+);
+
+var ignoredMonthsArray = Array.new<int>();
+if barstate.is_first {
+    var ignoredStrArray = str.split(
+        str.replace_all(skippedMonthsInput, " ", ""),
+        ","
+    );
+    var ignoredIntArray = Array.new<int>();
+    for item in ignoredStrArray {
+        let num = str.tonumber(str.replace_all(item, "-", ""));
+        ignoredIntArray.push(math.round(num));
+    }
+    ignoredMonthsArray = ignoredIntArray;
+}
+
+let currYear: int = year(time_close - 1);
+let currMonth: int = month(time_close - 1);
+
+let prevTimeClose = time_close[1] - 1;
+let prevBarYear: int = year(prevTimeClose);
+let prevBarMonth: int = month(prevTimeClose);
+
+fn calcColor(value: float, topTranspValue: int = na) {
+    let naColor: color = color.GRAY;
+    let heavyTransp: float = 50;
+    let lightTransp: float = 90;
+    let heavyColor: color = color.new(
+        value >= 0 ? posColorInput : negColorInput,
+        heavyTransp
+    );
+    let lightColor: color = color.new(
+        value >= 0 ? posColorInput : negColorInput,
+        lightTransp
+    );
+    let baseColor: color = na(value) ? naColor : value >= 0 ? posColorInput : negColorInput;
+    let transpColor: color = color.from_gradient(
+        math.abs(value),
+        0,
+        topTranspValue,
+        lightColor,
+        heavyColor
+    );
+    let result: color = na(topTranspValue) ? baseColor : transpColor;
+}
+
+fn changePercent(source: float) {
+    100.0 * (source - source[1]) / math.abs(source[1]);
+}
+
+method nonNA(this: Array<float>) {
+    let result: int = 0;
+    for item in this {
+        if not na(item) {
+            result += 1;
+        }
+    }
+    result;
+}
+
+method percentPositive(this: Array<float>) {
+    let nonNA: int = 0;
+    let pos: int = 0;
+    for item in this {
+        if not na(item) {
+            nonNA += 1;
+            if item >= 0 {
+                pos += 1;
+            }
+        }
+    }
+    let result: float = 100.0 * pos / nonNA;
+}
+
+fn calculateMontlyChanges(
+    startYear: int,
+    prevBarYear: int,
+    prevBarMonth: int
+) {
+    var dataMatrix: Matrix<float> = Matrix.new<float>(0, 13);
+    var yearIndexArray: Array<int> = Array.new<int>();
+    let prevChangePercent: float = changePercent(close[1]);
+    if prevBarYear >= startYear and not ignoredMonthsArray.includes(
+        prevBarYear * 100 + prevBarMonth
+    ) {
+        if prevBarYear != prevBarYear[1] or dataMatrix.rows() == 0 {
+            dataMatrix.add_row();
+            yearIndexArray.push(prevBarYear);
+        }
+        dataMatrix.set(dataMatrix.rows() - 1, prevBarMonth, prevChangePercent);
+    }
+    (yearIndexArray, dataMatrix);
+}
+
+let (yearIndexArray, changesMatrix) = request.security(
+    syminfo.tickerid,
+    "1M",
+    calculateMontlyChanges(startYearInput, prevBarYear, prevBarMonth),
+    lookahead: BarmergeLookahead.On
+);
+
+var currMonthAverage: float = na;
+var currMonthStDev: float = na;
+var currAvgNumberOfMonths: float = na;
+var currMonthExpectedPrice: float = na;
+if timeframe.change("1M") and not na(changesMatrix) {
+    currMonthAverage = changesMatrix.col(currMonth).avg();
+    currMonthStDev = changesMatrix.col(currMonth).stdev(false);
+    currAvgNumberOfMonths = changesMatrix.col(currMonth).nonNA();
+    currMonthExpectedPrice = close[1] + close[1] * currMonthAverage / 100;
+    Box.new(
+        left: time,
+        top: currMonthExpectedPrice,
+        right: time_close("1M"),
+        bottom: close[1],
+        xloc: Xloc.BarTime,
+        bgcolor: calcColor(currMonthAverage, cutoffPercentInput),
+        border_color: calcColor(currMonthAverage),
+        text: str.tostring(currMonthAverage, Format.Percent),
+        text_color: color.new(chart.fg_color, 60),
+        border_style: LineStyle.Dashed,
+        force_overlay: true
+    );
+}
+
+let displayLoc = display.DATA_WINDOW + display.STATUS_LINE;
+plot(
+    currMonthExpectedPrice,
+    "Expected price for current month",
+    color: calcColor(currMonthAverage),
+    display: displayLoc
+);
+plot(
+    currMonthAverage,
+    "Historical average for current month",
+    color: calcColor(currMonthAverage),
+    display: displayLoc,
+    format: Format.Percent
+);
+plot(
+    currMonthStDev,
+    "Historical standard deviation for current month",
+    color: color.GRAY,
+    display: displayLoc,
+    precision: 2
+);
+plot(
+    currAvgNumberOfMonths,
+    "No. of months used in the current average",
+    display: display.DATA_WINDOW,
+    precision: 0
+);
+
+var monthNames = Array.from(
+    "Year",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+);
+
+fn countRows(
+    changesMatrix,
+    showMetrics,
+    showAvgInput,
+    showStDevInput,
+    showPosInput
+) {
+    let totalRowCount = 1;
+    totalRowCount += changesMatrix.rows();
+    if showMetrics {
+        totalRowCount += 1;
+        totalRowCount += showAvgInput ? 1 : 0;
+        totalRowCount += showStDevInput ? 1 : 0;
+        totalRowCount += showPosInput ? 1 : 0;
+    }
+    totalRowCount;
+}
+
+if barstate.is_last {
+    let tablePosition = switch tablePositionInput {
+        "Left" => Position.BottomLeft,
+        "Center" => Position.BottomCenter,
+        "Right" => Position.BottomRight,
+    };
+    let dataTable: Table = Table.new(
+        tablePosition,
+        13,
+        changesMatrix.rows() + 5
+    );
+    let informerCellBgcolor: color = color.new(color.GRAY, 80);
+    let textColor: color = chart.fg_color;
+    let totalRowCount: int = countRows(
+        changesMatrix,
+        showMetrics,
+        showAvgInput,
+        showStDevInput,
+        showPosInput
+    );
+    let cellHeight: float = tableHeightInput / totalRowCount;
+    let cellWidth: float = tableWidthInput / 13.0;
+    for (index, item) in monthNames {
+        dataTable.cell(
+            index,
+            0,
+            item,
+            bgcolor: informerCellBgcolor,
+            text_color: textColor,
+            height: cellHeight,
+            width: cellWidth
+        );
+    }
+    for (arrIndex, arr) in changesMatrix {
+        let thisYear = yearIndexArray.get(arrIndex);
+        for (itemIndex, item) in arr {
+            if itemIndex == 0 {
+                dataTable.cell(
+                    itemIndex,
+                    arrIndex + 1,
+                    str.tostring(thisYear),
+                    bgcolor: informerCellBgcolor,
+                    text_color: textColor,
+                    height: cellHeight,
+                    width: cellWidth
+                );
+            } else {
+                let isSkipped = ignoredMonthsArray.includes(
+                    int(thisYear * 100 + itemIndex)
+                );
+                let cellText = isSkipped ? "SKIP" : str.tostring(
+                    item,
+                    Format.Percent
+                );
+                let cellColor = isSkipped ? color.new(color.GRAY, 50) : calcColor(
+                    item,
+                    cutoffPercentInput
+                );
+                dataTable.cell(
+                    itemIndex,
+                    arrIndex + 1,
+                    cellText,
+                    bgcolor: cellColor,
+                    text_color: textColor,
+                    height: cellHeight,
+                    width: cellWidth
+                );
+            }
+        }
+    }
+    if showMetrics {
+        let dividerRow = changesMatrix.rows() + 1;
+        dataTable.cell(
+            0,
+            dividerRow,
+            "",
+            text_color: na,
+            bgcolor: informerCellBgcolor,
+            text_size: Size.Tiny,
+            height: cellHeight,
+            width: cellWidth
+        );
+        dataTable.merge_cells(0, dividerRow, 12, dividerRow);
+        if showAvgInput {
+            let avgsRow = changesMatrix.rows() + 2;
+            dataTable.cell(
+                0,
+                avgsRow,
+                "Avgs:",
+                bgcolor: informerCellBgcolor,
+                text_color: textColor,
+                height: cellHeight,
+                width: cellWidth
+            );
+            for i = 1 to changesMatrix.columns() - 1 {
+                let avgValue = changesMatrix.col(i).avg();
+                dataTable.cell(
+                    i,
+                    avgsRow,
+                    str.tostring(avgValue, Format.Percent),
+                    bgcolor: calcColor(avgValue, cutoffPercentInput),
+                    text_color: textColor,
+                    height: cellHeight,
+                    width: cellWidth
+                );
+            }
+        }
+        if showStDevInput {
+            let stDevRow = changesMatrix.rows() + 3;
+            dataTable.cell(
+                0,
+                stDevRow,
+                "StDev:",
+                bgcolor: informerCellBgcolor,
+                text_color: textColor,
+                height: cellHeight,
+                width: cellWidth
+            );
+            for i = 1 to changesMatrix.columns() - 1 {
+                let stdevValue = changesMatrix.col(i).stdev(false);
+                dataTable.cell(
+                    i,
+                    stDevRow,
+                    str.tostring(stdevValue, "##.##"),
+                    bgcolor: color.new(color.GRAY, 80),
+                    text_color: textColor,
+                    height: cellHeight,
+                    width: cellWidth
+                );
+            }
+        }
+        if showPosInput {
+            let ratioRow = changesMatrix.rows() + 4;
+            dataTable.cell(
+                0,
+                ratioRow,
+                "Pos%:",
+                bgcolor: informerCellBgcolor,
+                text_color: textColor,
+                height: cellHeight,
+                width: cellWidth
+            );
+            for i = 1 to changesMatrix.columns() - 1 {
+                let ratioValue = changesMatrix.col(i).percentPositive();
+                dataTable.cell(
+                    i,
+                    ratioRow,
+                    str.tostring(ratioValue, '#') + "%",
+                    bgcolor: calcColor(ratioValue - 50, 50),
+                    text_color: textColor,
+                    height: cellHeight,
+                    width: cellWidth
+                );
+            }
+        }
+    }
+}

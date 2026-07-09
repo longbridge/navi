@@ -1,0 +1,26 @@
+﻿indicator(title: "Median", overlay: true, timeframe: "", timeframe_gaps: true);
+let source = input(hl2, title: "Median Source");
+let length = input(3, title: "Median Length");
+let atr_length = input(14, title: "ATR Length");
+let atr_mult = input(2, title: "ATR Multiplier");
+
+let median = ta.percentile_nearest_rank(source, length, 50);
+let median_plot = plot(median, color: color.RED, linewidth: 3, title: "Median");
+
+let atr_ = atr_mult * ta.atr(atr_length);
+
+plot(median + atr_, color: color.LIME, title: "Upper Band");
+plot(median - atr_, color: color.FUCHSIA, title: "Lower Band");
+
+let median_ema = ta.ema(median, length);
+let ema_plot = plot(median_ema, color: color.BLUE, title: "Median EMA");
+
+fill(
+    median_plot,
+    ema_plot,
+    title: "Fill color",
+    color: median > median_ema ? color.new(color.LIME, 10) : color.new(
+        color.FUCHSIA,
+        10
+    )
+);

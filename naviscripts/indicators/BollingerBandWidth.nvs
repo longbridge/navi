@@ -1,0 +1,56 @@
+﻿indicator(
+    title: "Bollinger BandWidth",
+    shorttitle: "BBW",
+    format: Format.Price,
+    precision: 2,
+    timeframe: "",
+    timeframe_gaps: true
+);
+
+let TT_LENGTH: string = "The time period to be used in calculating the SMA which creates the base for the Upper and Lower Bands";
+let TT_SOURCE: string = "Determines what data from each bar will be used in calculations.";
+let TT_MULT: string = "The number of Standard Deviations away from the SMA that the Upper and Lower Bands should be.";
+let TT_HI_EXP: string = "The Highest Expansion plot displays the highest value that BBW had in the last N bars, where N is the length specified by this input.";
+let TT_LO_EXP: string = "The Lowest Contraction plot displays the lowest value that BBW had in the last N bars, where N is the length specified by this input.";
+
+let length = input.int(20, "Length", minval: 1, tooltip: TT_LENGTH);
+let src = input(close, "Source", tooltip: TT_SOURCE);
+let mult = input.float(
+    2.0,
+    "StdDev",
+    minval: 0.001,
+    maxval: 50,
+    tooltip: TT_MULT
+);
+let expansionLengthInput = input.int(
+    125,
+    "Highest Expansion Length",
+    minval: 1,
+    display: display.NONE,
+    tooltip: TT_HI_EXP
+);
+let contractionLengthInput = input.int(
+    125,
+    "Lowest Contraction Length",
+    minval: 1,
+    display: display.NONE,
+    tooltip: TT_LO_EXP
+);
+
+let basis = ta.sma(src, length);
+let dev = mult * ta.stdev(src, length);
+let upper = basis + dev;
+let lower = basis - dev;
+let bbw = ((upper - lower) / basis) * 100;
+
+plot(bbw, "Bollinger BandWidth", color: #2962FF);
+plot(
+    ta.highest(bbw, expansionLengthInput),
+    "Highest Expansion",
+    color: color.new(#F23645, 50)
+);
+plot(
+    ta.lowest(bbw, contractionLengthInput),
+    "Lowest Contraction",
+    color: color.new(#089981, 50)
+);

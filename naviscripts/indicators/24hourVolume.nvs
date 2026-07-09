@@ -1,0 +1,71 @@
+indicator("24-hour Volume", "24H Vol", format: Format.Volume);
+
+fn rollOnTimeWhen(
+    source: series float,
+    timeWindow: simple int,
+    cond: series bool = true,
+    minBars: simple int = 1
+) {
+    var sources: Array<float> = Array.new<float>(0);
+    var times: Array<int> = Array.new<int>(0);
+    if cond {
+        sources.push(source);
+        times.push(time);
+    }
+    while sources.size() > math.max(minBars, 0) and time - times.first() >= timeWindow {
+        sources.shift();
+        times.shift();
+    }
+    let result: Array<float> = sources;
+}
+
+let priceTooltip = "If the symbol's volume is expressed in base units, it is multiplied by this value to convert it into a price.";
+let price = input.source(close, "Price Source", tooltip: priceTooltip);
+let currencyInput = input.string(
+    title: "Target Currency",
+    defval: "Default",
+    options: [
+        "Default",
+        "USD",
+        "EUR",
+        "CAD",
+        "JPY",
+        "GBP",
+        "HKD",
+        "CNY",
+        "NZD",
+        "RUB"
+    ],
+    display: display.NONE
+);
+let currency = currencyInput == "Default" ? "" : currencyInput;
+
+let sumVolTF = switch {
+    timeframe.isminutes or timeframe.isseconds => "1",
+    timeframe.isdaily => "5",
+    => "60",
+};
+fn sum24hVol(src) {
+    let msIn24h = 24 * 60 * 60 * 1000;
+    let sourceValues = rollOnTimeWhen(src, msIn24h);
+    sourceValues.sum();
+}
+
+let noVolumeError = "The data vendor doesn't provide volume data for this symbol.";
+if syminfo.volumetype == "tick" and syminfo.type == "crypto" {
+    runtime.error(noVolumeError);
+}
+
+var cumVol = 0.;
+cumVol += nz(volume);
+if barstate.is_last and cumVol == 0 {
+    runtime.error(noVolumeError);
+}
+
+let expr = syminfo.volumetype == "quote" ? volume : price * volume;
+let vol24h = request.security(
+    syminfo.tickerid,
+    sumVolTF,
+    sum24hVol(expr * request.currency_rate(syminfo.currency, currency))
+);
+plot(vol24h, title: "24H Volume", style: PlotStyle.Columns);
