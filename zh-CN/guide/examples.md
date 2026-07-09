@@ -12,29 +12,29 @@
 // ① 将此脚本声明为指标。
 //   - title        : 显示在图例中的名称
 //   - overlay=true : 叠加在 K 线上绘制（而非独立面板）
-indicator("SMA Crossover", overlay:  true)
+indicator("SMA Crossover", overlay:  true);
 
 // ② 用户可配置的输入项。
 //   input.int() 创建一个整数输入，显示在脚本设置面板中。
 //   第二个参数为默认值；title 为在 UI 中显示的标签。
-fastLen = input.int(9,  title:  "Fast Length")
-slowLen = input.int(21, title:  "Slow Length")
+let fastLen = input.int(9,  title:  "Fast Length");
+let slowLen = input.int(21, title:  "Slow Length");
 
 // ③ 计算两条 SMA series。
 //   这些是 series<float>：每个 Bar 产生一个值。
-fast = ta.sma(close, fastLen)
-slow = ta.sma(close, slowLen)
+let fast = ta.sma(close, fastLen);
+let slow = ta.sma(close, slowLen);
 
 // ④ 检测金叉和死叉事件。
 //   ta.crossover(a, b)  → 在 a 向上穿越 b 的那根 Bar 返回 true
 //   ta.crossunder(a, b) → 在 a 向下穿越 b 的那根 Bar 返回 true
-crossUp   = ta.crossover(fast, slow)
-crossDown = ta.crossunder(fast, slow)
+let crossUp   = ta.crossover(fast, slow);
+let crossDown = ta.crossunder(fast, slow);
 
 // ⑤ 将两条均线绘制为连续折线。
 //   linewidth=2 使线条略粗于默认值 1。
-plot(fast, title:  "Fast SMA", color:  color.BLUE,   linewidth:  2)
-plot(slow, title:  "Slow SMA", color:  color.ORANGE, linewidth:  2)
+plot(fast, title:  "Fast SMA", color:  color.BLUE,   linewidth:  2);
+plot(slow, title:  "Slow SMA", color:  color.ORANGE, linewidth:  2);
 
 // ⑥ 在金叉 Bar 的下方绘制向上的三角形标记。
 //   plot_shape 仅在第一个参数为 true 的 Bar 上绘制。
@@ -43,7 +43,7 @@ plot_shape(crossUp,
     style:  Shape.TriangleUp,
     location:  Location.BelowBar,
     color:  color.GREEN,
-    size:  Size.Small)
+    size:  Size.Small);
 
 // ⑦ 在死叉 Bar 的上方绘制向下的三角形标记。
 plot_shape(crossDown,
@@ -51,14 +51,14 @@ plot_shape(crossDown,
     style:  Shape.TriangleDown,
     location:  Location.AboveBar,
     color:  color.RED,
-    size:  Size.Small)
+    size:  Size.Small);
 
 // ⑧ 在金叉或死叉 Bar 上为图表背景添加淡色高亮。
 //   color.new(c, transp) 创建带透明度的颜色（0=不透明，100=完全透明）。
 //   三元运算符 ?: 根据事件类型选择颜色。
-bgColor = crossUp   ? color.new(color.GREEN, 85) :
-          crossDown ? color.new(color.RED,   85) : na
-bg_color(bgColor)
+let bgColor = crossUp   ? color.new(color.GREEN, 85) :
+              crossDown ? color.new(color.RED,   85) : na;
+bg_color(bgColor);
 ```
 
 ### 涉及的核心概念
@@ -89,40 +89,39 @@ bg_color(bgColor)
 // - default_qty_value : 每笔交易默认 1 手
 strategy(
     "Bollinger Bands Breakout",
-    default_qty_type:  strategy.fixed,
+    default_qty_type:  DefaultQtyType.Fixed,
     default_qty_value:  1
 );
 
 // ② 计算布林带。
-// ta.bb 返回一个元组：[中轨, 上轨, 下轨]。
-// [a, b, c] = ... 语法将元组解构为三个变量。
+// ta.bb 返回一个元组：(中轨, 上轨, 下轨)。
+// let (a, b, c) = ... 语法将元组解构为三个变量。
 let (basis, upper, lower) = ta.bb(close, 20, 2.0);
 
 // ③ 入场条件。
 // close[1] 引用*上一根* Bar 的收盘价（历史运算符 []）。
-// 结合当前 Bar 与上一 Bar
-// 的值，可精确定位价格穿越轨道的那根 Bar。
-let longEntry = close > upper and close[1] <= upper[1];
+// 结合当前 Bar 与上一 Bar 的值，可精确定位价格穿越轨道的那根 Bar。
+let longEntry  = close > upper and close[1] <= upper[1];
 let shortEntry = close < lower and close[1] >= lower[1];
 
 // ④ 出场条件：价格穿越中轨。
-let longExit = close < basis;
+let longExit  = close < basis;
 let shortExit = close > basis;
 
 // ⑤ 发出策略指令。
 // strategy.entry 开仓；strategy.close 按交易 ID 平仓。
 if longEntry {
-    strategy.entry("Long", strategy.long)
+    strategy.entry("Long", Direction.Long);
 }
 if shortEntry {
-    strategy.entry("Short", strategy.short)
+    strategy.entry("Short", Direction.Short);
 }
 
 if longExit {
-    strategy.close("Long")
+    strategy.close("Long");
 }
 if shortExit {
-    strategy.close("Short")
+    strategy.close("Short");
 }
 ```
 
@@ -131,8 +130,8 @@ if shortExit {
 | 概念 | 位置 |
 |---|---|
 | 策略声明 | `strategy(...)` — 行 ① |
-| 元组解构 | `[basis, upper, lower] = ta.bb(...)` — 行 ② |
-| `ta.bb` 布林带 | 行 ② |
+| 元组解构 | `let (basis, upper, lower) = ta.bb(...)` — 行 ② |
+| `ta.bb` | 布林带计算 — 行 ② |
 | 历史运算符 `[]` | `close[1]`、`upper[1]` — 行 ③ |
 | 布尔 series | `longEntry`、`shortEntry`、`longExit`、`shortExit` — 行 ③④ |
 | `if` 语句 | 策略指令块 — 行 ⑤ |
@@ -145,5 +144,5 @@ if shortExit {
 - [语言基础](/zh-CN/guide/language-basics) — 运算符、字面量、历史运算符
 - [类型与变量](/zh-CN/guide/types-and-variables) — `var`、类型限定符、`na`
 - [控制结构](/zh-CN/guide/control-structures) — `if`、`for`、`while`、`switch`
-- [函数与方法](/zh-CN/guide/functions-and-methods) — 函数定义与调用
+- [函数与方法](/zh-CN/guide/functions-and-methods) — 函数的定义与调用
 - [标准库](/zh-CN/api/stdlib/) — `ta`、`math`、`str`、`strategy` 等
