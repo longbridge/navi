@@ -1,14 +1,14 @@
-# Quick Start
+# 快速开始
 
-Navi scripts run on the Longbridge platform via the `longbridge` CLI.
+Navi 脚本通过 `longbridge` CLI 在 Longbridge 平台上运行。
 
-## Install the Longbridge CLI
+## 安装 Longbridge CLI
 
-See the [CLI documentation](https://open.longbridge.com/docs/cli/quant) for installation instructions.
+安装说明请参阅 [CLI 文档](https://open.longbridge.com/docs/cli/quant)。
 
-## Write Your First Indicator
+## 编写第一个指标
 
-Create `sma.nvs`:
+创建 `sma.nvs`：
 
 ```navi
 indicator("SMA", overlay: true);
@@ -17,21 +17,21 @@ let len = input.int(14, "Length", minval: 1);
 plot(ta.sma(close, len), "SMA", color: color.ORANGE);
 ```
 
-## Run Against Historical Data
+## 对历史数据运行
 
 ```bash
 longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31 --script sma.nvs
 ```
 
-Or pipe the script directly:
+也可以直接通过管道传入脚本：
 
 ```bash
 cat sma.nvs | longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31
 ```
 
-Output defaults to a table with bar-by-bar values. Use `--format json` for structured output.
+默认以表格形式输出每根 K 线的值。使用 `--format json` 可获取结构化输出。
 
-## Write a Strategy
+## 编写策略
 
 ```navi
 strategy("MA Cross", overlay: true);
@@ -50,15 +50,15 @@ plot(slow, "Slow EMA");
 longbridge quant run AAPL.US --start 2023-01-01 --end 2024-12-31 --script macross.nvs
 ```
 
-## Running Pine Script Files
+## 运行 Pine Script 文件
 
-You can also run existing Pine Script files (`.pine`) directly:
+也可以直接运行已有的 Pine Script 文件（`.pine`）：
 
 ```bash
 longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31 --script my_indicator.pine --dialect pine
 ```
 
-## Next Steps
+## 下一步
 
-- [Language Basics](/zh-CN/guide/language-basics)
-- [Standard Library](/zh-CN/api/stdlib/)
+- [语言基础](/zh-CN/guide/language-basics)
+- [标准库](/zh-CN/api/stdlib/)
