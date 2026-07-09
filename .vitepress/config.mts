@@ -41,7 +41,7 @@ export default defineConfig({
       {
         ...JSON.parse(
           readFileSync(
-            resolve(__dirname, "..", "..", "crates", "lsp", "editors", "vscode", "syntaxes", "navi.tmLanguage.json"),
+            resolve(__dirname, "navi.tmLanguage.json"),
             "utf-8",
           ),
         ),
