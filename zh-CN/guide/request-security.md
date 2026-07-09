@@ -236,5 +236,3 @@ plot(tech);
 
 ## 参阅
 
-- [数据提供者](/zh-CN/guide/integration/vm-data-providers) — 为 `request.security()` 提供 K 线数据
-- [安全与执行限制](/zh-CN/guide/integration/vm-security) — 嵌套深度和调用次数限制

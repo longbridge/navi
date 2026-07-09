@@ -260,4 +260,3 @@ max_bars_back(myAvg, 200);
 
 - [函式與方法](/zh-HK/guide/functions-and-methods) — 函式定義、靜態方法、運算子多載等
 - [標準函式庫](/zh-HK/api/stdlib/) — 探索內建函式
-- [整合](/zh-HK/guide/integration/integration) — 以程式方式執行指令碼

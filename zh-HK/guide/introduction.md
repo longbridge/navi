@@ -44,4 +44,3 @@ Navi 引擎是 Navi 語言獨立的、可嵌入的執行時。你可以：
 
 - [快速開始](/zh-HK/guide/quick-start) — 構建並運行你的第一個腳本
 - [語言基礎](/zh-HK/guide/language-basics) — 學習 Navi 語法
-- [集成](/zh-HK/guide/integration/integration) — 將引擎嵌入你的 Rust 應用程式

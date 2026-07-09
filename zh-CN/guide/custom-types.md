@@ -260,4 +260,3 @@ max_bars_back(myAvg, 200);
 
 - [函数与方法](/zh-CN/guide/functions-and-methods) — 函数定义、静态方法、运算符重载等
 - [标准库](/zh-CN/api/stdlib/) — 探索内置函数
-- [集成](/zh-CN/guide/integration/integration) — 以编程方式运行脚本

@@ -44,4 +44,3 @@ Each stage is a separate crate:
 
 - [Quick Start](/guide/quick-start) — build and run your first script
 - [Language Basics](/guide/language-basics) — learn Navi syntax
-- [Integration](/guide/integration/integration) — embed the engine in your Rust application

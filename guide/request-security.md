@@ -256,8 +256,3 @@ Each symbol in the expression is subject to the same `max_security_calls` limit 
   `ExecutionLimits::max_security_depth`).
 - **Call site limit**: each unique `(symbol, timeframe)` pair counts toward
   `ExecutionLimits::max_security_calls` (default 40).
-
-## See Also
-
-- [Data Providers](/guide/integration/vm-data-providers) — supplying candlestick data for `request.security()`
-- [Security & Limits](/guide/integration/vm-security) — nesting depth and call count limits

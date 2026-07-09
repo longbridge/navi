@@ -261,4 +261,3 @@ max_bars_back(myAvg, 200);
 
 - [Functions & Methods](/guide/functions-and-methods) — function definitions, static methods, operator overloading, and more
 - [Standard Library](/api/stdlib/) — explore built-in functions
-- [Integration](/guide/integration/integration) — run scripts programmatically

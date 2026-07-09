@@ -79,4 +79,3 @@ plot(ta.sma(close, 5), "SMA 5")
 ## 下一步
 
 - [語言基礎](/zh-HK/guide/language-basics) — 學習 Navi 語法
-- [集成](/zh-HK/guide/integration/integration) — `navi-vm` 庫的詳細指南
