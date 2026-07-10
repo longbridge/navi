@@ -74,8 +74,8 @@ export fn calcDeviation(basePrice: float, price: float) {
 //             coordinate.
 //@field price The price where the point is located, i.e., its `y` coordinate.
 struct Point {
-    int index,
-    float price,
+    index: int,
+    price: float,
 }
 ```
 
@@ -210,8 +210,8 @@ library("MyLib");
 //@field length     The lookback period.
 //@field multiplier The standard deviation multiplier.
 export struct Config {
-    int length = 14;
-    float multiplier = 2.0;
+    length: int = 14,
+    multiplier: float = 2.0,
 }
 
 //@function Calculates a custom band around a moving average.

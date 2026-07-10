@@ -86,8 +86,8 @@ Methods work with custom types:
 
 ```navi
 struct Position {
-    float entry,
-    float size,
+    entry: float,
+    size: float,
 }
 
 method pnl(self: Position, currentPrice: float) {
@@ -231,7 +231,7 @@ The `staticmethod` keyword defines a static method associated with a specific ob
 
 ```navi
 struct AB {
-    int a,
+    a: int,
 }
 
 staticmethod(AB) add(a: int, b: int): int {
@@ -249,9 +249,9 @@ Static methods can only be defined for **struct or newtype** types, not for enum
 ```navi
 // Factory methods for chart.Point (stdlib/chart.1.nv)
 export struct Point {
-    int index,
-    int time,
-    float price,
+    index: int,
+    time: int,
+    price: float,
 }
 
 export staticmethod(Point) now(price: float = close): Point {
@@ -271,7 +271,7 @@ The `staticproperty` keyword is like `staticmethod`, but the accessor takes no p
 
 ```navi
 struct Counter {
-    int value,
+    value: int,
 }
 
 staticproperty(Counter) zero(): Counter {
@@ -295,8 +295,8 @@ The `operator` keyword defines custom behavior for arithmetic operators on user-
 
 ```navi
 struct Vec2 {
-    float x,
-    float y,
+    x: float,
+    y: float,
 }
 
 operator+(a: Vec2, b: Vec2): Vec2 {

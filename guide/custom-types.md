@@ -6,10 +6,10 @@ Define custom types with the `struct` keyword. Fields must have explicit types a
 
 ```navi
 struct Order {
-    int id,
-    string symbol,
-    float price = na,
-    varip int updateCount = 0,
+    id: int,
+    symbol: string,
+    price: float = na,
+    varip updateCount: int = 0,
 }
 ```
 
@@ -45,9 +45,9 @@ clone.price = 160.0;
 
 ```navi
 struct Position {
-    float entry,
-    float size,
-    bool isLong = true,
+    entry: float,
+    size: float,
+    isLong: bool = true,
 }
 
 method pnl(self: Position, currentPrice: float) {
@@ -71,8 +71,8 @@ Individual fields can use `varip` to persist across intrabar updates while other
 
 ```navi
 struct Counter {
-    int bars = 0,
-    varip int ticks = 0,
+    bars: int = 0,
+    varip ticks: int = 0,
 }
 
 var counter: Counter = Counter.new();
@@ -87,8 +87,8 @@ any type when the UDT is instantiated:
 
 ```navi
 struct Pair<A, B> {
-    A first,
-    B second,
+    first: A,
+    second: B,
 }
 
 let p: Pair<int, string> = Pair.new(first: 42, second: "hello");
@@ -98,8 +98,8 @@ Field types may themselves be parameterized — for example, holding a collectio
 
 ```navi
 struct Stack<T> {
-    Array<T> items,
-    int count = 0,
+    items: Array<T>,
+    count: int = 0,
 }
 
 method push<T>(self: Stack<T>, value: T) {
@@ -155,8 +155,8 @@ Mark functions, types, and enums with `export` to make them visible to importing
 library("MyLib");
 
 export struct Config {
-    int length,
-    float multiplier,
+    length: int,
+    multiplier: float,
 }
 
 export fn calcSMA(src: series float, length: simple int) {

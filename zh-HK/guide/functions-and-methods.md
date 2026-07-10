@@ -83,8 +83,8 @@ x.double(); // 10
 
 ```navi
 struct Position {
-    float entry,
-    float size,
+    entry: float,
+    size: float,
 }
 
 method pnl(self: Position, currentPrice: float) {
@@ -221,7 +221,7 @@ export property pi(): const float {
 
 ```navi
 struct AB {
-    int a,
+    a: int,
 }
 
 staticmethod(AB) add(a: int, b: int): int {
@@ -237,9 +237,9 @@ let result = AB.add(20, 5); // 25
 ```navi
 // chart.point 的工廠方法（stdlib/chart.1.nv）
 export struct point {
-    int index,
-    int time,
-    float price,
+    index: int,
+    time: int,
+    price: float,
 }
 
 export staticmethod(point) now(price: float = close): point {
@@ -259,7 +259,7 @@ export staticmethod(point) from_time(time: int, price: float): point {
 
 ```navi
 struct Counter {
-    int value,
+    value: int,
 }
 
 staticproperty(Counter) zero(): Counter {
@@ -283,8 +283,8 @@ let c = Counter.zero;
 
 ```navi
 struct Vec2 {
-    float x,
-    float y,
+    x: float,
+    y: float,
 }
 
 operator+(a: Vec2, b: Vec2): Vec2 {
