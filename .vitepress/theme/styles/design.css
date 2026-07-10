@@ -222,13 +222,22 @@ html.dark .VPMenu {
 }
 
 .VPButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
-  padding: 12px 24px;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 1;
   box-shadow: var(--lb-shadow-1);
+}
+
+.VPButton.medium,
+.VPButton.big {
+  height: 44px;
+  padding: 0 24px;
+  line-height: 1;
 }
 
 .VPButton.alt {
