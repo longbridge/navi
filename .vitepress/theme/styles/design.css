@@ -494,15 +494,18 @@ html.dark .vp-doc h1 {
 .vp-doc a > code {
   border-color: rgba(0, 173, 162, 0.28);
   background: rgba(0, 173, 162, 0.08);
+  text-decoration: none !important;
   color: var(--vp-c-brand-1);
 }
 
 .vp-doc a:hover > code {
+  text-decoration: none !important;
   border-color: var(--vp-c-brand-2);
   color: var(--vp-c-brand-2);
 }
 
 html.dark .vp-doc a > code {
+  text-decoration: none !important;
   border-color: rgba(0, 240, 196, 0.32);
   background: rgba(0, 240, 196, 0.1);
 }
