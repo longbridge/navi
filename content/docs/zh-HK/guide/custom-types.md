@@ -18,6 +18,7 @@ struct Order {
 ```
 
 欄位可以使用：
+
 - 顯式類型（必需）
 - 可選的預設值，使用 `=`
 - 可選的 `varip` 聲明模式（使欄位在 K 線內更新間持久化）
@@ -251,4 +252,4 @@ max_bars_back(myAvg, 200);
 ## 下一步
 
 - [函式與方法](/zh-HK/guide/functions-and-methods) — 函式定義、靜態方法、運算子多載等
-- [標準函式庫](/zh-HK/api/stdlib/) — 探索內建函式
+- [標準函式庫](/zh-HK/api/) — 探索內建函式

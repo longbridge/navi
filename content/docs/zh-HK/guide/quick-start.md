@@ -109,4 +109,4 @@ fill(upper, lower, color.new(color.BLUE, 90));
 ## 下一步
 
 - [語言基礎](/zh-HK/guide/language-basics)
-- [標準庫](/zh-HK/api/stdlib/)
+- [標準庫](/zh-HK/api/)

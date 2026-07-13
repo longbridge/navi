@@ -64,9 +64,9 @@ longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31 --script my_ind
 
 The `--dialect` parameter selects the script language:
 
-| Value | Language |
-|---|---|
-| `navi` | Navi (default for `.nv` files) |
+| Value  | Language                                   |
+| ------ | ------------------------------------------ |
+| `navi` | Navi (default for `.nv` files)             |
 | `pine` | Pine Script V6 (default for `.pine` files) |
 
 If your file uses the correct extension (`.nv` or `.pine`), the dialect is detected automatically and `--dialect` can be omitted.
@@ -109,4 +109,4 @@ fill(upper, lower, color.new(color.BLUE, 90));
 ## Next Steps
 
 - [Language Basics](/guide/language-basics)
-- [Standard Library](/api/stdlib/)
+- [Standard Library](/api/)

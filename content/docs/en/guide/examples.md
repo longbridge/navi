@@ -67,17 +67,17 @@ bg_color(bgColor);
 
 ### Key concepts illustrated
 
-| Concept | Where |
-|---|---|
-| Script declaration | `indicator(...)` — line ① |
-| User inputs | `input.int` — line ② |
-| `series<float>` variables | `fast`, `slow`, `crossUp`, `crossDown` — lines ③④ |
-| `ta` module | `ta.sma`, `ta.crossover`, `ta.crossunder` — lines ③④ |
-| Plotting lines | `plot(...)` — line ⑤ |
-| Plotting shapes | `plot_shape(...)` — lines ⑥⑦ |
-| Transparent colors | `color.new(c, transp)` — line ⑧ |
-| Ternary operator | `c ? a : b` — line ⑧ |
-| `na` as "no value" | `na` used to skip background coloring — line ⑧ |
+| Concept                   | Where                                                |
+| ------------------------- | ---------------------------------------------------- |
+| Script declaration        | `indicator(...)` — line ①                            |
+| User inputs               | `input.int` — line ②                                 |
+| `series<float>` variables | `fast`, `slow`, `crossUp`, `crossDown` — lines ③④    |
+| `ta` module               | `ta.sma`, `ta.crossover`, `ta.crossunder` — lines ③④ |
+| Plotting lines            | `plot(...)` — line ⑤                                 |
+| Plotting shapes           | `plot_shape(...)` — lines ⑥⑦                         |
+| Transparent colors        | `color.new(c, transp)` — line ⑧                      |
+| Ternary operator          | `c ? a : b` — line ⑧                                 |
+| `na` as "no value"        | `na` used to skip background coloring — line ⑧       |
 
 ---
 
@@ -131,15 +131,15 @@ if shortExit {
 
 ### Key concepts illustrated
 
-| Concept | Where |
-|---|---|
-| Strategy declaration | `strategy(...)` — line ① |
-| Tuple destructuring | `let (basis, upper, lower) = ta.bb(...)` — line ② |
-| `ta.bb` | Bollinger Bands computation — line ② |
-| History operator `[]` | `close[1]`, `upper[1]` — line ③ |
-| Boolean series | `longEntry`, `shortEntry`, `longExit`, `shortExit` — lines ③④ |
-| `if` statement | Strategy order blocks — line ⑤ |
-| `strategy.entry` / `strategy.close` | Opening and closing trades — line ⑤ |
+| Concept                             | Where                                                         |
+| ----------------------------------- | ------------------------------------------------------------- |
+| Strategy declaration                | `strategy(...)` — line ①                                      |
+| Tuple destructuring                 | `let (basis, upper, lower) = ta.bb(...)` — line ②             |
+| `ta.bb`                             | Bollinger Bands computation — line ②                          |
+| History operator `[]`               | `close[1]`, `upper[1]` — line ③                               |
+| Boolean series                      | `longEntry`, `shortEntry`, `longExit`, `shortExit` — lines ③④ |
+| `if` statement                      | Strategy order blocks — line ⑤                                |
+| `strategy.entry` / `strategy.close` | Opening and closing trades — line ⑤                           |
 
 ---
 
@@ -149,4 +149,4 @@ if shortExit {
 - [Variables & Qualifiers](/guide/types-and-variables) — `var`, type qualifiers, `na`
 - [Control Structures](/guide/control-structures) — `if`, `for`, `while`, `switch`
 - [Functions & Methods](/guide/functions-and-methods) — defining and calling functions
-- [Standard Library](/api/stdlib/) — `ta`, `math`, `str`, `strategy`, and more
+- [Standard Library](/api/) — `ta`, `math`, `str`, `strategy`, and more

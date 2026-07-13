@@ -18,6 +18,7 @@ struct Order {
 ```
 
 字段可以使用：
+
 - 显式类型（必需）
 - 可选的默认值，使用 `=`
 - 可选的 `varip` 声明模式（使字段在 K 线内更新间持久化）
@@ -251,4 +252,4 @@ max_bars_back(myAvg, 200);
 ## 下一步
 
 - [函数与方法](/zh-CN/guide/functions-and-methods) — 函数定义、静态方法、运算符重载等
-- [标准库](/zh-CN/api/stdlib/) — 探索内置函数
+- [标准库](/zh-CN/api/) — 探索内置函数

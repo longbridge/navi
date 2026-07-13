@@ -24,9 +24,11 @@ const LOCALE_CONFIGS = {
     strings: {
       title: "Standard Library",
       indexTitle: "Navi Standard Library Reference",
-      indexDescription: "Complete API reference for all built-in modules in the Navi standard library.",
+      indexDescription:
+        "Complete API reference for all built-in modules in the Navi standard library.",
       prelude: "Prelude",
-      preludeDescription: "Global functions and types available without a namespace prefix.",
+      preludeDescription:
+        "Global functions and types available without a namespace prefix.",
       modules: "Modules",
       submodules: "Sub-modules",
       module: "Module",
@@ -131,18 +133,28 @@ function tr(key) {
 }
 
 function modulePageUrl(moduleName) {
-  return `${currentLocaleConfig.linkPrefix}/api/stdlib/${moduleName.replace(/\./g, "_")}/`;
+  return `${currentLocaleConfig.linkPrefix}/api/${moduleName.replace(/\./g, "_")}/`;
 }
 
 function typePageUrl(moduleName, typeName) {
-  return `${currentLocaleConfig.linkPrefix}/api/stdlib/${moduleName.replace(/\./g, "_")}/${typeName}`;
+  return `${currentLocaleConfig.linkPrefix}/api/${moduleName.replace(/\./g, "_")}/${typeName}`;
 }
 
 // Load the same Navi grammar that VitePress uses for ```navi blocks
 const naviGrammar = {
   ...JSON.parse(
     readFileSync(
-      resolve(__dirname, "..", "..", "crates", "lsp", "editors", "vscode", "syntaxes", "navi.tmLanguage.json"),
+      resolve(
+        __dirname,
+        "..",
+        "..",
+        "crates",
+        "lsp",
+        "editors",
+        "vscode",
+        "syntaxes",
+        "navi.tmLanguage.json",
+      ),
       "utf-8",
     ),
   ),
@@ -202,16 +214,24 @@ function typeRefToHtml(tr, moduleName) {
     const r = symbolIndex.get(`${vt.module}::${vt.name}::type`);
     url = r ? r.url : null;
   } else {
-    const searchOrder = [...new Set([moduleName, "prelude", ...Object.keys(docs.modules)].filter(Boolean))];
+    const searchOrder = [
+      ...new Set(
+        [moduleName, "prelude", ...Object.keys(docs.modules)].filter(Boolean),
+      ),
+    ];
     for (const mod of searchOrder) {
       const r = symbolIndex.get(`${mod}::${vt.name}::type`);
-      if (r) { url = r.url; break; }
+      if (r) {
+        url = r.url;
+        break;
+      }
     }
   }
 
-  const genericSuffix = (vt.genericArgs && vt.genericArgs.length > 0)
-    ? `&lt;${vt.genericArgs.map(a => typeRefToHtml(a, moduleName)).join(", ")}&gt;`
-    : "";
+  const genericSuffix =
+    vt.genericArgs && vt.genericArgs.length > 0
+      ? `&lt;${vt.genericArgs.map((a) => typeRefToHtml(a, moduleName)).join(", ")}&gt;`
+      : "";
 
   // Keep generic args outside the <a> to avoid nested <a> elements when args
   // are themselves linked types (e.g. Map<String, any>).
@@ -257,10 +277,15 @@ function buildSymbolIndex(docs) {
       nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
 
     for (const f of mod.functions) {
-      const isProperty = f.overloads.every((ov) => ov.kind === "property" || ov.kind === "staticproperty");
-      const isMethod = f.overloads.every((ov) => ov.kind === "method" || ov.kind === "staticmethod");
+      const isProperty = f.overloads.every(
+        (ov) => ov.kind === "property" || ov.kind === "staticproperty",
+      );
+      const isMethod = f.overloads.every(
+        (ov) => ov.kind === "method" || ov.kind === "staticmethod",
+      );
       const idPrefix = isProperty ? "prop" : isMethod ? "method" : "fn";
-      const anchor = nameCounts.get(f.name) > 1 ? `${idPrefix}-${f.name}` : f.name;
+      const anchor =
+        nameCounts.get(f.name) > 1 ? `${idPrefix}-${f.name}` : f.name;
       index.set(`${modName}::${f.name}::func`, {
         key: `${modName}::${f.name}`,
         url: `${pageUrl}#${anchor}`,
@@ -268,11 +293,18 @@ function buildSymbolIndex(docs) {
     }
 
     for (const t of mod.types) {
-      const typeEntry = { key: `${modName}::${t.name}`, url: typePageUrl(modName, t.name) };
+      const typeEntry = {
+        key: `${modName}::${t.name}`,
+        url: typePageUrl(modName, t.name),
+      };
       index.set(`${modName}::${t.name}::type`, typeEntry);
 
       // Index type members (methods / static methods / static properties)
-      for (const f of [...(t.methods ?? []), ...(t.staticMethods ?? []), ...(t.staticProperties ?? [])]) {
+      for (const f of [
+        ...(t.methods ?? []),
+        ...(t.staticMethods ?? []),
+        ...(t.staticProperties ?? []),
+      ]) {
         index.set(`${modName}::${f.name}::func`, {
           key: `${modName}::${f.name}`,
           url: `${typePageUrl(modName, t.name)}#${f.name}`,
@@ -368,19 +400,20 @@ function processDesc(text, currentModule) {
     if (match.index > lastIndex)
       parts.push(escapeHtml(text.slice(lastIndex, match.index)));
     const ref = match[1];
-    const displayName = escapeHtml(ref.includes(":") ? ref.slice(ref.indexOf(":") + 1) : ref);
+    const displayName = escapeHtml(
+      ref.includes(":") ? ref.slice(ref.indexOf(":") + 1) : ref,
+    );
     const result = resolveRef(ref, currentModule);
     if (!result) {
       parts.push(`<code>${displayName}</code>`);
     } else {
       parts.push(
-        `<a class="stdlib-ref" data-key="${result.key}" href="${result.url}">${displayName}</a>`
+        `<a class="stdlib-ref" data-key="${result.key}" href="${result.url}">${displayName}</a>`,
       );
     }
     lastIndex = match.index + match[0].length;
   }
-  if (lastIndex < text.length)
-    parts.push(escapeHtml(text.slice(lastIndex)));
+  if (lastIndex < text.length) parts.push(escapeHtml(text.slice(lastIndex)));
   return parts.join("");
 }
 
@@ -388,7 +421,12 @@ function processDesc(text, currentModule) {
 // Signature formatting
 // ---------------------------------------------------------------------------
 
-function formatSignature(moduleName, funcName, ov, { singleLine = false } = {}) {
+function formatSignature(
+  moduleName,
+  funcName,
+  ov,
+  { singleLine = false } = {},
+) {
   if (ov.kind === "property") {
     const ret = ov.returnType ? `: ${typeRefToString(ov.returnType)}` : "";
     const prefix = moduleName !== "prelude" ? `${moduleName}.` : "";
@@ -430,9 +468,11 @@ function formatSignature(moduleName, funcName, ov, { singleLine = false } = {}) 
 
   // Multi-line: one parameter per line, indented by 4 spaces
   const indent = "    ";
-  const joined = paramParts.map((p, i) =>
-    i < paramParts.length - 1 ? `${indent}${p},` : `${indent}${p}`
-  ).join("\n");
+  const joined = paramParts
+    .map((p, i) =>
+      i < paramParts.length - 1 ? `${indent}${p},` : `${indent}${p}`,
+    )
+    .join("\n");
   return `${prefix}${funcName}(\n${joined}\n  )${ret}`;
 }
 
@@ -442,7 +482,9 @@ function formatSignature(moduleName, funcName, ov, { singleLine = false } = {}) 
 
 function generateParamsTable(params, moduleName) {
   const lines = [];
-  lines.push(`| ${tr("name")} | ${tr("type")} | ${tr("default")} | ${tr("description")} |`);
+  lines.push(
+    `| ${tr("name")} | ${tr("type")} | ${tr("default")} | ${tr("description")} |`,
+  );
   lines.push("| --- | --- | --- | --- |");
   for (const p of params) {
     const type = `<code>${typeRefToHtml(p.type, moduleName)}</code>`;
@@ -483,11 +525,17 @@ function generateSingleOverload(moduleName, funcName, ov) {
 
   // Returns
   if (ov.returnType) {
-    const retDesc = ov.returnsDescription ? ` — ${processDesc(ov.returnsDescription, moduleName)}` : "";
-    lines.push(`**${tr("returns")}:** <code>${typeRefToHtml(ov.returnType, moduleName)}</code>${retDesc}`);
+    const retDesc = ov.returnsDescription
+      ? ` — ${processDesc(ov.returnsDescription, moduleName)}`
+      : "";
+    lines.push(
+      `**${tr("returns")}:** <code>${typeRefToHtml(ov.returnType, moduleName)}</code>${retDesc}`,
+    );
     lines.push("");
   } else if (ov.returnsDescription) {
-    lines.push(`**${tr("returns")}:** ${processDesc(ov.returnsDescription, moduleName)}`);
+    lines.push(
+      `**${tr("returns")}:** ${processDesc(ov.returnsDescription, moduleName)}`,
+    );
     lines.push("");
   }
 
@@ -510,12 +558,16 @@ function generateSingleOverload(moduleName, funcName, ov) {
  * Build a full-signature label for an overload tab, highlighted as HTML.
  */
 function overloadLabel(moduleName, funcName, ov) {
-  return highlightInline(formatSignature(moduleName, funcName, ov, { singleLine: true }));
+  return highlightInline(
+    formatSignature(moduleName, funcName, ov, { singleLine: true }),
+  );
 }
 
 /** Type display name with HTML-safe angle brackets (for use inside rendered content). */
 function typeDisplayName(t) {
-  const g = t.genericParams?.length ? `&lt;${t.genericParams.join(", ")}&gt;` : "";
+  const g = t.genericParams?.length
+    ? `&lt;${t.genericParams.join(", ")}&gt;`
+    : "";
   return `${t.name}${g}`;
 }
 
@@ -557,7 +609,9 @@ function generateTypeDefBody(t, lines, moduleName) {
     lines.push("| --- | --- | --- |");
     for (const f of t.fields) {
       const desc = f.description ? processDesc(f.description, moduleName) : "";
-      lines.push(`| \`${f.name}\` | <code>${typeRefToHtml(f.type, moduleName)}</code> | ${desc} |`);
+      lines.push(
+        `| \`${f.name}\` | <code>${typeRefToHtml(f.type, moduleName)}</code> | ${desc} |`,
+      );
     }
     lines.push("");
   }
@@ -591,7 +645,6 @@ function generateTypeDefBody(t, lines, moduleName) {
   return lines.join("\n");
 }
 
-
 /**
  * Generate a dedicated page for a single type, including its definition and
  * any associated methods / static methods / static properties.
@@ -608,14 +661,16 @@ function generateTypePage(typeName, typeDef, moduleName) {
     : "";
   const displayTitle = baseTitle + genericSuffix;
   // Plain text version for frontmatter (no HTML entities needed).
-  const displayTitlePlain = baseTitle + (typeDef.genericParams?.length
-    ? `<${typeDef.genericParams.join(", ")}>`
-    : "");
+  const displayTitlePlain =
+    baseTitle +
+    (typeDef.genericParams?.length
+      ? `<${typeDef.genericParams.join(", ")}>`
+      : "");
 
   // Methods/staticMethods/staticProperties are now directly on the typeDef.
   const regularMethods = typeDef.methods ?? [];
-  const staticMethods  = typeDef.staticMethods ?? [];
-  const staticProps    = typeDef.staticProperties ?? [];
+  const staticMethods = typeDef.staticMethods ?? [];
+  const staticProps = typeDef.staticProperties ?? [];
 
   // Track multi-overload methods for deterministic rendering.
   const multiOverloads = [];
@@ -649,7 +704,9 @@ function generateTypePage(typeName, typeDef, moduleName) {
     lines.push("| --- | --- | --- |");
     for (const f of typeDef.fields) {
       const desc = f.description ? processDesc(f.description, moduleName) : "";
-      lines.push(`| \`${f.name}\` | <code>${typeRefToHtml(f.type, moduleName)}</code> | ${desc} |`);
+      lines.push(
+        `| \`${f.name}\` | <code>${typeRefToHtml(f.type, moduleName)}</code> | ${desc} |`,
+      );
     }
     lines.push("");
   }
@@ -677,7 +734,9 @@ function generateTypePage(typeName, typeDef, moduleName) {
     }
   }
 
-  const refByFunc = new Map(multiOverloads.map(mo => [mo.funcName, mo.refName]));
+  const refByFunc = new Map(
+    multiOverloads.map((mo) => [mo.funcName, mo.refName]),
+  );
 
   function emitMethodList(list, sectionTitle) {
     if (list.length === 0) return;
@@ -685,13 +744,23 @@ function generateTypePage(typeName, typeDef, moduleName) {
     lines.push("");
     for (let i = 0; i < list.length; i++) {
       const f = list[i];
-      if (i > 0) { lines.push("---"); lines.push(""); }
+      if (i > 0) {
+        lines.push("---");
+        lines.push("");
+      }
       lines.push(`### ${f.name} {#${f.name}}`);
       lines.push("");
       if (f.overloads.length === 1) {
         lines.push(generateSingleOverload(moduleName, f.name, f.overloads[0]));
       } else {
-        lines.push(generateMultiOverload(moduleName, f.name, f.overloads, refByFunc.get(f.name)));
+        lines.push(
+          generateMultiOverload(
+            moduleName,
+            f.name,
+            f.overloads,
+            refByFunc.get(f.name),
+          ),
+        );
       }
     }
   }
@@ -705,11 +774,16 @@ function generateTypePage(typeName, typeDef, moduleName) {
     lines.push("");
     for (let i = 0; i < staticProps.length; i++) {
       const f = staticProps[i];
-      if (i > 0) { lines.push("---"); lines.push(""); }
+      if (i > 0) {
+        lines.push("---");
+        lines.push("");
+      }
       lines.push(`### ${f.name} {#${f.name}}`);
       lines.push("");
       for (const ov of f.overloads) {
-        const retHtml = ov.returnType ? typeRefToHtml(ov.returnType, moduleName) : "void";
+        const retHtml = ov.returnType
+          ? typeRefToHtml(ov.returnType, moduleName)
+          : "void";
         lines.push(`**${tr("type")}:** <code>${retHtml}</code>`);
         lines.push("");
         if (ov.description) {
@@ -746,11 +820,17 @@ function generateOverloadBody(ov, moduleName) {
   }
 
   if (ov.returnType) {
-    const retDesc = ov.returnsDescription ? ` — ${processDesc(ov.returnsDescription, moduleName)}` : "";
-    lines.push(`**${tr("returns")}:** <code>${typeRefToHtml(ov.returnType, moduleName)}</code>${retDesc}`);
+    const retDesc = ov.returnsDescription
+      ? ` — ${processDesc(ov.returnsDescription, moduleName)}`
+      : "";
+    lines.push(
+      `**${tr("returns")}:** <code>${typeRefToHtml(ov.returnType, moduleName)}</code>${retDesc}`,
+    );
     lines.push("");
   } else if (ov.returnsDescription) {
-    lines.push(`**${tr("returns")}:** ${processDesc(ov.returnsDescription, moduleName)}`);
+    lines.push(
+      `**${tr("returns")}:** ${processDesc(ov.returnsDescription, moduleName)}`,
+    );
     lines.push("");
   }
 
@@ -795,8 +875,15 @@ function generateModulePage(moduleName, module) {
   const funcs = [];
   const methods = [];
   for (const f of module.functions) {
-    const isProperty = f.overloads.every((ov) => ov.kind === "property" || ov.kind === "staticproperty");
-    const isMethod = f.overloads.every((ov) => ov.kind === "method" || ov.kind === "staticmethod" || ov.kind === "operator");
+    const isProperty = f.overloads.every(
+      (ov) => ov.kind === "property" || ov.kind === "staticproperty",
+    );
+    const isMethod = f.overloads.every(
+      (ov) =>
+        ov.kind === "method" ||
+        ov.kind === "staticmethod" ||
+        ov.kind === "operator",
+    );
     if (isProperty) {
       properties.push(f);
     } else if (isMethod) {
@@ -824,21 +911,22 @@ function generateModulePage(moduleName, module) {
   lines.push("");
 
   if (moduleName === "prelude") {
-    lines.push(
-      "::: tip",
-      currentLocaleConfig.strings.preludeTip,
-      ":::",
-    );
+    lines.push("::: tip", currentLocaleConfig.strings.preludeTip, ":::");
     lines.push("");
   }
 
-  const refByFunc = new Map(multiOverloads.map((mo) => [mo.funcName, mo.refName]));
+  const refByFunc = new Map(
+    multiOverloads.map((mo) => [mo.funcName, mo.refName]),
+  );
 
   // Collision detection only among entries rendered on this page
   const nameCounts = new Map();
-  for (const f of properties) nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
-  for (const f of funcs)      nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
-  for (const f of methods)    nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
+  for (const f of properties)
+    nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
+  for (const f of funcs)
+    nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
+  for (const f of methods)
+    nameCounts.set(f.name, (nameCounts.get(f.name) || 0) + 1);
 
   function h3(name, prefix) {
     if (nameCounts.get(name) > 1) {
@@ -863,7 +951,9 @@ function generateModulePage(moduleName, module) {
         lines.push(generateSingleOverload(moduleName, f.name, f.overloads[0]));
       } else {
         const refName = refByFunc.get(f.name);
-        lines.push(generateMultiOverload(moduleName, f.name, f.overloads, refName));
+        lines.push(
+          generateMultiOverload(moduleName, f.name, f.overloads, refName),
+        );
       }
     }
   }
@@ -878,8 +968,12 @@ function generateModulePage(moduleName, module) {
       const firstSentence = t.description
         ? processDesc(t.description.split(/(?<=[.。])\s/)[0], moduleName)
         : "";
-      const tGeneric = t.genericParams?.length ? `<${t.genericParams.join(", ")}>` : "";
-      lines.push(`| [\`${t.name}${tGeneric}\`](${typePageUrl(moduleName, t.name)}) | ${firstSentence} |`);
+      const tGeneric = t.genericParams?.length
+        ? `<${t.genericParams.join(", ")}>`
+        : "";
+      lines.push(
+        `| [\`${t.name}${tGeneric}\`](${typePageUrl(moduleName, t.name)}) | ${firstSentence} |`,
+      );
     }
     lines.push("");
   }
@@ -897,7 +991,9 @@ function generateModulePage(moduleName, module) {
       lines.push(h3(f.name, "prop"));
       lines.push("");
       for (const ov of f.overloads) {
-        const retHtml = ov.returnType ? typeRefToHtml(ov.returnType, moduleName) : "void";
+        const retHtml = ov.returnType
+          ? typeRefToHtml(ov.returnType, moduleName)
+          : "void";
         lines.push(`**${tr("type")}:** <code>${retHtml}</code>`);
         lines.push("");
         if (ov.description) {
@@ -944,20 +1040,28 @@ function generateIndexPage(moduleNames) {
 
   lines.push(`## ${currentLocaleConfig.strings.modules}`);
   lines.push("");
-  lines.push(`| ${currentLocaleConfig.strings.module} | ${currentLocaleConfig.strings.description} |`);
+  lines.push(
+    `| ${currentLocaleConfig.strings.module} | ${currentLocaleConfig.strings.description} |`,
+  );
   lines.push("| --- | --- |");
   for (const name of top) {
-    lines.push(`| [${name}](${modulePageUrl(name)}) | \`${name}.*\` ${currentLocaleConfig.strings.functionsSuffix} |`);
+    lines.push(
+      `| [${name}](${modulePageUrl(name)}) | \`${name}.*\` ${currentLocaleConfig.strings.functionsSuffix} |`,
+    );
   }
   lines.push("");
 
   if (sub.length > 0) {
     lines.push(`## ${currentLocaleConfig.strings.submodules}`);
     lines.push("");
-    lines.push(`| ${currentLocaleConfig.strings.module} | ${currentLocaleConfig.strings.description} |`);
+    lines.push(
+      `| ${currentLocaleConfig.strings.module} | ${currentLocaleConfig.strings.description} |`,
+    );
     lines.push("| --- | --- |");
     for (const name of sub) {
-      lines.push(`| [${name}](${modulePageUrl(name)}) | \`${name}.*\` ${currentLocaleConfig.strings.functionsSuffix} |`);
+      lines.push(
+        `| [${name}](${modulePageUrl(name)}) | \`${name}.*\` ${currentLocaleConfig.strings.functionsSuffix} |`,
+      );
     }
     lines.push("");
   }
@@ -984,7 +1088,10 @@ for (const [locale, config] of Object.entries(LOCALE_CONFIGS)) {
   const moduleNames = Object.keys(docs.modules).sort();
 
   // Generate index page
-  writeFileSync(join(config.outDir, "index.md"), generateIndexPage(moduleNames));
+  writeFileSync(
+    join(config.outDir, "index.md"),
+    generateIndexPage(moduleNames),
+  );
 
   // Generate per-module pages (each module → module/index.md + module/TypeName.md)
   let typePageCount = 0;
@@ -993,7 +1100,10 @@ for (const [locale, config] of Object.entries(LOCALE_CONFIGS)) {
     const moduleDir = join(config.outDir, name.replace(/\./g, "_"));
     mkdirSync(moduleDir, { recursive: true });
 
-    writeFileSync(join(moduleDir, "index.md"), generateModulePage(name, moduleDoc));
+    writeFileSync(
+      join(moduleDir, "index.md"),
+      generateModulePage(name, moduleDoc),
+    );
 
     // Generate a dedicated page for each type in this module
     for (const typeDef of moduleDoc.types) {
@@ -1006,7 +1116,7 @@ for (const [locale, config] of Object.entries(LOCALE_CONFIGS)) {
   }
 
   console.log(
-    `Generated ${moduleNames.length} module pages + ${typePageCount} type pages + index for ${locale} in ${config.outDir}`
+    `Generated ${moduleNames.length} module pages + ${typePageCount} type pages + index for ${locale} in ${config.outDir}`,
   );
 }
 
@@ -1031,11 +1141,15 @@ for (const [locale, config] of Object.entries(LOCALE_CONFIGS)) {
       receiverName &&
       typeNames.has(receiverName) &&
       f.overloads.some((ov) =>
-        ["method", "staticmethod", "staticproperty", "operator"].includes(ov.kind),
+        ["method", "staticmethod", "staticproperty", "operator"].includes(
+          ov.kind,
+        ),
       );
     if (isTypeAssociated) continue;
-    if (f.overloads.some((ov) => ov.kind === "property")) properties.push(f.name);
-    if (f.overloads.some((ov) => ov.kind !== "property")) functions.push(f.name);
+    if (f.overloads.some((ov) => ov.kind === "property"))
+      properties.push(f.name);
+    if (f.overloads.some((ov) => ov.kind !== "property"))
+      functions.push(f.name);
   }
 
   sidebarData[locale] = {

@@ -18,6 +18,7 @@ struct Order {
 ```
 
 Fields can use:
+
 - An explicit type (required)
 - An optional default value with `=`
 - An optional `varip` declaration mode (makes the field persist across intrabar updates)
@@ -252,4 +253,4 @@ max_bars_back(myAvg, 200);
 ## Next Steps
 
 - [Functions & Methods](/guide/functions-and-methods) — function definitions, static methods, operator overloading, and more
-- [Standard Library](/api/stdlib/) — explore built-in functions
+- [Standard Library](/api/) — explore built-in functions

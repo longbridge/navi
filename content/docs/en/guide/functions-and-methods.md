@@ -288,10 +288,10 @@ let c = Counter.zero;
 
 `staticproperty` can only be defined for **struct or newtype** types, not for enums or primitive types.
 
-| | `staticmethod` | `staticproperty` |
-|---|---|---|
-| Parameters | Yes | None |
-| Call syntax | `Type.name(args)` | `Type.name` |
+|             | `staticmethod`    | `staticproperty` |
+| ----------- | ----------------- | ---------------- |
+| Parameters  | Yes               | None             |
+| Call syntax | `Type.name(args)` | `Type.name`      |
 
 ## Operator Overloading
 
@@ -350,4 +350,4 @@ let src = input.source(close, "Source");
 ## Next Steps
 
 - [Custom Types & Enums](/guide/custom-types) — user-defined types, enums, and newtype declarations
-- [Standard Library](/api/stdlib/) — explore the standard library
+- [Standard Library](/api/) — explore the standard library

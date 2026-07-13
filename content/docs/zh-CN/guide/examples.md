@@ -149,4 +149,4 @@ if shortExit {
 - [变量与限定符](/zh-CN/guide/types-and-variables) — `var`、类型限定符、`na`
 - [控制结构](/zh-CN/guide/control-structures) — `if`、`for`、`while`、`switch`
 - [函数与方法](/zh-CN/guide/functions-and-methods) — 函数的定义与调用
-- [标准库](/zh-CN/api/stdlib/) — `ta`、`math`、`str`、`strategy` 等
+- [标准库](/zh-CN/api/) — `ta`、`math`、`str`、`strategy` 等

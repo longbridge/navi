@@ -338,4 +338,4 @@ src = input.source(close, "Source");
 ## 下一步
 
 - [自訂類型與枚舉](/zh-HK/guide/custom-types) — 使用者定義類型、枚舉和新型別宣告
-- [標準函式庫](/zh-HK/api/stdlib/) — 探索標準函式庫
+- [標準函式庫](/zh-HK/api/) — 探索標準函式庫

@@ -12,7 +12,7 @@ hero:
       link: /zh-HK/guide/ai-assistant
     - theme: alt
       text: 閱讀文檔
-      link: /zh-HK/guide/introduction
+      link: /zh-HK/guide/
 
 features:
   - title: 一條命令安裝

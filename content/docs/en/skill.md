@@ -12,7 +12,7 @@ hero:
       link: /guide/ai-assistant
     - theme: alt
       text: Read Navi Docs
-      link: /guide/introduction
+      link: /guide/
 
 features:
   - title: One command install

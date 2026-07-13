@@ -338,4 +338,4 @@ src = input.source(close, "Source");
 ## 下一步
 
 - [自定义类型与枚举](/zh-CN/guide/custom-types) — 用户定义类型、枚举和新类型声明
-- [标准库](/zh-CN/api/stdlib/) — 探索标准库
+- [标准库](/zh-CN/api/) — 探索标准库
