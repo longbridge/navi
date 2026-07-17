@@ -305,7 +305,7 @@ let tableHeightInput: float = input.float(
 fn getTickers() {
     let symbols = getArrayFromString(symbolListInput.upper());
     for (i, sym) in symbols {
-        symbols.set(i, ticker.inherit(symbol_info.tickerid, sym));
+        symbols.set(i, sym.contains(":") ? sym : "{0}:{1}".format(symbol_info.prefix, sym));
     }
     if includeCurrentSymbolInput and not symbols.includes(symbol_info.ticker) {
         symbols.insert(0, symbol_info.tickerid);

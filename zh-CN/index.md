@@ -8,12 +8,14 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /zh-CN/guide/
+      link: /zh-CN/guide/quick-start
     - theme: alt
       text: 试玩区
       link: /zh-CN/playground
 
 features:
+  - title: 本地 CLI 工作流
+    details: 安装 navi CLI，在使用前检查每个脚本，并使用本地 OHLCV 数据运行指标或策略。
   - title: 指标与策略
     details: 编写逐 K 线执行的指标和回测策略。声明输入参数、绘制序列、发出订单，代码简洁直观。
   - title: 高性能

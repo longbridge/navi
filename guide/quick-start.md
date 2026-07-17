@@ -1,10 +1,22 @@
 # Quick Start
 
-Navi scripts run on the Longbridge platform via the `longbridge` CLI.
+Use the `navi` CLI to check, format, and run `.nv` scripts locally.
 
-## Install the Longbridge CLI
+## Install the Navi CLI
 
-See the [installation guide](https://open.longbridge.com/docs/cli/install) to get started. The [`longbridge quant` command](https://open.longbridge.com/docs/cli/quant) runs Navi and Pine Script files against historical data.
+macOS or Linux:
+
+```bash
+curl -fsSL https://navi-lang.org/install.sh | sh
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://navi-lang.org/install.ps1 | iex
+```
+
+Confirm the installation with `navi --version`.
 
 ## Write Your First Indicator
 
@@ -14,22 +26,22 @@ Create `sma.nv`:
 indicator("SMA", overlay: true);
 
 let len = input.int(14, "Length", minval: 1);
-plot(ta.sma(close, len), "SMA", color: color.ORANGE);
+plot(ta.sma(close, len), "SMA", color: Color.ORANGE);
 ```
 
-## Run Against Historical Data
+## Validate the Script
 
 ```bash
-longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31 --script sma.nv
+navi lint sma.nv
 ```
 
-Or pipe the script directly:
+`lint` checks syntax, types, compilation, imports, and canonical formatting. To execute the script, prepare an OHLCV CSV and run:
 
 ```bash
-cat sma.nv | longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31
+navi run sma.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
 ```
 
-Output defaults to a table with bar-by-bar values. Use `--format json` for structured output.
+Use `navi run --help` for the complete CSV schema and available options.
 
 ## Write a Strategy
 
@@ -47,7 +59,8 @@ plot(slow, "Slow EMA");
 ```
 
 ```bash
-longbridge quant run AAPL.US --start 2023-01-01 --end 2024-12-31 --script macross.nv
+navi lint macross.nv
+navi run macross.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
 ```
 
 ## Running Pine Script Files
@@ -96,10 +109,10 @@ let mult   = input.float(2.0, "Multiplier");
 
 let (basis, upper, lower) = ta.bb(close, length, mult);
 
-plot(basis, "Basis", color.BLUE);
-plot(upper, "Upper", color.RED);
-plot(lower, "Lower", color.GREEN);
-fill(upper, lower, color.new(color.BLUE, 90));
+plot(basis, "Basis", Color.BLUE);
+let upper_plot = plot(upper, "Upper", Color.RED);
+let lower_plot = plot(lower, "Lower", Color.GREEN);
+fill(upper_plot, lower_plot, Color.new(Color.BLUE, 90));
 ```
 
 ## Next Steps

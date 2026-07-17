@@ -8,12 +8,14 @@ hero:
   actions:
     - theme: brand
       text: 快速開始
-      link: /zh-HK/guide/
+      link: /zh-HK/guide/quick-start
     - theme: alt
       text: 試玩區
       link: /zh-HK/playground
 
 features:
+  - title: 本機 CLI 工作流程
+    details: 安裝 navi CLI，在使用前檢查每個腳本，並使用本機 OHLCV 數據執行指標或策略。
   - title: 指標與策略
     details: 編寫逐 K 線執行的指標和回測策略。聲明輸入參數、繪製序列、發出訂單，代碼簡潔直觀。
   - title: 高性能

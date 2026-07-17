@@ -41,8 +41,8 @@ let len = input.int(14, "Length", minval: 1);
 let osc = ta.rsi(close, len);
 
 plot(osc, "RSI", color: Color.PURPLE);
-hline(70, "Overbought", color: Color.RED, linestyle: HLineStyle.Dashed);
-hline(30, "Oversold", color: Color.GREEN, linestyle: HLineStyle.Dashed);
+hline(70, "Overbought", color: Color.RED, line_style: HLineStyle.Dashed);
+hline(30, "Oversold", color: Color.GREEN, line_style: HLineStyle.Dashed);
 ```
 
 ### Strategy
@@ -50,19 +50,19 @@ hline(30, "Oversold", color: Color.GREEN, linestyle: HLineStyle.Dashed);
 ```navi
 strategy("MA Cross Strategy", overlay: true, default_qty_type: DefaultQtyType.Fixed, default_qty_value: 1);
 
-let fastLen = input.int(10, "Fast Length", minval: 1);
-let slowLen = input.int(20, "Slow Length", minval: 1);
+let fast_len = input.int(10, "Fast Length", minval: 1);
+let slow_len = input.int(20, "Slow Length", minval: 1);
 
-let fast = ta.ema(close, fastLen);
-let slow = ta.ema(close, slowLen);
+let fast = ta.ema(close, fast_len);
+let slow = ta.ema(close, slow_len);
 
-let longSignal = ta.cross_over(fast, slow);
-let shortSignal = ta.cross_under(fast, slow);
+let long_signal = ta.cross_over(fast, slow);
+let short_signal = ta.cross_under(fast, slow);
 
-if longSignal and bar_state.is_confirmed {
+if long_signal and bar_state.is_confirmed {
     strategy.entry("Long", Direction.Long);
 }
-if shortSignal and bar_state.is_confirmed {
+if short_signal and bar_state.is_confirmed {
     strategy.entry("Short", Direction.Short);
 }
 
@@ -81,8 +81,8 @@ library("TaHelpers");
 //@param length Moving-average length.
 //@param maType Moving-average type.
 //@returns Moving-average series.
-export fn ma(src: series float, length: simple int, maType: simple String): series float {
-    let result = switch maType {
+export fn ma(src: series float, length: simple int, ma_type: simple String): series float {
+    let result = switch ma_type {
         "EMA" => ta.ema(src, length),
         "SMA" => ta.sma(src, length),
         "RMA" => ta.rma(src, length),
@@ -98,10 +98,10 @@ export fn ma(src: series float, length: simple int, maType: simple String): seri
 ### Selectable Moving Average
 
 ```navi
-let maType = input.string("EMA", "MA Type", options: ["EMA", "SMA", "RMA", "WMA"]);
+let ma_type = input.string("EMA", "MA Type", options: ["EMA", "SMA", "RMA", "WMA"]);
 let len = input.int(20, "Length", minval: 1);
 
-let ma = switch maType {
+let ma = switch ma_type {
     "EMA" => ta.ema(close, len),
     "SMA" => ta.sma(close, len),
     "RMA" => ta.rma(close, len),
@@ -125,12 +125,12 @@ plot(ready ? ma : na, "SMA");
 ### Conditional Output
 
 ```navi
-let showBands = input.bool(true, "Show Bands");
+let show_bands = input.bool(true, "Show Bands");
 let (basis, upper, lower) = ta.bb(close, 20, 2.0);
 
 plot(basis, "Basis", color: Color.BLUE);
-plot(showBands ? upper : na, "Upper", color: Color.RED);
-plot(showBands ? lower : na, "Lower", color: Color.GREEN);
+plot(show_bands ? upper : na, "Upper", color: Color.RED);
+plot(show_bands ? lower : na, "Lower", color: Color.GREEN);
 ```
 
 ### Stable Plot Handles for Fill
@@ -138,9 +138,9 @@ plot(showBands ? lower : na, "Lower", color: Color.GREEN);
 ```navi
 let (basis, upper, lower) = ta.bb(close, 20, 2.0);
 
-let upperPlot = plot(upper, "Upper", color: Color.RED);
-let lowerPlot = plot(lower, "Lower", color: Color.GREEN);
-fill(upperPlot, lowerPlot, Color.new(Color.BLUE, 90), title: "Band Fill");
+let upper_plot = plot(upper, "Upper", color: Color.RED);
+let lower_plot = plot(lower, "Lower", color: Color.GREEN);
+fill(upper_plot, lower_plot, Color.new(Color.BLUE, 90), title: "Band Fill");
 plot(basis, "Basis", color: Color.ORANGE);
 ```
 
@@ -152,27 +152,27 @@ Use built-ins for ordinary cross logic:
 let fast = ta.ema(close, 10);
 let slow = ta.ema(close, 20);
 
-let crossUp = ta.cross_over(fast, slow);
-let crossDown = ta.cross_under(fast, slow);
+let cross_up = ta.cross_over(fast, slow);
+let cross_down = ta.cross_under(fast, slow);
 
-plot_shape(crossUp, title: "Cross Up", style: Shape.TriangleUp, location: Location.BelowBar, color: Color.GREEN);
-plot_shape(crossDown, title: "Cross Down", style: Shape.TriangleDown, location: Location.AboveBar, color: Color.RED);
+plot_shape(cross_up, title: "Cross Up", style: Shape.TriangleUp, location: Location.BelowBar, color: Color.GREEN);
+plot_shape(cross_down, title: "Cross Down", style: Shape.TriangleDown, location: Location.AboveBar, color: Color.RED);
 ```
 
 Spell out the boundary when `>`/`>=` details matter:
 
 ```navi
-let crossedUp = fast > slow and fast[1] <= slow[1];
-let crossedDown = fast < slow and fast[1] >= slow[1];
+let crossed_up = fast > slow and fast[1] <= slow[1];
+let crossed_down = fast < slow and fast[1] >= slow[1];
 ```
 
 Gate confirmed signals when alerts/orders should wait for bar close:
 
 ```navi
 let signal = ta.cross_over(fast, slow);
-let confirmedSignal = signal and bar_state.is_confirmed;
+let confirmed_signal = signal and bar_state.is_confirmed;
 
-alert_condition(confirmedSignal, "Long", "Long signal");
+alert_condition(confirmed_signal, "Long", "Long signal");
 ```
 
 ## State and Collections
@@ -191,9 +191,9 @@ plot(peak, "Peak", color: Color.GREEN);
 ### Count Consecutive Bars
 
 ```navi
-let isUp = close > open;
+let is_up = close > open;
 var count = 0;
-count = isUp ? count + 1 : 0;
+count = is_up ? count + 1 : 0;
 
 plot(count, "Up count");
 ```
@@ -234,8 +234,8 @@ Use `varip` only when realtime tick counting is intended.
 ```navi
 indicator("Weekly MA", overlay: true);
 
-let weeklyMa = request.security(syminfo.tickerid, "W", ta.sma(close, 20), lookahead: BarmergeLookahead.Off);
-plot(weeklyMa, "Weekly SMA", color: Color.ORANGE);
+let weekly_ma = request.security(symbol_info.tickerid, "W", ta.sma(close, 20), lookahead: BarmergeLookahead.Off);
+plot(weekly_ma, "Weekly SMA", color: Color.ORANGE);
 ```
 
 ### Confirmed Higher-Timeframe Value
@@ -243,17 +243,17 @@ plot(weeklyMa, "Weekly SMA", color: Color.ORANGE);
 Use prior higher-timeframe values when live updating of the current higher-timeframe bar would repaint a signal.
 
 ```navi
-let weeklyCloseConfirmed = request.security(syminfo.tickerid, "W", close[1], lookahead: BarmergeLookahead.Off);
-plot(weeklyCloseConfirmed, "Confirmed Weekly Close");
+let weekly_close_confirmed = request.security(symbol_info.tickerid, "W", close[1], lookahead: BarmergeLookahead.Off);
+plot(weekly_close_confirmed, "Confirmed Weekly Close");
 ```
 
 ### Lower-Timeframe Aggregation
 
 ```navi
-let lows = request.security_lower_tf(syminfo.tickerid, "1", low);
-let intrabarLow = lows.size() > 0 ? lows.min() : na;
+let lows = request.security_lower_tf(symbol_info.tickerid, "1", low);
+let intrabar_low = lows.size() > 0 ? lows.min() : na;
 
-plot(intrabarLow, "Intrabar Low");
+plot(intrabar_low, "Intrabar Low");
 ```
 
 ## Pivot and Divergence Patterns
@@ -279,18 +279,18 @@ let right = input.int(5, "Right", minval: 1);
 let osc = ta.rsi(close, 14);
 
 let ph = ta.pivot_high(osc, left, right);
-let havePivot = not na(ph);
+let have_pivot = not na(ph);
 
-let currPrice = ta.value_when(havePivot, high[right], 0);
-let prevPrice = ta.value_when(havePivot, high[right], 1);
-let currOsc = ta.value_when(havePivot, osc[right], 0);
-let prevOsc = ta.value_when(havePivot, osc[right], 1);
+let curr_price = ta.value_when(have_pivot, high[right], 0);
+let prev_price = ta.value_when(have_pivot, high[right], 1);
+let curr_osc = ta.value_when(have_pivot, osc[right], 0);
+let prev_osc = ta.value_when(have_pivot, osc[right], 1);
 
-let bearishDiv = havePivot
-    and currPrice > prevPrice
-    and currOsc < prevOsc;
+let bearish_div = have_pivot
+    and curr_price > prev_price
+    and curr_osc < prev_osc;
 
-plot_shape(bearishDiv, title: "Bear Div", style: Shape.TriangleDown, location: Location.AboveBar, offset: -right, color: Color.RED);
+plot_shape(bearish_div, title: "Bear Div", style: Shape.TriangleDown, location: Location.AboveBar, offset: -right, color: Color.RED);
 ```
 
 ## Strategy Patterns
@@ -298,13 +298,13 @@ plot_shape(bearishDiv, title: "Bear Div", style: Shape.TriangleDown, location: L
 ### Entry and Close
 
 ```navi
-let longSignal = ta.cross_over(fast, slow);
-let exitSignal = ta.cross_under(fast, slow);
+let long_signal = ta.cross_over(fast, slow);
+let exit_signal = ta.cross_under(fast, slow);
 
-if longSignal and bar_state.is_confirmed {
+if long_signal and bar_state.is_confirmed {
     strategy.entry("Long", Direction.Long);
 }
-if exitSignal and bar_state.is_confirmed {
+if exit_signal and bar_state.is_confirmed {
     strategy.close("Long");
 }
 ```
@@ -313,11 +313,11 @@ if exitSignal and bar_state.is_confirmed {
 
 ```navi
 let atr = ta.atr(14);
-let stopPrice = strategy.position_avg_price - atr * 2.0;
-let takePrice = strategy.position_avg_price + atr * 3.0;
+let stop_price = strategy.position_avg_price - atr * 2.0;
+let take_price = strategy.position_avg_price + atr * 3.0;
 
 if strategy.position_size > 0 {
-    strategy.exit("Long Exit", "Long", stop: stopPrice, limit: takePrice);
+    strategy.exit("Long Exit", "Long", stop: stop_price, limit: take_price);
 }
 ```
 

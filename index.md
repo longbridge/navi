@@ -8,12 +8,14 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/
+      link: /guide/quick-start
     - theme: alt
       text: Playground
       link: /playground
 
 features:
+  - title: Local CLI Workflow
+    details: Install the navi CLI, lint every script before use, and run indicators or strategies against local OHLCV data.
   - title: Indicators & Strategies
     details: Write bar-by-bar indicators and backtested strategies. Declare inputs, plot series, and emit orders with minimal boilerplate.
   - title: High Performance

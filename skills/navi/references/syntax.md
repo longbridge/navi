@@ -48,8 +48,8 @@ let c = a
 Declarations or control-flow forms with a trailing block do not need an extra `;` when used as standalone statements:
 
 ```navi
-let closeWhenUp = close > open ? close : na;
-plot(closeWhenUp, "Up Close");
+let close_when_up = close > open ? close : na;
+plot(close_when_up, "Up Close");
 
 fn double(x: float): float {
     x * 2.0;
@@ -99,7 +99,7 @@ String escapes include `\\`, `\n`, `\r`, `\t`, `\"`/`""`, and `\'`/`''`.
 `na` is a missing value. Annotate the type when Navi cannot infer it:
 
 ```navi
-let maybePrice: float = na;
+let maybe_price: float = na;
 // let bad = na; // cannot infer type
 ```
 
@@ -115,9 +115,9 @@ Array and map literals:
 
 ```navi
 let xs: Array<int> = [1, 2, 3];
-let emptyXs: Array<float> = [];
+let empty_xs: Array<float> = [];
 let labels: Map<String, int> = {"fast": 9, "slow": 21};
-let emptyLabels: Map<String, int> = {};
+let empty_labels: Map<String, int> = {};
 ```
 
 Map keys must be primitive values or enums.
@@ -186,10 +186,10 @@ let body = if close > open {
     low;
 };
 
-let isUp = close > open;
-let isDown = close < open;
-plot_shape(isUp, title: "Up", style: Shape.TriangleUp);
-plot_shape(isDown, title: "Down", style: Shape.TriangleDown);
+let is_up = close > open;
+let is_down = close < open;
+plot_shape(is_up, title: "Up", style: Shape.TriangleUp);
+plot_shape(is_down, title: "Down", style: Shape.TriangleDown);
 ```
 
 If an `if` expression omits `else`, the false branch yields `na` for most types, `false` for bool, or `""` for String.
@@ -205,7 +205,7 @@ for i = 0 to 9 {
 }
 
 for i = 0 to 20 by 2 {
-    log.info(str.tostring(i));
+    log.info(String.from(i));
 }
 ```
 
@@ -213,11 +213,11 @@ Collection iteration:
 
 ```navi
 for value in values {
-    log.info(str.tostring(value));
+    log.info(String.from(value));
 }
 
 for (index, value) in values {
-    log.info(str.format("{0}: {1}", index, value));
+    log.info("{0}: {1}".format(index, value));
 }
 ```
 
@@ -262,7 +262,7 @@ let direction = switch {
 Multi-statement arm:
 
 ```navi
-let labelText = switch day_of_week {
+let label_text = switch day_of_week {
     DayOfWeek.Monday => "Mon",
     DayOfWeek.Tuesday => {
         let s = "Tue";
@@ -318,8 +318,8 @@ struct Position {
     size: float,
 }
 
-method pnl(self: Position, currentPrice: float): float {
-    (currentPrice - self.entry) * self.size;
+method pnl(self: Position, current_price: float): float {
+    (current_price - self.entry) * self.size;
 }
 
 let pos = Position.new(entry: close, size: 10.0);

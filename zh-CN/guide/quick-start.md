@@ -1,10 +1,22 @@
 # 快速开始
 
-Navi 脚本通过 `longbridge` CLI 在 Longbridge 平台上运行。
+使用 `navi` CLI 在本地检查、格式化并运行 `.nv` 脚本。
 
-## 安装 Longbridge CLI
+## 安装 Navi CLI
 
-请参阅[安装指南](https://open.longbridge.com/docs/cli/install)。[`longbridge quant` 命令](https://open.longbridge.com/docs/cli/quant)用于对历史数据运行 Navi 或 Pine Script 脚本。
+macOS 或 Linux：
+
+```bash
+curl -fsSL https://navi-lang.org/install.sh | sh
+```
+
+Windows PowerShell：
+
+```powershell
+irm https://navi-lang.org/install.ps1 | iex
+```
+
+运行 `navi --version` 确认安装成功。
 
 ## 编写第一个指标
 
@@ -14,22 +26,22 @@ Navi 脚本通过 `longbridge` CLI 在 Longbridge 平台上运行。
 indicator("SMA", overlay: true);
 
 let len = input.int(14, "Length", minval: 1);
-plot(ta.sma(close, len), "SMA", color: color.ORANGE);
+plot(ta.sma(close, len), "SMA", color: Color.ORANGE);
 ```
 
-## 对历史数据运行
+## 验证脚本
 
 ```bash
-longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31 --script sma.nv
+navi lint sma.nv
 ```
 
-也可以直接通过管道传入脚本：
+`lint` 会检查语法、类型、编译、导入和规范格式。准备 OHLCV CSV 后，可执行：
 
 ```bash
-cat sma.nv | longbridge quant run AAPL.US --start 2024-01-01 --end 2024-12-31
+navi run sma.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
 ```
 
-默认以表格形式输出每根 K 线的值。使用 `--format json` 可获取结构化输出。
+运行 `navi run --help` 可查看完整 CSV 格式和所有选项。
 
 ## 编写策略
 
@@ -47,7 +59,8 @@ plot(slow, "Slow EMA");
 ```
 
 ```bash
-longbridge quant run AAPL.US --start 2023-01-01 --end 2024-12-31 --script macross.nv
+navi lint macross.nv
+navi run macross.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
 ```
 
 ## 运行 Pine Script 文件
@@ -96,10 +109,10 @@ let mult   = input.float(2.0, "Multiplier");
 
 let (basis, upper, lower) = ta.bb(close, length, mult);
 
-plot(basis, "Basis", color.BLUE);
-plot(upper, "Upper", color.RED);
-plot(lower, "Lower", color.GREEN);
-fill(upper, lower, color.new(color.BLUE, 90));
+plot(basis, "Basis", Color.BLUE);
+let upper_plot = plot(upper, "Upper", Color.RED);
+let lower_plot = plot(lower, "Lower", Color.GREEN);
+fill(upper_plot, lower_plot, Color.new(Color.BLUE, 90));
 ```
 
 ## 下一步

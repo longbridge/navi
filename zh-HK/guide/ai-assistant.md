@@ -33,6 +33,8 @@ npx skills add longbridge/navi --list
 npx skills add longbridge/navi --skill navi
 ```
 
+也可以[下載打包後的 skill](/navi-skill.zip)，並將它解壓到 AI 編碼助手的 skills 目錄。
+
 ## 使用
 
 安裝後，兼容的 AI 編碼助手在處理 `.nv` 文件或你詢問 Navi 相關問題時即可使用該 skill。

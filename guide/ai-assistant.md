@@ -33,6 +33,8 @@ If your installer asks which skill to add, choose `navi`. You can also install i
 npx skills add longbridge/navi --skill navi
 ```
 
+Alternatively, [download the packaged skill](/navi-skill.zip) and extract it into your agent's skills directory.
+
 ## Usage
 
 Once installed, compatible AI coding agents can use the skill automatically when working with `.nv` files or when you ask about Navi.

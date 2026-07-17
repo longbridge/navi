@@ -166,7 +166,7 @@ var prevBarIndex: int = bar_index;
 var timeframe: String = autoTFInput ? selectAutoTimeframe() : selectTimeframeFromInput(
     tfInput
 );
-var ticker: String = useHaInput ? ticker.heikinashi(symbol_info.tickerid) : symbol_info.tickerid;
+var ticker: String = symbol_info.tickerid;
 
 let (bar0, bar1) = switch {
     not useDailyInput => (

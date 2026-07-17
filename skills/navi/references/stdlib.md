@@ -16,7 +16,7 @@ Fetch the relevant page whenever you need a concrete function name, its argument
 
 Stable conventions — rely on them, but still confirm the exact spelling:
 
-- Built-in functions are snake_case: `ta.cross_over`, `ta.value_when`, `str.index_of`.
+- Built-in functions and methods are snake_case: `ta.cross_over`, `ta.value_when`, `String.index_of`.
 - Types and drawing objects are PascalCase: `Array<T>`, `Map<K, V>`, `Matrix<T>`, `Label`, `Line`, `Box`, `Table`, `Plot`, `HLine`.
 - Enum types and their variants are PascalCase: `Direction.Long`, `PlotStyle.Histogram`, `Shape.TriangleUp`, `BarmergeLookahead.Off`.
 - Color constants and functions use the PascalCase `Color` type: `Color.BLUE`, `Color.ORANGE`, `Color.new(...)`.
@@ -33,11 +33,11 @@ Use this to decide *which* area to look up, then fetch that page for its current
 - **Strategy** (`strategy`, plus separate risk and trade-query areas): orders, position/account state, risk controls, trade lookups. Strategy scripts only.
 - **Requests / multi-timeframe** (`request`): `request.security`, `request.security_lower_tf`, and other data feeds.
 - **Math** (`math`): numeric constants and functions.
-- **Strings**: string helpers (`str.*`) and the `String` type.
+- **Strings**: static helpers and methods on the `String` type, such as `String.from(value)` and `text.index_of(needle)`.
 - **Collections** (prelude): `Array<T>`, `Map<K, V>`, `Matrix<T>` — construction and methods.
 - **Drawing objects** (prelude): `Label`, `Line`, `Box`, `Table`, `Polyline`, `LineFill` — create with `Type.new`, mutate with methods.
 - **Enums** (prelude): `Direction`, `PlotStyle`, `Shape`, `Location`, `LabelStyle`, `LineStyle`, `HLineStyle`, `Size`, `Position`, `Extend`, `BarmergeGaps`, `BarmergeLookahead`, `AlertFreq`, and more — fetch the enum's page for its exact variants.
-- **State namespaces**: `barstate`, `timeframe`, `syminfo`, `session`, `display`, `log`, `runtime`.
+- **State namespaces**: `bar_state`, `timeframe`, `symbol_info`, `session`, `log`, `runtime`; display flags use the `PlotDisplay` enum.
 
 Do not assume a member exists from this map alone — confirm names on the page.
 

@@ -1,6 +1,6 @@
 ---
 name: navi
-description: Write, refactor, debug, and review Navi `.nv` indicator, strategy, and library scripts. Use when working with Navi syntax, script declarations (`indicator`, `strategy`, `library`), bar-by-bar series logic, `const`/`input`/`simple`/`series` qualifiers, `var`/`varip`, `na`, history references (`x[1]`), non-repainting behavior, inputs, plots/drawings, `request.security`, collections (`Array`/`Map`/`Matrix`), or standard-library APIs such as `ta`, `math`, `str`, `input`, `strategy`, `Label`, `Line`, `Box`, and `Table`.
+description: Write, refactor, debug, and review Navi `.nv` indicator, strategy, and library scripts. Use when working with Navi syntax, script declarations (`indicator`, `strategy`, `library`), bar-by-bar series logic, `const`/`input`/`simple`/`series` qualifiers, `var`/`varip`, `na`, history references (`x[1]`), non-repainting behavior, inputs, plots/drawings, `request.security`, collections (`Array`/`Map`/`Matrix`), or standard-library APIs such as `ta`, `math`, `String`, `input`, `strategy`, `Label`, `Line`, `Box`, and `Table`.
 ---
 
 Write valid Navi code for chart indicators, strategies, and reusable libraries. Keep every answer focused on Navi authoring: syntax, execution semantics, standard-library calls, and practical script patterns.
@@ -36,6 +36,15 @@ Load only the reference needed for the task:
 6. Confirm standard-library API names and signatures against navi-lang.org (`llms-full.txt` or the specific page) before using them; do not rely on remembered lists. As a rule, Navi built-in functions are snake_case (e.g. `ta.cross_over`) and types/enums are PascalCase (e.g. `Direction.Long`).
 7. Make outputs deterministic and readable: stable plot order, clear titles, explicit colors, and `na` or `PlotDisplay.NONE` when hiding output.
 8. When returning code, return complete `.nv` source unless the user asked for only a fragment.
+
+## Naming Style
+
+Follow these Navi naming conventions consistently:
+
+- Use `snake_case` for variables, parameters, functions, methods, and properties: `fast_length`, `long_signal`, `ema_of`.
+- Use `PascalCase` for structs, enums, newtypes, and enum variants: `TradeState`, `Direction.Long`.
+- Use `SCREAMING_SNAKE_CASE` for compile-time constants: `MAX_LOOKBACK`.
+- Use `snake_case.nv` for new filenames when repository conventions allow it.
 
 ## CLI Validation
 
@@ -92,19 +101,19 @@ Minimal strategy:
 ```navi
 strategy("MA Cross", overlay: true);
 
-let fastLen = input.int(10, "Fast Length", minval: 1);
-let slowLen = input.int(20, "Slow Length", minval: 1);
+let fast_len = input.int(10, "Fast Length", minval: 1);
+let slow_len = input.int(20, "Slow Length", minval: 1);
 
-let fast = ta.ema(close, fastLen);
-let slow = ta.ema(close, slowLen);
+let fast = ta.ema(close, fast_len);
+let slow = ta.ema(close, slow_len);
 
-let longSignal = ta.cross_over(fast, slow);
-let shortSignal = ta.cross_under(fast, slow);
+let long_signal = ta.cross_over(fast, slow);
+let short_signal = ta.cross_under(fast, slow);
 
-if longSignal {
+if long_signal {
     strategy.entry("Long", Direction.Long);
 }
-if shortSignal {
+if short_signal {
     strategy.entry("Short", Direction.Short);
 }
 

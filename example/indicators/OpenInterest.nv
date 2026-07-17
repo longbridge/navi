@@ -1,5 +1,5 @@
 ﻿indicator('Open Interest', 'OI', format: Format.Volume, dynamic_requests: true);
-var tickerOI = '{0}_OI'.format(ticker.standard(symbol_info.tickerid));
+var tickerOI = '{0}_OI'.format(symbol_info.tickerid);
 let (oiOpen, oiHigh, oiLow, oiClose, oiColorCond) = if timeframe.is_intraday {
     request.security(
         tickerOI,
