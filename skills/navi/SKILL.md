@@ -47,13 +47,13 @@ Validate every complete `.nv` file you create or modify with the `navi` CLI. Use
    macOS or Linux:
 
    ```bash
-   curl -fsSL https://assets.lbkrs.com/github/release/navi/stable/install.sh | sh
+   curl -fsSL https://navi-lang.org/install.sh | sh
    ```
 
    Windows PowerShell:
 
    ```powershell
-   irm https://assets.lbkrs.com/github/release/navi/stable/install.ps1 | iex
+   irm https://navi-lang.org/install.ps1 | iex
    ```
 
 3. Run `navi lint path/to/script.nv`. This is the default completion gate: it checks syntax, types, compilation, imports, and canonical formatting.

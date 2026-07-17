@@ -1,0 +1,47 @@
+#!/usr/bin/env sh
+set -eu
+
+CDN_BASE="${NAVI_CDN_BASE:-https://assets.lbkrs.com/github/release/navi/stable}"
+INSTALL_DIR="${NAVI_INSTALL_DIR:-$HOME/.local/bin}"
+VERSION="${NAVI_VERSION:-}"
+
+if [ -z "$VERSION" ]; then
+    metadata="$(curl -fsSL "$CDN_BASE/latest.json")"
+    VERSION="$(printf '%s' "$metadata" | sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')"
+    if [ -z "$VERSION" ]; then
+        echo "Invalid release metadata: latest.json has no version" >&2
+        exit 1
+    fi
+fi
+VERSION="${VERSION#v}"
+
+case "$(uname -s)-$(uname -m)" in
+    Darwin-x86_64) target="x86_64-apple-darwin" ;;
+    Darwin-arm64) target="aarch64-apple-darwin" ;;
+    Linux-x86_64) target="x86_64-unknown-linux-gnu" ;;
+    *) echo "Unsupported platform: $(uname -s) $(uname -m)" >&2; exit 1 ;;
+esac
+
+asset="navi-v${VERSION}-${target}.tar.gz"
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT INT TERM
+
+curl -fsSL "$CDN_BASE/$asset" -o "$tmp/$asset"
+curl -fsSL "$CDN_BASE/$asset.sha256" -o "$tmp/$asset.sha256"
+(
+    cd "$tmp"
+    if command -v sha256sum >/dev/null 2>&1; then
+        sha256sum -c "$asset.sha256"
+    else
+        shasum -a 256 -c "$asset.sha256"
+    fi
+)
+tar -xzf "$tmp/$asset" -C "$tmp"
+mkdir -p "$INSTALL_DIR"
+install -m 755 "$tmp/navi" "$INSTALL_DIR/navi"
+
+echo "Installed navi v${VERSION} to $INSTALL_DIR/navi"
+case ":$PATH:" in
+    *":$INSTALL_DIR:"*) ;;
+    *) echo "Add $INSTALL_DIR to PATH to run navi from your shell." ;;
+esac
