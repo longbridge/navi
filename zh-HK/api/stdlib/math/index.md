@@ -204,7 +204,7 @@ math.cbrt(n: float): float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `n` | <code>float</code> |  | The value to take the cube root of. |
+| `n` | <code>float</code> |  | 要求立方根的數值。 |
 
 **返回:** <code>float</code>
 
@@ -243,9 +243,9 @@ math.clamp(value: float, min: float, max: float): float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `value` | <code>float</code> |  | The value to clamp. |
-| `min` | <code>float</code> |  | The lower bound (inclusive). |
-| `max` | <code>float</code> |  | The upper bound (inclusive). |
+| `value` | <code>float</code> |  | 要限制的數值。 |
+| `min` | <code>float</code> |  | 下界（含端點）。 |
+| `max` | <code>float</code> |  | 上界（含端點）。 |
 
 **返回:** <code>float</code>
 
@@ -320,8 +320,8 @@ math.hypot(x: float, y: float): float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `x` | <code>float</code> |  | The length of the first leg. |
-| `y` | <code>float</code> |  | The length of the second leg. |
+| `x` | <code>float</code> |  | 第一條直角邊的長度。 |
+| `y` | <code>float</code> |  | 第二條直角邊的長度。 |
 
 **返回:** <code>float</code>
 
@@ -653,6 +653,6 @@ math.trunc(n: float): int
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `n` | <code>float</code> |  | The value to truncate. |
+| `n` | <code>float</code> |  | 要截斷的數值。 |
 
 **返回:** <code>int</code>
