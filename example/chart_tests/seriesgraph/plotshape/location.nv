@@ -1,11 +1,11 @@
-// 正确结果：每 20 根柱出现五种位置的形状：
-// "A"=AboveBar（柱上）、"B"=BelowBar（柱下）、"T"=Top（面板顶部）、
-// "D"=Bottom（面板底部）、"P"=Absolute（跟随 close 绝对价格位置）
+// 正确结果：每 20 根柱出现一次，5 种位置同时显示：
+// 蓝=AboveBar（柱上）、红=BelowBar（柱下）、
+// 绿=Top（面板顶部）、紫=Bottom（面板底部）、橙=Absolute（跟随 close 价格）
 indicator("Chart Test: plotshape/location", overlay: true);
 
 let t = bar_index % 20 == 0;
-plot_shape(t, "AboveBar", style: Shape.Circle, location: Location.AboveBar, color: Color.BLUE, size: Size.Small);
-plot_shape(t, "BelowBar", style: Shape.Circle, location: Location.BelowBar, color: Color.RED, size: Size.Small);
-plot_shape(t, "Top", style: Shape.Circle, location: Location.Top, color: Color.GREEN, size: Size.Small);
-plot_shape(t, "Bottom", style: Shape.Circle, location: Location.Bottom, color: Color.PURPLE, size: Size.Small);
-plot_shape(close, "Absolute", style: Shape.Circle, location: Location.Absolute, color: Color.ORANGE, size: Size.Small);
+plot_shape(t, "AboveBar", style: Shape.Circle, location: Location.AboveBar, color: Color.BLUE,   size: Size.Normal);
+plot_shape(t, "BelowBar", style: Shape.Circle, location: Location.BelowBar, color: Color.RED,    size: Size.Normal);
+plot_shape(t, "Top",      style: Shape.Circle, location: Location.Top,      color: Color.GREEN,  size: Size.Normal);
+plot_shape(t, "Bottom",   style: Shape.Circle, location: Location.Bottom,   color: Color.PURPLE, size: Size.Normal);
+plot_shape(close, "Absolute", style: Shape.Circle, location: Location.Absolute, color: Color.ORANGE, size: Size.Normal);

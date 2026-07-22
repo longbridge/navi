@@ -90,9 +90,11 @@ args = [
 # Commit all generated assets into the navi-docs submodule repo.
 # The "git diff --cached --quiet || git commit" pattern is idempotent:
 # it only creates a commit when files actually changed.
+# Set WEBSITE_COMMIT=1 to enable: WEBSITE_COMMIT=1 cargo make website
 [tasks.commit-website-assets]
 private = true
 workspace = false
+condition = { env_set = ["WEBSITE_COMMIT"] }
 cwd = "${SITE}"
 script_runner = "@shell"
 script = [
@@ -100,11 +102,11 @@ script = [
     'git diff --cached --quiet || git commit -m "chore: update generated assets"',
 ]
 
-# -- Composite task ----------------------------------------------------------
+# -- Composite tasks ---------------------------------------------------------
 
 [tasks.website]
 category = "Website"
-description = "Generate and commit all pre-built assets into the navi-docs submodule (WASM, stdlib docs, skill zip)"
+description = "Generate all pre-built assets into the navi-docs submodule (WASM, stdlib docs, skill zip). Does not commit."
 workspace = false
 dependencies = [
     "chart-local",
@@ -115,5 +117,13 @@ dependencies = [
     "generate-stdlib-docs",
     "package-skill",
     "copy-vsix-to-website",
+]
+
+[tasks.website-commit]
+category = "Website"
+description = "Generate and commit all pre-built assets into the navi-docs submodule."
+workspace = false
+dependencies = [
+    "website",
     "commit-website-assets",
 ]
