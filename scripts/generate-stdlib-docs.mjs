@@ -126,6 +126,24 @@ let symbolIndex;
 let enumVariantIndex;
 let currentLocaleConfig = LOCALE_CONFIGS.en;
 
+/**
+ * Sort each module's functions list by (name, kind) so that same-name entries
+ * (e.g. a `property` overload and a `func` overload of `time`) always appear
+ * in a deterministic order.  Without this, the HashMap iteration order from
+ * the Rust docgen is non-deterministic, causing buildSymbolIndex to store a
+ * different anchor for `time` on each run (fn-time vs prop-time).
+ */
+function normalizeDocs(d) {
+  for (const mod of Object.values(d.modules)) {
+    mod.functions.sort((a, b) => {
+      if (a.name !== b.name) return a.name.localeCompare(b.name);
+      const ka = a.overloads[0]?.kind ?? '';
+      const kb = b.overloads[0]?.kind ?? '';
+      return ka.localeCompare(kb);
+    });
+  }
+}
+
 function tr(key) {
   return currentLocaleConfig.strings[key];
 }
@@ -1001,6 +1019,7 @@ for (const [locale, config] of Object.entries(LOCALE_CONFIGS)) {
   currentLocaleConfig = config;
   const raw = readFileSync(config.jsonPath, "utf-8");
   docs = JSON.parse(raw);
+  normalizeDocs(docs);
 
   // Build symbol index for cross-reference resolution
   ({ index: symbolIndex, enumVariantIndex } = buildSymbolIndex(docs));
