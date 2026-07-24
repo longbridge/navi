@@ -92,6 +92,26 @@ Supported escape sequences:
 | `\"` or `""` | Double quote (in double-quoted strings) |
 | `\'` or `''` | Single quote (in single-quoted strings) |
 
+### Locale-aware strings
+
+Use `@locale { ... }` to provide per-locale translations inline. The runtime
+selects the translation matching the current locale (set by the host
+application), with language-prefix fallback (`zh-CN` → `zh`) and a mandatory
+`default` fallback:
+
+```navi
+let title = @locale {
+    default: "Price",
+    "zh-CN": "价格",
+    "ja":    "価格",
+};
+
+plot(close, title = @locale { default: "MA", "zh-CN": "均线" });
+```
+
+The result is `const String` — compatible everywhere a plain string literal is
+accepted.
+
 ### `color`
 
 Color literals use hex notation with `#`:

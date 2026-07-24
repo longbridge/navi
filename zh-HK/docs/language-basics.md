@@ -92,6 +92,22 @@ let full = "Hello, " + "World!";  // 用 + 連接字串
 | `\"` 或 `""` | 雙引號（在雙引號字串中） |
 | `\'` 或 `''` | 單引號（在單引號字串中） |
 
+### 多語言字串字面量
+
+使用 `@locale { ... }` 在原始碼中內聯提供多語言翻譯。執行時根據當前 locale（由宿主應用設定）選擇翻譯，按語言前綴回退（`zh-HK` → `zh`），最終回退到 `default`：
+
+```navi
+let title = @locale {
+    default: "Price",
+    "zh-HK": "價格",
+    "ja":    "価格",
+};
+
+plot(close, title = @locale { default: "MA", "zh-HK": "均線" });
+```
+
+結果型別為 `const String`，與普通字串字面量完全相容。
+
 ### `color`
 
 顏色字面量使用 `#` 的十六進制表示法：

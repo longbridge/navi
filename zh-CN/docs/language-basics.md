@@ -92,6 +92,22 @@ let full = "Hello, " + "World!";  // 用 + 连接字符串
 | `\"` 或 `""` | 双引号（在双引号字符串中） |
 | `\'` 或 `''` | 单引号（在单引号字符串中） |
 
+### 多语言字符串字面量
+
+使用 `@locale { ... }` 在源码中内联提供多语言翻译。运行时根据当前 locale（由宿主应用设置）选择翻译，按语言前缀回退（`zh-CN` → `zh`），最终回退到 `default`：
+
+```navi
+let title = @locale {
+    default: "Price",
+    "zh-CN": "价格",
+    "ja":    "価格",
+};
+
+plot(close, title = @locale { default: "MA", "zh-CN": "均线" });
+```
+
+结果类型为 `const String`，与普通字符串字面量完全兼容。
+
 ### `color`
 
 颜色字面量使用 `#` 的十六进制表示法：

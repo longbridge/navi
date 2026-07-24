@@ -96,6 +96,18 @@ Primitive types:
 
 String escapes include `\\`, `\n`, `\r`, `\t`, `\"`/`""`, and `\'`/`''`.
 
+Use `@locale { ... }` for locale-aware string literals. The runtime resolves to
+`const String` using exact match → language-prefix fallback → `default`:
+
+```navi
+let title = @locale {
+    default: "Price",
+    "zh-CN": "价格",
+    "ja":    "価格",
+};
+plot(close, title = @locale { default: "MA", "zh-CN": "均线" });
+```
+
 `na` is a missing value. Annotate the type when Navi cannot infer it:
 
 ```navi
