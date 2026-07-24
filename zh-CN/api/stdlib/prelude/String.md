@@ -23,15 +23,44 @@ String.format_time(
   ): String
 ```
 
-根据提供的格式和时区，将时间戳（自纪元以来的毫秒数）格式化为字符串。
+使用格式令牌模式和时区，将时间戳（自纪元以来的毫秒数）格式化为字符串。
+
+**日期令牌**：
+- `yyyy` — 4 位年份（如 `2024`）
+- `yy`   — 2 位年份（如 `24`）
+- `MM`   — 带前导零的月份（`01`–`12`）
+- `M`    — 不带前导零的月份（`1`–`12`）
+- `dd`   — 带前导零的日期（`01`–`31`）
+- `d`    — 不带前导零的日期（`1`–`31`）
+
+**时间令牌**：
+- `HH`  — 24 小时制小时，带前导零（`00`–`23`）
+- `H`   — 24 小时制小时，不带前导零（`0`–`23`）
+- `hh`  — 12 小时制小时，带前导零（`01`–`12`）
+- `h`   — 12 小时制小时，不带前导零（`1`–`12`）
+- `a`   — AM/PM 标识
+- `mm`  — 分钟，带前导零（`00`–`59`）
+- `m`   — 分钟，不带前导零（`0`–`59`）
+- `ss`  — 秒，带前导零（`00`–`59`）
+- `s`   — 秒，不带前导零（`0`–`59`）
+- `S`   — 十分之一秒（1 位）
+- `SS`  — 百分之一秒（2 位）
+- `SSS` — 毫秒（3 位）
+
+**时区令牌**：
+- `Z` — UTC 偏移量，格式为 `±HHmm`（如 `+0000`、`-0530`）
+
+非格式令牌的字符（如 `-`、`:`、`.`、空格）作为字面量输出。
+`y` 和 `z` 为保留字符，不能单独使用（仅 `yy`/`yyyy` 有效；`z` 始终报错）。
+
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `time` | <code>int</code> |  | 要格式化的时间戳（自纪元以来的毫秒数）。 |
-| `format` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 转换使用的格式字符串。 |
-| `timezone` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> | `symbol_info.timezone` | 格式化使用的时区。 |
+| `format` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 格式模式字符串（参见函数说明中的令牌表）。 |
+| `timezone` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> | `symbol_info.timezone` | 输出使用的时区（如 `"UTC+8"`、`"UTC-5:30"`）。默认为 `symbol_info.timezone`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
 
@@ -43,14 +72,19 @@ String.format_time(
 
 <div v-show="_s0 === 0">
 
-将整数值转换为其字符串表示形式。
+使用自定义数字模式将整数转换为字符串。
+
+`format` 字符串与 <a class="stdlib-ref" data-key="prelude::format" href="/zh-CN/api/stdlib/prelude/String#format">format</a> 中 `{N, number, pattern}` 说明符使用相同的模式语法：
+`#` 可选数字、`0` 必需数字、`,` 分组分隔符、`.` 小数点、`%` 百分比、
+其他字符作为字面量前缀/后缀、`'text'` 字面量文本、`''` 字面量单引号。
+
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `value` | <code>int</code> |  | 要转换的整数值。 |
-| `format` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 转换使用的格式字符串。 |
+| `format` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 控制输出格式的数字模式字符串。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
 
@@ -58,14 +92,19 @@ String.format_time(
 
 <div v-show="_s0 === 1">
 
-用给定格式将浮点数转换为字符串。
+使用自定义数字模式将浮点数转换为字符串。
+
+`format` 字符串与 <a class="stdlib-ref" data-key="prelude::format" href="/zh-CN/api/stdlib/prelude/String#format">format</a> 中 `{N, number, pattern}` 说明符使用相同的模式语法：
+`#` 可选数字、`0` 必需数字、`,` 分组分隔符、`.` 小数点、`%` 百分比、
+其他字符作为字面量前缀/后缀、`'text'` 字面量文本、`''` 字面量单引号。
+
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `value` | <code>float</code> |  | 要转换的浮点值。 |
-| `format` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 转换使用的格式字符串。 |
+| `format` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 控制输出格式的数字模式字符串。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
 
@@ -74,6 +113,13 @@ String.format_time(
 <div v-show="_s0 === 2">
 
 使用 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format</a> 常量将整数转换为字符串。
+
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Inherit</a>  — 继承所在系列上下文的格式
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Price</a>    — 以价格形式呈现（精度取决于交易品种）
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Volume</a>   — 以成交量形式呈现（大数字使用紧凑表示法）
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Percent</a>  — 以百分比形式呈现
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Mintick</a>  — 四舍五入到交易品种的 mintick，保留尾部零
+
 
 **参数**
 
@@ -89,6 +135,13 @@ String.format_time(
 <div v-show="_s0 === 3">
 
 使用 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format</a> 常量将浮点数转换为字符串。
+
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Inherit</a>  — 继承所在系列上下文的格式
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Price</a>    — 以价格形式呈现（精度取决于交易品种）
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Volume</a>   — 以成交量形式呈现（大数字使用紧凑表示法）
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Percent</a>  — 以百分比形式呈现
+- <a class="stdlib-ref" data-key="prelude::Format" href="/zh-CN/api/stdlib/prelude/Format">Format.Mintick</a>  — 四舍五入到交易品种的 mintick，保留尾部零
+
 
 **参数**
 
@@ -161,7 +214,29 @@ String.ends_with(self: String, str: String): bool
 String.format(self: String, values: any): String
 ```
 
-将字符串作为模板进行格式化，用提供的值替换 `{}` 占位符。
+将字符串作为模板进行格式化，用提供的值替换带索引的占位符。
+
+**占位符语法**：`{N}`、`{N, number}` 或 `{N, number, 说明符}`，其中 `N` 是 `values` 中从零开始的索引。
+
+**数字说明符**（用法：`{N, number, 说明符}`）：
+- （省略）— 千位分隔符，最多 3 位小数
+- `integer` — 取整，带千位分隔符
+- `currency` — 前缀 `$`，精确 2 位小数，带千位分隔符
+- `percent` — 乘以 100，添加 `%`
+- *模式* — 自定义格式模式（见下）
+
+**自定义数字模式字符**：
+- `#` — 可选数字（省略尾随零）
+- `0` — 必需数字（小数部分用 `0` 补齐）
+- `,` — 分组分隔符；分组大小由整数部分 `,` 后的数字个数决定
+- `.` — 小数点
+- `%` — 将值乘以 100 并添加 `%`
+- 其他字符作为字面量前缀或后缀
+- `'text'` — 字面量文本（引号内不解析占位符）
+- `''` — 字面量单引号字符
+
+`na` 值显示为 `"Na"`。
+
 
 **参数**
 

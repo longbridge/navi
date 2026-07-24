@@ -23,15 +23,23 @@ String.format_time(
   ): String
 ```
 
-Formats a timestamp (in milliseconds since epoch) into a String based on the provided format and timezone.
+Formats a timestamp (in milliseconds since epoch) into a String using a pattern of format tokens and a timezone.
+
+**Date tokens**: - `yyyy` — 4-digit year (e.g. `2024`) - `yy`   — 2-digit year (e.g. `24`) - `MM`   — month with leading zero (`01`–`12`) - `M`    — month without leading zero (`1`–`12`) - `dd`   — day of month with leading zero (`01`–`31`) - `d`    — day of month without leading zero (`1`–`31`)
+
+**Time tokens**: - `HH`  — hour, 24-hour clock, with leading zero (`00`–`23`) - `H`   — hour, 24-hour clock, without leading zero (`0`–`23`) - `hh`  — hour, 12-hour clock, with leading zero (`01`–`12`) - `h`   — hour, 12-hour clock, without leading zero (`1`–`12`) - `a`   — AM/PM indicator - `mm`  — minutes with leading zero (`00`–`59`) - `m`   — minutes without leading zero (`0`–`59`) - `ss`  — seconds with leading zero (`00`–`59`) - `s`   — seconds without leading zero (`0`–`59`) - `S`   — tenths of a second (1 digit) - `SS`  — hundredths of a second (2 digits) - `SSS` — milliseconds (3 digits)
+
+**Timezone token**: - `Z` — UTC offset in `±HHmm` form (e.g. `+0000`, `-0530`)
+
+Any character that is not a format token is output as a literal (e.g. `-`, `:`, `.`, space). The characters `y`, `z` are reserved and must not be used alone (only `yy`/`yyyy` are valid; `z` is always an error).
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `time` | <code>int</code> |  | The timestamp in milliseconds since epoch to format. |
-| `format` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The format String for the conversion. |
-| `timezone` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.timezone` | The timezone to use for formatting. |
+| `format` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The format pattern string (see token table above). |
+| `timezone` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.timezone` | The timezone for the output (e.g. `"UTC+8"`, `"UTC-5:30"`). Defaults to `symbol_info.timezone`. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
@@ -43,14 +51,16 @@ Formats a timestamp (in milliseconds since epoch) into a String based on the pro
 
 <div v-show="_s0 === 0">
 
-Converts a value to its String representation.
+Converts an integer to a String using a custom number pattern. The `format` string uses the same pattern syntax as the `{N, number, pattern}` specifier in <a class="stdlib-ref" data-key="prelude::format" href="/api/stdlib/prelude/String#format">format</a>:
+
+- `#` — optional digit (trailing zeros omitted) - `0` — required digit (decimal part padded with `0`) - `,` — grouping separator; group size = digits after `,` in the integer part - `.` — decimal point - `%` — multiply value by 100 and append `%` - Any other character becomes a literal prefix or suffix - `'text'` — literal text - `''`     — literal single-quote character
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` | <code>int</code> |  | The integer value to convert. |
-| `format` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The format String for the conversion. |
+| `format` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The number pattern string controlling the output format. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
@@ -58,14 +68,16 @@ Converts a value to its String representation.
 
 <div v-show="_s0 === 1">
 
-Converts a float to String with the given format.
+Converts a float to a String using a custom number pattern. The `format` string uses the same pattern syntax as the `{N, number, pattern}` specifier in <a class="stdlib-ref" data-key="prelude::format" href="/api/stdlib/prelude/String#format">format</a>:
+
+- `#` — optional digit (trailing zeros omitted) - `0` — required digit (decimal part padded with `0`) - `,` — grouping separator; group size = digits after `,` in the integer part - `.` — decimal point - `%` — multiply value by 100 and append `%` - Any other character becomes a literal prefix or suffix - `'text'` — literal text - `''`     — literal single-quote character
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` | <code>float</code> |  | The float value to convert. |
-| `format` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The format String for the conversion. |
+| `format` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The number pattern string controlling the output format. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
@@ -73,7 +85,7 @@ Converts a float to String with the given format.
 
 <div v-show="_s0 === 2">
 
-Converts an integer to String using a <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format</a> constant.
+Converts an integer to a String using a <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format</a> constant. The `format` constant controls how the number is presented: - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Inherit</a>  — inherits formatting from the enclosing series context - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Price</a>    — formatted as a price (symbol-dependent precision) - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Volume</a>   — formatted as a volume figure (compact notation for large numbers) - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Percent</a>  — formatted as a percentage - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Mintick</a>  — rounded to the symbol's mintick with trailing zeros preserved
 
 **Parameters**
 
@@ -88,7 +100,7 @@ Converts an integer to String using a <a class="stdlib-ref" data-key="prelude::F
 
 <div v-show="_s0 === 3">
 
-Converts a float to String using a <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format</a> constant.
+Converts a float to a String using a <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format</a> constant. The `format` constant controls how the number is presented: - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Inherit</a>  — inherits formatting from the enclosing series context - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Price</a>    — formatted as a price (symbol-dependent precision) - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Volume</a>   — formatted as a volume figure (compact notation for large numbers) - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Percent</a>  — formatted as a percentage - <a class="stdlib-ref" data-key="prelude::Format" href="/api/stdlib/prelude/Format">Format.Mintick</a>  — rounded to the symbol's mintick with trailing zeros preserved
 
 **Parameters**
 
@@ -161,7 +173,15 @@ Checks if the String ends with the specified suffix.
 String.format(self: String, values: any): String
 ```
 
-Formats the String as a template, substituting `{}` placeholders with the provided values.
+Formats the String as a template, substituting indexed placeholders with the provided values.
+
+**Placeholder syntax**: `{N}` or `{N, number}` or `{N, number, specifier}` where `N` is the zero-based index into `values`.
+
+**Number specifiers** (used as `{N, number, specifier}`): - *(omitted)* — thousands separator, up to 3 decimal places - `integer`  — round to integer, thousands separator - `currency` — prefix `$`, exactly 2 decimal places, thousands separator - `percent`  — multiply by 100, append `%` - *pattern*  — custom decimal-format pattern (see below)
+
+**Custom number pattern characters**: - `#` — optional digit (trailing zeros omitted) - `0` — required digit (decimal part padded with `0`) - `,` — grouping separator; group size = number of digits after `,` in the integer part - `.` — decimal point - `%` — multiply value by 100 and append `%` - Any other character becomes a literal prefix or suffix - `'text'` — literal text (suppresses placeholder parsing inside quotes) - `''` — literal single-quote character
+
+`na` values render as `"Na"`.
 
 **Parameters**
 
