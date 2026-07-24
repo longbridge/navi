@@ -1793,7 +1793,7 @@ watch(strategyReport, (report) => {
               </div>
               <div
                 ref="chartContainer"
-                :style="{ flex: '1', minHeight: '0', position: 'relative', background: '#ffffff', overflow: 'hidden' }"
+                :style="{ flex: '1', minHeight: '0', position: 'relative', background: 'var(--lb-bg-1)', overflow: 'hidden' }"
               >
               <canvas
                 ref="chartCanvas"
@@ -1841,7 +1841,7 @@ watch(strategyReport, (report) => {
               />
               <div
                 v-if="wasmLoading"
-                style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #6c7086; font-family: monospace;"
+                style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--lb-muted); font-family: monospace;"
               >
                 {{ t('playground.wasm.loading') }}
               </div>

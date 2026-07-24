@@ -617,7 +617,7 @@ watchEffect(async () => {
       class="!max-w-5xl !w-[90vw] !h-[80vh] !p-0 flex flex-col !gap-0 overflow-hidden"
     >
       <!-- Header -->
-      <div class="flex items-center gap-2.5 pl-5 pr-10 py-3.5 border-b bg-muted/30 shrink-0">
+      <div class="flex items-center gap-2.5 pl-5 pr-10 py-3.5 sep-b bg-muted/30 shrink-0">
         <BookOpen class="h-5 w-5 text-primary shrink-0" />
         <DialogTitle as-child>
           <h2 class="text-base font-semibold leading-tight">{{ t('stdlibDialog.title') }}</h2>
@@ -625,7 +625,7 @@ watchEffect(async () => {
         <VisuallyHidden as-child>
           <DialogDescription>Navi standard library API reference</DialogDescription>
         </VisuallyHidden>
-        <div class="w-px h-4 bg-border shrink-0 mx-0.5" />
+        <div class="w-px h-4 sep-bg shrink-0 mx-0.5" />
         <div class="flex items-center gap-0.5">
           <button
             @click="goBack"
@@ -648,9 +648,9 @@ watchEffect(async () => {
 
       <div class="flex flex-1 min-h-0 overflow-hidden">
         <!-- Left sidebar -->
-        <div class="w-60 shrink-0 border-r flex flex-col min-h-0 bg-muted/20">
+        <div class="w-60 shrink-0 sep-r flex flex-col min-h-0 bg-muted/20">
           <!-- Search -->
-          <div class="p-2.5 border-b">
+          <div class="p-2.5 sep-b">
             <div class="relative">
               <Search class="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
               <input
@@ -667,7 +667,7 @@ watchEffect(async () => {
           </div>
 
           <!-- Section quick-jump bar -->
-          <div v-if="visibleSectionCount > 1" class="flex border-b shrink-0">
+          <div v-if="visibleSectionCount > 1" class="flex sep-b shrink-0">
             <button v-if="topTypes.length" @click="jumpToSection('types')"
               class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors cursor-pointer">
               <Box class="h-3 w-3 shrink-0" />{{ t('stdlibDialog.types') }}
@@ -867,7 +867,7 @@ watchEffect(async () => {
           <!-- Function / Property detail -->
           <template v-if="selectedItem && isFunctionEntry(selectedItem.entry)">
             <!-- Title bar -->
-            <div class="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b px-5 py-3">
+            <div class="sticky top-0 z-10 bg-background/95 backdrop-blur-sm sep-b px-5 py-3">
               <div class="flex items-center gap-2.5">
                 <h2 class="text-lg font-semibold font-mono tracking-tight">{{ selectedItem.label }}</h2>
                 <span class="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded-full"
@@ -885,14 +885,11 @@ watchEffect(async () => {
 
             <!-- Overload selector (only when multiple overloads) -->
             <div v-if="(selectedItem.entry as FunctionEntry).overloads.length > 1" class="px-5 pt-4">
-              <div class="flex flex-col gap-0.5 border rounded-lg p-1.5 bg-muted/30">
+              <div class="overload-selector">
                 <button
                   v-for="(overload, idx) in (selectedItem.entry as FunctionEntry).overloads"
                   :key="idx"
-                  class="w-full text-left px-2.5 py-1.5 rounded-md text-[12px] font-mono leading-relaxed transition-all cursor-pointer break-all border"
-                  :class="selectedOverloadIdx === idx
-                    ? 'bg-background border-primary text-foreground shadow-sm ring-1 ring-primary/20'
-                    : 'border-border/50 text-muted-foreground hover:bg-muted/60 hover:text-foreground'"
+                  :class="['overload-item', selectedOverloadIdx === idx ? 'overload-active' : '']"
                   @click="selectedOverloadIdx = idx"
                 >
                   <span v-if="highlightedSignatures[idx]" v-html="highlightedSignatures[idx]" />
@@ -920,44 +917,40 @@ watchEffect(async () => {
                   <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.syntax') }}</h3>
                   <pre
                     v-if="highlightedSignatureBlocks[idx]"
-                    class="bg-muted/60 border rounded-lg p-3.5 text-[13px] font-mono leading-relaxed whitespace-pre-wrap"
+                    class="docs-pre"
                     v-html="highlightedSignatureBlocks[idx]"
                   />
-                  <pre v-else class="bg-muted/60 border rounded-lg p-3.5 text-[13px] font-mono leading-relaxed whitespace-pre-wrap text-foreground/90">{{ formatSignatureBlock(signatureLabel(selectedItem, overload), overload) }}</pre>
+                  <pre v-else class="docs-pre">{{ formatSignatureBlock(signatureLabel(selectedItem, overload), overload) }}</pre>
                 </div>
 
                 <!-- Parameters -->
                 <div v-if="overload.params.length && overload.kind !== 'property'">
                   <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.parametersSection') }}</h3>
-                  <div class="border rounded-lg overflow-hidden">
-                    <table class="w-full text-sm">
+                  <div class="docs-table-wrap">
+                    <table class="docs-table">
                       <thead>
-                        <tr class="bg-muted/40 border-b">
-                          <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground w-[120px]">{{ t('stdlibDialog.name') }}</th>
-                          <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground w-[180px]">{{ t('stdlibDialog.type') }}</th>
-                          <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground">{{ t('stdlibDialog.description') }}</th>
+                        <tr>
+                          <th style="width:120px">{{ t('stdlibDialog.name') }}</th>
+                          <th style="width:180px">{{ t('stdlibDialog.type') }}</th>
+                          <th>{{ t('stdlibDialog.description') }}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="p in overload.params" :key="p.name" class="border-b last:border-0 hover:bg-muted/30 transition-colors">
-                          <td class="py-2 px-3 font-mono text-xs text-primary/90 whitespace-nowrap align-top">
-                            {{ p.name }}<span v-if="p.isVariadic" class="text-muted-foreground">...</span>
+                        <tr v-for="p in overload.params" :key="p.name">
+                          <td class="col-name">
+                            {{ p.name }}<span v-if="p.isVariadic" style="opacity:0.5">...</span>
                           </td>
-                          <td class="py-2 px-3 font-mono text-xs text-muted-foreground whitespace-nowrap align-top" v-html="formatTypeRefHtml(p.type)" />
-                          <td class="py-2 px-3 text-xs leading-relaxed align-top">
+                          <td class="col-type" v-html="formatTypeRefHtml(p.type)" />
+                          <td class="col-desc">
                             <div
                               v-if="p.description"
                               class="[&_p]:m-0 [&_p+p]:mt-2"
                               v-html="md(p.description, selectedItem.module)"
                             />
-                            <span
+                            <code
                               v-if="p.defaultExpr || (p.defaultValue !== undefined && p.defaultValue !== null)"
-                              class="inline-flex items-center ml-1"
-                            >
-                              <code class="text-[11px] px-1 py-0.5 rounded bg-muted font-mono">
-                                = {{ p.defaultExpr ?? JSON.stringify(p.defaultValue) }}
-                              </code>
-                            </span>
+                              class="docs-code" style="margin-left:4px; font-size:11px;"
+                            >= {{ p.defaultExpr ?? JSON.stringify(p.defaultValue) }}</code>
                           </td>
                         </tr>
                       </tbody>
@@ -969,7 +962,7 @@ watchEffect(async () => {
                 <div v-if="overload.returnType">
                   <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.returnsSection') }}</h3>
                   <div class="flex items-start gap-2">
-                    <code class="text-xs font-mono px-2 py-1 rounded-md bg-muted border" v-html="formatTypeRefHtml(overload.returnType)" />
+                    <code class="docs-code" v-html="formatTypeRefHtml(overload.returnType)" />
                     <div
                       v-if="overload.returnsDescription"
                       class="min-w-0 text-sm text-muted-foreground [&_p]:m-0 [&_p+p]:mt-3"
@@ -985,8 +978,8 @@ watchEffect(async () => {
                     <pre
                       v-for="(ex, exIdx) in overload.examples"
                       :key="exIdx"
-                      class="bg-muted/60 border rounded-lg p-3.5 text-[13px] font-mono leading-relaxed whitespace-pre-wrap overflow-x-auto"
-                    ><span v-if="highlightedExamples[idx]?.[exIdx]" v-html="highlightedExamples[idx][exIdx]" /><span v-else class="text-foreground/90">{{ ex }}</span></pre>
+                      class="docs-pre"
+                    ><span v-if="highlightedExamples[idx]?.[exIdx]" v-html="highlightedExamples[idx][exIdx]" /><span v-else>{{ ex }}</span></pre>
                   </div>
                 </div>
               </div>
@@ -996,7 +989,7 @@ watchEffect(async () => {
           <!-- Type detail -->
           <template v-else-if="selectedItem && !isFunctionEntry(selectedItem.entry)">
             <!-- Title bar -->
-            <div class="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b px-5 py-3">
+            <div class="sticky top-0 z-10 bg-background/95 backdrop-blur-sm sep-b px-5 py-3">
               <div class="flex items-center gap-2.5">
                 <h2 class="text-lg font-semibold font-mono tracking-tight">{{ selectedItem.label }}</h2>
                 <span class="text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-violet-500/15 text-violet-700 dark:text-violet-400">
@@ -1019,28 +1012,26 @@ watchEffect(async () => {
               <!-- Underlying type (newtype) -->
               <div v-if="(selectedItem.entry as TypeDefEntry).underlyingType">
                 <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.underlyingType') }}</h3>
-                <code class="text-xs font-mono px-2 py-1 rounded-md bg-muted border">
-                  {{ formatTypeRef((selectedItem.entry as TypeDefEntry).underlyingType) }}
-                </code>
+                <code class="docs-code">{{ formatTypeRef((selectedItem.entry as TypeDefEntry).underlyingType) }}</code>
               </div>
 
               <!-- Fields (object) -->
               <div v-if="(selectedItem.entry as TypeDefEntry).fields?.length">
                 <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.fieldsSection') }}</h3>
-                <div class="border rounded-lg overflow-hidden">
-                  <table class="w-full text-sm">
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
                     <thead>
-                      <tr class="bg-muted/40 border-b">
-                        <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground w-[120px]">{{ t('stdlibDialog.name') }}</th>
-                        <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground w-[180px]">{{ t('stdlibDialog.type') }}</th>
-                        <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground">{{ t('stdlibDialog.description') }}</th>
+                      <tr>
+                        <th style="width:120px">{{ t('stdlibDialog.name') }}</th>
+                        <th style="width:180px">{{ t('stdlibDialog.type') }}</th>
+                        <th>{{ t('stdlibDialog.description') }}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="f in (selectedItem.entry as TypeDefEntry).fields" :key="f.name" class="border-b last:border-0 hover:bg-muted/30 transition-colors">
-                        <td class="py-2 px-3 font-mono text-xs text-primary/90 whitespace-nowrap align-top">{{ f.name }}</td>
-                        <td class="py-2 px-3 font-mono text-xs text-muted-foreground whitespace-nowrap align-top" v-html="formatTypeRefHtml(f.type)" />
-                        <td class="py-2 px-3 text-xs leading-relaxed align-top">
+                      <tr v-for="f in (selectedItem.entry as TypeDefEntry).fields" :key="f.name">
+                        <td class="col-name">{{ f.name }}</td>
+                        <td class="col-type" v-html="formatTypeRefHtml(f.type)" />
+                        <td class="col-desc">
                           <div
                             v-if="f.description"
                             class="[&_p]:m-0 [&_p+p]:mt-2"
@@ -1056,18 +1047,18 @@ watchEffect(async () => {
               <!-- Variants (enum) -->
               <div v-if="(selectedItem.entry as TypeDefEntry).variants?.length">
                 <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.variantsSection') }}</h3>
-                <div class="border rounded-lg overflow-hidden">
-                  <table class="w-full text-sm">
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
                     <thead>
-                      <tr class="bg-muted/40 border-b">
-                        <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground w-[160px]">{{ t('stdlibDialog.name') }}</th>
-                        <th class="text-left py-2 px-3 text-xs font-semibold text-muted-foreground">{{ t('stdlibDialog.description') }}</th>
+                      <tr>
+                        <th style="width:160px">{{ t('stdlibDialog.name') }}</th>
+                        <th>{{ t('stdlibDialog.description') }}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="v in (selectedItem.entry as TypeDefEntry).variants" :key="v.name" class="border-b last:border-0 hover:bg-muted/30 transition-colors">
-                        <td class="py-2 px-3 font-mono text-xs text-primary/90 whitespace-nowrap align-top">{{ v.name }}</td>
-                        <td class="py-2 px-3 text-xs leading-relaxed align-top">
+                      <tr v-for="v in (selectedItem.entry as TypeDefEntry).variants" :key="v.name">
+                        <td class="col-name">{{ v.name }}</td>
+                        <td class="col-desc">
                           <span v-if="v.title" class="font-medium">{{ v.title }}</span>
                           <template v-if="v.title && v.description"> &mdash; </template>
                           <div
@@ -1089,8 +1080,8 @@ watchEffect(async () => {
                   <pre
                     v-for="(ex, exIdx) in (selectedItem.entry as TypeDefEntry).examples"
                     :key="exIdx"
-                    class="bg-muted/60 border rounded-lg p-3.5 text-[13px] font-mono leading-relaxed whitespace-pre-wrap overflow-x-auto"
-                  ><span v-if="highlightedTypeExamples[exIdx]" v-html="highlightedTypeExamples[exIdx]" /><span v-else class="text-foreground/90">{{ ex }}</span></pre>
+                    class="docs-pre"
+                  ><span v-if="highlightedTypeExamples[exIdx]" v-html="highlightedTypeExamples[exIdx]" /><span v-else>{{ ex }}</span></pre>
                 </div>
               </div>
 
@@ -1129,5 +1120,117 @@ watchEffect(async () => {
 .doc-ref code {
   color: inherit;
   text-decoration: none;
+}
+
+/* API-docs–style table */
+.docs-table-wrap {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.docs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.docs-table thead tr {
+  background: var(--vp-c-bg-soft);
+}
+.docs-table th {
+  text-align: left;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+}
+.docs-table td {
+  padding: 7px 12px;
+  border-top: 1px solid var(--vp-c-divider);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.docs-table tbody tr:hover {
+  background: var(--vp-c-bg-soft);
+}
+.docs-table .col-name {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--vp-c-brand-1);
+  white-space: nowrap;
+}
+.docs-table .col-type {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--vp-c-text-2);
+  white-space: nowrap;
+}
+.docs-table .col-desc {
+  font-size: 13px;
+}
+
+/* Overload selector — mirrors OverloadTabs.vue */
+.overload-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 6px;
+  background: var(--vp-c-bg-soft);
+}
+.overload-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  font-family: var(--vp-font-family-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: break-all;
+  transition: all 0.15s ease;
+}
+.overload-item:hover {
+  background: var(--vp-c-bg-mute);
+  color: var(--vp-c-text-1);
+}
+.overload-active {
+  background: var(--vp-c-bg);
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-text-1);
+}
+
+/* Panel separators — use VitePress divider (very subtle in dark mode) */
+.sep-b { border-bottom: 1px solid var(--vp-c-divider); }
+.sep-r { border-right: 1px solid var(--vp-c-divider); }
+.sep-bg { background: var(--vp-c-divider); }
+
+/* API-docs–style code blocks */
+.docs-pre {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+.docs-code {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-1);
 }
 </style>

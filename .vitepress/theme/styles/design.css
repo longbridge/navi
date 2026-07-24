@@ -585,6 +585,10 @@ html.dark .custom-block.tip {
   background: var(--vp-c-bg);
 }
 
+.dialog-border {
+  border: 1px solid var(--vp-c-divider);
+}
+
 .playground-page {
   background: var(--vp-c-bg);
 }
