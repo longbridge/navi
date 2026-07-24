@@ -106,16 +106,14 @@ if bar_state.is_last and not targetShown {
         "zh-CN": "未找到分析师预测。",
         "zh-HK": "未找到分析師預測。",
     };
-    let warningAppend = @locale {
-        default: "\nIf there are any new predictions for this symbol, they should appear once the market opens.",
-        "zh-CN": "\n如果该标的有新的预测，将在市场开盘后显示。",
-        "zh-HK": "\n如果該標的有新的預測，將在市場開盤後顯示。",
-    };
-    var warningTextFull = warningText;
     if bar_state.is_confirmed {
-        warningTextFull = warningText + warningAppend;
+        warningText += @locale {
+            default: "\nIf there are any new predictions for this symbol, they should appear once the market opens.",
+            "zh-CN": "\n如果该标的有新的预测，将在市场开盘后显示。",
+            "zh-HK": "\n如果該標的有新的預測，將在市場開盤後顯示。",
+        };
     }
-    t.cell(0, 0, warningTextFull, text_color: chart.bg_color);
+    t.cell(0, 0, warningText, text_color: chart.bg_color);
 }
 
 plot(
