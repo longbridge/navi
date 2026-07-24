@@ -13,6 +13,33 @@ An immutable sequence of Unicode characters.
 
 ## Static Methods
 
+### format {#format}
+
+```navi
+String.format(template: String, values: any): String
+```
+
+Formats the String as a template, substituting indexed placeholders with the provided values.
+
+**Placeholder syntax**: `{N}` or `{N, number}` or `{N, number, specifier}` where `N` is the zero-based index into `values`.
+
+**Number specifiers** (used as `{N, number, specifier}`): - *(omitted)* — thousands separator, up to 3 decimal places - `integer`  — round to integer, thousands separator - `currency` — prefix `$`, exactly 2 decimal places, thousands separator - `percent`  — multiply by 100, append `%` - *pattern*  — custom decimal-format pattern (see below)
+
+**Custom number pattern characters**: - `#` — optional digit (trailing zeros omitted) - `0` — required digit (decimal part padded with `0`) - `,` — grouping separator; group size = number of digits after `,` in the integer part - `.` — decimal point - `%` — multiply value by 100 and append `%` - Any other character becomes a literal prefix or suffix - `'text'` — literal text (suppresses placeholder parsing inside quotes) - `''` — literal single-quote character
+
+`na` values render as `"Na"`.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `template` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The format template string containing `{N}` placeholders. |
+| `values` | <code>any</code> |  | Variable number of values to substitute into the template. |
+
+**Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
+
+---
+
 ### format_time {#format_time}
 
 ```navi
@@ -164,33 +191,6 @@ Checks if the String ends with the specified suffix.
 | `str` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The suffix to search for. |
 
 **Returns:** <code>bool</code>
-
----
-
-### format {#format}
-
-```navi
-String.format(self: String, values: any): String
-```
-
-Formats the String as a template, substituting indexed placeholders with the provided values.
-
-**Placeholder syntax**: `{N}` or `{N, number}` or `{N, number, specifier}` where `N` is the zero-based index into `values`.
-
-**Number specifiers** (used as `{N, number, specifier}`): - *(omitted)* — thousands separator, up to 3 decimal places - `integer`  — round to integer, thousands separator - `currency` — prefix `$`, exactly 2 decimal places, thousands separator - `percent`  — multiply by 100, append `%` - *pattern*  — custom decimal-format pattern (see below)
-
-**Custom number pattern characters**: - `#` — optional digit (trailing zeros omitted) - `0` — required digit (decimal part padded with `0`) - `,` — grouping separator; group size = number of digits after `,` in the integer part - `.` — decimal point - `%` — multiply value by 100 and append `%` - Any other character becomes a literal prefix or suffix - `'text'` — literal text (suppresses placeholder parsing inside quotes) - `''` — literal single-quote character
-
-`na` values render as `"Na"`.
-
-**Parameters**
-
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| `self` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  |  |
-| `values` | <code>any</code> |  | Variable number of values to substitute into the template. |
-
-**Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
 ---
 

@@ -13,6 +13,47 @@ const _s0 = ref(0)
 
 ## 静态方法
 
+### format {#format}
+
+```navi
+String.format(template: String, values: any): String
+```
+
+将字符串作为模板进行格式化，用提供的值替换带索引的占位符。
+
+**占位符语法**：`{N}`、`{N, number}` 或 `{N, number, 说明符}`，其中 `N` 是 `values` 中从零开始的索引。
+
+**数字说明符**（用法：`{N, number, 说明符}`）：
+- （省略）— 千位分隔符，最多 3 位小数
+- `integer` — 取整，带千位分隔符
+- `currency` — 前缀 `$`，精确 2 位小数，带千位分隔符
+- `percent` — 乘以 100，添加 `%`
+- *模式* — 自定义格式模式（见下）
+
+**自定义数字模式字符**：
+- `#` — 可选数字（省略尾随零）
+- `0` — 必需数字（小数部分用 `0` 补齐）
+- `,` — 分组分隔符；分组大小由整数部分 `,` 后的数字个数决定
+- `.` — 小数点
+- `%` — 将值乘以 100 并添加 `%`
+- 其他字符作为字面量前缀或后缀
+- `'text'` — 字面量文本（引号内不解析占位符）
+- `''` — 字面量单引号字符
+
+`na` 值显示为 `"Na"`。
+
+
+**参数**
+
+| 名称 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `template` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 包含 `{N}` 占位符的格式模板字符串。 |
+| `values` | <code>any</code> |  | 要替换到模板中的可变数量的值。 |
+
+**返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
+
+---
+
 ### format_time {#format_time}
 
 ```navi
@@ -205,47 +246,6 @@ String.ends_with(self: String, str: String): bool
 | `str` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要搜索的后缀。 |
 
 **返回:** <code>bool</code>
-
----
-
-### format {#format}
-
-```navi
-String.format(self: String, values: any): String
-```
-
-将字符串作为模板进行格式化，用提供的值替换带索引的占位符。
-
-**占位符语法**：`{N}`、`{N, number}` 或 `{N, number, 说明符}`，其中 `N` 是 `values` 中从零开始的索引。
-
-**数字说明符**（用法：`{N, number, 说明符}`）：
-- （省略）— 千位分隔符，最多 3 位小数
-- `integer` — 取整，带千位分隔符
-- `currency` — 前缀 `$`，精确 2 位小数，带千位分隔符
-- `percent` — 乘以 100，添加 `%`
-- *模式* — 自定义格式模式（见下）
-
-**自定义数字模式字符**：
-- `#` — 可选数字（省略尾随零）
-- `0` — 必需数字（小数部分用 `0` 补齐）
-- `,` — 分组分隔符；分组大小由整数部分 `,` 后的数字个数决定
-- `.` — 小数点
-- `%` — 将值乘以 100 并添加 `%`
-- 其他字符作为字面量前缀或后缀
-- `'text'` — 字面量文本（引号内不解析占位符）
-- `''` — 字面量单引号字符
-
-`na` 值显示为 `"Na"`。
-
-
-**参数**
-
-| 名称 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| `self` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  |  |
-| `values` | <code>any</code> |  | 要替换到模板中的可变数量的值。 |
-
-**返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
 
 ---
 
