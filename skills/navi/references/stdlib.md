@@ -46,12 +46,7 @@ Use this to decide *which* area to look up, then fetch that page for its current
 - **Strategy** (`strategy`, plus separate risk and trade-query areas): orders, position/account state, risk controls, trade lookups. Strategy scripts only.
 - **Requests / multi-timeframe** (`request`): `request.security`, `request.security_lower_tf`, and other data feeds.
 - **Math** (`math`): numeric constants and functions.
-- **Strings**: static helpers and methods on the `String` type.
-  - `String.from(value)` — convert any value to string; `String.from(value, pattern)` with a number-format pattern.
-  - `String.format(template, values...)` — substitute `{0}`, `{1}`, … placeholders: `String.format("P: {0}", close)`.
-  - `String.format_time(time, format, timezone)` — format a millisecond timestamp.
-  - Instance methods (call on a string value): `.length()`, `.lower()`, `.upper()`, `.contains(s)`, `.starts_with(s)`, `.ends_with(s)`, `.index_of(s)`, `.substring(start, end)`, `.split(sep)`, `.replace(target, repl, n)`, `.replace_all(target, repl)`, `.trim()`, `.pad_start(len, fill)`, `.pad_end(len, fill)`, `.to_number()`, `.match(regex)`, `.repeat(n)`.
-  - `@locale { default: "…", "zh-CN": "…" }` — locale-aware string literal, resolves to `const String` at runtime based on the current locale.
+- **Strings**: static helpers and methods on the `String` type, such as `String.from(value)`, `String.format(template, values...)`, and instance methods like `.lower()`, `.split(sep)`. Use `@locale { default: "…", "zh-CN": "…" }` for locale-aware string literals.
 - **Collections** (prelude): `Array<T>`, `Map<K, V>`, `Matrix<T>` — construction and methods.
 - **Drawing objects** (prelude): `Label`, `Line`, `Box`, `Table`, `Polyline`, `LineFill` — create with `Type.new`, mutate with methods.
 - **Enums** (prelude): `Direction`, `PlotStyle`, `Shape`, `Location`, `LabelStyle`, `LineStyle`, `HLineStyle`, `Size`, `Position`, `Extend`, `BarmergeGaps`, `BarmergeLookahead`, `AlertFreq`, and more — fetch the enum's page for its exact variants.
