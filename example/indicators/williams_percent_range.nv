@@ -1,21 +1,21 @@
-﻿indicator(
-    "Williams Percent Range",
+indicator(
+    @locale { default: "Williams Percent Range", "zh-CN": "威廉姆斯超买超卖指标", "zh-HK": "威廉姆斯超買超賣指標" },
     short_title: "Williams %R",
     format: Format.Price,
     precision: 2,
     timeframe: "",
     timeframe_gaps: true
 );
-let length = input(title: "Length", defval: 14);
-let src = input(close, "Source");
+let length = input(title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, defval: 14);
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 fn _pr(length) {
     let max = ta.highest(length);
     let min = ta.lowest(length);
     100 * (src - max) / (max - min);
 }
 let percentR = _pr(length);
-let obPlot = hline(-20, title: "Upper Band", color: #787B86);
-hline(-50, title: "Middle Level", line_style: HLineStyle.Dotted, color: #787B86);
-let osPlot = hline(-80, title: "Lower Band", color: #787B86);
-fill(obPlot, osPlot, title: "Background", color: Color.rgb(126, 87, 194, 90));
-plot(percentR, title: "%R", color: #7E57C2);
+let obPlot = hline(-20, title: @locale { default: "Upper Band", "zh-CN": "超买线", "zh-HK": "超買線" }, color: #787B86);
+hline(-50, title: @locale { default: "Middle Level", "zh-CN": "中间线", "zh-HK": "中間線" }, line_style: HLineStyle.Dotted, color: #787B86);
+let osPlot = hline(-80, title: @locale { default: "Lower Band", "zh-CN": "超卖线", "zh-HK": "超賣線" }, color: #787B86);
+fill(obPlot, osPlot, title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" }, color: Color.rgb(126, 87, 194, 90));
+plot(percentR, title: @locale { default: "%R", "zh-CN": "%R", "zh-HK": "%R" }, color: #7E57C2);

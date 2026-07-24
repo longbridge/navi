@@ -1,12 +1,16 @@
-﻿indicator("Linear Regression Channel", short_title: "LinReg", overlay: true);
+indicator(
+    @locale { default: "Linear Regression Channel", "zh-CN": "线性回归通道", "zh-HK": "線性回歸通道" },
+    short_title: "LinReg",
+    overlay: true
+);
 
-let lengthInput = input.int(100, "Length", minval: 1, maxval: 5000);
-let sourceInput = input.source(close, "Source");
+let lengthInput = input.int(100, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1, maxval: 5000);
+let sourceInput = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 
-let group1 = "Channel Settings";
+let group1 = @locale { default: "Channel Settings", "zh-CN": "通道设置", "zh-HK": "通道設置" };
 let useUpperDevInput = input.bool(
     true,
-    "Upper Deviation",
+    @locale { default: "Upper Deviation", "zh-CN": "上偏差", "zh-HK": "上偏差" },
     inline: "Upper Deviation",
     group: group1
 );
@@ -19,7 +23,7 @@ let upperMultInput = input.float(
 );
 let useLowerDevInput = input.bool(
     true,
-    "Lower Deviation",
+    @locale { default: "Lower Deviation", "zh-CN": "下偏差", "zh-HK": "下偏差" },
     inline: "Lower Deviation",
     group: group1
 );
@@ -31,10 +35,10 @@ let lowerMultInput = input.float(
     group: group1
 );
 
-let group2 = "Display Settings";
-let showPearsonInput = input.bool(true, "Show Pearson's R", group: group2);
-let extendLeftInput = input.bool(false, "Extend Lines Left", group: group2);
-let extendRightInput = input.bool(true, "Extend Lines Right", group: group2);
+let group2 = @locale { default: "Display Settings", "zh-CN": "显示设置", "zh-HK": "顯示設置" };
+let showPearsonInput = input.bool(true, @locale { default: "Show Pearson's R", "zh-CN": "显示皮尔逊相关系数 R", "zh-HK": "顯示皮爾遜相關係數 R" }, group: group2);
+let extendLeftInput = input.bool(false, @locale { default: "Extend Lines Left", "zh-CN": "向左延伸线段", "zh-HK": "向左延伸線段" }, group: group2);
+let extendRightInput = input.bool(true, @locale { default: "Extend Lines Right", "zh-CN": "向右延伸线段", "zh-HK": "向右延伸線段" }, group: group2);
 
 let extendStyle = switch {
     extendLeftInput and extendRightInput => Extend.Both,
@@ -42,7 +46,7 @@ let extendStyle = switch {
     extendRightInput => Extend.Right,
     => Extend.None,
 };
-let group3 = "Color Settings";
+let group3 = @locale { default: "Color Settings", "zh-CN": "颜色设置", "zh-HK": "顏色設置" };
 let colorUpper = input.color(
     Color.new(Color.BLUE, 85),
     "",
@@ -186,18 +190,30 @@ alert_condition(
         lower,
         bar_index
     ),
-    title: 'Regression Channel Exited',
-    message: "The price movement has exited Regression Channel's bounds"
+    title: @locale { default: "Regression Channel Exited", "zh-CN": "价格突破回归通道", "zh-HK": "價格突破回歸通道" },
+    message: @locale {
+        default: "The price movement has exited Regression Channel's bounds",
+        "zh-CN": "价格已突破回归通道的边界",
+        "zh-HK": "價格已突破回歸通道的邊界",
+    }
 );
 alert_condition(
     trend[1] >= 0 and trend < 0,
-    title: 'Switched to Uptrend',
-    message: 'The Regression Channel trend switched from Downtrend to Uptrend'
+    title: @locale { default: "Switched to Uptrend", "zh-CN": "切换为上升趋势", "zh-HK": "切換為上升趨勢" },
+    message: @locale {
+        default: "The Regression Channel trend switched from Downtrend to Uptrend",
+        "zh-CN": "回归通道趋势已从下降趋势切换为上升趋势",
+        "zh-HK": "回歸通道趨勢已從下降趨勢切換為上升趨勢",
+    }
 );
 alert_condition(
     trend[1] <= 0 and trend > 0,
-    title: 'Switched to Downtrend',
-    message: 'The Regression Channel trend switched from Uptrend to Downtrend'
+    title: @locale { default: "Switched to Downtrend", "zh-CN": "切换为下降趋势", "zh-HK": "切換為下降趨勢" },
+    message: @locale {
+        default: "The Regression Channel trend switched from Uptrend to Downtrend",
+        "zh-CN": "回归通道趋势已从上升趋势切换为下降趋势",
+        "zh-HK": "回歸通道趨勢已從上升趨勢切換為下降趨勢",
+    }
 );
 
 var r: Label = na;

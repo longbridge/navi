@@ -1,4 +1,4 @@
-﻿indicator('Open Interest', 'OI', format: Format.Volume, dynamic_requests: true);
+indicator(@locale { default: 'Open Interest', "zh-CN": '持仓量', "zh-HK": '持倉量' }, 'OI', format: Format.Volume, dynamic_requests: true);
 var tickerOI = String.format('{0}_OI', symbol_info.tickerid);
 let (oiOpen, oiHigh, oiLow, oiClose, oiColorCond) = if timeframe.is_intraday {
     request.security(
@@ -27,7 +27,7 @@ if not na(oiClose) {
 }
 plot(
     hasIntraday ? na : oiCloseD,
-    'Open Interest',
+    @locale { default: 'Open Interest', "zh-CN": '持仓量', "zh-HK": '持倉量' },
     oiColorCondD ? Color.TEAL : Color.RED,
     style: PlotStyle.Stepline,
     line_width: 4
@@ -38,7 +38,7 @@ plot_candle(
     oiHigh,
     oiLow,
     oiClose,
-    'Open Interest',
+    @locale { default: 'Open Interest', "zh-CN": '持仓量', "zh-HK": '持倉量' },
     color: openInterestColor,
     wick_color: openInterestColor,
     border_color: openInterestColor

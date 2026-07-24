@@ -1,4 +1,4 @@
-﻿strategy("Price Channel Strategy", overlay: true);
+strategy(@locale { default: "Price Channel Strategy", "zh-CN": "价格通道策略", "zh-HK": "價格通道策略" }, overlay: true);
 let length = input(20);
 let hh = ta.highest(high, length);
 let ll = ta.lowest(low, length);

@@ -1,12 +1,12 @@
-indicator("Bollinger Range", overlay: true);
+indicator(@locale { default: "Bollinger Range", "zh-CN": "布林通道", "zh-HK": "布林通道" }, overlay: true);
 
-let price_source = input.source(close, "Source");
-let period = input.int(20, "Period", minval: 1);
-let deviation = input.float(2.0, "Deviation", minval: 0.1);
+let price_source = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let period = input.int(20, @locale { default: "Period", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
+let deviation = input.float(2.0, @locale { default: "Deviation", "zh-CN": "偏差", "zh-HK": "偏差" }, minval: 0.1);
 
 let (middle, upper_band, lower_band) = ta.bb(price_source, period, deviation);
 let middle_color = middle > middle[1] ? Color.GREEN : Color.RED;
 
-plot(middle, "Trend Basis", color: middle_color, line_width: 2);
-plot(upper_band, "Upper Range", color: Color.BLUE);
-plot(lower_band, "Lower Range", color: Color.BLUE);
+plot(middle, @locale { default: "Trend Basis", "zh-CN": "趋势基准", "zh-HK": "趨勢基準" }, color: middle_color, line_width: 2);
+plot(upper_band, @locale { default: "Upper Range", "zh-CN": "上轨", "zh-HK": "上軌" }, color: Color.BLUE);
+plot(lower_band, @locale { default: "Lower Range", "zh-CN": "下轨", "zh-HK": "下軌" }, color: Color.BLUE);

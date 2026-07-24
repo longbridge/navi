@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Mass Index",
+indicator(
+    title: @locale { default: "Mass Index", "zh-CN": "质量指数", "zh-HK": "質量指數" },
     format: Format.Price,
     precision: 2,
     timeframe: "",
@@ -8,4 +8,4 @@
 let length = input.int(10, minval: 1);
 let span = high - low;
 let mi = math.sum(ta.ema(span, 9) / ta.ema(ta.ema(span, 9), 9), length);
-plot(mi, "Mass Index");
+plot(mi, title: @locale { default: "Mass Index", "zh-CN": "质量指数", "zh-HK": "質量指數" });

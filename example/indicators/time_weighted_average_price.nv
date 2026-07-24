@@ -1,14 +1,14 @@
-﻿indicator(
-    title: "Time Weighted Average Price",
+indicator(
+    title: @locale { default: "Time Weighted Average Price", "zh-CN": "时间加权平均价格", "zh-HK": "時間加權平均價格" },
     short_title: "TWAP",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
 
-let anchor = input.timeframe(defval: "1D", title: "Anchor Period");
-let src = input(title: "Source", defval: ohlc4);
-let offset = input(0, title: "Offset", display: PlotDisplay.NONE);
+let anchor = input.timeframe(defval: "1D", title: @locale { default: "Anchor Period", "zh-CN": "锚定周期", "zh-HK": "錨定週期" });
+let src = input(title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" }, defval: ohlc4);
+let offset = input(0, title: @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" }, display: PlotDisplay.NONE);
 
 fn twap(source, anchorChange) {
     var prices = 0.0;
@@ -24,4 +24,4 @@ fn twap(source, anchorChange) {
 
 let twapValue = twap(src, timeframe.change(anchor));
 
-plot(twapValue, title: "TWAP", color: #dd7a28, offset: offset);
+plot(twapValue, title: @locale { default: "TWAP", "zh-CN": "TWAP", "zh-HK": "TWAP" }, color: #dd7a28, offset: offset);

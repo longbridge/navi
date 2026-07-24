@@ -1,7 +1,7 @@
-﻿strategy("RSI Strategy", overlay: true);
-let length = input(14, "Length");
-let overSold = input(30, "Oversold");
-let overBought = input(70, "Overbought");
+strategy(@locale { default: "RSI Strategy", "zh-CN": "RSI 策略", "zh-HK": "RSI 策略" }, overlay: true);
+let length = input(14, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
+let overSold = input(30, @locale { default: "Oversold", "zh-CN": "超卖", "zh-HK": "超賣" });
+let overBought = input(70, @locale { default: "Overbought", "zh-CN": "超买", "zh-HK": "超買" });
 let price = close;
 let vrsi = ta.rsi(price, length);
 let co = ta.cross_over(vrsi, overSold);

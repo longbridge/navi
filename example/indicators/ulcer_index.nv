@@ -1,4 +1,4 @@
-indicator("Ulcer Index", timeframe: "", timeframe_gaps: true);
+indicator(@locale { default: "Ulcer Index", "zh-CN": "溃疡指数", "zh-HK": "潰瘍指數" }, timeframe: "", timeframe_gaps: true);
 
 struct collectedData {
     data: Array<float>,
@@ -877,12 +877,12 @@ fn wpo(length: simple int) {
     let result: float = ema(ti, length);
 }
 
-let sourceInput: float = input.source(close, "Source");
-let lengthInput: int = input.int(14, "Length", 1);
+let sourceInput: float = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let lengthInput: int = input.int(14, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, 1);
 
 let ui: float = ulcerIndex(sourceInput, lengthInput);
 
-let uiPlot = plot(ui, "Ulcer Index");
+let uiPlot = plot(ui, @locale { default: "Ulcer Index", "zh-CN": "溃疡指数", "zh-HK": "潰瘍指數" });
 let zeroPlot = plot(0, "", display: PlotDisplay.NONE, editable: false);
 fill(uiPlot, zeroPlot, #2196f31a);
-hline(0, "Zero");
+hline(0, @locale { default: "Zero", "zh-CN": "零线", "zh-HK": "零線" });

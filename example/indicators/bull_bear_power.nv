@@ -1,12 +1,12 @@
-﻿indicator("Bull Bear Power", short_title: "BBP");
-let lengthInput = input.int(13, title: "Length");
+indicator(@locale { default: "Bull Bear Power", "zh-CN": "牛熊力量", "zh-HK": "牛熊力量" }, short_title: "BBP");
+let lengthInput = input.int(13, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
 let bullPower = high - ta.ema(close, lengthInput);
 let bearPower = low - ta.ema(close, lengthInput);
 let bbp = bullPower + bearPower;
 plot(
     bbp,
     color: bbp >= 0 ? #089981 : #f23645,
-    title: "BBPower",
+    title: @locale { default: "BBPower", "zh-CN": "牛熊力量", "zh-HK": "牛熊力量" },
     style: PlotStyle.Columns
 );
-hline(0, "Zero line");
+hline(0, @locale { default: "Zero line", "zh-CN": "零线", "zh-HK": "零線" });

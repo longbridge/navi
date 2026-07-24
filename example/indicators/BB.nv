@@ -1,35 +1,55 @@
-﻿indicator(
+indicator(
     short_title: "BB",
-    title: "Bollinger Bands",
+    title: @locale { default: "Bollinger Bands", "zh-CN": "布林带", "zh-HK": "布林帶" },
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
 
-let TT_LENGTH = "The time period to be used in calculating the MA which creates the base for the Upper and Lower Bands.";
-let TT_MA_TYPE = "Determines the type of Moving Average that is applied to the basis plot line.";
-let TT_SOURCE = "Determines what data from each bar will be used in calculations.";
-let TT_MULT = "The number of Standard Deviations away from the MA that the Upper and Lower Bands should be.";
-let TT_OFFSET = "Changing this number will move the Bollinger Bands either Forwards or Backwards relative to the current market.";
+let TT_LENGTH = @locale {
+    default: "The time period to be used in calculating the MA which creates the base for the Upper and Lower Bands.",
+    "zh-CN": "用于计算移动平均线的时间周期，该移动平均线构成上下轨的基础。",
+    "zh-HK": "用於計算移動平均線的時間週期，該移動平均線構成上下軌的基礎。",
+};
+let TT_MA_TYPE = @locale {
+    default: "Determines the type of Moving Average that is applied to the basis plot line.",
+    "zh-CN": "决定应用于基准线的移动平均线类型。",
+    "zh-HK": "決定應用於基準線的移動平均線類型。",
+};
+let TT_SOURCE = @locale {
+    default: "Determines what data from each bar will be used in calculations.",
+    "zh-CN": "决定每根K线中用于计算的数据类型。",
+    "zh-HK": "決定每根K線中用於計算的數據類型。",
+};
+let TT_MULT = @locale {
+    default: "The number of Standard Deviations away from the MA that the Upper and Lower Bands should be.",
+    "zh-CN": "上下轨距移动平均线的标准差倍数。",
+    "zh-HK": "上下軌距移動平均線的標準差倍數。",
+};
+let TT_OFFSET = @locale {
+    default: "Changing this number will move the Bollinger Bands either Forwards or Backwards relative to the current market.",
+    "zh-CN": "调整此数值将使布林带相对当前市场向前或向后偏移。",
+    "zh-HK": "調整此數值將使布林帶相對當前市場向前或向後偏移。",
+};
 
-let length = input.int(20, "Length", minval: 1, tooltip: TT_LENGTH);
+let length = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1, tooltip: TT_LENGTH);
 let maType = input.string(
     "SMA",
-    "Basis MA Type",
+    @locale { default: "Basis MA Type", "zh-CN": "基准MA类型", "zh-HK": "基準MA類型" },
     options: ["SMA", "EMA", "SMMA (RMA)", "WMA", "VWMA"],
     tooltip: TT_MA_TYPE
 );
-let src = input(close, "Source", tooltip: TT_SOURCE);
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" }, tooltip: TT_SOURCE);
 let mult = input.float(
     2.0,
-    "StdDev",
+    @locale { default: "StdDev", "zh-CN": "标准差倍数", "zh-HK": "標準差倍數" },
     minval: 0.001,
     maxval: 50,
     tooltip: TT_MULT
 );
 let offset = input.int(
     0,
-    "Offset",
+    @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" },
     minval: -500,
     maxval: 500,
     tooltip: TT_OFFSET,
@@ -51,7 +71,7 @@ let dev = mult * ta.stdev(src, length);
 let upper = basis + dev;
 let lower = basis - dev;
 
-plot(basis, "Basis", color: #2962FF, offset: offset);
-let p1 = plot(upper, "Upper", color: #F23645, offset: offset);
-let p2 = plot(lower, "Lower", color: #089981, offset: offset);
-fill(p1, p2, title: "Background", color: Color.rgb(33, 150, 243, 95));
+plot(basis, @locale { default: "Basis", "zh-CN": "基准线", "zh-HK": "基準線" }, color: #2962FF, offset: offset);
+let p1 = plot(upper, @locale { default: "Upper", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #F23645, offset: offset);
+let p2 = plot(lower, @locale { default: "Lower", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #089981, offset: offset);
+fill(p1, p2, title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" }, color: Color.rgb(33, 150, 243, 95));

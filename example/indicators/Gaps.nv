@@ -1,22 +1,26 @@
-﻿indicator("Gaps", overlay: true, max_boxes_count: 500);
+indicator(@locale { default: "Gaps", "zh-CN": "缺口", "zh-HK": "缺口" }, overlay: true, max_boxes_count: 500);
 
 let closeGapsPartially = input.bool(
     false,
-    "Close Gaps Partially",
+    @locale { default: "Close Gaps Partially", "zh-CN": "部分关闭缺口", "zh-HK": "部分關閉缺口" },
     display: PlotDisplay.NONE
 );
 let boxLimitInput = input.int(
     15,
-    "Max Number of Gaps",
+    @locale { default: "Max Number of Gaps", "zh-CN": "最大缺口数量", "zh-HK": "最大缺口數量" },
     minval: 1,
     maxval: 500,
     display: PlotDisplay.NONE
 );
-let minimalDeviationTooltip = "Specifies the minimal size of detected gaps, as a percentage of the average high-low range for the last 14 bars.";
+let minimalDeviationTooltip = @locale {
+    default: "Specifies the minimal size of detected gaps, as a percentage of the average high-low range for the last 14 bars.",
+    "zh-CN": "指定检测到的缺口的最小尺寸，以过去14根K线的平均高低范围的百分比表示。",
+    "zh-HK": "指定偵測到的缺口的最小尺寸，以過去14根K線的平均高低範圍的百分比表示。",
+};
 let minimalDeviationInput = nz(
     input.float(
         30.0,
-        "Minimal Deviation (%)",
+        @locale { default: "Minimal Deviation (%)", "zh-CN": "最小偏差 (%)", "zh-HK": "最小偏差 (%)" },
         tooltip: minimalDeviationTooltip,
         minval: 1,
         maxval: 100,
@@ -25,7 +29,7 @@ let minimalDeviationInput = nz(
 );
 let limitBoxLengthBoolInput = input.bool(
     false,
-    "Limit Max Gap Trail Length (bars)",
+    @locale { default: "Limit Max Gap Trail Length (bars)", "zh-CN": "限制最大缺口追踪长度（K线数）", "zh-HK": "限制最大缺口追蹤長度（K線數）" },
     inline: "Length Limit",
     display: PlotDisplay.NONE
 );
@@ -38,10 +42,10 @@ let limitBoxLengthIntInput = input.int(
     active: limitBoxLengthBoolInput
 );
 
-let groupName = "Border and fill colors";
+let groupName = @locale { default: "Border and fill colors", "zh-CN": "边框和填充颜色", "zh-HK": "邊框和填充顏色" };
 let colorUpBorderInput = input.color(
     Color.GREEN,
-    "Up Gaps",
+    @locale { default: "Up Gaps", "zh-CN": "上升缺口", "zh-HK": "上升缺口" },
     inline: "Gap Up",
     group: groupName,
     display: PlotDisplay.NONE
@@ -55,7 +59,7 @@ let colorUpBackgroundInput = input.color(
 );
 let colorDownBorderInput = input.color(
     Color.RED,
-    "Down Gaps",
+    @locale { default: "Down Gaps", "zh-CN": "下降缺口", "zh-HK": "下降缺口" },
     inline: "Gap Down",
     group: groupName,
     display: PlotDisplay.NONE
@@ -177,7 +181,11 @@ if isGap {
 }
 
 if bar_state.is_last_confirmed_history and allGaps.size() == 0 {
-    let noGapText = "No gaps found on the current chart. \n The cause could be that some exchanges align the open of new bars on the close of the previous one, resulting in charts with no gaps. Alternatively, your Minimal Deviation might be too high.";
+    let noGapText = @locale {
+        default: "No gaps found on the current chart. \n The cause could be that some exchanges align the open of new bars on the close of the previous one, resulting in charts with no gaps. Alternatively, your Minimal Deviation might be too high.",
+        "zh-CN": "当前图表未发现缺口。\n 原因可能是某些交易所将新K线的开盘价与前一根K线的收盘价对齐，导致图表中没有缺口。或者，您设置的最小偏差可能过高。",
+        "zh-HK": "當前圖表未發現缺口。\n 原因可能是某些交易所將新K線的開盤價與前一根K線的收盤價對齊，導致圖表中沒有缺口。或者，您設定的最小偏差可能過高。",
+    };
     var infoTable = Table.new(Position.BottomRight, 1, 1);
     Table.cell(
         infoTable,
@@ -191,7 +199,11 @@ if bar_state.is_last_confirmed_history and allGaps.size() == 0 {
 
 alert_condition(
     alertInfo.hasOpenedGap(),
-    "New Gap Appeared",
-    "A new gap has appeared."
+    @locale { default: "New Gap Appeared", "zh-CN": "新缺口出现", "zh-HK": "新缺口出現" },
+    @locale { default: "A new gap has appeared.", "zh-CN": "出现了一个新的缺口。", "zh-HK": "出現了一個新的缺口。" }
 );
-alert_condition(alertInfo.hasClosedGap(), "Gap Closed", "A gap was closed.");
+alert_condition(
+    alertInfo.hasClosedGap(),
+    @locale { default: "Gap Closed", "zh-CN": "缺口已关闭", "zh-HK": "缺口已關閉" },
+    @locale { default: "A gap was closed.", "zh-CN": "一个缺口已关闭。", "zh-HK": "一個缺口已關閉。" }
+);

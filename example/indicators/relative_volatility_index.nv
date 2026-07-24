@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Relative Volatility Index",
+indicator(
+    title: @locale { default: "Relative Volatility Index", "zh-CN": "相对波动率指数", "zh-HK": "相對波動率指數" },
     short_title: "RVI",
     format: Format.Price,
     precision: 2,
@@ -7,7 +7,7 @@
     timeframe_gaps: true
 );
 let length = input.int(10, minval: 1);
-let offset = input.int(0, "Offset", minval: -500, maxval: 500);
+let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移量", "zh-HK": "偏移量" }, minval: -500, maxval: 500);
 let src = close;
 let len = 14;
 let stddev = ta.stdev(src, length);
@@ -15,18 +15,22 @@ let upper = ta.ema(ta.change(src) <= 0 ? 0 : stddev, len);
 let lower = ta.ema(ta.change(src) > 0 ? 0 : stddev, len);
 let rvi = upper / (upper + lower) * 100;
 
-let h0 = hline(80, "Upper Band", color: #787B86);
-hline(50, "Middle Band", color: Color.new(#787B86, 50));
-let h1 = hline(20, "Lower Band", color: #787B86);
-fill(h0, h1, color: Color.rgb(126, 87, 194, 90), title: "Background");
+let h0 = hline(80, @locale { default: "Upper Band", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #787B86);
+hline(50, @locale { default: "Middle Band", "zh-CN": "中轨", "zh-HK": "中軌" }, color: Color.new(#787B86, 50));
+let h1 = hline(20, @locale { default: "Lower Band", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #787B86);
+fill(h0, h1, color: Color.rgb(126, 87, 194, 90), title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" });
 
 plot(rvi, title: "RVI", color: #7E57C2, offset: offset);
 
-let GRP = "Smoothing";
-let TT_BB = "Only applies when 'SMA + Bollinger Bands' is selected. Determines the distance between the SMA and the bands.";
+let GRP = @locale { default: "Smoothing", "zh-CN": "平滑处理", "zh-HK": "平滑處理" };
+let TT_BB = @locale {
+    default: "Only applies when 'SMA + Bollinger Bands' is selected. Determines the distance between the SMA and the bands.",
+    "zh-CN": '仅在选择"SMA + 布林带"时生效，用于确定 SMA 与布林带之间的距离。',
+    "zh-HK": "僅在選擇「SMA + 布林帶」時生效，用於確定 SMA 與布林帶之間的距離。",
+};
 let maTypeInput = input.string(
     "SMA",
-    "Type",
+    @locale { default: "Type", "zh-CN": "类型", "zh-HK": "類型" },
     options: [
         "None",
         "SMA",
@@ -42,14 +46,14 @@ let maTypeInput = input.string(
 var isBB = maTypeInput == "SMA + Bollinger Bands";
 let maLengthInput = input.int(
     14,
-    "Length",
+    @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" },
     group: GRP,
     display: PlotDisplay.NONE,
     active: maTypeInput != "None"
 );
 let bbMultInput = input.float(
     2.0,
-    "BB StdDev",
+    @locale { default: "BB StdDev", "zh-CN": "BB 标准差", "zh-HK": "BB 標準差" },
     minval: 0.001,
     maxval: 50,
     step: 0.5,
@@ -82,14 +86,14 @@ plot(
 );
 let bbUpperBand = plot(
     smoothingMA + smoothingStDev,
-    title: "Upper Bollinger Band",
+    title: @locale { default: "Upper Bollinger Band", "zh-CN": "布林带上轨", "zh-HK": "布林帶上軌" },
     color: Color.GREEN,
     display: isBB ? PlotDisplay.ALL : PlotDisplay.NONE,
     editable: isBB
 );
 let bbLowerBand = plot(
     smoothingMA - smoothingStDev,
-    title: "Lower Bollinger Band",
+    title: @locale { default: "Lower Bollinger Band", "zh-CN": "布林带下轨", "zh-HK": "布林帶下軌" },
     color: Color.GREEN,
     display: isBB ? PlotDisplay.ALL : PlotDisplay.NONE,
     editable: isBB
@@ -98,7 +102,7 @@ fill(
     bbUpperBand,
     bbLowerBand,
     color: isBB ? Color.new(Color.GREEN, 90) : na,
-    title: "Bollinger Bands Background Fill",
+    title: @locale { default: "Bollinger Bands Background Fill", "zh-CN": "布林带背景填充", "zh-HK": "布林帶背景填充" },
     display: isBB ? PlotDisplay.ALL : PlotDisplay.NONE,
     editable: isBB
 );

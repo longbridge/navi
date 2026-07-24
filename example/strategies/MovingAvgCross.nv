@@ -1,6 +1,6 @@
-﻿strategy("MovingAvg Cross", overlay: true);
-let length = input(9, "Length");
-let confirmBars = input(1, "Confirm bars");
+strategy(@locale { default: "MovingAvg Cross", "zh-CN": "均线交叉", "zh-HK": "均線交叉" }, overlay: true);
+let length = input(9, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
+let confirmBars = input(1, @locale { default: "Confirm bars", "zh-CN": "确认K线数", "zh-HK": "確認K線數" });
 let price = close;
 let ma = ta.sma(price, length);
 let bcond = price > ma;

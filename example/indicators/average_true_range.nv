@@ -1,13 +1,13 @@
-﻿indicator(
-    title: "Average True Range",
+indicator(
+    title: @locale { default: "Average True Range", "zh-CN": "平均真实波幅", "zh-HK": "平均真實波幅" },
     short_title: "ATR",
     overlay: false,
     timeframe: "",
     timeframe_gaps: true
 );
-let length = input.int(title: "Length", defval: 14, minval: 1);
+let length = input.int(title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, defval: 14, minval: 1);
 let smoothing = input.string(
-    title: "Smoothing",
+    title: @locale { default: "Smoothing", "zh-CN": "平滑方式", "zh-HK": "平滑方式" },
     defval: "RMA",
     options: ["RMA", "SMA", "EMA", "WMA"]
 );
@@ -21,6 +21,6 @@ fn ma_function(source, length) {
 }
 plot(
     ma_function(ta.tr(true), length),
-    title: "ATR",
+    title: @locale { default: "ATR", "zh-CN": "ATR", "zh-HK": "ATR" },
     color: Color.new(#B71C1C, 0)
 );

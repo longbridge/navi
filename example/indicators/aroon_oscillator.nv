@@ -1,4 +1,4 @@
-indicator("Aroon Oscillator", "Aroon Osc", timeframe: "", timeframe_gaps: true);
+indicator(@locale { default: "Aroon Oscillator", "zh-CN": "Aroon 振荡器", "zh-HK": "Aroon 振盪器" }, "Aroon Osc", timeframe: "", timeframe_gaps: true);
 
 struct collectedData {
     data: Array<float>,
@@ -877,14 +877,14 @@ fn wpo(length: simple int) {
     let result: float = ema(ti, length);
 }
 
-let lengthInput: int = input.int(14, "Length", 1);
+let lengthInput: int = input.int(14, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, 1);
 
 let (aroonUp, aroonDn) = aroon(lengthInput);
 let osc: float = aroonUp - aroonDn;
 
-let oscPlot = plot(osc, "Oscillator", osc >= 0 ? #4caf50 : #ff5252);
+let oscPlot = plot(osc, @locale { default: "Oscillator", "zh-CN": "振荡器", "zh-HK": "振盪器" }, osc >= 0 ? #4caf50 : #ff5252);
 let zeroPlot = plot(0, "", na, display: PlotDisplay.NONE, editable: false);
 fill(oscPlot, zeroPlot, osc >= 0 ? #4caf501a : #ff52521a, "Oscillator fill");
-hline(0, "Center");
-hline(90, "Upper level");
-hline(-90, "Lower level");
+hline(0, @locale { default: "Center", "zh-CN": "零线", "zh-HK": "零線" });
+hline(90, @locale { default: "Upper level", "zh-CN": "上方水平线", "zh-HK": "上方水平線" });
+hline(-90, @locale { default: "Lower level", "zh-CN": "下方水平线", "zh-HK": "下方水平線" });

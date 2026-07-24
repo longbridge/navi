@@ -1,4 +1,4 @@
-﻿indicator("Up/Down Volume", "Up/Dn Vol", format: Format.Volume);
+indicator(@locale { default: "Up/Down Volume", "zh-CN": "上涨/下跌成交量", "zh-HK": "上漲/下跌成交量" }, "Up/Dn Vol", format: Format.Volume);
 
 struct collectedData {
     data: Array<float>,
@@ -877,15 +877,19 @@ fn wpo(length: simple int) {
     let result: float = ta.ema(ti, length);
 }
 
-let lowerTimeframeTooltip = "The indicator scans lower timeframe data to approximate Up/Down volume." + "  By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe." + " \n\nHigher timeframes provide more historical data, but the data will be less precise.";
+let lowerTimeframeTooltip = @locale {
+    default: "The indicator scans lower timeframe data to approximate Up/Down volume.  By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe. \n\nHigher timeframes provide more historical data, but the data will be less precise.",
+    "zh-CN": "该指标扫描较低时间周期的数据以近似计算上涨/下跌成交量。默认情况下，时间周期会自动选择。这些输入项可覆盖默认设置以使用自定义时间周期。\n\n较高的时间周期能提供更多历史数据，但数据精度会降低。",
+    "zh-HK": "該指標掃描較低時間週期的數據以近似計算上漲/下跌成交量。預設情況下，時間週期會自動選擇。這些輸入項可覆蓋預設設置以使用自定義時間週期。\n\n較高的時間週期能提供更多歷史數據，但數據精度會降低。",
+};
 let useCustomTimeframeInput = input.bool(
     false,
-    "Use custom timeframe",
+    @locale { default: "Use custom timeframe", "zh-CN": "使用自定义时间周期", "zh-HK": "使用自定義時間週期" },
     tooltip: lowerTimeframeTooltip
 );
 let lowerTimeframeInput = input.timeframe(
     "1",
-    "Timeframe",
+    @locale { default: "Timeframe", "zh-CN": "时间周期", "zh-HK": "時間週期" },
     active: useCustomTimeframeInput
 );
 
@@ -899,19 +903,19 @@ let lowerTimeframe = switch {
 let (upVolume, downVolume, delta) = requestUpAndDownVolume(lowerTimeframe);
 plot(
     upVolume,
-    "Up Volume",
+    @locale { default: "Up Volume", "zh-CN": "上涨成交量", "zh-HK": "上漲成交量" },
     style: PlotStyle.Columns,
     color: Color.new(Color.GREEN, 60)
 );
 plot(
     downVolume,
-    "Down Volume",
+    @locale { default: "Down Volume", "zh-CN": "下跌成交量", "zh-HK": "下跌成交量" },
     style: PlotStyle.Columns,
     color: Color.new(Color.RED, 60)
 );
 plot_char(
     delta,
-    "delta",
+    @locale { default: "Delta", "zh-CN": "差值", "zh-HK": "差值" },
     "—",
     Location.Absolute,
     color: delta > 0 ? Color.GREEN : Color.RED,

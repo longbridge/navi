@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Accumulation/Distribution",
+indicator(
+    title: @locale { default: "Accumulation/Distribution", "zh-CN": "累积/派发", "zh-HK": "累積/派發" },
     short_title: "Accum/Dist",
     format: Format.Volume,
     overlay: false,
@@ -14,4 +14,4 @@ if bar_state.is_last and cumVol == 0 {
 let ad = ta.cum(
     close == high and close == low or high == low ? 0 : ((2 * close - low - high) / (high - low)) * volume
 );
-plot(ad, title: "Accumulation/Distribution", color: #999915);
+plot(ad, title: @locale { default: "Accumulation/Distribution", "zh-CN": "累积/派发", "zh-HK": "累積/派發" }, color: #999915);

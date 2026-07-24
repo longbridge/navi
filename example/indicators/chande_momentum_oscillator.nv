@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Chande Momentum Oscillator",
+indicator(
+    title: @locale { default: "Chande Momentum Oscillator", "zh-CN": "Chande 动量振荡器", "zh-HK": "Chande 動量振盪器" },
     short_title: "ChandeMO",
     format: Format.Price,
     precision: 2,
@@ -7,7 +7,7 @@
     timeframe_gaps: true
 );
 let length = input.int(9, minval: 1);
-let src = input(close, "Source");
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let momm = ta.change(src);
 fn f1(m) {
     m >= 0.0 ? m : 0.0;
@@ -23,5 +23,5 @@ fn percent(nom, div) {
     100 * nom / div;
 }
 let chandeMO = percent(sm1 - sm2, sm1 + sm2);
-plot(chandeMO, "Chande MO", color: #2962FF);
-hline(0, color: #787B86, line_style: HLineStyle.Dashed, title: "Zero line");
+plot(chandeMO, @locale { default: "Chande MO", "zh-CN": "Chande MO", "zh-HK": "Chande MO" }, color: #2962FF);
+hline(0, color: #787B86, line_style: HLineStyle.Dashed, title: @locale { default: "Zero line", "zh-CN": "零线", "zh-HK": "零線" });

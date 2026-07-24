@@ -1,12 +1,12 @@
-﻿indicator(
-    title: "Hull Moving Average",
+indicator(
+    title: @locale { default: "Hull Moving Average", "zh-CN": "赫尔移动平均线", "zh-HK": "赫爾移動平均線" },
     short_title: "HMA",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let length = input.int(9, "Length", minval: 2);
-let src = input(close, "Source");
+let length = input.int(9, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 2);
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let hullma = ta.wma(
     2 * ta.wma(src, length / 2) - ta.wma(src, length),
     math.floor(math.sqrt(length))

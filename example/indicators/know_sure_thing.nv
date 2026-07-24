@@ -1,20 +1,20 @@
-﻿indicator(
-    title: "Know Sure Thing",
+indicator(
+    title: @locale { default: "Know Sure Thing", "zh-CN": "确定事物指标", "zh-HK": "確定事物指標" },
     short_title: "KST",
     format: Format.Price,
     precision: 4,
     timeframe: "",
     timeframe_gaps: true
 );
-let roclen1 = input.int(10, minval: 1, title: "ROC Length #1");
-let roclen2 = input.int(15, minval: 1, title: "ROC Length #2");
-let roclen3 = input.int(20, minval: 1, title: "ROC Length #3");
-let roclen4 = input.int(30, minval: 1, title: "ROC Length #4");
-let smalen1 = input.int(10, minval: 1, title: "SMA Length #1");
-let smalen2 = input.int(10, minval: 1, title: "SMA Length #2");
-let smalen3 = input.int(10, minval: 1, title: "SMA Length #3");
-let smalen4 = input.int(15, minval: 1, title: "SMA Length #4");
-let siglen = input.int(9, minval: 1, title: "Signal line Length");
+let roclen1 = input.int(10, minval: 1, title: @locale { default: "ROC Length #1", "zh-CN": "ROC 周期 #1", "zh-HK": "ROC 週期 #1" });
+let roclen2 = input.int(15, minval: 1, title: @locale { default: "ROC Length #2", "zh-CN": "ROC 周期 #2", "zh-HK": "ROC 週期 #2" });
+let roclen3 = input.int(20, minval: 1, title: @locale { default: "ROC Length #3", "zh-CN": "ROC 周期 #3", "zh-HK": "ROC 週期 #3" });
+let roclen4 = input.int(30, minval: 1, title: @locale { default: "ROC Length #4", "zh-CN": "ROC 周期 #4", "zh-HK": "ROC 週期 #4" });
+let smalen1 = input.int(10, minval: 1, title: @locale { default: "SMA Length #1", "zh-CN": "SMA 周期 #1", "zh-HK": "SMA 週期 #1" });
+let smalen2 = input.int(10, minval: 1, title: @locale { default: "SMA Length #2", "zh-CN": "SMA 周期 #2", "zh-HK": "SMA 週期 #2" });
+let smalen3 = input.int(10, minval: 1, title: @locale { default: "SMA Length #3", "zh-CN": "SMA 周期 #3", "zh-HK": "SMA 週期 #3" });
+let smalen4 = input.int(15, minval: 1, title: @locale { default: "SMA Length #4", "zh-CN": "SMA 周期 #4", "zh-HK": "SMA 週期 #4" });
+let siglen = input.int(9, minval: 1, title: @locale { default: "Signal line Length", "zh-CN": "信号线周期", "zh-HK": "信號線週期" });
 fn smaroc(roclen, smalen) {
     ta.sma(ta.roc(close, roclen), smalen);
 }
@@ -23,6 +23,6 @@ let kst = smaroc(roclen1, smalen1) + 2 * smaroc(roclen2, smalen2) + 3 * smaroc(
     smalen3
 ) + 4 * smaroc(roclen4, smalen4);
 let sig = ta.sma(kst, siglen);
-plot(kst, color: #009688, title: "KST");
-plot(sig, color: #F44336, title: "Signal");
-hline(0, title: "Zero", color: #787B86);
+plot(kst, color: #009688, title: @locale { default: "KST", "zh-CN": "KST", "zh-HK": "KST" });
+plot(sig, color: #F44336, title: @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "信號線" });
+hline(0, title: @locale { default: "Zero", "zh-CN": "零轴", "zh-HK": "零軸" }, color: #787B86);

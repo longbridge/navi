@@ -1,12 +1,12 @@
-﻿indicator("Negative Volume Index", "NVI", timeframe: "", timeframe_gaps: true);
+indicator(@locale { default: "Negative Volume Index", "zh-CN": "负量指数", "zh-HK": "負量指數" }, "NVI", timeframe: "", timeframe_gaps: true);
 
-let maLengthInput: int = input.int(255, "EMA length", 1);
+let maLengthInput: int = input.int(255, @locale { default: "EMA length", "zh-CN": "EMA 周期", "zh-HK": "EMA 週期" }, 1);
 
 let nvi: float = ta.nvi * 1000.0;
 let ema: float = ta.ema(nvi, maLengthInput);
 
-plot(nvi, "NVI");
-plot(ema, "NVI-based EMA", #ff9800);
+plot(nvi, @locale { default: "NVI", "zh-CN": "NVI", "zh-HK": "NVI" });
+plot(ema, @locale { default: "NVI-based EMA", "zh-CN": "基于 NVI 的 EMA", "zh-HK": "基於 NVI 的 EMA" }, #ff9800);
 
 if ta.cum(nz(volume)) == 0.0 and bar_state.is_last_confirmed_history {
     runtime.error("No volume is provided by the data vendor.");

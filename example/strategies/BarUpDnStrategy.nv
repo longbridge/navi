@@ -1,10 +1,10 @@
-﻿strategy(
-    "BarUpDn Strategy",
+strategy(
+    @locale { default: "BarUpDn Strategy", "zh-CN": "涨跌K线策略", "zh-HK": "漲跌K線策略" },
     overlay: true,
     default_qty_type: DefaultQtyType.PercentOfEquity,
     default_qty_value: 10
 );
-let maxIdLossPcnt = input.float(1, "Max intraday loss (%)");
+let maxIdLossPcnt = input.float(1, @locale { default: "Max intraday loss (%)", "zh-CN": "最大日内亏损 (%)", "zh-HK": "最大日內虧損 (%)" });
 strategy.risk.max_intraday_loss(maxIdLossPcnt, DefaultQtyType.PercentOfEquity);
 if (close > open and open > close[1]) {
     strategy.entry("BarUp", Direction.Long);

@@ -1,5 +1,5 @@
 ﻿indicator(
-    title: "Triple EMA",
+    title: @locale { default: "Triple EMA", "zh-CN": "三重EMA", "zh-HK": "三重EMA" },
     short_title: "TEMA",
     overlay: true,
     timeframe: "",

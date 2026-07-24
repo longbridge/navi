@@ -1,12 +1,12 @@
-﻿indicator(
-    title: "Relative Vigor Index",
+indicator(
+    title: @locale { default: "Relative Vigor Index", "zh-CN": "相对活力指数", "zh-HK": "相對活力指數" },
     short_title: "RVGI",
     format: Format.Price,
     precision: 4,
     timeframe: "",
     timeframe_gaps: true
 );
-let len = input.int(10, title: "Length", minval: 1);
+let len = input.int(10, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
 let rvi = math.sum(ta.swma(close - open), len) / math.sum(
     ta.swma(high - low),
     len
@@ -14,10 +14,10 @@ let rvi = math.sum(ta.swma(close - open), len) / math.sum(
 let sig = ta.swma(rvi);
 let offset = input.int(
     0,
-    "Offset",
+    @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" },
     minval: -500,
     maxval: 500,
     display: PlotDisplay.NONE
 );
-plot(rvi, color: #008000, title: "RVGI", offset: offset);
-plot(sig, color: #FF0000, title: "Signal", offset: offset);
+plot(rvi, color: #008000, title: @locale { default: "RVGI", "zh-CN": "RVGI", "zh-HK": "RVGI" }, offset: offset);
+plot(sig, color: #FF0000, title: @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "信號線" }, offset: offset);

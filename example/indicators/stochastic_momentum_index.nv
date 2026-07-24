@@ -1,13 +1,13 @@
-﻿indicator(
-    "Stochastic Momentum Index",
+indicator(
+    @locale { default: "Stochastic Momentum Index", "zh-CN": "随机动量指数", "zh-HK": "隨機動量指數" },
     "SMI",
     timeframe: "",
     timeframe_gaps: true
 );
 
-let lengthK = input.int(10, "%K Length", minval: 1, maxval: 15000);
-let lengthD = input.int(3, "%D Length", minval: 1, maxval: 4999);
-let lengthEMA = input.int(3, "EMA Length", minval: 1, maxval: 4999);
+let lengthK = input.int(10, @locale { default: "%K Length", "zh-CN": "%K 周期", "zh-HK": "%K 週期" }, minval: 1, maxval: 15000);
+let lengthD = input.int(3, @locale { default: "%D Length", "zh-CN": "%D 周期", "zh-HK": "%D 週期" }, minval: 1, maxval: 4999);
+let lengthEMA = input.int(3, @locale { default: "EMA Length", "zh-CN": "EMA 周期", "zh-HK": "EMA 週期" }, minval: 1, maxval: 4999);
 
 fn emaEma(source, length) {
     ta.ema(ta.ema(source, length), length);
@@ -23,17 +23,17 @@ let smi = 200 * (emaEma(relativeRange, lengthD) / emaEma(
 ));
 
 let smiPlot = plot(smi, "SMI", color: Color.BLUE);
-plot(ta.ema(smi, lengthEMA), "SMI-based EMA", color: Color.ORANGE);
+plot(ta.ema(smi, lengthEMA), @locale { default: "SMI-based EMA", "zh-CN": "SMI 信号线 EMA", "zh-HK": "SMI 訊號線 EMA" }, color: Color.ORANGE);
 
-let overbought = hline(40, "Overbought line");
-let oversold = hline(-40, "Oversold line");
+let overbought = hline(40, @locale { default: "Overbought line", "zh-CN": "超买线", "zh-HK": "超買線" });
+let oversold = hline(-40, @locale { default: "Oversold line", "zh-CN": "超卖线", "zh-HK": "超賣線" });
 fill(
     overbought,
     oversold,
-    title: "Background",
+    title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" },
     color: Color.new(Color.BLUE, 90)
 );
-hline(0, "Middle line", color: Color.new(Color.GRAY, 50));
+hline(0, @locale { default: "Middle line", "zh-CN": "中线", "zh-HK": "中線" }, color: Color.new(Color.GRAY, 50));
 
 let midLinePlot = plot(0, color: na, editable: false, display: PlotDisplay.NONE);
 fill(
@@ -43,7 +43,7 @@ fill(
     40,
     top_color: Color.new(#4caf4f, 50),
     bottom_color: Color.new(Color.GREEN, 100),
-    title: "Overbought Gradient Fill"
+    title: @locale { default: "Overbought Gradient Fill", "zh-CN": "超买渐变填充", "zh-HK": "超買漸變填充" }
 );
 fill(
     smiPlot,
@@ -52,5 +52,5 @@ fill(
     -120,
     top_color: Color.new(Color.RED, 100),
     bottom_color: Color.new(Color.RED, 50),
-    title: "Oversold Gradient Fill"
+    title: @locale { default: "Oversold Gradient Fill", "zh-CN": "超卖渐变填充", "zh-HK": "超賣漸變填充" }
 );

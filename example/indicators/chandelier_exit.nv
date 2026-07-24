@@ -1,6 +1,6 @@
 indicator(
-    "Chandelier Exit",
-    "Chandelier",
+    @locale { default: "Chandelier Exit", "zh-CN": "吊灯止损", "zh-HK": "吊燈止損" },
+    @locale { default: "Chandelier", "zh-CN": "吊灯", "zh-HK": "吊燈" },
     true,
     timeframe: "",
     timeframe_gaps: true
@@ -883,11 +883,11 @@ fn wpo(length: simple int) {
     let result: float = ema(ti, length);
 }
 
-let lengthInput: int = input.int(22, "Length", 1);
-let atrLenInput: int = input.int(22, "ATR length", 1);
-let atrMultInput: float = input.float(3.0, "ATR multiplier", 0.0, step: 0.01);
+let lengthInput: int = input.int(22, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, 1);
+let atrLenInput: int = input.int(22, @locale { default: "ATR length", "zh-CN": "ATR 周期", "zh-HK": "ATR 週期" }, 1);
+let atrMultInput: float = input.float(3.0, @locale { default: "ATR multiplier", "zh-CN": "ATR 倍数", "zh-HK": "ATR 倍數" }, 0.0, step: 0.01);
 
 let (longCE, shortCE) = chandelier(lengthInput, atrLenInput, atrMultInput);
 
-plot(longCE, "Long exit");
-plot(shortCE, "Short exit", #ff6d00);
+plot(longCE, @locale { default: "Long exit", "zh-CN": "多头止损", "zh-HK": "多頭止損" });
+plot(shortCE, @locale { default: "Short exit", "zh-CN": "空头止损", "zh-HK": "空頭止損" }, #ff6d00);

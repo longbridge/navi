@@ -1,7 +1,7 @@
-﻿indicator("Moon Phases", overlay: true);
+indicator(@locale { default: "Moon Phases", "zh-CN": "月相", "zh-HK": "月相" }, overlay: true);
 
-let waxingMoonColorInput = input.color(Color.BLUE, "Waxing Moon");
-let waningMoonColorInput = input.color(Color.WHITE, "Waning Moon");
+let waxingMoonColorInput = input.color(Color.BLUE, @locale { default: "Waxing Moon", "zh-CN": "上弦月", "zh-HK": "上弦月" });
+let waningMoonColorInput = input.color(Color.WHITE, @locale { default: "Waning Moon", "zh-CN": "下弦月", "zh-HK": "下弦月" });
 
 if timeframe.is_monthly {
     runtime.error("Unsupported timeframe.");
@@ -116,7 +116,7 @@ fn getLastNewMoon(_time) {
 let (moonPhase, moonType) = getLastNewMoon(time_close);
 plot_shape(
     moonType == +1,
-    "New Moon",
+    @locale { default: "New Moon", "zh-CN": "新月", "zh-HK": "新月" },
     Shape.Circle,
     Location.AboveBar,
     Color.new(waxingMoonColorInput, 50),
@@ -125,7 +125,7 @@ plot_shape(
 );
 plot_shape(
     moonType == -1,
-    "Full Moon",
+    @locale { default: "Full Moon", "zh-CN": "满月", "zh-HK": "滿月" },
     Shape.Circle,
     Location.BelowBar,
     Color.new(waningMoonColorInput, 50),

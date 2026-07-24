@@ -1,16 +1,16 @@
-﻿indicator(
-    title: "Donchian Channels",
+indicator(
+    title: @locale { default: "Donchian Channels", "zh-CN": "唐奇安通道", "zh-HK": "唐奇安通道" },
     short_title: "DC",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
 let length = input.int(20, minval: 1);
-let offset = input.int(0, "Offset");
+let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" });
 let lower = ta.lowest(length);
 let upper = ta.highest(length);
 let basis = math.avg(upper, lower);
-plot(basis, "Basis", color: #FF6D00, offset: offset);
-let u = plot(upper, "Upper", color: #2962FF, offset: offset);
-let l = plot(lower, "Lower", color: #2962FF, offset: offset);
-fill(u, l, color: Color.rgb(33, 150, 243, 95), title: "Background");
+plot(basis, @locale { default: "Basis", "zh-CN": "中线", "zh-HK": "中線" }, color: #FF6D00, offset: offset);
+let u = plot(upper, @locale { default: "Upper", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #2962FF, offset: offset);
+let l = plot(lower, @locale { default: "Lower", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #2962FF, offset: offset);
+fill(u, l, color: Color.rgb(33, 150, 243, 95), title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" });

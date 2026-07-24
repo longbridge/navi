@@ -1,11 +1,11 @@
-﻿indicator(
-    "Williams Fractals",
+indicator(
+    @locale { default: "Williams Fractals", "zh-CN": "威廉姆斯分形", "zh-HK": "威廉姆斯分形" },
     short_title: "Fractals",
     format: Format.Price,
     precision: 0,
     overlay: true
 );
-let n = input.int(title: "Periods", defval: 2, minval: 2);
+let n = input.int(title: @locale { default: "Periods", "zh-CN": "周期", "zh-HK": "週期" }, defval: 2, minval: 2);
 
 let upflagDownFrontier: bool = true;
 let upflagUpFrontier0: bool = true;

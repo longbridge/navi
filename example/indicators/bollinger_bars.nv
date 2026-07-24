@@ -1,4 +1,4 @@
-﻿indicator(
+indicator(
     "Bollinger Bars",
     overlay: true,
     explicit_plot_zorder: true,
@@ -10,7 +10,7 @@ plot_candle(
     high,
     low,
     low,
-    "Bollinger Bars Wicks",
+    @locale { default: "Bollinger Bars Wicks", "zh-CN": "布林带影线", "zh-HK": "布林帶影線" },
     color: #0D349E,
     border_color: #0D349E,
     wick_color: na,
@@ -22,7 +22,7 @@ plot_candle(
     high,
     low,
     close,
-    "Bollinger Bars Body",
+    @locale { default: "Bollinger Bars Body", "zh-CN": "布林带实体", "zh-HK": "布林帶實體" },
     color: col,
     border_color: col,
     wick_color: na

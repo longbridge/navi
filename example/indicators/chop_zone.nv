@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Chop Zone",
+indicator(
+    title: @locale { default: "Chop Zone", "zh-CN": "震荡区间", "zh-HK": "震盪區間" },
     format: Format.Price,
     precision: 0,
     timeframe: "",
@@ -34,4 +34,4 @@ let emaAngle_1 = math.round(
 );
 let emaAngle = y2_ema34 > 0 ? -emaAngle_1 : emaAngle_1;
 let chopZoneColor = emaAngle >= 5 ? colorTurquoise : emaAngle < 5 and emaAngle >= 3.57 ? colorDarkGreen : emaAngle < 3.57 and emaAngle >= 2.14 ? colorPaleGreen : emaAngle < 2.14 and emaAngle >= .71 ? colorLime : emaAngle <= -1 * 5 ? colorDarkRed : emaAngle > -1 * 5 and emaAngle <= -1 * 3.57 ? colorRed : emaAngle > -1 * 3.57 and emaAngle <= -1 * 2.14 ? colorOrange : emaAngle > -1 * 2.14 and emaAngle <= -1 * .71 ? colorLightOrange : colorYellow;
-plot(1, "Chop Zone", color: chopZoneColor, style: PlotStyle.Columns);
+plot(1, @locale { default: "Chop Zone", "zh-CN": "震荡区间", "zh-HK": "震盪區間" }, color: chopZoneColor, style: PlotStyle.Columns);

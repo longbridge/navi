@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Bollinger Bands %b",
+indicator(
+    title: @locale { default: "Bollinger Bands %b", "zh-CN": "布林带 %b", "zh-HK": "布林帶 %b" },
     short_title: "BB %b",
     format: Format.Price,
     precision: 2,
@@ -7,15 +7,27 @@
     timeframe_gaps: true
 );
 
-let TT_LENGTH: String = "The time period to be used in calculating the SMA which creates the base for the Upper and Lower Bands";
-let TT_SOURCE: String = "Determines what data from each bar will be used in calculations.";
-let TT_MULT: String = "The number of Standard Deviations away from the SMA that the Upper and Lower Bands should be.";
+let TT_LENGTH: String = @locale {
+    default: "The time period to be used in calculating the SMA which creates the base for the Upper and Lower Bands",
+    "zh-CN": "用于计算 SMA 的时间周期，SMA 是上轨和下轨的计算基础",
+    "zh-HK": "用於計算 SMA 的時間週期，SMA 是上軌和下軌的計算基礎",
+};
+let TT_SOURCE: String = @locale {
+    default: "Determines what data from each bar will be used in calculations.",
+    "zh-CN": "确定每根 K 线的哪类数据将用于计算。",
+    "zh-HK": "確定每根 K 線的哪類數據將用於計算。",
+};
+let TT_MULT: String = @locale {
+    default: "The number of Standard Deviations away from the SMA that the Upper and Lower Bands should be.",
+    "zh-CN": "上轨和下轨距 SMA 的标准差倍数。",
+    "zh-HK": "上軌和下軌距 SMA 的標準差倍數。",
+};
 
-let length = input.int(20, "Length", minval: 1, tooltip: TT_LENGTH);
-let src = input(close, "Source", tooltip: TT_SOURCE);
+let length = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1, tooltip: TT_LENGTH);
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" }, tooltip: TT_SOURCE);
 let mult = input.float(
     2.0,
-    "StdDev",
+    @locale { default: "StdDev", "zh-CN": "标准差倍数", "zh-HK": "標準差倍數" },
     minval: 0.001,
     maxval: 50,
     tooltip: TT_MULT
@@ -26,34 +38,34 @@ let dev = mult * ta.stdev(src, length);
 let upper = basis + dev;
 let lower = basis - dev;
 let bbr = (src - lower) / (upper - lower);
-plot(bbr, "Bollinger Bands %b", color: #2962FF);
+plot(bbr, @locale { default: "Bollinger Bands %b", "zh-CN": "布林带 %b", "zh-HK": "布林帶 %b" }, color: #2962FF);
 
 let bandTop = hline(100, display: PlotDisplay.NONE, editable: false);
 let band1 = hline(
     1,
-    "Overbought",
+    @locale { default: "Overbought", "zh-CN": "超买", "zh-HK": "超買" },
     color: Color.new(#F23645, 50),
     line_style: HLineStyle.Dashed
 );
-hline(0.5, "Middle Band", color: Color.new(#2962FF, 50));
+hline(0.5, @locale { default: "Middle Band", "zh-CN": "中轨", "zh-HK": "中軌" }, color: Color.new(#2962FF, 50));
 let band0 = hline(
     0,
-    "Oversold",
+    @locale { default: "Oversold", "zh-CN": "超卖", "zh-HK": "超賣" },
     Color.new(#089981, 50),
     line_style: HLineStyle.Dashed
 );
 let bandBottom = hline(-100, display: PlotDisplay.NONE, editable: false);
 
-fill(band1, band0, title: "Middle Background", color: Color.new(#2962FF, 90));
+fill(band1, band0, title: @locale { default: "Middle Background", "zh-CN": "中部背景", "zh-HK": "中部背景" }, color: Color.new(#2962FF, 90));
 fill(
     bandTop,
     band1,
-    title: "Overbought background",
+    title: @locale { default: "Overbought background", "zh-CN": "超买背景", "zh-HK": "超買背景" },
     color: Color.new(#F23645, 90)
 );
 fill(
     band0,
     bandBottom,
-    title: "Oversold background",
+    title: @locale { default: "Oversold background", "zh-CN": "超卖背景", "zh-HK": "超賣背景" },
     color: Color.new(#089981, 90)
 );

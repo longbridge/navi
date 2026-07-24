@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Detrended Price Oscillator",
+indicator(
+    title: @locale { default: "Detrended Price Oscillator", "zh-CN": "去趋势价格震荡指标", "zh-HK": "去趨勢價格震盪指標" },
     short_title: "DPO",
     format: Format.Price,
     precision: 2,
@@ -7,13 +7,17 @@
     timeframe_gaps: true
 );
 
-let TT_CENTERED = "When the DPO is centered, the DPO line stays offset towards the left. When it is not centered, it shifts back to the right to match current price.";
+let TT_CENTERED = @locale {
+    default: "When the DPO is centered, the DPO line stays offset towards the left. When it is not centered, it shifts back to the right to match current price.",
+    "zh-CN": "当 DPO 居中时，DPO 线保持向左偏移。当不居中时，它向右移动以匹配当前价格。",
+    "zh-HK": "當 DPO 居中時，DPO 線保持向左偏移。當不居中時，它向右移動以匹配當前價格。",
+};
 
-let period_ = input.int(21, "Length", minval: 1);
-let isCentered = input(false, "Centered", tooltip: TT_CENTERED);
+let period_ = input.int(21, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
+let isCentered = input(false, @locale { default: "Centered", "zh-CN": "居中", "zh-HK": "居中" }, tooltip: TT_CENTERED);
 
 let barsback = period_ / 2 + 1;
 let ma = ta.sma(close, period_);
 let dpo = isCentered ? close[barsback] - ma : close - ma[barsback];
-plot(dpo, "DPO", offset: isCentered ? -barsback : 0, color: #43A047);
-hline(0, title: "Zero line", color: #787B86);
+plot(dpo, @locale { default: "DPO", "zh-CN": "DPO", "zh-HK": "DPO" }, offset: isCentered ? -barsback : 0, color: #43A047);
+hline(0, title: @locale { default: "Zero line", "zh-CN": "零线", "zh-HK": "零線" }, color: #787B86);

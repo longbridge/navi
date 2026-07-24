@@ -1,48 +1,52 @@
-﻿indicator(
-    "Trading Sessions",
+indicator(
+    @locale { default: "Trading Sessions", "zh-CN": "交易时段", "zh-HK": "交易時段" },
     overlay: true,
     max_boxes_count: 500,
     max_lines_count: 500,
     max_labels_count: 500
 );
 
-let showSessionNames: bool = input.bool(true, "Show session names");
-let showSessionOC: bool = input.bool(true, "Draw session open and close lines");
+let showSessionNames: bool = input.bool(true, @locale { default: "Show session names", "zh-CN": "显示时段名称", "zh-HK": "顯示時段名稱" });
+let showSessionOC: bool = input.bool(true, @locale { default: "Draw session open and close lines", "zh-CN": "绘制时段开盘和收盘线", "zh-HK": "繪製時段開盤和收盤線" });
 let showSessionTickRange: bool = input.bool(
     true,
-    "Show tick range for each session"
+    @locale { default: "Show tick range for each session", "zh-CN": "显示每个时段的跳动幅度", "zh-HK": "顯示每個時段的跳動幅度" }
 );
 let showSessionAverage: bool = input.bool(
     true,
-    "Show average price per session"
+    @locale { default: "Show average price per session", "zh-CN": "显示每个时段的平均价格", "zh-HK": "顯示每個時段的平均價格" }
 );
 
-let TZ_TOOLTIP_TEXT: const String = "The session's time zone, specified in either GMT notation (e.g., 'GMT-5') or as an IANA time zone database name (e.g., 'America/New_York')." + " We recommend the latter since it includes other time-related changes, such as daylight savings.";
+let TZ_TOOLTIP_TEXT: const String = @locale {
+    default: "The session's time zone, specified in either GMT notation (e.g., 'GMT-5') or as an IANA time zone database name (e.g., 'America/New_York'). We recommend the latter since it includes other time-related changes, such as daylight savings.",
+    "zh-CN": "时段的时区，可使用 GMT 表示法（例如 'GMT-5'）或 IANA 时区数据库名称（例如 'America/New_York'）来指定。建议使用后者，因为它包含其他与时间相关的变化，例如夏令时。",
+    "zh-HK": "時段的時區，可使用 GMT 表示法（例如 'GMT-5'）或 IANA 時區數據庫名稱（例如 'America/New_York'）來指定。建議使用後者，因為它包含其他與時間相關的變化，例如夏令時。",
+};
 
-let FIRST_SESSION_GROUP: const String = "First Session";
+let FIRST_SESSION_GROUP: const String = @locale { default: "First Session", "zh-CN": "第一时段", "zh-HK": "第一時段" };
 let showFirst = input.bool(
     true,
-    "Show session",
+    @locale { default: "Show session", "zh-CN": "显示时段", "zh-HK": "顯示時段" },
     group: FIRST_SESSION_GROUP,
     display: PlotDisplay.NONE
 );
 let firstSessionName = input.string(
     "Tokyo",
-    "Displayed name",
+    @locale { default: "Displayed name", "zh-CN": "显示名称", "zh-HK": "顯示名稱" },
     group: FIRST_SESSION_GROUP,
     display: PlotDisplay.NONE,
     active: showFirst
 );
 let firstSessionTime = input.session(
     "0900-1500",
-    "Session time",
+    @locale { default: "Session time", "zh-CN": "时段时间", "zh-HK": "時段時間" },
     group: FIRST_SESSION_GROUP,
     display: PlotDisplay.NONE,
     active: showFirst
 );
 let firstSessionTZ = input.string(
     "Asia/Tokyo",
-    "Session timezone",
+    @locale { default: "Session timezone", "zh-CN": "时段时区", "zh-HK": "時段時區" },
     group: FIRST_SESSION_GROUP,
     display: PlotDisplay.NONE,
     tooltip: TZ_TOOLTIP_TEXT,
@@ -50,35 +54,35 @@ let firstSessionTZ = input.string(
 );
 let firstSessionColor = input.color(
     Color.new(#2962FF, 85),
-    "Session color",
+    @locale { default: "Session color", "zh-CN": "时段颜色", "zh-HK": "時段顏色" },
     group: FIRST_SESSION_GROUP,
     active: showFirst
 );
 
-let SECOND_SESSION_GROUP: const String = "Second session";
+let SECOND_SESSION_GROUP: const String = @locale { default: "Second session", "zh-CN": "第二时段", "zh-HK": "第二時段" };
 let showSecond = input.bool(
     true,
-    "Show session",
+    @locale { default: "Show session", "zh-CN": "显示时段", "zh-HK": "顯示時段" },
     group: SECOND_SESSION_GROUP,
     display: PlotDisplay.NONE
 );
 let secondSessionName = input.string(
     "London",
-    "Displayed name",
+    @locale { default: "Displayed name", "zh-CN": "显示名称", "zh-HK": "顯示名稱" },
     group: SECOND_SESSION_GROUP,
     display: PlotDisplay.NONE,
     active: showSecond
 );
 let secondSessionTime = input.session(
     "0830-1630",
-    "Session time",
+    @locale { default: "Session time", "zh-CN": "时段时间", "zh-HK": "時段時間" },
     group: SECOND_SESSION_GROUP,
     display: PlotDisplay.NONE,
     active: showSecond
 );
 let secondSessionTZ = input.string(
     "Europe/London",
-    "Session timezone",
+    @locale { default: "Session timezone", "zh-CN": "时段时区", "zh-HK": "時段時區" },
     group: SECOND_SESSION_GROUP,
     display: PlotDisplay.NONE,
     tooltip: TZ_TOOLTIP_TEXT,
@@ -86,35 +90,35 @@ let secondSessionTZ = input.string(
 );
 let secondSessionColor = input.color(
     Color.new(#FF9800, 85),
-    "Session color",
+    @locale { default: "Session color", "zh-CN": "时段颜色", "zh-HK": "時段顏色" },
     group: SECOND_SESSION_GROUP,
     active: showSecond
 );
 
-let THIRD_SESSION_GROUP: const String = "Third session";
+let THIRD_SESSION_GROUP: const String = @locale { default: "Third session", "zh-CN": "第三时段", "zh-HK": "第三時段" };
 let showThird = input.bool(
     true,
-    "Show session",
+    @locale { default: "Show session", "zh-CN": "显示时段", "zh-HK": "顯示時段" },
     group: THIRD_SESSION_GROUP,
     display: PlotDisplay.NONE
 );
 let thirdSessionName = input.string(
     "New York",
-    "Displayed name",
+    @locale { default: "Displayed name", "zh-CN": "显示名称", "zh-HK": "顯示名稱" },
     group: THIRD_SESSION_GROUP,
     display: PlotDisplay.NONE,
     active: showThird
 );
 let thirdSessionTime = input.session(
     "0930-1600",
-    "Session time",
+    @locale { default: "Session time", "zh-CN": "时段时间", "zh-HK": "時段時間" },
     group: THIRD_SESSION_GROUP,
     display: PlotDisplay.NONE,
     active: showThird
 );
 let thirdSessionTZ = input.string(
     "America/New_York",
-    "Session timezone",
+    @locale { default: "Session timezone", "zh-CN": "时段时区", "zh-HK": "時段時區" },
     group: THIRD_SESSION_GROUP,
     display: PlotDisplay.NONE,
     tooltip: TZ_TOOLTIP_TEXT,
@@ -122,7 +126,7 @@ let thirdSessionTZ = input.string(
 );
 let thirdSessionColor = input.color(
     Color.new(#089981, 85),
-    "Session color",
+    @locale { default: "Session color", "zh-CN": "时段颜色", "zh-HK": "時段顏色" },
     group: THIRD_SESSION_GROUP,
     active: showThird
 );

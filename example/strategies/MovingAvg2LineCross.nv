@@ -1,12 +1,12 @@
-﻿strategy("MovingAvg2line Cross", overlay: true);
+strategy(@locale { default: "MovingAvg2line Cross", "zh-CN": "双均线交叉", "zh-HK": "雙均線交叉" }, overlay: true);
 let fastLength = input(9);
 let slowLength = input(18);
 let price = close;
 let mafast = ta.sma(price, fastLength);
 let maslow = ta.sma(price, slowLength);
 if (ta.cross_over(mafast, maslow)) {
-    strategy.entry("MA2CrossLE", Direction.Long, comment: "MA2CrossLE");
+    strategy.entry("MA2CrossLE", Direction.Long, comment: @locale { default: "MA2CrossLE", "zh-CN": "双均线做多", "zh-HK": "雙均線做多" });
 }
 if (ta.cross_under(mafast, maslow)) {
-    strategy.entry("MA2CrossSE", Direction.Short, comment: "MA2CrossSE");
+    strategy.entry("MA2CrossSE", Direction.Short, comment: @locale { default: "MA2CrossSE", "zh-CN": "双均线做空", "zh-HK": "雙均線做空" });
 }

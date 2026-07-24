@@ -1,5 +1,5 @@
-﻿strategy("ChannelBreakOutStrategy", overlay: true);
-let length = input.int(title: "Length", minval: 1, maxval: 1000, defval: 5);
+strategy(@locale { default: "ChannelBreakOutStrategy", "zh-CN": "通道突破策略", "zh-HK": "通道突破策略" }, overlay: true);
+let length = input.int(title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1, maxval: 1000, defval: 5);
 let upBound = ta.highest(high, length);
 let downBound = ta.lowest(low, length);
 if (not na(close[length])) {

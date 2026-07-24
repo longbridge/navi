@@ -1,21 +1,21 @@
-﻿indicator(
-    title: "Awesome Oscillator",
+indicator(
+    title: @locale { default: "Awesome Oscillator", "zh-CN": "动力振荡器", "zh-HK": "動力振盪器" },
     short_title: "AO",
     timeframe: "",
     timeframe_gaps: true
 );
 let ao = ta.sma(hl2, 5) - ta.sma(hl2, 34);
 let diff = ao - ao[1];
-plot(ao, "AO", color: diff <= 0 ? #F44336 : #009688, style: PlotStyle.Columns);
+plot(ao, title: @locale { default: "AO", "zh-CN": "AO", "zh-HK": "AO" }, color: diff <= 0 ? #F44336 : #009688, style: PlotStyle.Columns);
 let changeToGreen = ta.cross_over(diff, 0);
 let changeToRed = ta.cross_under(diff, 0);
 alert_condition(
     changeToGreen,
-    title: "AO color changed to green",
-    message: "Awesome Oscillator's color has changed to green"
+    title: @locale { default: "AO color changed to green", "zh-CN": "AO 颜色变为绿色", "zh-HK": "AO 顏色變為綠色" },
+    message: @locale { default: "Awesome Oscillator's color has changed to green", "zh-CN": "动力振荡器颜色已变为绿色", "zh-HK": "動力振盪器顏色已變為綠色" }
 );
 alert_condition(
     changeToRed,
-    title: "AO color changed to red",
-    message: "Awesome Oscillator's color has changed to red"
+    title: @locale { default: "AO color changed to red", "zh-CN": "AO 颜色变为红色", "zh-HK": "AO 顏色變為紅色" },
+    message: @locale { default: "Awesome Oscillator's color has changed to red", "zh-CN": "动力振荡器颜色已变为红色", "zh-HK": "動力振盪器顏色已變為紅色" }
 );

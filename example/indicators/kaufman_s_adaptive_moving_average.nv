@@ -1,5 +1,5 @@
 indicator(
-    "Kaufman's Adaptive Moving Average",
+    @locale { default: "Kaufman's Adaptive Moving Average", "zh-CN": "考夫曼自适应移动平均线", "zh-HK": "考夫曼自適應移動平均線" },
     "KAMA",
     true,
     timeframe: "",
@@ -884,9 +884,9 @@ fn wpo(length: simple int) {
     let result: float = ema(ti, length);
 }
 
-let sourceInput: float = input.source(close, "Source");
-let erLenInput: int = input.int(10, "ER length", 1);
-let fastLenInput: int = input.int(2, "Fast length", 1);
-let slowLenInput: int = input.int(30, "Slow length", 1);
+let sourceInput: float = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let erLenInput: int = input.int(10, @locale { default: "ER length", "zh-CN": "ER 周期", "zh-HK": "ER 週期" }, 1);
+let fastLenInput: int = input.int(2, @locale { default: "Fast length", "zh-CN": "快速周期", "zh-HK": "快速週期" }, 1);
+let slowLenInput: int = input.int(30, @locale { default: "Slow length", "zh-CN": "慢速周期", "zh-HK": "慢速週期" }, 1);
 
 plot(kama(sourceInput, erLenInput, fastLenInput, slowLenInput), "KAMA");

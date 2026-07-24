@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Volume Weighted Average Price",
+indicator(
+    title: @locale { default: "Volume Weighted Average Price", "zh-CN": "成交量加权平均价格", "zh-HK": "成交量加權平均價格" },
     short_title: "VWAP",
     overlay: true,
     timeframe: "",
@@ -8,13 +8,13 @@
 
 let hideonDWM = input(
     false,
-    title: "Hide VWAP on 1D or Above",
-    group: "VWAP Settings",
+    title: @locale { default: "Hide VWAP on 1D or Above", "zh-CN": "在日线及以上周期隐藏 VWAP", "zh-HK": "在日線及以上週期隱藏 VWAP" },
+    group: @locale { default: "VWAP Settings", "zh-CN": "VWAP 设置", "zh-HK": "VWAP 設置" },
     display: PlotDisplay.NONE
 );
 var anchor = input.string(
     defval: "Session",
-    title: "Anchor Period",
+    title: @locale { default: "Anchor Period", "zh-CN": "锚定周期", "zh-HK": "錨定週期" },
     options: [
         "Session",
         "Week",
@@ -27,26 +27,30 @@ var anchor = input.string(
         "Dividends",
         "Splits"
     ],
-    group: "VWAP Settings"
+    group: @locale { default: "VWAP Settings", "zh-CN": "VWAP 设置", "zh-HK": "VWAP 設置" }
 );
 let src = input(
-    title: "Source",
+    title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" },
     defval: hlc3,
-    group: "VWAP Settings",
+    group: @locale { default: "VWAP Settings", "zh-CN": "VWAP 设置", "zh-HK": "VWAP 設置" },
     display: PlotDisplay.NONE
 );
 let offset = input.int(
     0,
-    title: "Offset",
-    group: "VWAP Settings",
+    title: @locale { default: "Offset", "zh-CN": "偏移量", "zh-HK": "偏移量" },
+    group: @locale { default: "VWAP Settings", "zh-CN": "VWAP 设置", "zh-HK": "VWAP 設置" },
     display: PlotDisplay.NONE
 );
 
-let BANDS_GROUP = "Bands Settings";
-let CALC_MODE_TOOLTIP = "Determines the units used to calculate the distance of the bands. When 'Percentage' is selected, a multiplier of 1 means 1%.";
+let BANDS_GROUP = @locale { default: "Bands Settings", "zh-CN": "带状设置", "zh-HK": "帶狀設置" };
+let CALC_MODE_TOOLTIP = @locale {
+    default: "Determines the units used to calculate the distance of the bands. When 'Percentage' is selected, a multiplier of 1 means 1%.",
+    "zh-CN": '决定用于计算带状距离的单位。选择"百分比"时，乘数 1 表示 1%。',
+    "zh-HK": "決定用於計算帶狀距離的單位。選擇「百分比」時，乘數 1 表示 1%。",
+};
 let calcModeInput = input.string(
     "Standard Deviation",
-    "Bands Calculation Mode",
+    @locale { default: "Bands Calculation Mode", "zh-CN": "带状计算模式", "zh-HK": "帶狀計算模式" },
     options: ["Standard Deviation", "Percentage"],
     group: BANDS_GROUP,
     tooltip: CALC_MODE_TOOLTIP,
@@ -61,7 +65,7 @@ let showBand_1 = input(
 );
 let bandMult_1 = input.float(
     1.0,
-    title: "Bands Multiplier #1",
+    title: @locale { default: "Bands Multiplier #1", "zh-CN": "带状乘数 #1", "zh-HK": "帶狀乘數 #1" },
     group: BANDS_GROUP,
     inline: "band_1",
     step: 0.5,
@@ -78,7 +82,7 @@ let showBand_2 = input(
 );
 let bandMult_2 = input.float(
     2.0,
-    title: "Bands Multiplier #2",
+    title: @locale { default: "Bands Multiplier #2", "zh-CN": "带状乘数 #2", "zh-HK": "帶狀乘數 #2" },
     group: BANDS_GROUP,
     inline: "band_2",
     step: 0.5,
@@ -95,7 +99,7 @@ let showBand_3 = input(
 );
 let bandMult_3 = input.float(
     3.0,
-    title: "Bands Multiplier #3",
+    title: @locale { default: "Bands Multiplier #3", "zh-CN": "带状乘数 #3", "zh-HK": "帶狀乘數 #3" },
     group: BANDS_GROUP,
     inline: "band_3",
     step: 0.5,
@@ -187,7 +191,7 @@ plot(vwapValue, title: "VWAP", color: #2962FF, offset: offset);
 let displayBand1 = showBand_1 ? PlotDisplay.ALL : PlotDisplay.NONE;
 let upperBand_1 = plot(
     upperBandValue1,
-    title: "Upper Band #1",
+    title: @locale { default: "Upper Band #1", "zh-CN": "上轨 #1", "zh-HK": "上軌 #1" },
     color: Color.GREEN,
     offset: offset,
     display: displayBand1,
@@ -195,7 +199,7 @@ let upperBand_1 = plot(
 );
 let lowerBand_1 = plot(
     lowerBandValue1,
-    title: "Lower Band #1",
+    title: @locale { default: "Lower Band #1", "zh-CN": "下轨 #1", "zh-HK": "下軌 #1" },
     color: Color.GREEN,
     offset: offset,
     display: displayBand1,
@@ -204,7 +208,7 @@ let lowerBand_1 = plot(
 fill(
     upperBand_1,
     lowerBand_1,
-    title: "Bands Fill #1",
+    title: @locale { default: "Bands Fill #1", "zh-CN": "带状填充 #1", "zh-HK": "帶狀填充 #1" },
     color: Color.new(Color.GREEN, 95),
     display: displayBand1,
     editable: showBand_1
@@ -213,7 +217,7 @@ fill(
 let displayBand2 = showBand_2 ? PlotDisplay.ALL : PlotDisplay.NONE;
 let upperBand_2 = plot(
     upperBandValue2,
-    title: "Upper Band #2",
+    title: @locale { default: "Upper Band #2", "zh-CN": "上轨 #2", "zh-HK": "上軌 #2" },
     color: Color.OLIVE,
     offset: offset,
     display: displayBand2,
@@ -221,7 +225,7 @@ let upperBand_2 = plot(
 );
 let lowerBand_2 = plot(
     lowerBandValue2,
-    title: "Lower Band #2",
+    title: @locale { default: "Lower Band #2", "zh-CN": "下轨 #2", "zh-HK": "下軌 #2" },
     color: Color.OLIVE,
     offset: offset,
     display: displayBand2,
@@ -230,7 +234,7 @@ let lowerBand_2 = plot(
 fill(
     upperBand_2,
     lowerBand_2,
-    title: "Bands Fill #2",
+    title: @locale { default: "Bands Fill #2", "zh-CN": "带状填充 #2", "zh-HK": "帶狀填充 #2" },
     color: Color.new(Color.OLIVE, 95),
     display: displayBand2,
     editable: showBand_2
@@ -239,7 +243,7 @@ fill(
 let displayBand3 = showBand_3 ? PlotDisplay.ALL : PlotDisplay.NONE;
 let upperBand_3 = plot(
     upperBandValue3,
-    title: "Upper Band #3",
+    title: @locale { default: "Upper Band #3", "zh-CN": "上轨 #3", "zh-HK": "上軌 #3" },
     color: Color.TEAL,
     offset: offset,
     display: displayBand3,
@@ -247,7 +251,7 @@ let upperBand_3 = plot(
 );
 let lowerBand_3 = plot(
     lowerBandValue3,
-    title: "Lower Band #3",
+    title: @locale { default: "Lower Band #3", "zh-CN": "下轨 #3", "zh-HK": "下軌 #3" },
     color: Color.TEAL,
     offset: offset,
     display: displayBand3,
@@ -256,7 +260,7 @@ let lowerBand_3 = plot(
 fill(
     upperBand_3,
     lowerBand_3,
-    title: "Bands Fill #3",
+    title: @locale { default: "Bands Fill #3", "zh-CN": "带状填充 #3", "zh-HK": "帶狀填充 #3" },
     color: Color.new(Color.TEAL, 95),
     display: displayBand3,
     editable: showBand_3

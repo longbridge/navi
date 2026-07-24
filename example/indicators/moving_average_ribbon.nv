@@ -1,5 +1,5 @@
-﻿indicator(
-    "Moving Average Ribbon",
+indicator(
+    @locale { default: "Moving Average Ribbon", "zh-CN": "均线带", "zh-HK": "均線帶" },
     short_title: "MA Ribbon",
     overlay: true,
     timeframe: "",
@@ -17,7 +17,7 @@ fn ma(source, length, MAtype) {
     }
 }
 
-let show_ma1 = input(true, "MA #1", inline: "MA #1", display: PlotDisplay.NONE);
+let show_ma1 = input(true, @locale { default: "MA #1", "zh-CN": "均线 #1", "zh-HK": "均線 #1" }, inline: "MA #1", display: PlotDisplay.NONE);
 let ma1_type = input.string(
     "SMA",
     "",
@@ -47,7 +47,7 @@ let ma1_color = input(
     display: PlotDisplay.NONE
 );
 
-let show_ma2 = input(true, "MA #2", inline: "MA #2", display: PlotDisplay.NONE);
+let show_ma2 = input(true, @locale { default: "MA #2", "zh-CN": "均线 #2", "zh-HK": "均線 #2" }, inline: "MA #2", display: PlotDisplay.NONE);
 let ma2_type = input.string(
     "SMA",
     "",
@@ -77,7 +77,7 @@ let ma2_color = input(
     display: PlotDisplay.NONE
 );
 
-let show_ma3 = input(true, "MA #3", inline: "MA #3", display: PlotDisplay.NONE);
+let show_ma3 = input(true, @locale { default: "MA #3", "zh-CN": "均线 #3", "zh-HK": "均線 #3" }, inline: "MA #3", display: PlotDisplay.NONE);
 let ma3_type = input.string(
     "SMA",
     "",
@@ -107,7 +107,7 @@ let ma3_color = input(
     display: PlotDisplay.NONE
 );
 
-let show_ma4 = input(true, "MA #4", inline: "MA #4", display: PlotDisplay.NONE);
+let show_ma4 = input(true, @locale { default: "MA #4", "zh-CN": "均线 #4", "zh-HK": "均線 #4" }, inline: "MA #4", display: PlotDisplay.NONE);
 let ma4_type = input.string(
     "SMA",
     "",
@@ -142,7 +142,7 @@ let ma2 = show_ma2 ? ma(ma2_source, ma2_length, ma2_type) : na;
 let ma3 = show_ma3 ? ma(ma3_source, ma3_length, ma3_type) : na;
 let ma4 = show_ma4 ? ma(ma4_source, ma4_length, ma4_type) : na;
 
-plot(ma1, "MA #1", ma1_color, display: show_ma1 ? PlotDisplay.ALL : PlotDisplay.NONE);
-plot(ma2, "MA #2", ma2_color, display: show_ma2 ? PlotDisplay.ALL : PlotDisplay.NONE);
-plot(ma3, "MA #3", ma3_color, display: show_ma3 ? PlotDisplay.ALL : PlotDisplay.NONE);
-plot(ma4, "MA #4", ma4_color, display: show_ma4 ? PlotDisplay.ALL : PlotDisplay.NONE);
+plot(ma1, @locale { default: "MA #1", "zh-CN": "均线 #1", "zh-HK": "均線 #1" }, ma1_color, display: show_ma1 ? PlotDisplay.ALL : PlotDisplay.NONE);
+plot(ma2, @locale { default: "MA #2", "zh-CN": "均线 #2", "zh-HK": "均線 #2" }, ma2_color, display: show_ma2 ? PlotDisplay.ALL : PlotDisplay.NONE);
+plot(ma3, @locale { default: "MA #3", "zh-CN": "均线 #3", "zh-HK": "均線 #3" }, ma3_color, display: show_ma3 ? PlotDisplay.ALL : PlotDisplay.NONE);
+plot(ma4, @locale { default: "MA #4", "zh-CN": "均线 #4", "zh-HK": "均線 #4" }, ma4_color, display: show_ma4 ? PlotDisplay.ALL : PlotDisplay.NONE);

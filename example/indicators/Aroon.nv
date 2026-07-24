@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Aroon",
+indicator(
+    title: @locale { default: "Aroon", "zh-CN": "Aroon 指标", "zh-HK": "Aroon 指標" },
     short_title: "Aroon",
     overlay: false,
     format: Format.Percent,
@@ -10,5 +10,5 @@
 let length = input.int(14, minval: 1);
 let upper = 100 * (ta.highest_bars(high, length + 1) + length) / length;
 let lower = 100 * (ta.lowest_bars(low, length + 1) + length) / length;
-plot(upper, "Aroon Up", color: #FB8C00);
-plot(lower, "Aroon Down", color: #2962FF);
+plot(upper, title: @locale { default: "Aroon Up", "zh-CN": "Aroon 上升", "zh-HK": "Aroon 上升" }, color: #FB8C00);
+plot(lower, title: @locale { default: "Aroon Down", "zh-CN": "Aroon 下降", "zh-HK": "Aroon 下降" }, color: #2962FF);

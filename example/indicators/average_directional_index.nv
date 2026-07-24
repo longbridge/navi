@@ -1,5 +1,5 @@
-﻿indicator(
-    "Average Directional Index",
+indicator(
+    @locale { default: "Average Directional Index", "zh-CN": "平均趋向指数", "zh-HK": "平均趨向指數" },
     short_title: "ADX",
     format: Format.Price,
     precision: 2,
@@ -7,11 +7,19 @@
     timeframe_gaps: true
 );
 
-let TT_ADX_LEN = "The time period to be used in calculating the ADX which has a smoothing component.";
-let TT_DI_LEN = "The time period to be used in calculating the DI (Directional Indicator).";
+let TT_ADX_LEN = @locale {
+    default: "The time period to be used in calculating the ADX which has a smoothing component.",
+    "zh-CN": "用于计算 ADX 的时间周期，ADX 包含平滑处理成分。",
+    "zh-HK": "用於計算 ADX 的時間週期，ADX 包含平滑處理成分。",
+};
+let TT_DI_LEN = @locale {
+    default: "The time period to be used in calculating the DI (Directional Indicator).",
+    "zh-CN": "用于计算 DI（方向性指标）的时间周期。",
+    "zh-HK": "用於計算 DI（方向性指標）的時間週期。",
+};
 
-let adxlen = input(14, title: "ADX Smoothing", tooltip: TT_ADX_LEN);
-let dilen = input(14, title: "DI Length", tooltip: TT_DI_LEN);
+let adxlen = input(14, title: @locale { default: "ADX Smoothing", "zh-CN": "ADX 平滑周期", "zh-HK": "ADX 平滑週期" }, tooltip: TT_ADX_LEN);
+let dilen = input(14, title: @locale { default: "DI Length", "zh-CN": "DI 长度", "zh-HK": "DI 長度" }, tooltip: TT_DI_LEN);
 
 fn dirmov(len) {
     let up = ta.change(high);
@@ -32,4 +40,4 @@ fn adx(dilen, adxlen) {
     );
 }
 let sig = adx(dilen, adxlen);
-plot(sig, color: Color.RED, title: "ADX");
+plot(sig, color: Color.RED, title: @locale { default: "ADX", "zh-CN": "ADX", "zh-HK": "ADX" });

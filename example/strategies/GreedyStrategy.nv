@@ -1,12 +1,12 @@
-﻿strategy(
-    "Greedy Strategy",
+strategy(
+    @locale { default: "Greedy Strategy", "zh-CN": "贪婪策略", "zh-HK": "貪婪策略" },
     pyramiding: 100,
     calc_on_order_fills: false,
     overlay: true
 );
-let tp = input(10, "Take profit");
-let sl = input(10, "Stop loss");
-let maxidf = input(title: "Max intraday filled orders", defval: 5);
+let tp = input(10, @locale { default: "Take profit", "zh-CN": "止盈", "zh-HK": "止盈" });
+let sl = input(10, @locale { default: "Stop loss", "zh-CN": "止损", "zh-HK": "止損" });
+let maxidf = input(title: @locale { default: "Max intraday filled orders", "zh-CN": "日内最大成交订单数", "zh-HK": "日內最大成交訂單數" }, defval: 5);
 strategy.risk.max_intraday_filled_orders(maxidf);
 let upGap = open > high[1];
 let dnGap = open < low[1];

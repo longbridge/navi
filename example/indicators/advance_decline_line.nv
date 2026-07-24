@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Advance Decline line",
+indicator(
+    title: @locale { default: "Advance Decline Line", "zh-CN": "涨跌线", "zh-HK": "升跌線" },
     short_title: "ADL",
     format: Format.Price,
     precision: 2
@@ -12,4 +12,4 @@ let adl = request.security(
     timeframe.period,
     adlCalc(close)
 );
-plot(adl, "Advance Decline line");
+plot(adl, @locale { default: "Advance Decline Line", "zh-CN": "涨跌线", "zh-HK": "升跌線" });

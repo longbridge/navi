@@ -1,5 +1,5 @@
 indicator(
-    "Pring's Special K",
+    @locale { default: "Pring's Special K", "zh-CN": "普林格 Special K", "zh-HK": "普林格 Special K" },
     "Special K",
     timeframe: "",
     timeframe_gaps: true
@@ -882,15 +882,15 @@ fn wpo(length: simple int) {
     let result: float = ema(ti, length);
 }
 
-let sourceInput: float = input.source(close, "Source");
-let length1Input: int = input.int(100, "Signal length 1", 1);
-let length2Input: int = input.int(100, "Signal length 2", 1);
+let sourceInput: float = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let length1Input: int = input.int(100, @locale { default: "Signal length 1", "zh-CN": "信号周期 1", "zh-HK": "信號週期 1" }, 1);
+let length2Input: int = input.int(100, @locale { default: "Signal length 2", "zh-CN": "信号周期 2", "zh-HK": "信號週期 2" }, 1);
 
 let (specialK, signal) = specialK(sourceInput, length1Input, length2Input);
 
-plot(specialK, "Special K");
-plot(signal, "Signal", #ff6d00);
-hline(0, "Zero");
+plot(specialK, @locale { default: "Special K", "zh-CN": "Special K", "zh-HK": "Special K" });
+plot(signal, @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "信號線" }, #ff6d00);
+hline(0, @locale { default: "Zero", "zh-CN": "零线", "zh-HK": "零線" });
 
 if last_bar_index < 724 {
     runtime.error(

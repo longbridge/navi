@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Price Volume Trend",
+indicator(
+    title: @locale { default: "Price Volume Trend", "zh-CN": "价量趋势", "zh-HK": "價量趨勢" },
     short_title: "PVT",
     format: Format.Volume,
     timeframe: "",
@@ -12,4 +12,4 @@ if bar_state.is_last and cumVol == 0 {
 }
 let src = close;
 let vt = ta.cum(ta.change(src) / src[1] * volume);
-plot(vt, color: #2962FF, title: "PVT");
+plot(vt, color: #2962FF, title: @locale { default: "PVT", "zh-CN": "价量趋势", "zh-HK": "價量趨勢" });

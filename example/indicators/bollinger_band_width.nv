@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Bollinger BandWidth",
+indicator(
+    title: @locale { default: "Bollinger BandWidth", "zh-CN": "布林带宽度", "zh-HK": "布林帶寬度" },
     short_title: "BBW",
     format: Format.Price,
     precision: 2,
@@ -7,31 +7,51 @@
     timeframe_gaps: true
 );
 
-let TT_LENGTH: String = "The time period to be used in calculating the SMA which creates the base for the Upper and Lower Bands";
-let TT_SOURCE: String = "Determines what data from each bar will be used in calculations.";
-let TT_MULT: String = "The number of Standard Deviations away from the SMA that the Upper and Lower Bands should be.";
-let TT_HI_EXP: String = "The Highest Expansion plot displays the highest value that BBW had in the last N bars, where N is the length specified by this input.";
-let TT_LO_EXP: String = "The Lowest Contraction plot displays the lowest value that BBW had in the last N bars, where N is the length specified by this input.";
+let TT_LENGTH: String = @locale {
+    default: "The time period to be used in calculating the SMA which creates the base for the Upper and Lower Bands",
+    "zh-CN": "用于计算 SMA 的时间周期，SMA 是上轨和下轨的基础",
+    "zh-HK": "用於計算 SMA 的時間週期，SMA 是上軌和下軌的基礎",
+};
+let TT_SOURCE: String = @locale {
+    default: "Determines what data from each bar will be used in calculations.",
+    "zh-CN": "确定每根 K 线中用于计算的数据类型。",
+    "zh-HK": "確定每根 K 線中用於計算的數據類型。",
+};
+let TT_MULT: String = @locale {
+    default: "The number of Standard Deviations away from the SMA that the Upper and Lower Bands should be.",
+    "zh-CN": "上轨和下轨距离 SMA 的标准差倍数。",
+    "zh-HK": "上軌和下軌距離 SMA 的標準差倍數。",
+};
+let TT_HI_EXP: String = @locale {
+    default: "The Highest Expansion plot displays the highest value that BBW had in the last N bars, where N is the length specified by this input.",
+    "zh-CN": "最高扩张线显示 BBW 在最近 N 根 K 线内的最高值，N 由此输入项指定。",
+    "zh-HK": "最高擴張線顯示 BBW 在最近 N 根 K 線內的最高值，N 由此輸入項指定。",
+};
+let TT_LO_EXP: String = @locale {
+    default: "The Lowest Contraction plot displays the lowest value that BBW had in the last N bars, where N is the length specified by this input.",
+    "zh-CN": "最低收缩线显示 BBW 在最近 N 根 K 线内的最低值，N 由此输入项指定。",
+    "zh-HK": "最低收縮線顯示 BBW 在最近 N 根 K 線內的最低值，N 由此輸入項指定。",
+};
 
-let length = input.int(20, "Length", minval: 1, tooltip: TT_LENGTH);
-let src = input(close, "Source", tooltip: TT_SOURCE);
+let length = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1, tooltip: TT_LENGTH);
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" }, tooltip: TT_SOURCE);
 let mult = input.float(
     2.0,
-    "StdDev",
+    @locale { default: "StdDev", "zh-CN": "标准差倍数", "zh-HK": "標準差倍數" },
     minval: 0.001,
     maxval: 50,
     tooltip: TT_MULT
 );
 let expansionLengthInput = input.int(
     125,
-    "Highest Expansion Length",
+    @locale { default: "Highest Expansion Length", "zh-CN": "最高扩张周期", "zh-HK": "最高擴張週期" },
     minval: 1,
     display: PlotDisplay.NONE,
     tooltip: TT_HI_EXP
 );
 let contractionLengthInput = input.int(
     125,
-    "Lowest Contraction Length",
+    @locale { default: "Lowest Contraction Length", "zh-CN": "最低收缩周期", "zh-HK": "最低收縮週期" },
     minval: 1,
     display: PlotDisplay.NONE,
     tooltip: TT_LO_EXP
@@ -43,14 +63,14 @@ let upper = basis + dev;
 let lower = basis - dev;
 let bbw = ((upper - lower) / basis) * 100;
 
-plot(bbw, "Bollinger BandWidth", color: #2962FF);
+plot(bbw, @locale { default: "Bollinger BandWidth", "zh-CN": "布林带宽度", "zh-HK": "布林帶寬度" }, color: #2962FF);
 plot(
     ta.highest(bbw, expansionLengthInput),
-    "Highest Expansion",
+    @locale { default: "Highest Expansion", "zh-CN": "最高扩张", "zh-HK": "最高擴張" },
     color: Color.new(#F23645, 50)
 );
 plot(
     ta.lowest(bbw, contractionLengthInput),
-    "Lowest Contraction",
+    @locale { default: "Lowest Contraction", "zh-CN": "最低收缩", "zh-HK": "最低收縮" },
     color: Color.new(#089981, 50)
 );

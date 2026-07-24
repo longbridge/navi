@@ -1,16 +1,16 @@
-﻿indicator(
-    title: "Vortex Indicator",
+indicator(
+    title: @locale { default: "Vortex Indicator", "zh-CN": "涡旋指标", "zh-HK": "渦旋指標" },
     short_title: "VI",
     format: Format.Price,
     precision: 4,
     timeframe: "",
     timeframe_gaps: true
 );
-let period_ = input.int(14, title: "Length", minval: 2);
+let period_ = input.int(14, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 2);
 let VMP = math.sum(math.abs(high - low[1]), period_);
 let VMM = math.sum(math.abs(low - high[1]), period_);
 let STR = math.sum(ta.atr(1), period_);
 let VIP = VMP / STR;
 let VIM = VMM / STR;
-plot(VIP, title: "VI +", color: #2962FF);
-plot(VIM, title: "VI -", color: #E91E63);
+plot(VIP, title: @locale { default: "VI +", "zh-CN": "VI +", "zh-HK": "VI +" }, color: #2962FF);
+plot(VIM, title: @locale { default: "VI -", "zh-CN": "VI -", "zh-HK": "VI -" }, color: #E91E63);

@@ -1,5 +1,5 @@
-﻿indicator(
-    "Trend Strength Index",
+indicator(
+    @locale { default: "Trend Strength Index", "zh-CN": "趋势强度指数", "zh-HK": "趨勢強度指數" },
     short_title: "TSI",
     format: Format.Price,
     precision: 2,
@@ -7,16 +7,16 @@
     timeframe_gaps: true
 );
 
-let period = input.int(14, "Length", minval: 2);
+let period = input.int(14, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 2);
 let tsi = ta.correlation(close, bar_index, period);
 
-let bullishColorInput = input.color(Color.new(#089981, 90), "Bullish Color");
-let bearishColorInput = input.color(Color.new(#F23645, 90), "Bearish Color");
+let bullishColorInput = input.color(Color.new(#089981, 90), @locale { default: "Bullish Color", "zh-CN": "看涨颜色", "zh-HK": "看漲顏色" });
+let bearishColorInput = input.color(Color.new(#F23645, 90), @locale { default: "Bearish Color", "zh-CN": "看跌颜色", "zh-HK": "看跌顏色" });
 
-let tsiPlot = plot(tsi, "Trend Strength Index", color: #7E57C2);
-hline(0, "TSI Middle Band", color: Color.new(#787B86, 50));
-hline(1, "TSI Bullish Band", color: Color.new(bullishColorInput, 0));
-hline(-1, "TSI Bearish Band", color: Color.new(bearishColorInput, 0));
+let tsiPlot = plot(tsi, @locale { default: "Trend Strength Index", "zh-CN": "趋势强度指数", "zh-HK": "趨勢強度指數" }, color: #7E57C2);
+hline(0, @locale { default: "TSI Middle Band", "zh-CN": "TSI 中轨", "zh-HK": "TSI 中軌" }, color: Color.new(#787B86, 50));
+hline(1, @locale { default: "TSI Bullish Band", "zh-CN": "TSI 看涨轨", "zh-HK": "TSI 看漲軌" }, color: Color.new(bullishColorInput, 0));
+hline(-1, @locale { default: "TSI Bearish Band", "zh-CN": "TSI 看跌轨", "zh-HK": "TSI 看跌軌" }, color: Color.new(bearishColorInput, 0));
 
 let midLinePlot = plot(0, color: na, editable: false, display: PlotDisplay.NONE);
 fill(
@@ -26,7 +26,7 @@ fill(
     0,
     top_color: bullishColorInput,
     bottom_color: Color.new(bullishColorInput, 100),
-    title: "Bullish Gradient Fill"
+    title: @locale { default: "Bullish Gradient Fill", "zh-CN": "看涨渐变填充", "zh-HK": "看漲漸變填充" }
 );
 fill(
     tsiPlot,
@@ -35,5 +35,5 @@ fill(
     -1,
     top_color: Color.new(bearishColorInput, 100),
     bottom_color: bearishColorInput,
-    title: "Bearish Gradient Fill"
+    title: @locale { default: "Bearish Gradient Fill", "zh-CN": "看跌渐变填充", "zh-HK": "看跌漸變填充" }
 );

@@ -1,6 +1,6 @@
-﻿strategy("Pivot Extension Strategy", overlay: true);
-let leftBars = input(4, "Pivot Lookback Left");
-let rightBars = input(2, "Pivot Lookback Right");
+strategy(@locale { default: "Pivot Extension Strategy", "zh-CN": "枢轴延伸策略", "zh-HK": "樞軸延伸策略" }, overlay: true);
+let leftBars = input(4, @locale { default: "Pivot Lookback Left", "zh-CN": "枢轴左侧回溯", "zh-HK": "樞軸左側回溯" });
+let rightBars = input(2, @locale { default: "Pivot Lookback Right", "zh-CN": "枢轴右侧回溯", "zh-HK": "樞軸右側回溯" });
 let ph = ta.pivot_high(leftBars, rightBars);
 let pl = ta.pivot_low(leftBars, rightBars);
 if (not na(pl)) {

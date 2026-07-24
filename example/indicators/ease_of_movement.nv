@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Ease of Movement",
+indicator(
+    title: @locale { default: "Ease of Movement", "zh-CN": "移动便利性", "zh-HK": "移動便利性" },
     short_title: "EOM",
     format: Format.Volume,
     timeframe: "",
@@ -11,6 +11,6 @@ if bar_state.is_last and cumVol == 0 {
     runtime.error("No volume is provided by the data vendor.");
 }
 let length = input.int(14, minval: 1);
-let div = input.int(10000, title: "Divisor", minval: 1);
+let div = input.int(10000, title: @locale { default: "Divisor", "zh-CN": "除数", "zh-HK": "除數" }, minval: 1);
 let eom = ta.sma(div * ta.change(hl2) * (high - low) / volume, length);
-plot(eom, "EOM", color: #43A047);
+plot(eom, @locale { default: "EOM", "zh-CN": "移动便利性", "zh-HK": "移動便利性" }, color: #43A047);

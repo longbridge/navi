@@ -1,7 +1,7 @@
-﻿indicator("Price Target", overlay: true);
+indicator(@locale { default: "Price Target", "zh-CN": "价格目标", "zh-HK": "價格目標" }, overlay: true);
 
-let posColorInput = input.color(Color.new(#089981, 90), "Positive Color");
-let negColorInput = input.color(Color.new(#f23645, 90), "Negative Color");
+let posColorInput = input.color(Color.new(#089981, 90), @locale { default: "Positive Color", "zh-CN": "上涨颜色", "zh-HK": "上漲顏色" });
+let negColorInput = input.color(Color.new(#f23645, 90), @locale { default: "Negative Color", "zh-CN": "下跌颜色", "zh-HK": "下跌顏色" });
 
 let YearFromNow: int = symbol_info.target_price_date + timeframe.in_seconds("12M") * 1000;
 
@@ -66,6 +66,12 @@ fn updateTarget() {
 var targetShown = false;
 var closeDuringPrediction: float = na;
 
+let TT_FORECAST = @locale {
+    default: "The {0} analysts offering 1 year price forecasts for {1} have a max estimate of {2} and a min estimate of {3}.",
+    "zh-CN": "为 {1} 提供 1 年价格预测的 {0} 位分析师，最高预测为 {2}，最低预测为 {3}。",
+    "zh-HK": "為 {1} 提供 1 年價格預測的 {0} 位分析師，最高預測為 {2}，最低預測為 {3}。",
+};
+
 if not na(symbol_info.target_price_date) and na(symbol_info.target_price_date[1]) {
     targetShown = true;
     closeDuringPrediction = close;
@@ -89,17 +95,27 @@ if not na(symbol_info.target_price_date) and na(symbol_info.target_price_date[1]
         color: Color.new(#2962ff, 100),
         style: LabelStyle.LabelCenter,
         text_color: Color.new(#2962ff, 0),
-        tooltip: String.format("The {0} analysts offering 1 year price forecasts for {1} have a max estimate of {2} and a min estimate of {3}.", symbol_info.target_price_estimates, symbol_info.ticker, symbol_info.target_price_high, symbol_info.target_price_low)
+        tooltip: String.format(TT_FORECAST, symbol_info.target_price_estimates, symbol_info.ticker, symbol_info.target_price_high, symbol_info.target_price_low)
     );
 }
 updateTarget();
 if bar_state.is_last and not targetShown {
     let t = Table.new(Position.TopRight, 1, 1, chart.fg_color);
-    let warningText = "No analyst predictions found.";
+    let warningText = @locale {
+        default: "No analyst predictions found.",
+        "zh-CN": "未找到分析师预测。",
+        "zh-HK": "未找到分析師預測。",
+    };
+    let warningAppend = @locale {
+        default: "\nIf there are any new predictions for this symbol, they should appear once the market opens.",
+        "zh-CN": "\n如果该标的有新的预测，将在市场开盘后显示。",
+        "zh-HK": "\n如果該標的有新的預測，將在市場開盤後顯示。",
+    };
+    var warningTextFull = warningText;
     if bar_state.is_confirmed {
-        warningText += "\nIf there are any new predictions for this symbol, they should appear once the market opens.";
+        warningTextFull = warningText + warningAppend;
     }
-    t.cell(0, 0, warningText, text_color: chart.bg_color);
+    t.cell(0, 0, warningTextFull, text_color: chart.bg_color);
 }
 
 plot(

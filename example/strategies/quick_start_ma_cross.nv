@@ -1,7 +1,7 @@
-strategy("MA Cross", overlay: true);
+strategy(@locale { default: "MA Cross", "zh-CN": "均线交叉", "zh-HK": "均線交叉" }, overlay: true);
 
-let fast = ta.ema(close, input.int(10, "Fast"));
-let slow = ta.ema(close, input.int(20, "Slow"));
+let fast = ta.ema(close, input.int(10, @locale { default: "Fast", "zh-CN": "快线周期", "zh-HK": "快線週期" }));
+let slow = ta.ema(close, input.int(20, @locale { default: "Slow", "zh-CN": "慢线周期", "zh-HK": "慢線週期" }));
 
 if ta.cross_over(fast, slow) {
     strategy.close("Short");
@@ -12,5 +12,5 @@ if ta.cross_under(fast, slow) {
     strategy.entry("Short", Direction.Short);
 }
 
-plot(fast, "Fast EMA");
-plot(slow, "Slow EMA");
+plot(fast, @locale { default: "Fast EMA", "zh-CN": "快速 EMA", "zh-HK": "快速 EMA" });
+plot(slow, @locale { default: "Slow EMA", "zh-CN": "慢速 EMA", "zh-HK": "慢速 EMA" });

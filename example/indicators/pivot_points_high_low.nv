@@ -1,14 +1,14 @@
-﻿indicator(
-    "Pivot Points High Low",
+indicator(
+    @locale { default: "Pivot Points High Low", "zh-CN": "枢轴点高低", "zh-HK": "樞軸點高低" },
     short_title: "Pivots HL",
     overlay: true,
     max_labels_count: 500
 );
 
-let lengthGroupTitle = "LENGTH LEFT / RIGHT";
-let colorGroupTitle = "Text Color / label Color";
+let lengthGroupTitle = @locale { default: "LENGTH LEFT / RIGHT", "zh-CN": "左/右长度", "zh-HK": "左/右長度" };
+let colorGroupTitle = @locale { default: "Text Color / label Color", "zh-CN": "文字颜色 / 标签颜色", "zh-HK": "文字顏色 / 標籤顏色" };
 let leftLenH = input.int(
-    title: "Pivot High",
+    title: @locale { default: "Pivot High", "zh-CN": "枢轴高点", "zh-HK": "樞軸高點" },
     defval: 10,
     minval: 1,
     inline: "Pivot High",
@@ -22,7 +22,7 @@ let rightLenH = input.int(
     group: lengthGroupTitle
 );
 let textColorH = input(
-    title: "Pivot High",
+    title: @locale { default: "Pivot High", "zh-CN": "枢轴高点", "zh-HK": "樞軸高點" },
     defval: Color.BLACK,
     inline: "Pivot High",
     group: colorGroupTitle
@@ -35,7 +35,7 @@ let labelColorH = input(
 );
 
 let leftLenL = input.int(
-    title: "Pivot Low",
+    title: @locale { default: "Pivot Low", "zh-CN": "枢轴低点", "zh-HK": "樞軸低點" },
     defval: 10,
     minval: 1,
     inline: "Pivot Low",
@@ -49,7 +49,7 @@ let rightLenL = input.int(
     group: lengthGroupTitle
 );
 let textColorL = input(
-    title: "Pivot Low",
+    title: @locale { default: "Pivot Low", "zh-CN": "枢轴低点", "zh-HK": "樞軸低點" },
     defval: Color.BLACK,
     inline: "Pivot Low",
     group: colorGroupTitle

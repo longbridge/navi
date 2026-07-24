@@ -1,44 +1,44 @@
-﻿indicator(
-    title: "RSI Divergence Indicator",
+indicator(
+    title: @locale { default: "RSI Divergence Indicator", "zh-CN": "RSI 背离指标", "zh-HK": "RSI 背離指標" },
     format: Format.Price,
     timeframe: "",
     timeframe_gaps: true
 );
-let len = input.int(title: "RSI Period", minval: 1, defval: 14);
-let src = input(title: "RSI Source", defval: close);
+let len = input.int(title: @locale { default: "RSI Period", "zh-CN": "RSI 周期", "zh-HK": "RSI 週期" }, minval: 1, defval: 14);
+let src = input(title: @locale { default: "RSI Source", "zh-CN": "RSI 数据源", "zh-HK": "RSI 數據源" }, defval: close);
 let lbR = input(
-    title: "Pivot Lookback Right",
+    title: @locale { default: "Pivot Lookback Right", "zh-CN": "枢轴右侧回溯", "zh-HK": "樞軸右側回溯" },
     defval: 5,
     display: PlotDisplay.NONE
 );
-let lbL = input(title: "Pivot Lookback Left", defval: 5, display: PlotDisplay.NONE);
+let lbL = input(title: @locale { default: "Pivot Lookback Left", "zh-CN": "枢轴左侧回溯", "zh-HK": "樞軸左側回溯" }, defval: 5, display: PlotDisplay.NONE);
 let rangeUpper = input(
-    title: "Max of Lookback Range",
+    title: @locale { default: "Max of Lookback Range", "zh-CN": "回溯范围上限", "zh-HK": "回溯範圍上限" },
     defval: 60,
     display: PlotDisplay.NONE
 );
 let rangeLower = input(
-    title: "Min of Lookback Range",
+    title: @locale { default: "Min of Lookback Range", "zh-CN": "回溯范围下限", "zh-HK": "回溯範圍下限" },
     defval: 5,
     display: PlotDisplay.NONE
 );
 let plotBull = input(
-    title: "Plot Bullish",
+    title: @locale { default: "Plot Bullish", "zh-CN": "显示看涨背离", "zh-HK": "顯示看漲背離" },
     defval: true,
     display: PlotDisplay.NONE
 );
 let plotHiddenBull = input(
-    title: "Plot Hidden Bullish",
+    title: @locale { default: "Plot Hidden Bullish", "zh-CN": "显示隐藏看涨背离", "zh-HK": "顯示隱藏看漲背離" },
     defval: false,
     display: PlotDisplay.NONE
 );
 let plotBear = input(
-    title: "Plot Bearish",
+    title: @locale { default: "Plot Bearish", "zh-CN": "显示看跌背离", "zh-HK": "顯示看跌背離" },
     defval: true,
     display: PlotDisplay.NONE
 );
 let plotHiddenBear = input(
-    title: "Plot Hidden Bearish",
+    title: @locale { default: "Plot Hidden Bearish", "zh-CN": "显示隐藏看跌背离", "zh-HK": "顯示隱藏看跌背離" },
     defval: false,
     display: PlotDisplay.NONE
 );
@@ -50,21 +50,21 @@ let textColor = Color.WHITE;
 let noneColor = Color.new(Color.WHITE, 100);
 let osc = ta.rsi(src, len);
 
-plot(osc, title: "RSI", line_width: 2, color: #2962FF);
-hline(50, title: "Middle line", color: #787B86, line_style: HLineStyle.Dotted);
+plot(osc, title: @locale { default: "RSI", "zh-CN": "RSI", "zh-HK": "RSI" }, line_width: 2, color: #2962FF);
+hline(50, title: @locale { default: "Middle line", "zh-CN": "中线", "zh-HK": "中線" }, color: #787B86, line_style: HLineStyle.Dotted);
 let obLevel = hline(
     70,
-    title: "Overbought",
+    title: @locale { default: "Overbought", "zh-CN": "超买", "zh-HK": "超買" },
     color: #787B86,
     line_style: HLineStyle.Dotted
 );
 let osLevel = hline(
     30,
-    title: "Oversold",
+    title: @locale { default: "Oversold", "zh-CN": "超卖", "zh-HK": "超賣" },
     color: #787B86,
     line_style: HLineStyle.Dotted
 );
-fill(obLevel, osLevel, title: "Background", color: Color.rgb(33, 150, 243, 90));
+fill(obLevel, osLevel, title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" }, color: Color.rgb(33, 150, 243, 90));
 
 let plFound = na(ta.pivot_low(osc, lbL, lbR)) ? false : true;
 let phFound = na(ta.pivot_high(osc, lbL, lbR)) ? false : true;
@@ -83,7 +83,7 @@ let bullCond = plotBull and bullCondAlert;
 plot(
     plFound ? osc[lbR] : na,
     offset: -lbR,
-    title: "Regular Bullish",
+    title: @locale { default: "Regular Bullish", "zh-CN": "常规看涨背离", "zh-HK": "常規看漲背離" },
     line_width: 2,
     color: (bullCond ? bullColor : noneColor),
     display: PlotDisplay.PANE,
@@ -93,8 +93,8 @@ plot(
 plot_shape(
     bullCond ? osc[lbR] : na,
     offset: -lbR,
-    title: "Regular Bullish label",
-    text: " Bull ",
+    title: @locale { default: "Regular Bullish label", "zh-CN": "常规看涨背离标签", "zh-HK": "常規看漲背離標籤" },
+    text: @locale { default: " Bull ", "zh-CN": " 涨 ", "zh-HK": " 漲 " },
     style: Shape.LabelUp,
     location: Location.Absolute,
     color: bullColor,
@@ -111,7 +111,7 @@ let hiddenBullCond = plotHiddenBull and hiddenBullCondAlert;
 plot(
     plFound ? osc[lbR] : na,
     offset: -lbR,
-    title: "Hidden Bullish",
+    title: @locale { default: "Hidden Bullish", "zh-CN": "隐藏看涨背离", "zh-HK": "隱藏看漲背離" },
     line_width: 2,
     color: (hiddenBullCond ? hiddenBullColor : noneColor),
     display: PlotDisplay.PANE,
@@ -121,8 +121,8 @@ plot(
 plot_shape(
     hiddenBullCond ? osc[lbR] : na,
     offset: -lbR,
-    title: "Hidden Bullish label",
-    text: " H Bull ",
+    title: @locale { default: "Hidden Bullish label", "zh-CN": "隐藏看涨背离标签", "zh-HK": "隱藏看漲背離標籤" },
+    text: @locale { default: " H Bull ", "zh-CN": " 隐涨 ", "zh-HK": " 隱漲 " },
     style: Shape.LabelUp,
     location: Location.Absolute,
     color: bullColor,
@@ -141,7 +141,7 @@ let bearCond = plotBear and bearCondAlert;
 plot(
     phFound ? osc[lbR] : na,
     offset: -lbR,
-    title: "Regular Bearish",
+    title: @locale { default: "Regular Bearish", "zh-CN": "常规看跌背离", "zh-HK": "常規看跌背離" },
     line_width: 2,
     color: (bearCond ? bearColor : noneColor),
     display: PlotDisplay.PANE,
@@ -151,8 +151,8 @@ plot(
 plot_shape(
     bearCond ? osc[lbR] : na,
     offset: -lbR,
-    title: "Regular Bearish label",
-    text: " Bear ",
+    title: @locale { default: "Regular Bearish label", "zh-CN": "常规看跌背离标签", "zh-HK": "常規看跌背離標籤" },
+    text: @locale { default: " Bear ", "zh-CN": " 跌 ", "zh-HK": " 跌 " },
     style: Shape.LabelDown,
     location: Location.Absolute,
     color: bearColor,
@@ -170,7 +170,7 @@ let hiddenBearCond = plotHiddenBear and hiddenBearCondAlert;
 plot(
     phFound ? osc[lbR] : na,
     offset: -lbR,
-    title: "Hidden Bearish",
+    title: @locale { default: "Hidden Bearish", "zh-CN": "隐藏看跌背离", "zh-HK": "隱藏看跌背離" },
     line_width: 2,
     color: (hiddenBearCond ? hiddenBearColor : noneColor),
     display: PlotDisplay.PANE,
@@ -180,8 +180,8 @@ plot(
 plot_shape(
     hiddenBearCond ? osc[lbR] : na,
     offset: -lbR,
-    title: "Hidden Bearish label",
-    text: " H Bear ",
+    title: @locale { default: "Hidden Bearish label", "zh-CN": "隐藏看跌背离标签", "zh-HK": "隱藏看跌背離標籤" },
+    text: @locale { default: " H Bear ", "zh-CN": " 隐跌 ", "zh-HK": " 隱跌 " },
     style: Shape.LabelDown,
     location: Location.Absolute,
     color: bearColor,
@@ -191,21 +191,37 @@ plot_shape(
 
 alert_condition(
     bullCondAlert,
-    title: 'Regular Bullish Divergence',
-    message: "Found a new Regular Bullish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar"
+    title: @locale { default: "Regular Bullish Divergence", "zh-CN": "常规看涨背离", "zh-HK": "常規看漲背離" },
+    message: @locale {
+        default: "Found a new Regular Bullish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar",
+        "zh-CN": "发现新的常规看涨背离，位于当前K线左侧「枢轴右侧回溯」根K线处",
+        "zh-HK": "發現新的常規看漲背離，位於當前K線左側「樞軸右側回溯」根K線處",
+    }
 );
 alert_condition(
     hiddenBullCondAlert,
-    title: 'Hidden Bullish Divergence',
-    message: 'Found a new Hidden Bullish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar'
+    title: @locale { default: "Hidden Bullish Divergence", "zh-CN": "隐藏看涨背离", "zh-HK": "隱藏看漲背離" },
+    message: @locale {
+        default: "Found a new Hidden Bullish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar",
+        "zh-CN": "发现新的隐藏看涨背离，位于当前K线左侧「枢轴右侧回溯」根K线处",
+        "zh-HK": "發現新的隱藏看漲背離，位於當前K線左側「樞軸右側回溯」根K線處",
+    }
 );
 alert_condition(
     bearCondAlert,
-    title: 'Regular Bearish Divergence',
-    message: 'Found a new Regular Bearish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar'
+    title: @locale { default: "Regular Bearish Divergence", "zh-CN": "常规看跌背离", "zh-HK": "常規看跌背離" },
+    message: @locale {
+        default: "Found a new Regular Bearish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar",
+        "zh-CN": "发现新的常规看跌背离，位于当前K线左侧「枢轴右侧回溯」根K线处",
+        "zh-HK": "發現新的常規看跌背離，位於當前K線左側「樞軸右側回溯」根K線處",
+    }
 );
 alert_condition(
     hiddenBearCondAlert,
-    title: 'Hidden Bearish Divergence',
-    message: 'Found a new Hidden Bearish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar'
+    title: @locale { default: "Hidden Bearish Divergence", "zh-CN": "隐藏看跌背离", "zh-HK": "隱藏看跌背離" },
+    message: @locale {
+        default: "Found a new Hidden Bearish Divergence, `Pivot Lookback Right` number of bars to the left of the current bar",
+        "zh-CN": "发现新的隐藏看跌背离，位于当前K线左侧「枢轴右侧回溯」根K线处",
+        "zh-HK": "發現新的隱藏看跌背離，位於當前K線左側「樞軸右側回溯」根K線處",
+    }
 );

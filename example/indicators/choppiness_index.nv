@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Choppiness Index",
+indicator(
+    title: @locale { default: "Choppiness Index", "zh-CN": "波动指数", "zh-HK": "波動指數" },
     short_title: "CHOP",
     format: Format.Price,
     precision: 2,
@@ -10,19 +10,19 @@ let length = input.int(14, minval: 1);
 let ci = 100 * math.log10(
     math.sum(ta.atr(1), length) / (ta.highest(length) - ta.lowest(length))
 ) / math.log10(length);
-let offset = input.int(0, "Offset", minval: -500, maxval: 500);
+let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移量", "zh-HK": "偏移量" }, minval: -500, maxval: 500);
 plot(ci, "CHOP", color: #2962FF, offset: offset);
 let band1 = hline(
     61.8,
-    "Upper Band",
+    @locale { default: "Upper Band", "zh-CN": "上轨", "zh-HK": "上軌" },
     color: #787B86,
     line_style: HLineStyle.Dashed
 );
-hline(50, "Middle Band", color: Color.new(#787B86, 50));
+hline(50, @locale { default: "Middle Band", "zh-CN": "中轨", "zh-HK": "中軌" }, color: Color.new(#787B86, 50));
 let band0 = hline(
     38.2,
-    "Lower Band",
+    @locale { default: "Lower Band", "zh-CN": "下轨", "zh-HK": "下軌" },
     color: #787B86,
     line_style: HLineStyle.Dashed
 );
-fill(band1, band0, color: Color.rgb(33, 150, 243, 90), title: "Background");
+fill(band1, band0, color: Color.rgb(33, 150, 243, 90), title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" });

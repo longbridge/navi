@@ -1,5 +1,5 @@
-﻿indicator(
-    "Price Momentum Oscillator",
+indicator(
+    @locale { default: "Price Momentum Oscillator", "zh-CN": "价格动量震荡指标", "zh-HK": "價格動量震盪指標" },
     "PMO",
     timeframe: "",
     timeframe_gaps: true
@@ -881,10 +881,10 @@ fn wpo(length: simple int) {
     let result: float = ema(ti, length);
 }
 
-let sourceInput: float = input.source(close, "Source");
-let length1Input: int = input.int(35, "Length 1", 1);
-let length2Input: int = input.int(20, "Length 2", 1);
-let signalInput: int = input.int(10, "Signal length", 1);
+let sourceInput: float = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let length1Input: int = input.int(35, @locale { default: "Length 1", "zh-CN": "周期 1", "zh-HK": "週期 1" }, 1);
+let length2Input: int = input.int(20, @locale { default: "Length 2", "zh-CN": "周期 2", "zh-HK": "週期 2" }, 1);
+let signalInput: int = input.int(10, @locale { default: "Signal length", "zh-CN": "信号周期", "zh-HK": "信號週期" }, 1);
 
 let (pmo, signal) = pmo(
     sourceInput,
@@ -894,5 +894,5 @@ let (pmo, signal) = pmo(
 );
 
 plot(pmo, "PMO");
-plot(signal, "Signal", #ff6d00);
-hline(0, "Zero");
+plot(signal, @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "信號線" }, #ff6d00);
+hline(0, @locale { default: "Zero", "zh-CN": "零线", "zh-HK": "零線" });

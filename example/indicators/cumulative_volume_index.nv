@@ -1,4 +1,4 @@
-﻿indicator("Cumulative Volume Index", "CVI", format: Format.Volume);
+indicator(@locale { default: "Cumulative Volume Index", "zh-CN": "累计成交量指标", "zh-HK": "累計成交量指標" }, "CVI", format: Format.Volume);
 let NYSE = "NYSE";
 let NASDAQ = "NASDAQ";
 let AMEX = "AMEX";
@@ -7,7 +7,7 @@ let US = "US Total";
 let DJ = "DJ";
 let exch = input.string(
     NYSE,
-    title: "Exchange",
+    title: @locale { default: "Exchange", "zh-CN": "交易所", "zh-HK": "交易所" },
     options: [NYSE, NASDAQ, AMEX, ARCX, US, DJ]
 );
 let adv_ticker = exch == DJ ? "UPVOL.DJ" : exch == US ? "UPVOL.US" : exch == ARCX ? "UPVOL.AX" : exch == AMEX ? "UPVOL.AM" : exch == NASDAQ ? "UPVOL.NQ" : "UPVOL.NY";

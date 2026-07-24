@@ -1,13 +1,13 @@
 // @description Skill-validation indicator with confirmed EMA cross signals and
 // an ATR trend filter.
-indicator("Skill Validation Trend", short_title: "SV Trend", overlay: true);
+indicator(@locale { default: "Skill Validation Trend", "zh-CN": "技能验证趋势", "zh-HK": "技能驗證趨勢" }, short_title: "SV Trend", overlay: true);
 
-let fastLength = input.int(12, "Fast EMA Length", minval: 1);
-let slowLength = input.int(26, "Slow EMA Length", minval: 2);
-let atrLength = input.int(14, "ATR Length", minval: 1);
-let atrMultiplier = input.float(1.5, "ATR Multiplier", minval: 0.1, step: 0.1);
-let showSignals = input.bool(true, "Show Confirmed Signals");
-let source = input.source(close, "Source");
+let fastLength = input.int(12, @locale { default: "Fast EMA Length", "zh-CN": "快速 EMA 周期", "zh-HK": "快速 EMA 週期" }, minval: 1);
+let slowLength = input.int(26, @locale { default: "Slow EMA Length", "zh-CN": "慢速 EMA 周期", "zh-HK": "慢速 EMA 週期" }, minval: 2);
+let atrLength = input.int(14, @locale { default: "ATR Length", "zh-CN": "ATR 周期", "zh-HK": "ATR 週期" }, minval: 1);
+let atrMultiplier = input.float(1.5, @locale { default: "ATR Multiplier", "zh-CN": "ATR 乘数", "zh-HK": "ATR 乘數" }, minval: 0.1, step: 0.1);
+let showSignals = input.bool(true, @locale { default: "Show Confirmed Signals", "zh-CN": "显示已确认信号", "zh-HK": "顯示已確認信號" });
+let source = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 
 let fastEma = ta.ema(source, fastLength);
 let slowEma = ta.ema(source, slowLength);
@@ -25,22 +25,22 @@ let confirmedBearish = showSignals and bearishCross and bar_state.is_confirmed;
 
 let upperPlot = plot(
     ready ? upperBand : na,
-    "Upper ATR Band",
+    @locale { default: "Upper ATR Band", "zh-CN": "ATR 上轨", "zh-HK": "ATR 上軌" },
     color: Color.new(Color.BLUE, 35)
 );
 let lowerPlot = plot(
     ready ? lowerBand : na,
-    "Lower ATR Band",
+    @locale { default: "Lower ATR Band", "zh-CN": "ATR 下轨", "zh-HK": "ATR 下軌" },
     color: Color.new(Color.BLUE, 35)
 );
-fill(upperPlot, lowerPlot, Color.new(Color.BLUE, 90), title: "ATR Envelope");
+fill(upperPlot, lowerPlot, Color.new(Color.BLUE, 90), title: @locale { default: "ATR Envelope", "zh-CN": "ATR 通道", "zh-HK": "ATR 通道" });
 
-plot(ready ? fastEma : na, "Fast EMA", color: Color.GREEN, line_width: 2);
-plot(ready ? slowEma : na, "Slow EMA", color: Color.ORANGE, line_width: 2);
+plot(ready ? fastEma : na, @locale { default: "Fast EMA", "zh-CN": "快速 EMA", "zh-HK": "快速 EMA" }, color: Color.GREEN, line_width: 2);
+plot(ready ? slowEma : na, @locale { default: "Slow EMA", "zh-CN": "慢速 EMA", "zh-HK": "慢速 EMA" }, color: Color.ORANGE, line_width: 2);
 
 plot_shape(
     confirmedBullish,
-    title: "Bullish Cross",
+    title: @locale { default: "Bullish Cross", "zh-CN": "看涨交叉", "zh-HK": "看漲交叉" },
     style: Shape.TriangleUp,
     location: Location.BelowBar,
     color: Color.GREEN,
@@ -48,7 +48,7 @@ plot_shape(
 );
 plot_shape(
     confirmedBearish,
-    title: "Bearish Cross",
+    title: @locale { default: "Bearish Cross", "zh-CN": "看跌交叉", "zh-HK": "看跌交叉" },
     style: Shape.TriangleDown,
     location: Location.AboveBar,
     color: Color.RED,
@@ -57,11 +57,11 @@ plot_shape(
 
 alert_condition(
     confirmedBullish,
-    "Bullish EMA Cross",
-    "Fast EMA crossed above slow EMA on a confirmed bar."
+    @locale { default: "Bullish EMA Cross", "zh-CN": "看涨 EMA 交叉", "zh-HK": "看漲 EMA 交叉" },
+    @locale { default: "Fast EMA crossed above slow EMA on a confirmed bar.", "zh-CN": "快速 EMA 在已确认 K 线上向上穿越慢速 EMA。", "zh-HK": "快速 EMA 在已確認 K 線上向上穿越慢速 EMA。" }
 );
 alert_condition(
     confirmedBearish,
-    "Bearish EMA Cross",
-    "Fast EMA crossed below slow EMA on a confirmed bar."
+    @locale { default: "Bearish EMA Cross", "zh-CN": "看跌 EMA 交叉", "zh-HK": "看跌 EMA 交叉" },
+    @locale { default: "Fast EMA crossed below slow EMA on a confirmed bar.", "zh-CN": "快速 EMA 在已确认 K 线上向下穿越慢速 EMA。", "zh-HK": "快速 EMA 在已確認 K 線上向下穿越慢速 EMA。" }
 );

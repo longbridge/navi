@@ -1,17 +1,25 @@
-﻿indicator(
-    title: "Arnaud Legoux Moving Average",
+indicator(
+    title: @locale { default: "Arnaud Legoux Moving Average", "zh-CN": "Arnaud Legoux 移动平均线", "zh-HK": "Arnaud Legoux 移動平均線" },
     short_title: "ALMA",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
 
-let TT_OFFSET = "Controls tradeoff between smoothness (closer to 1) and responsiveness (closer to 0).";
-let TT_SIGMA = "This element is a standard deviation that is applied to the combo line in order for it to appear more sharp.";
+let TT_OFFSET = @locale {
+    default: "Controls tradeoff between smoothness (closer to 1) and responsiveness (closer to 0).",
+    "zh-CN": "控制平滑性（接近 1）和响应性（接近 0）之间的权衡。",
+    "zh-HK": "控制平滑性（接近 1）和響應性（接近 0）之間的權衡。",
+};
+let TT_SIGMA = @locale {
+    default: "This element is a standard deviation that is applied to the combo line in order for it to appear more sharp.",
+    "zh-CN": "此参数为标准差，应用于合成线以使其显示得更为清晰。",
+    "zh-HK": "此參數為標準差，應用於合成線以使其顯示得更為清晰。",
+};
 
 let source = close;
-let lengthInput = input.int(9, "Length", minval: 1);
-let offsetInput = input.float(0.85, "Offset", step: 0.01, tooltip: TT_OFFSET);
-let sigmaInput = input.float(6, "Sigma", tooltip: TT_SIGMA);
+let lengthInput = input.int(9, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
+let offsetInput = input.float(0.85, @locale { default: "Offset", "zh-CN": "偏移量", "zh-HK": "偏移量" }, step: 0.01, tooltip: TT_OFFSET);
+let sigmaInput = input.float(6, @locale { default: "Sigma", "zh-CN": "Sigma", "zh-HK": "Sigma" }, tooltip: TT_SIGMA);
 
-plot(ta.alma(source, lengthInput, offsetInput, sigmaInput), "ALMA");
+plot(ta.alma(source, lengthInput, offsetInput, sigmaInput), @locale { default: "ALMA", "zh-CN": "ALMA", "zh-HK": "ALMA" });

@@ -1,4 +1,4 @@
-indicator(title: "Net Volume", format: Format.Volume);
+indicator(title: @locale { default: "Net Volume", "zh-CN": "净成交量", "zh-HK": "淨成交量" }, format: Format.Volume);
 
 struct collectedData {
     data: Array<float>,
@@ -877,15 +877,19 @@ fn wpo(length: simple int) {
     let result: float = ta.ema(ti, length);
 }
 
-let lowerTimeframeTooltip = "The indicator scans lower timeframe data to approximate Net volume. By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe." + " \n\nHigher timeframes provide more historical data, but the data will be less precise.";
+let lowerTimeframeTooltip = @locale {
+    default: "The indicator scans lower timeframe data to approximate Net volume. By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe. \n\nHigher timeframes provide more historical data, but the data will be less precise.",
+    "zh-CN": "该指标扫描较低时间框架的数据来近似计算净成交量。默认情况下，时间框架会自动选择。这些输入项可用自定义时间框架覆盖默认设置。\n\n较高的时间框架可提供更多历史数据，但数据精度会降低。",
+    "zh-HK": "該指標掃描較低時間框架的數據來近似計算淨成交量。預設情況下，時間框架會自動選擇。這些輸入項可用自定義時間框架覆蓋預設設定。\n\n較高的時間框架可提供更多歷史數據，但數據精度會降低。",
+};
 let useCustomTimeframeInput = input.bool(
     false,
-    "Use custom timeframe",
+    @locale { default: "Use custom timeframe", "zh-CN": "使用自定义时间框架", "zh-HK": "使用自定義時間框架" },
     tooltip: lowerTimeframeTooltip
 );
 let lowerTimeframeInput = input.timeframe(
     "1",
-    "Timeframe",
+    @locale { default: "Timeframe", "zh-CN": "时间框架", "zh-HK": "時間框架" },
     active: useCustomTimeframeInput
 );
 
@@ -898,7 +902,7 @@ let lowerTimeframe = switch {
 };
 let (upVolume, downVolume, delta) = requestUpAndDownVolume(lowerTimeframe);
 
-plot(delta, color: Color.BLUE, title: "Net Volume");
+plot(delta, color: Color.BLUE, title: @locale { default: "Net Volume", "zh-CN": "净成交量", "zh-HK": "淨成交量" });
 hline(0);
 
 var cumVol = 0.;

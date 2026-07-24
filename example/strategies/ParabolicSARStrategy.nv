@@ -1,4 +1,4 @@
-﻿strategy("Parabolic SAR Strategy", overlay: true);
+strategy(@locale { default: "Parabolic SAR Strategy", "zh-CN": "抛物线SAR策略", "zh-HK": "拋物線SAR策略" }, overlay: true);
 let start = input(0.02);
 let increment = input(0.02);
 let maximum = input(0.2);
@@ -94,10 +94,10 @@ if bar_index > 0 {
     }
 }
 
-plot(SAR, "SAR", style: PlotStyle.Cross, line_width: 3, color: Color.ORANGE);
+plot(SAR, @locale { default: "SAR", "zh-CN": "SAR", "zh-HK": "SAR" }, style: PlotStyle.Cross, line_width: 3, color: Color.ORANGE);
 plot(
     nextBarSAR,
-    "Next bar SAR",
+    @locale { default: "Next bar SAR", "zh-CN": "下一根K线SAR", "zh-HK": "下一根K線SAR" },
     style: PlotStyle.Cross,
     line_width: 3,
     color: Color.AQUA

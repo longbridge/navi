@@ -1,5 +1,5 @@
-﻿indicator(
-    "Advance/Decline Ratio (Bars)",
+indicator(
+    @locale { default: "Advance/Decline Ratio (Bars)", "zh-CN": "涨跌比率（K线）", "zh-HK": "升跌比率（K線）" },
     short_title: "ADR_B",
     format: Format.Price,
     precision: 2,
@@ -11,5 +11,5 @@ let isUp = (close - open) >= 0.0;
 let upBars = math.sum(isUp ? 1 : 0, length);
 let downBars = math.sum(not isUp ? 1 : 0, length);
 let ad = downBars == 0 ? upBars : upBars / downBars;
-plot(ad, "ADR_B", #2962FF);
-hline(1.0, "Equality line", #787B86);
+plot(ad, @locale { default: "ADR_B", "zh-CN": "ADR_B", "zh-HK": "ADR_B" }, #2962FF);
+hline(1.0, @locale { default: "Equality line", "zh-CN": "均衡线", "zh-HK": "均衡線" }, #787B86);

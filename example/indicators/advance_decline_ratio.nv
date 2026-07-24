@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Advance Decline Ratio",
+indicator(
+    title: @locale { default: "Advance Decline Ratio", "zh-CN": "涨跌比率", "zh-HK": "升跌比率" },
     short_title: "ADR",
     format: Format.Price,
     precision: 2

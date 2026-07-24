@@ -1,12 +1,12 @@
-﻿indicator(
-    title: "Least Squares Moving Average",
+indicator(
+    title: @locale { default: "Least Squares Moving Average", "zh-CN": "最小二乘移动平均线", "zh-HK": "最小二乘移動平均線" },
     short_title: "LSMA",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let length = input(title: "Length", defval: 25);
-let offset = input(title: "Offset", defval: 0);
-let src = input(close, title: "Source");
+let length = input(title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, defval: 25);
+let offset = input(title: @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" }, defval: 0);
+let src = input(close, title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let lsma = ta.linreg(src, length, offset);
-plot(lsma, "LSMA");
+plot(lsma, @locale { default: "LSMA", "zh-CN": "LSMA", "zh-HK": "LSMA" });

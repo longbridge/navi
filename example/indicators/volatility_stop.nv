@@ -1,13 +1,13 @@
-﻿indicator(
-    "Volatility Stop",
+indicator(
+    @locale { default: "Volatility Stop", "zh-CN": "波动率止损", "zh-HK": "波動率止損" },
     "VStop",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let length = input.int(20, "Length", minval: 2);
-let src = input.source(close, "Source");
-let factor = input.float(2.0, "Multiplier", minval: 0.25, step: 0.25);
+let length = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 2);
+let src = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let factor = input.float(2.0, @locale { default: "Multiplier", "zh-CN": "乘数", "zh-HK": "乘數" }, minval: 0.25, step: 0.25);
 fn volStop(src, atrlen, atrfactor) {
     if not na(src) {
         var max = src;
@@ -35,7 +35,7 @@ let (vStop, uptrend) = volStop(src, length, factor);
 
 plot(
     vStop,
-    "Volatility Stop",
+    @locale { default: "Volatility Stop", "zh-CN": "波动率止损", "zh-HK": "波動率止損" },
     style: PlotStyle.Cross,
     color: uptrend ? #009688 : #F44336
 );

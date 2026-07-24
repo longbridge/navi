@@ -1,4 +1,4 @@
-﻿indicator(
+indicator(
     title: "Elder Force Index",
     short_title: "EFI",
     format: Format.Volume,
@@ -13,4 +13,4 @@ if bar_state.is_last and cumVol == 0 {
 let length = input.int(13, minval: 1);
 let efi = ta.ema(ta.change(close) * volume, length);
 plot(efi, color: #F44336, title: "Elder Force Index");
-hline(0, color: #787B86, title: "Zero");
+hline(0, color: #787B86, title: @locale { default: "Zero", "zh-CN": "零线", "zh-HK": "零線" });

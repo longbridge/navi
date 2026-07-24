@@ -1,12 +1,12 @@
-﻿indicator("Positive Volume Index", "PVI", timeframe: "", timeframe_gaps: true);
+indicator(@locale { default: "Positive Volume Index", "zh-CN": "正成交量指标", "zh-HK": "正成交量指標" }, "PVI", timeframe: "", timeframe_gaps: true);
 
-let maLengthInput: int = input.int(255, "EMA length", 1);
+let maLengthInput: int = input.int(255, @locale { default: "EMA length", "zh-CN": "EMA 长度", "zh-HK": "EMA 長度" }, 1);
 
 let pvi: float = ta.pvi * 1000.0;
 let ema: float = ta.ema(pvi, maLengthInput);
 
-plot(pvi, "PVI");
-plot(ema, "PVI-based EMA", #ff9800);
+plot(pvi, @locale { default: "PVI", "zh-CN": "PVI", "zh-HK": "PVI" });
+plot(ema, @locale { default: "PVI-based EMA", "zh-CN": "基于 PVI 的 EMA", "zh-HK": "基於 PVI 的 EMA" }, #ff9800);
 
 if ta.cum(nz(volume)) == 0.0 and bar_state.is_last_confirmed_history {
     runtime.error("No volume is provided by the data vendor.");

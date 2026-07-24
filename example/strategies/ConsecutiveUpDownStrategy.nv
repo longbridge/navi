@@ -1,6 +1,6 @@
-﻿strategy("Consecutive Up/Down Strategy", overlay: true);
-let consecutiveBarsUp = input(3, "Consecutive bars up");
-let consecutiveBarsDown = input(3, "Consecutive bars down");
+strategy(@locale { default: "Consecutive Up/Down Strategy", "zh-CN": "连续上涨/下跌策略", "zh-HK": "連續上漲/下跌策略" }, overlay: true);
+let consecutiveBarsUp = input(3, @locale { default: "Consecutive bars up", "zh-CN": "连续上涨K线数", "zh-HK": "連續上漲K線數" });
+let consecutiveBarsDown = input(3, @locale { default: "Consecutive bars down", "zh-CN": "连续下跌K线数", "zh-HK": "連續下跌K線數" });
 let price = close;
 let ups = 0.0;
 ups = price > price[1] ? nz(ups[1]) + 1 : 0;

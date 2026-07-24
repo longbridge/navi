@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Directional Movement Index",
+indicator(
+    title: @locale { default: "Directional Movement Index", "zh-CN": "趋向运动指数", "zh-HK": "趨向運動指數" },
     short_title: "DMI",
     format: Format.Price,
     precision: 4,
@@ -7,11 +7,19 @@
     timeframe_gaps: true
 );
 
-let TT_ADX_LEN = "The time period to be used in calculating the ADX which has a smoothing component.";
-let TT_DI_LEN = "The time period to be used in calculating the DI (Directional Indicator).";
+let TT_ADX_LEN = @locale {
+    default: "The time period to be used in calculating the ADX which has a smoothing component.",
+    "zh-CN": "用于计算 ADX 的时间周期，ADX 包含平滑处理成分。",
+    "zh-HK": "用於計算 ADX 的時間週期，ADX 包含平滑處理成分。",
+};
+let TT_DI_LEN = @locale {
+    default: "The time period to be used in calculating the DI (Directional Indicator).",
+    "zh-CN": "用于计算 DI（趋向指标）的时间周期。",
+    "zh-HK": "用於計算 DI（趨向指標）的時間週期。",
+};
 
-let lensig = input.int(14, "ADX Smoothing", minval: 1, tooltip: TT_ADX_LEN);
-let len = input.int(14, "DI Length", minval: 1, tooltip: TT_DI_LEN);
+let lensig = input.int(14, @locale { default: "ADX Smoothing", "zh-CN": "ADX 平滑周期", "zh-HK": "ADX 平滑週期" }, minval: 1, tooltip: TT_ADX_LEN);
+let len = input.int(14, @locale { default: "DI Length", "zh-CN": "DI 长度", "zh-HK": "DI 長度" }, minval: 1, tooltip: TT_DI_LEN);
 
 let up = ta.change(high);
 let down = -ta.change(low);
@@ -22,6 +30,6 @@ let plus = fixnan(100 * ta.rma(plusDM, len) / trur);
 let minus = fixnan(100 * ta.rma(minusDM, len) / trur);
 let sum = plus + minus;
 let adx = 100 * ta.rma(math.abs(plus - minus) / (sum == 0 ? 1 : sum), lensig);
-plot(adx, color: #F50057, title: "ADX");
-plot(plus, color: #2962FF, title: "+DI");
-plot(minus, color: #FF6D00, title: "-DI");
+plot(adx, color: #F50057, title: @locale { default: "ADX", "zh-CN": "ADX", "zh-HK": "ADX" });
+plot(plus, color: #2962FF, title: @locale { default: "+DI", "zh-CN": "+DI", "zh-HK": "+DI" });
+plot(minus, color: #FF6D00, title: @locale { default: "-DI", "zh-CN": "-DI", "zh-HK": "-DI" });

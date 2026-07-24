@@ -1,16 +1,16 @@
-﻿indicator(title: "Ichimoku Cloud", short_title: "Ichimoku", overlay: true);
+indicator(title: @locale { default: "Ichimoku Cloud", "zh-CN": "一目均衡表", "zh-HK": "一目均衡表" }, short_title: "Ichimoku", overlay: true);
 let conversionPeriods = input.int(
     9,
     minval: 1,
-    title: "Conversion line Length"
+    title: @locale { default: "Conversion line Length", "zh-CN": "转换线周期", "zh-HK": "轉換線週期" }
 );
-let basePeriods = input.int(26, minval: 1, title: "Base line Length");
+let basePeriods = input.int(26, minval: 1, title: @locale { default: "Base line Length", "zh-CN": "基准线周期", "zh-HK": "基準線週期" });
 let laggingSpan2Periods = input.int(
     52,
     minval: 1,
-    title: "Leading Span B Length"
+    title: @locale { default: "Leading Span B Length", "zh-CN": "先行带 B 周期", "zh-HK": "先行帶 B 週期" }
 );
-let displacement = input.int(26, minval: 1, title: "Lagging Span");
+let displacement = input.int(26, minval: 1, title: @locale { default: "Lagging Span", "zh-CN": "迟行带", "zh-HK": "遲行帶" });
 fn donchian(len) {
     math.avg(ta.lowest(len), ta.highest(len));
 }
@@ -18,37 +18,37 @@ let conversionLine = donchian(conversionPeriods);
 let baseLine = donchian(basePeriods);
 let leadLine1 = math.avg(conversionLine, baseLine);
 let leadLine2 = donchian(laggingSpan2Periods);
-plot(conversionLine, color: #2962FF, title: "Conversion line");
-plot(baseLine, color: #B71C1C, title: "Base line");
-plot(close, offset: -displacement + 1, color: #43A047, title: "Lagging Span");
+plot(conversionLine, color: #2962FF, title: @locale { default: "Conversion line", "zh-CN": "转换线", "zh-HK": "轉換線" });
+plot(baseLine, color: #B71C1C, title: @locale { default: "Base line", "zh-CN": "基准线", "zh-HK": "基準線" });
+plot(close, offset: -displacement + 1, color: #43A047, title: @locale { default: "Lagging Span", "zh-CN": "迟行带", "zh-HK": "遲行帶" });
 let p1 = plot(
     leadLine1,
     offset: displacement - 1,
     color: #A5D6A7,
-    title: "Leading Span A"
+    title: @locale { default: "Leading Span A", "zh-CN": "先行带 A", "zh-HK": "先行帶 A" }
 );
 let p2 = plot(
     leadLine2,
     offset: displacement - 1,
     color: #EF9A9A,
-    title: "Leading Span B"
+    title: @locale { default: "Leading Span B", "zh-CN": "先行带 B", "zh-HK": "先行帶 B" }
 );
 plot(
     leadLine1 > leadLine2 ? leadLine1 : leadLine2,
     offset: displacement - 1,
-    title: "Kumo Cloud Upper line",
+    title: @locale { default: "Kumo Cloud Upper line", "zh-CN": "云层上轨", "zh-HK": "雲層上軌" },
     display: PlotDisplay.NONE
 );
 plot(
     leadLine1 < leadLine2 ? leadLine1 : leadLine2,
     offset: displacement - 1,
-    title: "Kumo Cloud Lower line",
+    title: @locale { default: "Kumo Cloud Lower line", "zh-CN": "云层下轨", "zh-HK": "雲層下軌" },
     display: PlotDisplay.NONE
 );
 fill(
     p1,
     p2,
-    title: "Cloud Fill",
+    title: @locale { default: "Cloud Fill", "zh-CN": "云层填充", "zh-HK": "雲層填充" },
     color: leadLine1 > leadLine2 ? Color.rgb(67, 160, 71, 90) : Color.rgb(
         244,
         67,

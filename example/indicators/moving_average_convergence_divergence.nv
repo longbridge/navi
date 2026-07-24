@@ -1,23 +1,23 @@
-﻿indicator(
-    "Moving Average Convergence Divergence",
+indicator(
+    @locale { default: "Moving Average Convergence Divergence", "zh-CN": "移动平均收敛散度", "zh-HK": "移動平均收斂散度" },
     "MACD",
     timeframe: "",
     timeframe_gaps: true
 );
 
-let sourceInput: float = input.source(close, "Source");
-let fastLenInput: int = input.int(12, "Fast length", 1);
-let slowLenInput: int = input.int(26, "Slow length", 1);
-let sigLenInput: int = input.int(9, "Signal length", 1);
+let sourceInput: float = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let fastLenInput: int = input.int(12, @locale { default: "Fast length", "zh-CN": "快速长度", "zh-HK": "快速長度" }, 1);
+let slowLenInput: int = input.int(26, @locale { default: "Slow length", "zh-CN": "慢速长度", "zh-HK": "慢速長度" }, 1);
+let sigLenInput: int = input.int(9, @locale { default: "Signal length", "zh-CN": "信号长度", "zh-HK": "訊號長度" }, 1);
 let oscTypeInput: String = input.string(
     "EMA",
-    "Oscillator MA type",
+    @locale { default: "Oscillator MA type", "zh-CN": "振荡器均线类型", "zh-HK": "振盪器均線類型" },
     ["EMA", "SMA"],
     display: PlotDisplay.NONE
 );
 let sigTypeInput: String = input.string(
     "EMA",
-    "Signal MA type",
+    @locale { default: "Signal MA type", "zh-CN": "信号均线类型", "zh-HK": "訊號均線類型" },
     ["EMA", "SMA"],
     display: PlotDisplay.NONE
 );
@@ -36,18 +36,18 @@ let signal: float = ma(macd, sigLenInput, sigTypeInput);
 let hist: float = macd - signal;
 let hColor: Color = hist >= 0 ? hist > hist[1] ? #26a69a : #b2dfdb : hist > hist[1] ? #ffcdd2 : #ff5252;
 
-hline(0, "Zero", #787b8680);
-plot(hist, "Histogram", hColor, style: PlotStyle.Columns);
+hline(0, @locale { default: "Zero", "zh-CN": "零轴", "zh-HK": "零軸" }, #787b8680);
+plot(hist, @locale { default: "Histogram", "zh-CN": "柱状图", "zh-HK": "柱狀圖" }, hColor, style: PlotStyle.Columns);
 plot(macd, "MACD");
-plot(signal, "Signal line", #ff6d00);
+plot(signal, @locale { default: "Signal line", "zh-CN": "信号线", "zh-HK": "訊號線" }, #ff6d00);
 
 alert_condition(
     hist[1] >= 0 and hist < 0,
-    "Rising to falling",
-    "MACD histogram switched from a rising to falling state"
+    @locale { default: "Rising to falling", "zh-CN": "由升转跌", "zh-HK": "由升轉跌" },
+    @locale { default: "MACD histogram switched from a rising to falling state", "zh-CN": "MACD 柱状图从上升状态切换至下降状态", "zh-HK": "MACD 柱狀圖從上升狀態切換至下降狀態" }
 );
 alert_condition(
     hist[1] <= 0 and hist > 0,
-    "Falling to rising",
-    "MACD histogram switched from a falling to rising state"
+    @locale { default: "Falling to rising", "zh-CN": "由跌转升", "zh-HK": "由跌轉升" },
+    @locale { default: "MACD histogram switched from a falling to rising state", "zh-CN": "MACD 柱状图从下降状态切换至上升状态", "zh-HK": "MACD 柱狀圖從下降狀態切換至上升狀態" }
 );

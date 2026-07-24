@@ -1,4 +1,4 @@
-indicator("24-hour Volume", "24H Vol", format: Format.Volume);
+indicator(@locale { default: "24-hour Volume", "zh-CN": "24小时成交量", "zh-HK": "24小時成交量" }, "24H Vol", format: Format.Volume);
 
 fn rollOnTimeWhen(
     source: series float,
@@ -19,10 +19,14 @@ fn rollOnTimeWhen(
     let result: Array<float> = sources;
 }
 
-let priceTooltip = "If the symbol's volume is expressed in base units, it is multiplied by this value to convert it into a price.";
-let price = input.source(close, "Price Source", tooltip: priceTooltip);
+let priceTooltip = @locale {
+    default: "If the symbol's volume is expressed in base units, it is multiplied by this value to convert it into a price.",
+    "zh-CN": "如果标的的成交量以基础单位表示，则将其乘以此价格值以转换为报价货币金额。",
+    "zh-HK": "如果標的的成交量以基礎單位表示，則將其乘以此價格值以轉換為報價貨幣金額。",
+};
+let price = input.source(close, @locale { default: "Price Source", "zh-CN": "价格来源", "zh-HK": "價格來源" }, tooltip: priceTooltip);
 let currencyInput = input.string(
-    title: "Target Currency",
+    title: @locale { default: "Target Currency", "zh-CN": "目标货币", "zh-HK": "目標貨幣" },
     defval: "Default",
     options: [
         "Default",
@@ -68,4 +72,4 @@ let vol24h = request.security(
     sumVolTF,
     sum24hVol(expr * request.currency_rate(symbol_info.currency, currency))
 );
-plot(vol24h, title: "24H Volume", style: PlotStyle.Columns);
+plot(vol24h, title: @locale { default: "24H Volume", "zh-CN": "24小时成交量", "zh-HK": "24小時成交量" }, style: PlotStyle.Columns);

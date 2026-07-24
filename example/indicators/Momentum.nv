@@ -1,10 +1,10 @@
-﻿indicator(
-    title: "Momentum",
+indicator(
+    title: @locale { default: "Momentum", "zh-CN": "动量", "zh-HK": "動量" },
     short_title: "Mom",
     timeframe: "",
     timeframe_gaps: true
 );
-let len = input.int(10, minval: 1, title: "Length");
-let src = input(close, title: "Source");
+let len = input.int(10, minval: 1, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
+let src = input(close, title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let mom = src - src[len];
 plot(mom, color: #2962FF, title: "MOM");

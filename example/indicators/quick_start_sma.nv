@@ -1,4 +1,4 @@
-indicator("SMA", overlay: true);
+indicator(@locale { default: "SMA", "zh-CN": "简单移动平均线", "zh-HK": "簡單移動平均線" }, overlay: true);
 
-let len = input.int(14, "Length", minval: 1);
-plot(ta.sma(close, len), "SMA", color: Color.BLUE);
+let len = input.int(14, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
+plot(ta.sma(close, len), @locale { default: "SMA", "zh-CN": "SMA", "zh-HK": "SMA" }, color: Color.BLUE);

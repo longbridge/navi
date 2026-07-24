@@ -1,18 +1,18 @@
-﻿indicator(
-    title: "Moving Average Weighted",
+indicator(
+    title: @locale { default: "Moving Average Weighted", "zh-CN": "加权移动平均线", "zh-HK": "加權移動平均線" },
     short_title: "WMA",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let len = input.int(9, minval: 1, title: "Length");
-let src = input(close, title: "Source");
+let len = input.int(9, minval: 1, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
+let src = input(close, title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let offset = input.int(
-    title: "Offset",
+    title: @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" },
     defval: 0,
     minval: -500,
     maxval: 500,
     display: PlotDisplay.NONE
 );
 let out = ta.wma(src, len);
-plot(out, title: "WMA", color: Color.BLUE, offset: offset);
+plot(out, title: @locale { default: "WMA", "zh-CN": "WMA", "zh-HK": "WMA" }, color: Color.BLUE, offset: offset);

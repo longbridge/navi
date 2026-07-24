@@ -1,6 +1,6 @@
-﻿
+
 indicator(
-    "Pivot Points Standard",
+    @locale { default: "Pivot Points Standard", "zh-CN": "标准枢轴点", "zh-HK": "標準樞軸點" },
     "Pivots",
     overlay: true,
     max_lines_count: 500,
@@ -8,7 +8,7 @@ indicator(
 );
 
 let pivotTypeInput = input.string(
-    title: "Type",
+    title: @locale { default: "Type", "zh-CN": "类型", "zh-HK": "類型" },
     defval: "Traditional",
     options: [
         "Traditional",
@@ -20,7 +20,7 @@ let pivotTypeInput = input.string(
     ]
 );
 let pivotAnchorInput = input.string(
-    title: "Pivots Timeframe",
+    title: @locale { default: "Pivots Timeframe", "zh-CN": "枢轴时间周期", "zh-HK": "樞軸時間週期" },
     defval: "Auto",
     options: [
         "Auto",
@@ -36,40 +36,44 @@ let pivotAnchorInput = input.string(
     ]
 );
 let maxHistoricalPivotsInput = input.int(
-    title: "Number of Pivots Back",
+    title: @locale { default: "Number of Pivots Back", "zh-CN": "历史枢轴数量", "zh-HK": "歷史樞軸數量" },
     defval: 15,
     minval: 1,
     maxval: 200,
     display: PlotDisplay.NONE
 );
 let isDailyBasedInput = input.bool(
-    title: "Use Daily-based Values",
+    title: @locale { default: "Use Daily-based Values", "zh-CN": "使用日线数据", "zh-HK": "使用日線數據" },
     defval: true,
     display: PlotDisplay.NONE,
-    tooltip: "When this option is unchecked, Pivot Points will use intraday data while calculating on intraday charts. If Extended Hours are displayed on the chart, they will be taken into account during the pivot level calculation. If intraday OHLC values are different from daily-based values (normal for stocks), the pivot levels will also differ."
+    tooltip: @locale {
+        default: "When this option is unchecked, Pivot Points will use intraday data while calculating on intraday charts. If Extended Hours are displayed on the chart, they will be taken into account during the pivot level calculation. If intraday OHLC values are different from daily-based values (normal for stocks), the pivot levels will also differ.",
+        "zh-CN": "取消勾选此选项时，枢轴点将在日内图表上使用日内数据进行计算。如果图表上显示了延长交易时段，则在计算枢轴水平时将把延长时段纳入考量。如果日内的 OHLC 数值与日线数据不同（股票中较为常见），枢轴水平也会有所差异。",
+        "zh-HK": "取消勾選此選項時，樞軸點將在日內圖表上使用日內數據進行計算。如果圖表上顯示了延長交易時段，則在計算樞軸水平時將把延長時段納入考量。如果日內的 OHLC 數值與日線數據不同（股票中較為常見），樞軸水平也會有所差異。",
+    }
 );
 let showLabelsInput = input.bool(
-    title: "Show Labels",
+    title: @locale { default: "Show Labels", "zh-CN": "显示标签", "zh-HK": "顯示標籤" },
     defval: true,
     group: "labels",
     display: PlotDisplay.NONE
 );
 let showPricesInput = input.bool(
-    title: "Show Prices",
+    title: @locale { default: "Show Prices", "zh-CN": "显示价格", "zh-HK": "顯示價格" },
     defval: true,
     group: "labels",
     display: PlotDisplay.NONE
 );
 let positionLabelsInput = input.string(
     "Left",
-    "Labels Position",
+    @locale { default: "Labels Position", "zh-CN": "标签位置", "zh-HK": "標籤位置" },
     options: ["Left", "Right"],
     group: "labels",
     display: PlotDisplay.NONE,
     active: showLabelsInput or showPricesInput
 );
 let linewidthInput = input.int(
-    title: "line Width",
+    title: @locale { default: "line Width", "zh-CN": "线条宽度", "zh-HK": "線條寬度" },
     defval: 1,
     minval: 1,
     maxval: 100,

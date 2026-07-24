@@ -1,4 +1,4 @@
-﻿strategy("InSide Bar Strategy", overlay: true);
+strategy(@locale { default: "InSide Bar Strategy", "zh-CN": "内部K线策略", "zh-HK": "內部K線策略" }, overlay: true);
 if (high < high[1] and low > low[1]) {
     if (close > open) {
         strategy.entry("InsBarLE", Direction.Long, comment: "InsBarLE");

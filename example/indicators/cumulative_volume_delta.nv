@@ -1,4 +1,4 @@
-indicator("Cumulative Volume Delta", "CVD", format: Format.Volume);
+indicator(@locale { default: "Cumulative Volume Delta", "zh-CN": "累积成交量差值", "zh-HK": "累積成交量差值" }, "CVD", format: Format.Volume);
 
 struct collectedData {
     data: Array<float>,
@@ -877,16 +877,20 @@ fn wpo(length: simple int) {
     let result: float = ta.ema(ti, length);
 }
 
-let anchorInput = input.timeframe("1D", "Anchor period");
-let lowerTimeframeTooltip = "The indicator scans lower timeframe data to approximate up and down volume used in the delta calculation. By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe." + " \n\nHigher timeframes provide more historical data, but the data will be less precise.";
+let anchorInput = input.timeframe("1D", @locale { default: "Anchor period", "zh-CN": "锚定周期", "zh-HK": "錨定週期" });
+let lowerTimeframeTooltip = @locale {
+    default: "The indicator scans lower timeframe data to approximate up and down volume used in the delta calculation. By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe. \n\nHigher timeframes provide more historical data, but the data will be less precise.",
+    "zh-CN": "该指标扫描低级别时间框架数据，以近似计算用于差值计算的上涨与下跌成交量。默认情况下，时间框架会自动选择。这些输入项可使用自定义时间框架覆盖此设置。\n\n较高的时间框架能提供更多历史数据，但数据精度会降低。",
+    "zh-HK": "該指標掃描低級別時間框架數據，以近似計算用於差值計算的上漲與下跌成交量。預設情況下，時間框架會自動選擇。這些輸入項可使用自訂時間框架覆蓋此設定。\n\n較高的時間框架能提供更多歷史數據，但數據精確度會降低。",
+};
 let useCustomTimeframeInput = input.bool(
     false,
-    "Use custom timeframe",
+    @locale { default: "Use custom timeframe", "zh-CN": "使用自定义时间框架", "zh-HK": "使用自訂時間框架" },
     tooltip: lowerTimeframeTooltip
 );
 let lowerTimeframeInput = input.timeframe(
     "1",
-    "Timeframe",
+    @locale { default: "Timeframe", "zh-CN": "时间框架", "zh-HK": "時間框架" },
     active: useCustomTimeframeInput
 );
 

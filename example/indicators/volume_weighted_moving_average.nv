@@ -1,12 +1,12 @@
-﻿indicator(
-    title: "Volume Weighted Moving Average",
+indicator(
+    title: @locale { default: "Volume Weighted Moving Average", "zh-CN": "成交量加权移动平均线", "zh-HK": "成交量加權移動平均線" },
     short_title: "VWMA",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let len = input.int(20, "Length", minval: 1);
-let src = input(close, "Source");
+let len = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
+let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let ma = ta.vwma(src, len);
-let offset = input.int(0, "Offset", minval: -500, maxval: 500);
+let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" }, minval: -500, maxval: 500);
 plot(ma, title: "VWMA", color: #2962FF, offset: offset);

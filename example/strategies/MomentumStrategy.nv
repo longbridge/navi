@@ -1,4 +1,4 @@
-﻿strategy("Momentum Strategy", overlay: true);
+strategy(@locale { default: "Momentum Strategy", "zh-CN": "动量策略", "zh-HK": "動量策略" }, overlay: true);
 let length = input(12);
 let price = close;
 fn momentum(seria, length) {
@@ -12,7 +12,7 @@ if (mom0 > 0 and mom1 > 0) {
         "MomLE",
         Direction.Long,
         stop: high + symbol_info.min_tick,
-        comment: "MomLE"
+        comment: @locale { default: "MomLE", "zh-CN": "动量多头入场", "zh-HK": "動量多頭入場" }
     );
 } else {
     strategy.cancel("MomLE");
@@ -22,7 +22,7 @@ if (mom0 < 0 and mom1 < 0) {
         "MomSE",
         Direction.Short,
         stop: low - symbol_info.min_tick,
-        comment: "MomSE"
+        comment: @locale { default: "MomSE", "zh-CN": "动量空头入场", "zh-HK": "動量空頭入場" }
     );
 } else {
     strategy.cancel("MomSE");

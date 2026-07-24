@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "McGinley Dynamic",
+indicator(
+    title: @locale { default: "McGinley Dynamic", "zh-CN": "麦金利动态均线", "zh-HK": "麥金利動態均線" },
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
@@ -11,4 +11,4 @@ mg = na(mg[1]) ? ta.ema(source, length) : mg[1] + (source - mg[1]) / (length * m
     source / mg[1],
     4
 ));
-plot(mg, "McGinley Dynamic");
+plot(mg, @locale { default: "McGinley Dynamic", "zh-CN": "麦金利动态均线", "zh-HK": "麥金利動態均線" });

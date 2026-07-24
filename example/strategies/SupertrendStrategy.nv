@@ -1,12 +1,12 @@
-﻿strategy(
-    "Supertrend Strategy",
+strategy(
+    @locale { default: "Supertrend Strategy", "zh-CN": "超级趋势策略", "zh-HK": "超級趨勢策略" },
     overlay: true,
     default_qty_type: DefaultQtyType.PercentOfEquity,
     default_qty_value: 15
 );
 
-let atrPeriod = input(10, "ATR Length");
-let factor = input.float(3.0, "Factor", step: 0.01);
+let atrPeriod = input(10, @locale { default: "ATR Length", "zh-CN": "ATR 周期", "zh-HK": "ATR 週期" });
+let factor = input.float(3.0, @locale { default: "Factor", "zh-CN": "因子", "zh-HK": "因子" }, step: 0.01);
 
 let (_, direction) = ta.supertrend(factor, atrPeriod);
 

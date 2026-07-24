@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Klinger Oscillator",
+indicator(
+    title: @locale { default: "Klinger Oscillator", "zh-CN": "Klinger 震荡指标", "zh-HK": "Klinger 震盪指標" },
     format: Format.Volume,
     timeframe: "",
     timeframe_gaps: true
@@ -12,5 +12,5 @@ if bar_state.is_last and cumVol == 0 {
 let sv = ta.change(hlc3) >= 0 ? volume : -volume;
 let kvo = ta.ema(sv, 34) - ta.ema(sv, 55);
 let sig = ta.ema(kvo, 13);
-plot(kvo, color: #2962FF, title: "Klinger Oscillator");
-plot(sig, color: #43A047, title: "Signal");
+plot(kvo, color: #2962FF, title: @locale { default: "Klinger Oscillator", "zh-CN": "Klinger 震荡指标", "zh-HK": "Klinger 震盪指標" });
+plot(sig, color: #43A047, title: @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "訊號線" });

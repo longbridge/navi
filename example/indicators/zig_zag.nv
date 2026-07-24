@@ -501,28 +501,28 @@ fn newInstance(settings: Settings = na) {
 
 let deviationInput = input.float(
     5.0,
-    "Price deviation for reversals (%)",
+    @locale { default: "Price deviation for reversals (%)", "zh-CN": "反转价格偏差 (%)", "zh-HK": "反轉價格偏差 (%)" },
     0.00001,
     100.0,
     0.5,
     "0.00001 - 100"
 );
-let depthInput = input.int(10, "Pivot legs", 2);
-let lineColorInput = input(#2962FF, "line color", display: PlotDisplay.NONE);
-let extendInput = input(true, "Extend to last bar", display: PlotDisplay.NONE);
+let depthInput = input.int(10, @locale { default: "Pivot legs", "zh-CN": "枢轴段数", "zh-HK": "樞軸段數" }, 2);
+let lineColorInput = input(#2962FF, @locale { default: "Line color", "zh-CN": "线条颜色", "zh-HK": "線條顏色" }, display: PlotDisplay.NONE);
+let extendInput = input(true, @locale { default: "Extend to last bar", "zh-CN": "延伸至最后一根K线", "zh-HK": "延伸至最後一根K線" }, display: PlotDisplay.NONE);
 let showPriceInput = input(
     true,
-    "Display reversal price",
+    @locale { default: "Display reversal price", "zh-CN": "显示反转价格", "zh-HK": "顯示反轉價格" },
     display: PlotDisplay.NONE
 );
 let showVolInput = input(
     true,
-    "Display cumulative volume",
+    @locale { default: "Display cumulative volume", "zh-CN": "显示累计成交量", "zh-HK": "顯示累計成交量" },
     display: PlotDisplay.NONE
 );
 let showChgInput = input(
     true,
-    "Display reversal price change",
+    @locale { default: "Display reversal price change", "zh-CN": "显示反转价格变化", "zh-HK": "顯示反轉價格變化" },
     inline: "priceRev",
     display: PlotDisplay.NONE
 );

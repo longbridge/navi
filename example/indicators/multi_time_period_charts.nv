@@ -1,13 +1,21 @@
-﻿indicator(
-    "Multi-Time Period Charts",
+indicator(
+    @locale { default: "Multi-Time Period Charts", "zh-CN": "多时间周期图表", "zh-HK": "多時間週期圖表" },
     short_title: "MTPC",
     overlay: true,
     max_boxes_count: 500
 );
 
-let TT_AT: String = "If selected, the indicator automatically chooses the timeframe of the displayed bars. The chosen higher" + " timeframe is:\n\n" + " • '2 hours' if the chart timeframe is a seconds-based timeframe.\n" + " • '1 day' if the chart timeframe is lower than one day and not a seconds-based timeframe.\n" + " • '1 week' if the chart timeframe is higher than one day and lower than one week.\n" + " • '1 month' if the chart timeframe is higher than one week and lower than one month.\n" + " • '3 months' if the chart timeframe is higher than one month and lower than three months.\n" + " • '12 months' if the chart timeframe is higher than three months." + " \n\nIf not selected, it uses the timeframe specified in the 'Timeframe' input.";
+let TT_AT: String = @locale {
+    default: "If selected, the indicator automatically chooses the timeframe of the displayed bars. The chosen higher timeframe is:\n\n • '2 hours' if the chart timeframe is a seconds-based timeframe.\n • '1 day' if the chart timeframe is lower than one day and not a seconds-based timeframe.\n • '1 week' if the chart timeframe is higher than one day and lower than one week.\n • '1 month' if the chart timeframe is higher than one week and lower than one month.\n • '3 months' if the chart timeframe is higher than one month and lower than three months.\n • '12 months' if the chart timeframe is higher than three months. \n\nIf not selected, it uses the timeframe specified in the 'Timeframe' input.",
+    "zh-CN": '如果选中，指标将自动选择所显示K线的时间周期。所选的更高时间周期为：\n\n • 如果图表时间周期基于秒，则为"2小时"。\n • 如果图表时间周期低于1天且不是基于秒的时间周期，则为"1天"。\n • 如果图表时间周期高于1天且低于1周，则为"1周"。\n • 如果图表时间周期高于1周且低于1个月，则为"1个月"。\n • 如果图表时间周期高于1个月且低于3个月，则为"3个月"。\n • 如果图表时间周期高于3个月，则为"12个月"。\n\n如果未选中，则使用"时间周期"输入项中指定的时间周期。',
+    "zh-HK": "如果選中，指標將自動選擇所顯示K線的時間週期。所選的更高時間週期為：\n\n • 如果圖表時間週期基於秒，則為「2小時」。\n • 如果圖表時間週期低於1天且不是基於秒的時間週期，則為「1天」。\n • 如果圖表時間週期高於1天且低於1週，則為「1週」。\n • 如果圖表時間週期高於1週且低於1個月，則為「1個月」。\n • 如果圖表時間週期高於1個月且低於3個月，則為「3個月」。\n • 如果圖表時間週期高於3個月，則為「12個月」。\n\n如果未選中，則使用「時間週期」輸入項中指定的時間週期。",
+};
 
-let TT_UC: String = "When this option is unchecked, MTPC will use intraday data while calculating on intraday charts." + " If Extended Hours are displayed on the chart, they will be taken into account during the calculation." + " If intraday OHLC values are different from daily-based values (normal for stocks), the MTPC will also differ.";
+let TT_UC: String = @locale {
+    default: "When this option is unchecked, MTPC will use intraday data while calculating on intraday charts. If Extended Hours are displayed on the chart, they will be taken into account during the calculation. If intraday OHLC values are different from daily-based values (normal for stocks), the MTPC will also differ.",
+    "zh-CN": "当此选项未勾选时，MTPC 在日内图表上计算时将使用日内数据。如果图表上显示了盘前盘后数据，它们也将被纳入计算。如果日内 OHLC 值与基于日线的值不同（股票中常见），MTPC 结果也会有所不同。",
+    "zh-HK": "當此選項未勾選時，MTPC 在盤中圖表上計算時將使用盤中數據。如果圖表上顯示了盤前盤後數據，它們也將被納入計算。如果盤中 OHLC 值與基於日線的值不同（股票中常見），MTPC 結果也會有所不同。",
+};
 
 let UP_COLOR: Color = #009688;
 let DN_COLOR: Color = #F44336;
@@ -21,31 +29,31 @@ enum CalcType {
     tr = "True Range",
 }
 
-let autoTFInput: bool = input(true, "Auto-timeframe", tooltip: TT_AT);
+let autoTFInput: bool = input(true, @locale { default: "Auto-timeframe", "zh-CN": "自动时间周期", "zh-HK": "自動時間週期" }, tooltip: TT_AT);
 let tfInput: String = input.timeframe(
     "1M",
-    "Timeframe",
+    @locale { default: "Timeframe", "zh-CN": "时间周期", "zh-HK": "時間週期" },
     active: not autoTFInput
 );
-let calcTypeInput: CalcType = input.enum(CalcType.hl, "Calculation");
-let useHaInput: bool = input.bool(false, "Display Heikin Ashi values");
+let calcTypeInput: CalcType = input.enum(CalcType.hl, @locale { default: "Calculation", "zh-CN": "计算方式", "zh-HK": "計算方式" });
+let useHaInput: bool = input.bool(false, @locale { default: "Display Heikin Ashi values", "zh-CN": "显示 Heikin Ashi 值", "zh-HK": "顯示 Heikin Ashi 值" });
 let useDailyInput: bool = input.bool(
     false,
-    "Use daily-based values",
+    @locale { default: "Use daily-based values", "zh-CN": "使用基于日线的值", "zh-HK": "使用基於日線的值" },
     tooltip: TT_UC
 );
 
-let GRP01: String = "Border and fill colors";
+let GRP01: String = @locale { default: "Border and fill colors", "zh-CN": "边框与填充颜色", "zh-HK": "邊框與填充顏色" };
 let upBorderColorInput: Color = input(
     UP_COLOR,
-    "Up bars  ",
+    @locale { default: "Up bars  ", "zh-CN": "上涨K线  ", "zh-HK": "上漲K線  " },
     inline: "10",
     group: GRP01
 );
 let upBodyColorInput: Color = input(UPBD_COLOR, "", inline: "10", group: GRP01);
 let dnBorderColorInput: Color = input(
     DN_COLOR,
-    "Down bars",
+    @locale { default: "Down bars", "zh-CN": "下跌K线", "zh-HK": "下跌K線" },
     inline: "11",
     group: GRP01
 );

@@ -1,7 +1,7 @@
-﻿strategy("MACD Strategy", overlay: true);
-let fastLength = input(12, "Fast length");
-let slowlength = input(26, "Slow length");
-let MACDLength = input(9, "MACD length");
+strategy(@locale { default: "MACD Strategy", "zh-CN": "MACD 策略", "zh-HK": "MACD 策略" }, overlay: true);
+let fastLength = input(12, @locale { default: "Fast length", "zh-CN": "快线周期", "zh-HK": "快線週期" });
+let slowlength = input(26, @locale { default: "Slow length", "zh-CN": "慢线周期", "zh-HK": "慢線週期" });
+let MACDLength = input(9, @locale { default: "MACD length", "zh-CN": "MACD 周期", "zh-HK": "MACD 週期" });
 let MACD = ta.ema(close, fastLength) - ta.ema(close, slowlength);
 let aMACD = ta.ema(MACD, MACDLength);
 let delta = MACD - aMACD;

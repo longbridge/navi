@@ -1,9 +1,9 @@
-﻿indicator(
-    "Average Daily Range",
+indicator(
+    @locale { default: "Average Daily Range", "zh-CN": "平均日波幅", "zh-HK": "平均日波幅" },
     short_title: "ADR",
     timeframe: "",
     timeframe_gaps: true
 );
-let lengthInput = input.int(14, title: "Length");
+let lengthInput = input.int(14, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
 let adr = ta.sma(high - low, lengthInput);
-plot(adr, title: "ADR");
+plot(adr, title: @locale { default: "ADR", "zh-CN": "平均日波幅", "zh-HK": "平均日波幅" });

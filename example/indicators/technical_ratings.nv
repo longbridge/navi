@@ -1,4 +1,8 @@
-﻿indicator("Technical Ratings", "Technicals", precision: 2);
+indicator(
+    @locale { default: "Technical Ratings", "zh-CN": "技术评级", "zh-HK": "技術評級" },
+    "Technicals",
+    precision: 2
+);
 
 struct collectedData {
     data: Array<float>,
@@ -1021,21 +1025,28 @@ fn ratingStatus(
 let LEVEL_STRONG: float = 0.5;
 let LEVEL_WEAK: float = 0.1;
 
-let PC_TT: String = "If enabled and the indicator's timeframe is higher than the chart's, the plotted rating and alert" + " conditions update only after a bar on that timeframe is confirmed. Otherwise, they also update during open bars on" + " the timeframe. Does not affect the table display.";
+let PC_TT: String = @locale {
+    default: "If enabled and the indicator's timeframe is higher than the chart's, the plotted rating and alert conditions update only after a bar on that timeframe is confirmed. Otherwise, they also update during open bars on the timeframe. Does not affect the table display.",
+    "zh-CN": "若启用，且指标时间周期高于图表时间周期，则绘制的评级和警报条件仅在该时间周期的K线确认后更新。否则，也会在该时间周期的未收盘K线期间更新。不影响表格显示。",
+    "zh-HK": "若啟用，且指標時間週期高於圖表時間週期，則繪製的評級和警報條件僅在該時間週期的K線確認後更新。否則，也會在該時間週期的未收盤K線期間更新。不影響表格顯示。",
+};
 
-let timeframe: String = input.timeframe("", "Indicator Timeframe");
+let timeframe: String = input.timeframe(
+    "",
+    @locale { default: "Indicator Timeframe", "zh-CN": "指标时间周期", "zh-HK": "指標時間週期" }
+);
 let ratingSignal: String = input.string(
     "All",
-    "Rating is based on",
+    @locale { default: "Rating is based on", "zh-CN": "评级基于", "zh-HK": "評級基於" },
     options: ["MAs", "Oscillators", "All"]
 );
 let plotConfirmed: bool = input.bool(
     false,
-    "Plot confirmed ratings only",
+    @locale { default: "Plot confirmed ratings only", "zh-CN": "仅绘制已确认的评级", "zh-HK": "僅繪製已確認的評級" },
     tooltip: PC_TT
 );
 
-let GRP1: String = "Show MTF";
+let GRP1: String = @locale { default: "Show MTF", "zh-CN": "显示多时间周期", "zh-HK": "顯示多時間週期" };
 let useMtf1: bool = input(false, "", inline: "mtf1", group: GRP1);
 let mtf1: String = input.timeframe(
     "60",
@@ -1077,17 +1088,17 @@ let mtf5: String = input.timeframe(
     active: useMtf5
 );
 
-let GRP2: String = "table Settings";
+let GRP2: String = @locale { default: "table Settings", "zh-CN": "表格设置", "zh-HK": "表格設置" };
 let tableSizeInput: String = input.string(
     "small",
-    "Size      ",
+    @locale { default: "Size      ", "zh-CN": "大小      ", "zh-HK": "大小      " },
     inline: "table Size",
     group: GRP2,
     options: ["tiny", "small", "normal", "large", "huge", "auto"]
 );
 let tableYPosInput: String = input.string(
     "middle",
-    "Position ",
+    @locale { default: "Position ", "zh-CN": "位置 ", "zh-HK": "位置 " },
     inline: "table Pos",
     group: GRP2,
     options: ["top", "middle", "bottom"]
@@ -1112,26 +1123,26 @@ let tablePosition: Position = switch tableYPosInput + "_" + tableXPosInput {
 };
 let colText: Color = input(
     #ffffff,
-    "Text     ",
+    @locale { default: "Text     ", "zh-CN": "文字     ", "zh-HK": "文字     " },
     inline: "Text Color",
     group: GRP2
 );
 let colBuy: Color = input(
     #5b9cf6,
-    "Buy  ",
+    @locale { default: "Buy  ", "zh-CN": "买入  ", "zh-HK": "買入  " },
     inline: "Buy Colors",
     group: GRP2
 );
 let colStrongBuy: Color = input(#2962ff, "", inline: "Buy Colors", group: GRP2);
 let colNeutral: Color = input(
     #a8adbc,
-    "Neutral  ",
+    @locale { default: "Neutral  ", "zh-CN": "中性  ", "zh-HK": "中性  " },
     inline: "Neutral",
     group: GRP2
 );
 let colSell: Color = input(
     #ef9a9a,
-    "Sell  ",
+    @locale { default: "Sell  ", "zh-CN": "卖出  ", "zh-HK": "賣出  " },
     inline: "Sell Colors",
     group: GRP2
 );
@@ -1143,7 +1154,7 @@ let colStrongSell: Color = input(
 );
 let tableTitleColor: Color = input(
     #295b79,
-    "Headers",
+    @locale { default: "Headers", "zh-CN": "标题栏", "zh-HK": "標題欄" },
     inline: "Headers",
     group: GRP2
 );
@@ -1435,7 +1446,7 @@ let gradColor: Color = Color.from_gradient(
 
 plot(
     userRating,
-    "Rating (indicator timeframe)",
+    @locale { default: "Rating (indicator timeframe)", "zh-CN": "评级（指标时间周期）", "zh-HK": "評級（指標時間週期）" },
     Color.new(gradColor, 50 - gradientLvl * 10),
     1,
     PlotStyle.Columns
@@ -1448,23 +1459,23 @@ hline(-0.5, color: Color.new(colSell, 50), line_style: HLineStyle.Dashed);
 
 alert_condition(
     ta.cross_under(userRating, -LEVEL_WEAK),
-    "Sell",
-    "Ratings changed to \"Sell\""
+    @locale { default: "Sell", "zh-CN": "卖出", "zh-HK": "賣出" },
+    @locale { default: "Ratings changed to \"Sell\"", "zh-CN": '评级变更为"卖出"', "zh-HK": "評級變更為「賣出」" }
 );
 alert_condition(
     ta.cross_over(userRating, LEVEL_WEAK),
-    "Buy",
-    "Ratings changed to \"Buy\""
+    @locale { default: "Buy", "zh-CN": "买入", "zh-HK": "買入" },
+    @locale { default: "Ratings changed to \"Buy\"", "zh-CN": '评级变更为"买入"', "zh-HK": "評級變更為「買入」" }
 );
 alert_condition(
     ta.cross_under(userRating, -LEVEL_STRONG),
-    "Strong Sell",
-    "Ratings changed to \"Strong Sell\""
+    @locale { default: "Strong Sell", "zh-CN": "强力卖出", "zh-HK": "強力賣出" },
+    @locale { default: "Ratings changed to \"Strong Sell\"", "zh-CN": '评级变更为"强力卖出"', "zh-HK": "評級變更為「強力賣出」" }
 );
 alert_condition(
     ta.cross_over(userRating, LEVEL_STRONG),
-    "Strong Buy",
-    "Ratings changed to \"Strong Buy\""
+    @locale { default: "Strong Buy", "zh-CN": "强力买入", "zh-HK": "強力買入" },
+    @locale { default: "Ratings changed to \"Strong Buy\"", "zh-CN": '评级变更为"强力买入"', "zh-HK": "評級變更為「強力買入」" }
 );
 
 if timeframe.in_seconds(currentTf) < timeframe.in_seconds() {

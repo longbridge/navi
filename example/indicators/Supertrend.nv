@@ -1,56 +1,56 @@
-﻿indicator("Supertrend", overlay: true, timeframe: "", timeframe_gaps: true);
+indicator("Supertrend", overlay: true, timeframe: "", timeframe_gaps: true);
 
-let atrPeriod = input.int(10, "ATR Length", minval: 1);
-let factor = input.float(3.0, "Factor", minval: 0.01, step: 0.01);
+let atrPeriod = input.int(10, @locale { default: "ATR Length", "zh-CN": "ATR 周期", "zh-HK": "ATR 週期" }, minval: 1);
+let factor = input.float(3.0, @locale { default: "Factor", "zh-CN": "系数", "zh-HK": "係數" }, minval: 0.01, step: 0.01);
 
 let (supertrend, direction) = ta.supertrend(factor, atrPeriod);
 
 supertrend = bar_state.is_first ? na : supertrend;
 let upTrend = plot(
     direction < 0 ? supertrend : na,
-    "Up Trend",
+    @locale { default: "Up Trend", "zh-CN": "上升趋势", "zh-HK": "上升趨勢" },
     color: Color.GREEN,
     style: PlotStyle.LineBr
 );
 let downTrend = plot(
     direction < 0 ? na : supertrend,
-    "Down Trend",
+    @locale { default: "Down Trend", "zh-CN": "下降趋势", "zh-HK": "下降趨勢" },
     color: Color.RED,
     style: PlotStyle.LineBr
 );
 let bodyMiddle = plot(
     bar_state.is_first ? na : (open + close) / 2,
-    "Body Middle",
+    @locale { default: "Body Middle", "zh-CN": "实体中线", "zh-HK": "實體中線" },
     display: PlotDisplay.NONE
 );
 
 fill(
     bodyMiddle,
     upTrend,
-    title: "Uptrend background",
+    title: @locale { default: "Uptrend background", "zh-CN": "上升趋势背景", "zh-HK": "上升趨勢背景" },
     color: Color.new(Color.GREEN, 90),
     fill_gaps: false
 );
 fill(
     bodyMiddle,
     downTrend,
-    title: "Downtrend background",
+    title: @locale { default: "Downtrend background", "zh-CN": "下降趋势背景", "zh-HK": "下降趨勢背景" },
     color: Color.new(Color.RED, 90),
     fill_gaps: false
 );
 
 alert_condition(
     direction[1] > direction,
-    title: 'Downtrend to Uptrend',
-    message: 'The Supertrend value switched from Downtrend to Uptrend '
+    title: @locale { default: "Downtrend to Uptrend", "zh-CN": "下降趋势转上升趋势", "zh-HK": "下降趨勢轉上升趨勢" },
+    message: @locale { default: "The Supertrend value switched from Downtrend to Uptrend ", "zh-CN": "Supertrend 值已从下降趋势切换为上升趋势", "zh-HK": "Supertrend 值已從下降趨勢切換為上升趨勢" }
 );
 alert_condition(
     direction[1] < direction,
-    title: 'Uptrend to Downtrend',
-    message: 'The Supertrend value switched from Uptrend to Downtrend'
+    title: @locale { default: "Uptrend to Downtrend", "zh-CN": "上升趋势转下降趋势", "zh-HK": "上升趨勢轉下降趨勢" },
+    message: @locale { default: "The Supertrend value switched from Uptrend to Downtrend", "zh-CN": "Supertrend 值已从上升趋势切换为下降趋势", "zh-HK": "Supertrend 值已從上升趨勢切換為下降趨勢" }
 );
 alert_condition(
     direction[1] != direction,
-    title: 'Trend Change',
-    message: 'The Supertrend value switched from Uptrend to Downtrend or vice versa'
+    title: @locale { default: "Trend Change", "zh-CN": "趋势改变", "zh-HK": "趨勢改變" },
+    message: @locale { default: "The Supertrend value switched from Uptrend to Downtrend or vice versa", "zh-CN": "Supertrend 值已在上升趋势与下降趋势之间切换", "zh-HK": "Supertrend 值已在上升趨勢與下降趨勢之間切換" }
 );

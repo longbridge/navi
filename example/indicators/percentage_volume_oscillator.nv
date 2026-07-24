@@ -1,5 +1,5 @@
-﻿indicator(
-    "Percentage Volume Oscillator",
+indicator(
+    @locale { default: "Percentage Volume Oscillator", "zh-CN": "百分比成交量振荡器", "zh-HK": "百分比成交量振盪器" },
     "PVO",
     false,
     Format.Percent,
@@ -8,18 +8,18 @@
     timeframe_gaps: true
 );
 
-let fastLenInput: int = input.int(12, "Fast length", 1);
-let slowLenInput: int = input.int(26, "Slow length", 1);
-let sigLenInput: int = input.int(9, "Signal length", 1);
+let fastLenInput: int = input.int(12, @locale { default: "Fast length", "zh-CN": "快线周期", "zh-HK": "快線週期" }, 1);
+let slowLenInput: int = input.int(26, @locale { default: "Slow length", "zh-CN": "慢线周期", "zh-HK": "慢線週期" }, 1);
+let sigLenInput: int = input.int(9, @locale { default: "Signal length", "zh-CN": "信号线周期", "zh-HK": "信號線週期" }, 1);
 let oscTypeInput: String = input.string(
     "EMA",
-    "Oscillator MA type",
+    @locale { default: "Oscillator MA type", "zh-CN": "振荡器均线类型", "zh-HK": "振盪器均線類型" },
     ["EMA", "SMA"],
     display: PlotDisplay.NONE
 );
 let sigTypeInput: String = input.string(
     "EMA",
-    "Signal MA type",
+    @locale { default: "Signal MA type", "zh-CN": "信号线均线类型", "zh-HK": "信號線均線類型" },
     ["EMA", "SMA"],
     display: PlotDisplay.NONE
 );
@@ -38,10 +38,10 @@ let signal: float = ma(pvo, sigLenInput, sigTypeInput);
 let hist: float = pvo - signal;
 let hColor: Color = hist >= 0 ? hist > hist[1] ? #26a69a : #b2dfdb : hist > hist[1] ? #ffcdd2 : #ff5252;
 
-hline(0, "Zero", #787b8680);
-plot(hist, "Histogram", hColor, style: PlotStyle.Columns);
-plot(pvo, "PVO");
-plot(signal, "Signal line", #ff6d00);
+hline(0, @locale { default: "Zero", "zh-CN": "零轴", "zh-HK": "零軸" }, #787b8680);
+plot(hist, @locale { default: "Histogram", "zh-CN": "柱状图", "zh-HK": "柱狀圖" }, hColor, style: PlotStyle.Columns);
+plot(pvo, @locale { default: "PVO", "zh-CN": "PVO", "zh-HK": "PVO" });
+plot(signal, @locale { default: "Signal line", "zh-CN": "信号线", "zh-HK": "信號線" }, #ff6d00);
 
 if ta.cum(nz(volume)) == 0.0 and bar_state.is_last_confirmed_history {
     runtime.error("No volume is provided by the data vendor.");

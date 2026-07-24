@@ -1,15 +1,15 @@
-﻿strategy(title: "Keltner Channels Strategy", overlay: true);
+strategy(title: @locale { default: "Keltner Channels Strategy", "zh-CN": "肯特纳通道策略", "zh-HK": "肯特納通道策略" }, overlay: true);
 let length = input.int(20, minval: 1);
-let mult = input.float(2.0, "Multiplier");
-let src = input(close, title: "Source");
-let exp = input(true, "Use Exponential MA", display: PlotDisplay.NONE);
+let mult = input.float(2.0, @locale { default: "Multiplier", "zh-CN": "乘数", "zh-HK": "乘數" });
+let src = input(close, title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let exp = input(true, @locale { default: "Use Exponential MA", "zh-CN": "使用指数移动平均", "zh-HK": "使用指數移動平均" }, display: PlotDisplay.NONE);
 let BandsStyle = input.string(
     "Average True Range",
     options: ["Average True Range", "True Range", "Range"],
-    title: "Bands Style",
+    title: @locale { default: "Bands Style", "zh-CN": "通道样式", "zh-HK": "通道樣式" },
     display: PlotDisplay.NONE
 );
-let atrlength = input(10, "ATR Length", display: PlotDisplay.NONE);
+let atrlength = input(10, @locale { default: "ATR Length", "zh-CN": "ATR 周期", "zh-HK": "ATR 週期" }, display: PlotDisplay.NONE);
 fn esma(source, length) {
     let s = ta.sma(source, length);
     let e = ta.ema(source, length);

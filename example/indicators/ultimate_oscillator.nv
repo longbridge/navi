@@ -1,14 +1,14 @@
-﻿indicator(
-    title: "Ultimate Oscillator",
+indicator(
+    title: @locale { default: "Ultimate Oscillator", "zh-CN": "终极振荡器", "zh-HK": "終極振盪器" },
     short_title: "UO",
     format: Format.Price,
     precision: 2,
     timeframe: "",
     timeframe_gaps: true
 );
-let length1 = input.int(7, minval: 1, title: "Fast Length");
-let length2 = input.int(14, minval: 1, title: "Middle Length");
-let length3 = input.int(28, minval: 1, title: "Slow Length");
+let length1 = input.int(7, minval: 1, title: @locale { default: "Fast Length", "zh-CN": "快速周期", "zh-HK": "快速週期" });
+let length2 = input.int(14, minval: 1, title: @locale { default: "Middle Length", "zh-CN": "中速周期", "zh-HK": "中速週期" });
+let length3 = input.int(28, minval: 1, title: @locale { default: "Slow Length", "zh-CN": "慢速周期", "zh-HK": "慢速週期" });
 fn average(bp, tr_, length) {
     math.sum(bp, length) / math.sum(tr_, length);
 }
@@ -20,4 +20,4 @@ let avg7 = average(bp, tr_, length1);
 let avg14 = average(bp, tr_, length2);
 let avg28 = average(bp, tr_, length3);
 let out = 100 * (4 * avg7 + 2 * avg14 + avg28) / 7;
-plot(out, color: #F44336, title: "Oscillator");
+plot(out, color: #F44336, title: @locale { default: "Oscillator", "zh-CN": "振荡器", "zh-HK": "振盪器" });

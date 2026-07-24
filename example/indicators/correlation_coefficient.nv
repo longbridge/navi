@@ -1,12 +1,12 @@
-﻿indicator(
-    "Correlation Coefficient",
+indicator(
+    @locale { default: "Correlation Coefficient", "zh-CN": "相关系数", "zh-HK": "相關係數" },
     short_title: "CC",
     format: Format.Price,
     precision: 2
 );
-let symbolInput = input.symbol("GOOG", "Symbol", confirm: true);
-let sourceInput = input.source(close, "Source");
-let lengthInput = input.int(20, "Length");
+let symbolInput = input.symbol("GOOG", @locale { default: "Symbol", "zh-CN": "标的", "zh-HK": "標的" }, confirm: true);
+let sourceInput = input.source(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let lengthInput = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
 // ticker.modify() is not yet supported; use symbolInput directly
 let adjustedSeries = symbolInput;
 let requestedData = request.security(
@@ -15,7 +15,7 @@ let requestedData = request.security(
     sourceInput
 );
 let correlation = ta.correlation(sourceInput, requestedData, lengthInput);
-plot(correlation, "Correlation", color: Color.BLUE);
+plot(correlation, @locale { default: "Correlation", "zh-CN": "相关系数", "zh-HK": "相關係數" }, color: Color.BLUE);
 hline(1);
 hline(0, color: Color.new(Color.GRAY, 50));
 hline(-1);

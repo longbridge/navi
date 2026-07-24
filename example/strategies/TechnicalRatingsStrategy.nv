@@ -1,6 +1,6 @@
-﻿strategy(
-    title: "Technical Ratings Strategy",
-    short_title: "Technicals Strategy",
+strategy(
+    title: @locale { default: "Technical Ratings Strategy", "zh-CN": "技术评级策略", "zh-HK": "技術評級策略" },
+    short_title: @locale { default: "Technicals Strategy", "zh-CN": "技术策略", "zh-HK": "技術策略" },
     default_qty_type: DefaultQtyType.PercentOfEquity,
     default_qty_value: 5,
     overlay: true
@@ -1015,17 +1015,17 @@ fn ratingStatus(
 ) {
     let result: String = switch {
         na(ratingValue) => "-",
-        ratingValue < -strongBound => "Strong\nSell",
-        ratingValue < -weakBound => "Sell",
-        ratingValue > strongBound => "Strong\nBuy ",
-        ratingValue > weakBound => "Buy",
-        => "Neutral",
+        ratingValue < -strongBound => @locale { default: "Strong\nSell", "zh-CN": "强烈\n卖出", "zh-HK": "強烈\n賣出" },
+        ratingValue < -weakBound => @locale { default: "Sell", "zh-CN": "卖出", "zh-HK": "賣出" },
+        ratingValue > strongBound => @locale { default: "Strong\nBuy ", "zh-CN": "强烈\n买入 ", "zh-HK": "強烈\n買入 " },
+        ratingValue > weakBound => @locale { default: "Buy", "zh-CN": "买入", "zh-HK": "買入" },
+        => @locale { default: "Neutral", "zh-CN": "中性", "zh-HK": "中性" },
     };
 }
-let res = input.timeframe("", title: "Indicator Timeframe");
+let res = input.timeframe("", title: @locale { default: "Indicator Timeframe", "zh-CN": "指标时间框架", "zh-HK": "指標時間框架" });
 let ratingSignal = input.string(
     defval: "All",
-    title: "Rating is based on",
+    title: @locale { default: "Rating is based on", "zh-CN": "评级基于", "zh-HK": "評級基於" },
     options: ["MAs", "Oscillators", "All"]
 );
 

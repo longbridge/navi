@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Parabolic SAR",
+indicator(
+    title: @locale { default: "Parabolic SAR", "zh-CN": "抛物线 SAR", "zh-HK": "拋物線 SAR" },
     short_title: "SAR",
     overlay: true,
     timeframe: "",
@@ -7,6 +7,6 @@
 );
 let start = input(0.02);
 let increment = input(0.02);
-let maximum = input(0.2, "Max value");
+let maximum = input(0.2, @locale { default: "Max value", "zh-CN": "最大值", "zh-HK": "最大值" });
 let out = ta.sar(start, increment, maximum);
-plot(out, "ParabolicSAR", style: PlotStyle.Cross, color: #2962FF);
+plot(out, @locale { default: "ParabolicSAR", "zh-CN": "抛物线SAR", "zh-HK": "拋物線SAR" }, style: PlotStyle.Cross, color: #2962FF);

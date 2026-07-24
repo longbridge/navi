@@ -1,13 +1,13 @@
-﻿plot(close, "Close Price", color: #00BCD4);
+plot(close, @locale { default: "Close Price", "zh-CN": "收盘价", "zh-HK": "收盤價" }, color: #00BCD4);
 indicator(
-    title: "Rob Booker - Ziv Ghost Pivots",
-    short_title: "Ghost Pivots",
+    title: @locale { default: "Rob Booker - Ziv Ghost Pivots", "zh-CN": "Rob Booker - Ziv 幽灵枢轴", "zh-HK": "Rob Booker - Ziv 幽靈樞軸" },
+    short_title: @locale { default: "Ghost Pivots", "zh-CN": "幽灵枢轴", "zh-HK": "幽靈樞軸" },
     overlay: true
 );
-let s4 = input(true, title: "Show Next 4 HR Pivot");
-let sd = input(true, title: "Show Next Day (8 HR) Pivot");
-let sw = input(true, title: "Show Next Week Pivot");
-let sm = input(true, title: "Show Next Month Pivot");
+let s4 = input(true, title: @locale { default: "Show Next 4 HR Pivot", "zh-CN": "显示下一个4小时枢轴", "zh-HK": "顯示下一個4小時樞軸" });
+let sd = input(true, title: @locale { default: "Show Next Day (8 HR) Pivot", "zh-CN": "显示下一个日线（8小时）枢轴", "zh-HK": "顯示下一個日線（8小時）樞軸" });
+let sw = input(true, title: @locale { default: "Show Next Week Pivot", "zh-CN": "显示下一个周线枢轴", "zh-HK": "顯示下一個週線樞軸" });
+let sm = input(true, title: @locale { default: "Show Next Month Pivot", "zh-CN": "显示下一个月线枢轴", "zh-HK": "顯示下一個月線樞軸" });
 let fourHR_offset = 0;
 let day_offset = 0;
 let week_offset = 0;

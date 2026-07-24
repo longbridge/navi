@@ -1,21 +1,21 @@
-﻿indicator(
-    "RCI Ribbon",
+indicator(
+    @locale { default: "RCI Ribbon", "zh-CN": "RCI 彩带", "zh-HK": "RCI 彩帶" },
     "RCI Ribbon",
     precision: 2,
     timeframe: "",
     timeframe_gaps: true
 );
 
-let source = input.source(close, title: "Source");
-let shortLength = input.int(10, title: "Short RCI Length", minval: 1);
-let middleLength = input.int(30, title: "Middle RCI Length", minval: 1);
-let longLength = input.int(50, title: "Long RCI Length", minval: 1);
+let source = input.source(close, title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+let shortLength = input.int(10, title: @locale { default: "Short RCI Length", "zh-CN": "短周期 RCI 长度", "zh-HK": "短週期 RCI 長度" }, minval: 1);
+let middleLength = input.int(30, title: @locale { default: "Middle RCI Length", "zh-CN": "中周期 RCI 长度", "zh-HK": "中週期 RCI 長度" }, minval: 1);
+let longLength = input.int(50, title: @locale { default: "Long RCI Length", "zh-CN": "长周期 RCI 长度", "zh-HK": "長週期 RCI 長度" }, minval: 1);
 
-plot(ta.rci(source, shortLength), title: "Short RCI", color: Color.BLUE);
-plot(ta.rci(source, middleLength), title: "Middle RCI", color: Color.RED);
-plot(ta.rci(source, longLength), title: "Long RCI", color: Color.GREEN);
+plot(ta.rci(source, shortLength), title: @locale { default: "Short RCI", "zh-CN": "短周期 RCI", "zh-HK": "短週期 RCI" }, color: Color.BLUE);
+plot(ta.rci(source, middleLength), title: @locale { default: "Middle RCI", "zh-CN": "中周期 RCI", "zh-HK": "中週期 RCI" }, color: Color.RED);
+plot(ta.rci(source, longLength), title: @locale { default: "Long RCI", "zh-CN": "长周期 RCI", "zh-HK": "長週期 RCI" }, color: Color.GREEN);
 
-hline(0, "Middle band");
-let upper = hline(80, "Upper band");
-let lower = hline(-80, "Lower band");
+hline(0, @locale { default: "Middle band", "zh-CN": "中线", "zh-HK": "中線" });
+let upper = hline(80, @locale { default: "Upper band", "zh-CN": "上轨", "zh-HK": "上軌" });
+let lower = hline(-80, @locale { default: "Lower band", "zh-CN": "下轨", "zh-HK": "下軌" });
 fill(upper, lower, Color.new(Color.BLUE, 90));

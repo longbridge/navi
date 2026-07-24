@@ -1,4 +1,4 @@
-﻿indicator("Auto Fib Extension", overlay: true);
+indicator(@locale { default: "Auto Fib Extension", "zh-CN": "自动斐波那契扩展", "zh-HK": "自動斐波那契擴展" }, overlay: true);
 
 struct Settings {
     devThreshold: float = 5.0,
@@ -494,18 +494,22 @@ fn newInstance(settings: Settings = na) {
     );
 }
 
-let depthTooltip = "The minimum number of bars that will be taken into account when calculating the indicator.";
+let depthTooltip = @locale {
+    default: "The minimum number of bars that will be taken into account when calculating the indicator.",
+    "zh-CN": "计算指标时将考虑的最少K线数量。",
+    "zh-HK": "計算指標時將考慮的最少K線數量。",
+};
 let depth = input.int(
-    title: "Depth",
+    title: @locale { default: "Depth", "zh-CN": "深度", "zh-HK": "深度" },
     defval: 10,
     minval: 2,
     inline: "Pivots",
     tooltip: depthTooltip
 );
-let reverse = input(false, "Reverse", display: PlotDisplay.NONE);
+let reverse = input(false, @locale { default: "Reverse", "zh-CN": "反转", "zh-HK": "反轉" }, display: PlotDisplay.NONE);
 var extendLeft = input(
     false,
-    "Extend Left    |    Extend Right",
+    @locale { default: "Extend Left    |    Extend Right", "zh-CN": "向左延伸    |    向右延伸", "zh-HK": "向左延伸    |    向右延伸" },
     inline: "Extend Lines",
     display: PlotDisplay.NONE
 );
@@ -525,10 +529,10 @@ if extendLeft and not extendRight {
 if not extendLeft and extendRight {
     extending = Extend.Right;
 }
-let prices = input(true, "Show Prices", display: PlotDisplay.NONE);
+let prices = input(true, @locale { default: "Show Prices", "zh-CN": "显示价格", "zh-HK": "顯示價格" }, display: PlotDisplay.NONE);
 let levels = input(
     true,
-    "Show Levels",
+    @locale { default: "Show Levels", "zh-CN": "显示水平", "zh-HK": "顯示水平" },
     inline: "Levels",
     display: PlotDisplay.NONE
 );
@@ -542,13 +546,13 @@ let levelsFormat = input.string(
 );
 let labelsPosition = input.string(
     "Left",
-    "Labels Position",
+    @locale { default: "Labels Position", "zh-CN": "标签位置", "zh-HK": "標籤位置" },
     options: ["Left", "Right"],
     display: PlotDisplay.NONE
 );
 let backgroundTransparency = input.int(
     85,
-    "Background Transparency",
+    @locale { default: "Background Transparency", "zh-CN": "背景透明度", "zh-HK": "背景透明度" },
     minval: 0,
     maxval: 100,
     display: PlotDisplay.NONE

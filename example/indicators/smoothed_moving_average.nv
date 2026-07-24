@@ -1,12 +1,12 @@
-﻿indicator(
-    title: "Smoothed Moving Average",
+indicator(
+    title: @locale { default: "Smoothed Moving Average", "zh-CN": "平滑移动平均线", "zh-HK": "平滑移動平均線" },
     short_title: "SMMA",
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let len = input.int(7, minval: 1, title: "Length");
-let src = input(close, title: "Source");
+let len = input.int(7, minval: 1, title: @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
+let src = input(close, title: @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let smma = 0.0;
 smma = na(smma[1]) ? ta.sma(src, len) : (smma[1] * (len - 1) + src) / len;
-plot(smma, "SMMA", color: #673AB7);
+plot(smma, @locale { default: "SMMA", "zh-CN": "SMMA", "zh-HK": "SMMA" }, color: #673AB7);

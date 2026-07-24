@@ -1,4 +1,4 @@
-﻿indicator("Auto Fib Retracement", overlay: true);
+indicator(@locale { default: "Auto Fib Retracement", "zh-CN": "自动斐波那契回撤", "zh-HK": "自動斐波那契回撤" }, overlay: true);
 
 struct Settings {
     devThreshold: float = 5.0,
@@ -494,24 +494,32 @@ fn newInstance(settings: Settings = na) {
     );
 }
 
-let devTooltip = "Deviation is a multiplier that affects how much the price should deviate from the previous pivot in order for the bar to become a new pivot.";
-let depthTooltip = "The minimum number of bars that will be taken into account when calculating the indicator.";
+let devTooltip = @locale {
+    default: "Deviation is a multiplier that affects how much the price should deviate from the previous pivot in order for the bar to become a new pivot.",
+    "zh-CN": "偏差是一个乘数，用于控制价格需要偏离前一个枢轴点多少，才能使该K线成为新的枢轴点。",
+    "zh-HK": "偏差是一個乘數，用於控制價格需要偏離前一個樞軸點多少，才能使該K線成為新的樞軸點。",
+};
+let depthTooltip = @locale {
+    default: "The minimum number of bars that will be taken into account when calculating the indicator.",
+    "zh-CN": "计算指标时所考虑的最小K线数量。",
+    "zh-HK": "計算指標時所考慮的最小K線數量。",
+};
 let threshold_multiplier = input.float(
-    title: "Deviation",
+    title: @locale { default: "Deviation", "zh-CN": "偏差", "zh-HK": "偏差" },
     defval: 3,
     minval: 0,
     tooltip: devTooltip
 );
 let depth = input.int(
-    title: "Depth",
+    title: @locale { default: "Depth", "zh-CN": "深度", "zh-HK": "深度" },
     defval: 10,
     minval: 2,
     tooltip: depthTooltip
 );
-let reverse = input(false, "Reverse", display: PlotDisplay.NONE);
+let reverse = input(false, @locale { default: "Reverse", "zh-CN": "反转", "zh-HK": "反轉" }, display: PlotDisplay.NONE);
 var extendLeft = input(
     false,
-    "Extend Left    |    Extend Right",
+    @locale { default: "Extend Left    |    Extend Right", "zh-CN": "向左延伸    |    向右延伸", "zh-HK": "向左延伸    |    向右延伸" },
     inline: "Extend Lines"
 );
 var extendRight = input(true, "", inline: "Extend Lines");
@@ -525,10 +533,10 @@ if extendLeft and not extendRight {
 if not extendLeft and extendRight {
     extending = Extend.Right;
 }
-let prices = input(true, "Show Prices", display: PlotDisplay.NONE);
+let prices = input(true, @locale { default: "Show Prices", "zh-CN": "显示价格", "zh-HK": "顯示價格" }, display: PlotDisplay.NONE);
 let levels = input(
     true,
-    "Show Levels",
+    @locale { default: "Show Levels", "zh-CN": "显示级别", "zh-HK": "顯示級別" },
     inline: "Levels",
     display: PlotDisplay.NONE
 );
@@ -542,13 +550,13 @@ let levelsFormat = input.string(
 );
 let labelsPosition = input.string(
     "Left",
-    "Labels Position",
+    @locale { default: "Labels Position", "zh-CN": "标签位置", "zh-HK": "標籤位置" },
     options: ["Left", "Right"],
     display: PlotDisplay.NONE
 );
 var backgroundTransparency: int = input.int(
     85,
-    "Background Transparency",
+    @locale { default: "Background Transparency", "zh-CN": "背景透明度", "zh-HK": "背景透明度" },
     minval: 0,
     maxval: 100,
     display: PlotDisplay.NONE
@@ -669,9 +677,15 @@ fn processLevel(
         let lineId = _draw_line(r, colorL);
         _draw_label(r, _label_txt(m, r), colorL);
         if crossed {
-            alert(
-                "Autofib: " + symbol_info.ticker + " crossing level " + String.from(value)
-            );
+            alert(String.format(
+                @locale {
+                    default: "Autofib: {0} crossing level {1}",
+                    "zh-CN": "自动斐波那契: {0} 穿越级别 {1}",
+                    "zh-HK": "自動斐波那契: {0} 穿越級別 {1}",
+                },
+                symbol_info.ticker,
+                String.from(value),
+            ));
         }
         if not na(lineIdOther) {
             LineFill.new(

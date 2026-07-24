@@ -1,10 +1,10 @@
-﻿indicator(title: "Coppock Curve", timeframe: "", timeframe_gaps: true);
-let wmaLength = input(title: "WMA Length", defval: 10);
-let longRoCLength = input(title: "Long RoC Length", defval: 14);
-let shortRoCLength = input(title: "Short RoC Length", defval: 11);
+indicator(title: @locale { default: "Coppock Curve", "zh-CN": "科波克曲线", "zh-HK": "科波克曲線" }, timeframe: "", timeframe_gaps: true);
+let wmaLength = input(title: @locale { default: "WMA Length", "zh-CN": "WMA 周期", "zh-HK": "WMA 週期" }, defval: 10);
+let longRoCLength = input(title: @locale { default: "Long RoC Length", "zh-CN": "长变动率周期", "zh-HK": "長變動率週期" }, defval: 14);
+let shortRoCLength = input(title: @locale { default: "Short RoC Length", "zh-CN": "短变动率周期", "zh-HK": "短變動率週期" }, defval: 11);
 let source = close;
 let curve = ta.wma(
     ta.roc(source, longRoCLength) + ta.roc(source, shortRoCLength),
     wmaLength
 );
-plot(curve, "Coppock Curve");
+plot(curve, @locale { default: "Coppock Curve", "zh-CN": "科波克曲线", "zh-HK": "科波克曲線" });

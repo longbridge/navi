@@ -1,52 +1,92 @@
-﻿indicator("Seasonality", overlay: false, max_boxes_count: 500);
+indicator(@locale { default: "Seasonality", "zh-CN": "季节性", "zh-HK": "季節性" }, overlay: false, max_boxes_count: 500);
 
-let TT_SY: String = "The year to start seasonality calculations. box drawings start one year after this value.";
-let TT_PC: String = "The base color for boxes and table cells that show positive values.";
-let TT_NC: String = "The base color for boxes and table cells that show negative values.";
-let TT_CP: String = "The cutoff for maximum color intensity. Absolute values at or above this level have the same color.";
-let TT_WT: String = "The table width as a percentage of the pane where the table is located. If this value is 0, the width fits the contents of the table, and the table can be wider than the pane.";
-let TT_HG: String = "The table height as a percentage of the pane where the table is located. If this value is 0, the height fits the contents of the table, and the table can be taller than the pane.";
-let TT_SA: String = "Toggles the 'Avgs' row, which shows average change percentages for each month.";
-let TT_SD: String = "Toggles the 'StDev' row, which shows the standard deviation of each month's percentages.";
-let TT_SP: String = "Toggles the 'Pos%' row, which shows the percentage of positive changes in each month's column.";
-let TT_SM: String = "Specifies months to skip. Write months in the 'YYYY-MM' format, separated by commas and spaces.";
+let TT_SY: String = @locale {
+    default: "The year to start seasonality calculations. box drawings start one year after this value.",
+    "zh-CN": "季节性计算的起始年份。箱体绘制从此值的下一年开始。",
+    "zh-HK": "季節性計算的起始年份。箱體繪製從此值的下一年開始。",
+};
+let TT_PC: String = @locale {
+    default: "The base color for boxes and table cells that show positive values.",
+    "zh-CN": "显示正值的箱体和表格单元格的基础颜色。",
+    "zh-HK": "顯示正值的箱體和表格儲存格的基礎顏色。",
+};
+let TT_NC: String = @locale {
+    default: "The base color for boxes and table cells that show negative values.",
+    "zh-CN": "显示负值的箱体和表格单元格的基础颜色。",
+    "zh-HK": "顯示負值的箱體和表格儲存格的基礎顏色。",
+};
+let TT_CP: String = @locale {
+    default: "The cutoff for maximum color intensity. Absolute values at or above this level have the same color.",
+    "zh-CN": "最大颜色强度的临界值。绝对值达到或超过此水平的单元格具有相同的颜色。",
+    "zh-HK": "最大顏色強度的臨界值。絕對值達到或超過此水平的儲存格具有相同的顏色。",
+};
+let TT_WT: String = @locale {
+    default: "The table width as a percentage of the pane where the table is located. If this value is 0, the width fits the contents of the table, and the table can be wider than the pane.",
+    "zh-CN": "表格宽度占表格所在面板的百分比。如果此值为 0，则宽度适应表格内容，表格可能比面板更宽。",
+    "zh-HK": "表格寬度佔表格所在面板的百分比。如果此值為 0，則寬度適應表格內容，表格可能比面板更寬。",
+};
+let TT_HG: String = @locale {
+    default: "The table height as a percentage of the pane where the table is located. If this value is 0, the height fits the contents of the table, and the table can be taller than the pane.",
+    "zh-CN": "表格高度占表格所在面板的百分比。如果此值为 0，则高度适应表格内容，表格可能比面板更高。",
+    "zh-HK": "表格高度佔表格所在面板的百分比。如果此值為 0，則高度適應表格內容，表格可能比面板更高。",
+};
+let TT_SA: String = @locale {
+    default: "Toggles the 'Avgs' row, which shows average change percentages for each month.",
+    "zh-CN": '切换"均值"行的显示，该行显示每个月的平均涨跌幅百分比。',
+    "zh-HK": "切換「均值」列的顯示，該列顯示每個月的平均漲跌幅百分比。",
+};
+let TT_SD: String = @locale {
+    default: "Toggles the 'StDev' row, which shows the standard deviation of each month's percentages.",
+    "zh-CN": '切换"标准差"行的显示，该行显示每个月涨跌幅的标准差。',
+    "zh-HK": "切換「標準差」列的顯示，該列顯示每個月漲跌幅的標準差。",
+};
+let TT_SP: String = @locale {
+    default: "Toggles the 'Pos%' row, which shows the percentage of positive changes in each month's column.",
+    "zh-CN": '切换"正涨%"行的显示，该行显示每个月列中正涨次数的百分比。',
+    "zh-HK": "切換「正漲%」列的顯示，該列顯示每個月列中正漲次數的百分比。",
+};
+let TT_SM: String = @locale {
+    default: "Specifies months to skip. Write months in the 'YYYY-MM' format, separated by commas and spaces.",
+    "zh-CN": '指定要跳过的月份。以"YYYY-MM"格式填写月份，多个月份之间用逗号和空格分隔。',
+    "zh-HK": "指定要跳過的月份。以「YYYY-MM」格式填寫月份，多個月份之間用逗號和空格分隔。",
+};
 
 let startYearInput: int = input.int(
     2015,
-    "Starting year",
+    @locale { default: "Starting year", "zh-CN": "起始年份", "zh-HK": "起始年份" },
     minval: 1800,
     tooltip: TT_SY,
     display: PlotDisplay.NONE
 );
 
-let COLOR_GRP: String = "Color settings";
+let COLOR_GRP: String = @locale { default: "Color settings", "zh-CN": "颜色设置", "zh-HK": "顏色設定" };
 let posColorInput: Color = Color.new(
-    input.color(#089981, "Positive Color", group: COLOR_GRP, tooltip: TT_PC),
+    input.color(#089981, @locale { default: "Positive Color", "zh-CN": "正值颜色", "zh-HK": "正值顏色" }, group: COLOR_GRP, tooltip: TT_PC),
     0
 );
 let negColorInput: Color = Color.new(
-    input.color(#F23745, "Negative Color", group: COLOR_GRP, tooltip: TT_NC),
+    input.color(#F23745, @locale { default: "Negative Color", "zh-CN": "负值颜色", "zh-HK": "負值顏色" }, group: COLOR_GRP, tooltip: TT_NC),
     0
 );
 let cutoffPercentInput: int = input.int(
     10,
-    "Color intensity cutoff (%)",
+    @locale { default: "Color intensity cutoff (%)", "zh-CN": "颜色强度临界值 (%)", "zh-HK": "顏色強度臨界值 (%)" },
     group: COLOR_GRP,
     tooltip: TT_CP,
     display: PlotDisplay.NONE
 );
 
-let HEATMAP_GRP: String = "Heatmap settings";
+let HEATMAP_GRP: String = @locale { default: "Heatmap settings", "zh-CN": "热力图设置", "zh-HK": "熱力圖設定" };
 let tablePositionInput: String = input.string(
     "Center",
-    "table Position",
+    @locale { default: "table Position", "zh-CN": "表格位置", "zh-HK": "表格位置" },
     options: ["Left", "Center", "Right"],
     group: HEATMAP_GRP,
     display: PlotDisplay.NONE
 );
 let tableWidthInput: float = input.float(
     100,
-    "table Width (%)",
+    @locale { default: "table Width (%)", "zh-CN": "表格宽度 (%)", "zh-HK": "表格寬度 (%)" },
     maxval: 100,
     minval: 0,
     group: HEATMAP_GRP,
@@ -55,7 +95,7 @@ let tableWidthInput: float = input.float(
 );
 let tableHeightInput: float = input.float(
     95,
-    "table Height (%)",
+    @locale { default: "table Height (%)", "zh-CN": "表格高度 (%)", "zh-HK": "表格高度 (%)" },
     maxval: 100,
     minval: 0,
     group: HEATMAP_GRP,
@@ -64,28 +104,28 @@ let tableHeightInput: float = input.float(
 );
 let showAvgInput: bool = input.bool(
     true,
-    "Show Averages",
+    @locale { default: "Show Averages", "zh-CN": "显示均值", "zh-HK": "顯示均值" },
     group: HEATMAP_GRP,
     tooltip: TT_SA
 );
 let showStDevInput: bool = input.bool(
     true,
-    "Show Standard Deviation",
+    @locale { default: "Show Standard Deviation", "zh-CN": "显示标准差", "zh-HK": "顯示標準差" },
     group: HEATMAP_GRP,
     tooltip: TT_SD
 );
 let showPosInput: bool = input.bool(
     true,
-    "Show Percent Positive",
+    @locale { default: "Show Percent Positive", "zh-CN": "显示正涨百分比", "zh-HK": "顯示正漲百分比" },
     group: HEATMAP_GRP,
     tooltip: TT_SP
 );
 let showMetrics: bool = showAvgInput or showStDevInput or showPosInput;
 
-let ADD_GRP: String = "Additional settings";
+let ADD_GRP: String = @locale { default: "Additional settings", "zh-CN": "附加设置", "zh-HK": "附加設定" };
 let skippedMonthsInput: String = input.text_area(
     "YYYY-MM, YYYY-MM",
-    "Ignored months",
+    @locale { default: "Ignored months", "zh-CN": "忽略月份", "zh-HK": "忽略月份" },
     group: ADD_GRP,
     tooltip: TT_SM
 );
@@ -213,33 +253,33 @@ if timeframe.change("1M") and not na(changesMatrix) {
 let displayLoc = PlotDisplay.DATA_WINDOW + PlotDisplay.STATUS_LINE;
 plot(
     currMonthExpectedPrice,
-    "Expected price for current month",
+    @locale { default: "Expected price for current month", "zh-CN": "当月预期价格", "zh-HK": "當月預期價格" },
     color: calcColor(currMonthAverage),
     display: displayLoc
 );
 plot(
     currMonthAverage,
-    "Historical average for current month",
+    @locale { default: "Historical average for current month", "zh-CN": "当月历史平均涨跌幅", "zh-HK": "當月歷史平均漲跌幅" },
     color: calcColor(currMonthAverage),
     display: displayLoc,
     format: Format.Percent
 );
 plot(
     currMonthStDev,
-    "Historical standard deviation for current month",
+    @locale { default: "Historical standard deviation for current month", "zh-CN": "当月历史标准差", "zh-HK": "當月歷史標準差" },
     color: Color.GRAY,
     display: displayLoc,
     precision: 2
 );
 plot(
     currAvgNumberOfMonths,
-    "No. of months used in the current average",
+    @locale { default: "No. of months used in the current average", "zh-CN": "当前均值使用的月份数", "zh-HK": "當前均值使用的月份數" },
     display: PlotDisplay.DATA_WINDOW,
     precision: 0
 );
 
 var monthNames = Array.from(
-    "Year",
+    @locale { default: "Year", "zh-CN": "年份", "zh-HK": "年份" },
     "Jan",
     "Feb",
     "Mar",
@@ -322,7 +362,7 @@ if bar_state.is_last {
                 let isSkipped = ignoredMonthsArray.includes(
                     int(thisYear * 100 + itemIndex)
                 );
-                let cellText = isSkipped ? "SKIP" : String.from(item, Format.Percent);
+                let cellText = isSkipped ? @locale { default: "SKIP", "zh-CN": "跳过", "zh-HK": "跳過" } : String.from(item, Format.Percent);
                 let cellColor = isSkipped ? Color.new(Color.GRAY, 50) : calcColor(
                     item,
                     cutoffPercentInput
@@ -357,7 +397,7 @@ if bar_state.is_last {
             dataTable.cell(
                 0,
                 avgsRow,
-                "Avgs:",
+                @locale { default: "Avgs:", "zh-CN": "均值:", "zh-HK": "均值:" },
                 bg_color: informerCellBgcolor,
                 text_color: textColor,
                 height: cellHeight,
@@ -381,7 +421,7 @@ if bar_state.is_last {
             dataTable.cell(
                 0,
                 stDevRow,
-                "StDev:",
+                @locale { default: "StDev:", "zh-CN": "标准差:", "zh-HK": "標準差:" },
                 bg_color: informerCellBgcolor,
                 text_color: textColor,
                 height: cellHeight,
@@ -405,7 +445,7 @@ if bar_state.is_last {
             dataTable.cell(
                 0,
                 ratioRow,
-                "Pos%:",
+                @locale { default: "Pos%:", "zh-CN": "正涨%:", "zh-HK": "正漲%:" },
                 bg_color: informerCellBgcolor,
                 text_color: textColor,
                 height: cellHeight,

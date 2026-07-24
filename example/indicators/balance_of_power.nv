@@ -1,8 +1,8 @@
-﻿indicator(
-    title: "Balance of Power",
+indicator(
+    title: @locale { default: "Balance of Power", "zh-CN": "多空力量", "zh-HK": "多空力量" },
     format: Format.Price,
     precision: 2,
     timeframe: "",
     timeframe_gaps: true
 );
-plot((close - open) / (high - low), "BOP", color: Color.RED);
+plot((close - open) / (high - low), @locale { default: "BOP", "zh-CN": "多空力量", "zh-HK": "多空力量" }, color: Color.RED);

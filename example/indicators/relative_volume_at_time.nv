@@ -1,4 +1,4 @@
-indicator("Relative Volume at Time", "RelVol");
+indicator(@locale { default: "Relative Volume at Time", "zh-CN": "时间段相对成交量", "zh-HK": "時間段相對成交量" }, "RelVol");
 
 struct collectedData {
     data: Array<float>,
@@ -879,19 +879,27 @@ fn wpo(length: simple int) {
 
 let anchorTimeframeInput = input.timeframe(
     "1D",
-    "Anchor Timeframe",
-    tooltip: "When Chart Timeframe >= `Anchor Timeframe`, the indicator will use last `Length` bars in its calculations."
+    @locale { default: "Anchor Timeframe", "zh-CN": "锚定时间框架", "zh-HK": "錨定時間框架" },
+    tooltip: @locale {
+        default: "When Chart Timeframe >= `Anchor Timeframe`, the indicator will use last `Length` bars in its calculations.",
+        "zh-CN": "当图表时间框架 >= `锚定时间框架` 时，指标将使用最近 `Length` 根K线进行计算。",
+        "zh-HK": "當圖表時間框架 >= `錨定時間框架` 時，指標將使用最近 `Length` 根K線進行計算。",
+    }
 );
-let lengthInput = input.int(10, "Length", minval: 1);
+let lengthInput = input.int(10, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
 let calculationModeInput = input.string(
     "Cumulative",
-    "Calculation Mode",
+    @locale { default: "Calculation Mode", "zh-CN": "计算模式", "zh-HK": "計算模式" },
     options: ["Cumulative", "Regular"]
 );
-let TT_AR: const String = "If checked, the volume on bars that have not yet closed will be adjusted based on the previous volume data for the current session, extrapolating the volume at the end of the period.";
+let TT_AR: const String = @locale {
+    default: "If checked, the volume on bars that have not yet closed will be adjusted based on the previous volume data for the current session, extrapolating the volume at the end of the period.",
+    "zh-CN": "如果勾选，当前K线尚未收盘时的成交量将根据本交易时段的历史成交量数据进行调整，外推至该周期结束时的成交量。",
+    "zh-HK": "如果勾選，當前K線尚未收盤時的成交量將根據本交易時段的歷史成交量數據進行調整，外推至該週期結束時的成交量。",
+};
 let adjustRealtimeInput = input.bool(
     true,
-    "Adjust Unconfirmed",
+    @locale { default: "Adjust Unconfirmed", "zh-CN": "调整未确认成交量", "zh-HK": "調整未確認成交量" },
     tooltip: TT_AR
 );
 
@@ -904,7 +912,7 @@ let (currentVolume, pastVolume, _) = relativeVolume(
 
 plot(
     currentVolume / pastVolume,
-    "Relative Volume Ratio",
+    @locale { default: "Relative Volume Ratio", "zh-CN": "相对成交量比率", "zh-HK": "相對成交量比率" },
     Color.new(currentVolume / pastVolume > 1 ? Color.GREEN : Color.RED, 70),
     1,
     PlotStyle.Columns,

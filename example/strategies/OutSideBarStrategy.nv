@@ -1,9 +1,9 @@
-﻿strategy("OutSide Bar Strategy", overlay: true);
+strategy(@locale { default: "OutSide Bar Strategy", "zh-CN": "外包K线策略", "zh-HK": "外包K線策略" }, overlay: true);
 if (high > high[1] and low < low[1]) {
     if (close > open) {
-        strategy.entry("OutBarLE", Direction.Long, comment: "OutBarLE");
+        strategy.entry("OutBarLE", Direction.Long, comment: @locale { default: "OutBarLE", "zh-CN": "外包做多入场", "zh-HK": "外包做多入場" });
     }
     if (close < open) {
-        strategy.entry("OutBarSE", Direction.Short, comment: "OutBarSE");
+        strategy.entry("OutBarSE", Direction.Short, comment: @locale { default: "OutBarSE", "zh-CN": "外包做空入场", "zh-HK": "外包做空入場" });
     }
 }

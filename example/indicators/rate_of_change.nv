@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Rate Of Change",
+indicator(
+    title: @locale { default: "Rate Of Change", "zh-CN": "变动率", "zh-HK": "變動率" },
     short_title: "ROC",
     format: Format.Price,
     precision: 2,
@@ -7,7 +7,7 @@
     timeframe_gaps: true
 );
 let length = input.int(9, minval: 1);
-let source = input(close, "Source");
+let source = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let roc = 100 * (source - source[length]) / source[length];
-plot(roc, color: #2962FF, title: "ROC");
-hline(0, color: #787B86, title: "Zero line");
+plot(roc, color: #2962FF, title: @locale { default: "ROC", "zh-CN": "ROC", "zh-HK": "ROC" });
+hline(0, color: #787B86, title: @locale { default: "Zero line", "zh-CN": "零轴", "zh-HK": "零軸" });

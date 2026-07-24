@@ -1,6 +1,6 @@
-﻿strategy("Volty Expan Close Strategy", overlay: true);
-let length = input(5, "Length");
-let numATRs = input(0.75, "ATR Mult");
+strategy(@locale { default: "Volty Expan Close Strategy", "zh-CN": "波动扩展收盘策略", "zh-HK": "波動擴展收盤策略" }, overlay: true);
+let length = input(5, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" });
+let numATRs = input(0.75, @locale { default: "ATR Mult", "zh-CN": "ATR 倍数", "zh-HK": "ATR 倍數" });
 let atrs = ta.sma(ta.tr, length) * numATRs;
 if (not na(close[length])) {
     strategy.entry(

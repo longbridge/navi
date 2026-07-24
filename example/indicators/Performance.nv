@@ -1,4 +1,4 @@
-indicator("Performance");
+indicator(@locale { default: "Performance", "zh-CN": "绩效表现", "zh-HK": "績效表現" });
 
 struct Data {
     times: Array<int>,
@@ -224,50 +224,78 @@ fn getDataAtPeriodOffsets(
     (values, times, source, symbol_info.description);
 }
 
-let TT_SL: String = "A list of symbols or ticker IDs, separated by commas and optional spaces.";
-let TT_LT: String = "A list of timeframe strings, separated by commas and optional spaces. A valid timeframe String contains" + " a number followed by 'D', 'W', 'M', or 'Y'. Additionally, 'YTD' is supported.";
-let TT_PC: String = "The base color for table cells that show positive values.";
-let TT_NC: String = "The base color for table cells that show negative values.";
-let TT_CP: String = "The change percentage cutoff for maximum color intensity. Absolute percentages at or above this level" + " correspond to the same color intensity.";
-let TT_WT: String = "The table width, expressed as a percentage. If the value is 0, the width automatically adapts to the" + " table's contents. Note that using a large list of timeframe strings can cause the table's width to exceed the" + " width of the chart pane.";
-let TT_HG: String = "The table height, expressed as a percentage. If the value is 0, the height automatically adapts to the" + " table's contents. Note that using a large list of symbols or ticker IDs can cause the table's height to exceed the" + " height of the chart pane.";
+let TT_SL: String = @locale {
+    default: "A list of symbols or ticker IDs, separated by commas and optional spaces.",
+    "zh-CN": "以逗号和可选空格分隔的标的代码或交易品种 ID 列表。",
+    "zh-HK": "以逗號和可選空格分隔的標的代碼或交易品種 ID 列表。",
+};
+let TT_LT: String = @locale {
+    default: "A list of timeframe strings, separated by commas and optional spaces. A valid timeframe String contains a number followed by 'D', 'W', 'M', or 'Y'. Additionally, 'YTD' is supported.",
+    "zh-CN": "以逗号和可选空格分隔的时间周期字符串列表。有效的时间周期字符串由数字加 'D'、'W'、'M' 或 'Y' 组成，此外还支持 'YTD'。",
+    "zh-HK": "以逗號和可選空格分隔的時間週期字符串列表。有效的時間週期字符串由數字加 'D'、'W'、'M' 或 'Y' 組成，此外還支持 'YTD'。",
+};
+let TT_PC: String = @locale {
+    default: "The base color for table cells that show positive values.",
+    "zh-CN": "显示正值的表格单元格的基础颜色。",
+    "zh-HK": "顯示正值的表格儲存格的基礎顏色。",
+};
+let TT_NC: String = @locale {
+    default: "The base color for table cells that show negative values.",
+    "zh-CN": "显示负值的表格单元格的基础颜色。",
+    "zh-HK": "顯示負值的表格儲存格的基礎顏色。",
+};
+let TT_CP: String = @locale {
+    default: "The change percentage cutoff for maximum color intensity. Absolute percentages at or above this level correspond to the same color intensity.",
+    "zh-CN": "最大颜色强度对应的涨跌幅阈值。绝对涨跌幅达到或超过此值时，颜色强度保持一致。",
+    "zh-HK": "最大顏色強度對應的漲跌幅閾值。絕對漲跌幅達到或超過此值時，顏色強度保持一致。",
+};
+let TT_WT: String = @locale {
+    default: "The table width, expressed as a percentage. If the value is 0, the width automatically adapts to the table's contents. Note that using a large list of timeframe strings can cause the table's width to exceed the width of the chart pane.",
+    "zh-CN": "表格宽度，以百分比表示。若值为 0，则宽度自动适应表格内容。注意：时间周期列表过长时，表格宽度可能超出图表区域宽度。",
+    "zh-HK": "表格寬度，以百分比表示。若值為 0，則寬度自動適應表格內容。注意：時間週期列表過長時，表格寬度可能超出圖表區域寬度。",
+};
+let TT_HG: String = @locale {
+    default: "The table height, expressed as a percentage. If the value is 0, the height automatically adapts to the table's contents. Note that using a large list of symbols or ticker IDs can cause the table's height to exceed the height of the chart pane.",
+    "zh-CN": "表格高度，以百分比表示。若值为 0，则高度自动适应表格内容。注意：标的列表过长时，表格高度可能超出图表区域高度。",
+    "zh-HK": "表格高度，以百分比表示。若值為 0，則高度自動適應表格內容。注意：標的列表過長時，表格高度可能超出圖表區域高度。",
+};
 
-let includeCurrentSymbolInput: bool = input.bool(true, "Include chart symbol");
+let includeCurrentSymbolInput: bool = input.bool(true, @locale { default: "Include chart symbol", "zh-CN": "包含图表标的", "zh-HK": "包含圖表標的" });
 let symbolListInput: String = input.text_area(
     "AAPL, NASDAQ:AMZN, EURUSD, ES1!, BTCUSD",
-    "Symbol list",
+    @locale { default: "Symbol list", "zh-CN": "标的列表", "zh-HK": "標的列表" },
     TT_SL
 );
 let tfListInput: String = input.text_area(
     "1W, 1M, 3M, 6M, 12M, YTD, 5Y",
-    "Timeframe list",
+    @locale { default: "Timeframe list", "zh-CN": "时间周期列表", "zh-HK": "時間週期列表" },
     TT_LT
 );
 
-let COLOR_GRP: String = "Color settings";
+let COLOR_GRP: String = @locale { default: "Color settings", "zh-CN": "颜色设置", "zh-HK": "顏色設定" };
 let HEAVY_TRANSP: int = 70;
 let LOW_TRANSP: int = 90;
 let neutralColor: Color = Color.new(Color.GRAY, 80);
 let posColorInput: Color = Color.new(
-    input.color(#089981, "Positive Color", TT_PC, group: COLOR_GRP),
+    input.color(#089981, @locale { default: "Positive Color", "zh-CN": "正值颜色", "zh-HK": "正值顏色" }, TT_PC, group: COLOR_GRP),
     0
 );
 let negColorInput: Color = Color.new(
-    input.color(#F23745, "Negative Color", TT_NC, group: COLOR_GRP),
+    input.color(#F23745, @locale { default: "Negative Color", "zh-CN": "负值颜色", "zh-HK": "負值顏色" }, TT_NC, group: COLOR_GRP),
     0
 );
 let cutoffPercentInput: int = input.int(
     10,
-    "Color intensity cutoff (%)",
+    @locale { default: "Color intensity cutoff (%)", "zh-CN": "颜色强度阈值 (%)", "zh-HK": "顏色強度閾值 (%)" },
     tooltip: TT_CP,
     group: COLOR_GRP,
     display: PlotDisplay.NONE
 );
 
-let TABLE_GRP: String = "table settings";
+let TABLE_GRP: String = @locale { default: "table settings", "zh-CN": "表格设置", "zh-HK": "表格設定" };
 let tableXPositionInput: String = input.string(
     "center",
-    "table position",
+    @locale { default: "table position", "zh-CN": "表格位置", "zh-HK": "表格位置" },
     ["left", "center", "right"],
     inline: "31",
     group: TABLE_GRP,
@@ -283,7 +311,7 @@ let tableYPositionInput: String = input.string(
 );
 let tableWidthInput: float = input.float(
     100,
-    "table width (%)",
+    @locale { default: "table width (%)", "zh-CN": "表格宽度 (%)", "zh-HK": "表格寬度 (%)" },
     0,
     100,
     1,
@@ -293,7 +321,7 @@ let tableWidthInput: float = input.float(
 );
 let tableHeightInput: float = input.float(
     95,
-    "table height (%)",
+    @locale { default: "table height (%)", "zh-CN": "表格高度 (%)", "zh-HK": "表格高度 (%)" },
     0,
     100,
     1,
@@ -387,7 +415,7 @@ if bar_state.is_last {
             if na(changePercent) {
                 cellColorBase = chart.fg_color;
                 cellColor = Color.new(neutralColor, LOW_TRANSP);
-                cellText = "No data";
+                cellText = @locale { default: "No data", "zh-CN": "无数据", "zh-HK": "無數據" };
                 cellTooltip = na;
             }
             changesTable.cell(

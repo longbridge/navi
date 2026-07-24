@@ -1,19 +1,19 @@
-﻿indicator(
-    title: "MA Cross",
+indicator(
+    title: @locale { default: "MA Cross", "zh-CN": "均线交叉", "zh-HK": "均線交叉" },
     overlay: true,
     timeframe: "",
     timeframe_gaps: true
 );
-let shortlen = input.int(9, "Short MA Length", minval: 1);
-let longlen = input.int(21, "Long MA Length", minval: 1);
+let shortlen = input.int(9, @locale { default: "Short MA Length", "zh-CN": "短期均线周期", "zh-HK": "短期均線週期" }, minval: 1);
+let longlen = input.int(21, @locale { default: "Long MA Length", "zh-CN": "长期均线周期", "zh-HK": "長期均線週期" }, minval: 1);
 let short = ta.sma(close, shortlen);
 let long = ta.sma(close, longlen);
-plot(short, color: #FF6D00, title: "Short MA");
-plot(long, color: #43A047, title: "Long MA");
+plot(short, color: #FF6D00, title: @locale { default: "Short MA", "zh-CN": "短期均线", "zh-HK": "短期均線" });
+plot(long, color: #43A047, title: @locale { default: "Long MA", "zh-CN": "长期均线", "zh-HK": "長期均線" });
 plot(
     ta.cross(short, long) ? short : na,
     color: #2962FF,
     style: PlotStyle.Cross,
     line_width: 4,
-    title: "Cross"
+    title: @locale { default: "Cross", "zh-CN": "交叉信号", "zh-HK": "交叉訊號" }
 );

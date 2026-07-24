@@ -1,5 +1,5 @@
-﻿indicator(
-    title: "Historical Volatility",
+indicator(
+    title: @locale { default: "Historical Volatility", "zh-CN": "历史波动率", "zh-HK": "歷史波動率" },
     short_title: "HV",
     format: Format.Price,
     precision: 2,
@@ -12,4 +12,4 @@ let per = timeframe.is_intraday or timeframe.is_daily and timeframe.multiplier =
 let hv = 100 * ta.stdev(math.log(close / close[1]), length) * math.sqrt(
     annual / per
 );
-plot(hv, "HV", color: #2962FF);
+plot(hv, @locale { default: "HV", "zh-CN": "历史波动率", "zh-HK": "歷史波動率" }, color: #2962FF);

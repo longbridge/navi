@@ -1,4 +1,4 @@
-﻿indicator("Volume Delta", format: Format.Volume);
+indicator(@locale { default: "Volume Delta", "zh-CN": "成交量差值", "zh-HK": "成交量差值" }, format: Format.Volume);
 
 struct collectedData {
     data: Array<float>,
@@ -877,15 +877,19 @@ fn wpo(length: simple int) {
     let result: float = ta.ema(ti, length);
 }
 
-let lowerTimeframeTooltip = "The indicator scans lower timeframe data to approximate up and down volume used in the delta calculation. By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe." + " \n\nHigher timeframes provide more historical data, but the data will be less precise.";
+let lowerTimeframeTooltip = @locale {
+    default: "The indicator scans lower timeframe data to approximate up and down volume used in the delta calculation. By default, the timeframe is chosen automatically. These inputs override this with a custom timeframe. \n\nHigher timeframes provide more historical data, but the data will be less precise.",
+    "zh-CN": "该指标扫描低时间周期数据，以近似计算用于差值计算的上涨量和下跌量。默认情况下，时间周期会自动选择。这些输入项可使用自定义时间周期覆盖默认设置。\n\n较高的时间周期可提供更多历史数据，但数据精度会降低。",
+    "zh-HK": "該指標掃描低時間週期數據，以近似計算用於差值計算的上漲量和下跌量。預設情況下，時間週期會自動選擇。這些輸入項可使用自定義時間週期覆蓋預設設定。\n\n較高的時間週期可提供更多歷史數據，但數據精度會降低。",
+};
 let useCustomTimeframeInput = input.bool(
     false,
-    "Use custom timeframe",
+    @locale { default: "Use custom timeframe", "zh-CN": "使用自定义时间周期", "zh-HK": "使用自定義時間週期" },
     tooltip: lowerTimeframeTooltip
 );
 let lowerTimeframeInput = input.timeframe(
     "1",
-    "Timeframe",
+    @locale { default: "Timeframe", "zh-CN": "时间周期", "zh-HK": "時間週期" },
     active: useCustomTimeframeInput
 );
 
@@ -907,7 +911,7 @@ plot_candle(
     maxVolume,
     minVolume,
     lastVolume,
-    "Volume Delta",
+    @locale { default: "Volume Delta", "zh-CN": "成交量差值", "zh-HK": "成交量差值" },
     color: col,
     border_color: col,
     wick_color: col
