@@ -73,7 +73,7 @@ fn priceRotationDiff(
         "Absolute" => String.from(diff, Format.Mintick),
         => String.from(diff * 100 / start, Format.Percent),
     };
-    let result: String = "({0}{1})".format(sign, diffStr);
+    let result: String = String.format("({0}{1})", sign, diffStr);
 }
 
 fn priceRotationAggregate(

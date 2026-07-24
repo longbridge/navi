@@ -229,7 +229,7 @@ for value in values {
 }
 
 for (index, value) in values {
-    log.info("{0}: {1}".format(index, value));
+    log.info(String.format("{0}: {1}", index, value));
 }
 ```
 

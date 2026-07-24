@@ -64,9 +64,9 @@ fn periodToTimestamp(period: series String, referenceTime: series int) {
         period.ends_with("W") or (period.ends_with("D") and not period.contains("YTD")) => referenceTime - timeframe.in_seconds(period) * 1000,
         => {
             runtime.error(
-                "Invalid period: {1}{0}{1}.
+                String.format("Invalid period: {1}{0}{1}.
                      The period must use one of the following units: {1}Y{1}, {1}M{1}, {1}W{1}, {1}D{1}, {1}YTD{1}.
-                     All options except for {1}YTD{1} can include a multiplier prefix (e.g., {1}3D{1}).".format(period, "'")
+                     All options except for {1}YTD{1} can include a multiplier prefix (e.g., {1}3D{1}).", period, "'")
             );
             na;
         }
@@ -305,7 +305,7 @@ let tableHeightInput: float = input.float(
 fn getTickers() {
     let symbols = getArrayFromString(symbolListInput.upper());
     for (i, sym) in symbols {
-        symbols.set(i, sym.contains(":") ? sym : "{0}:{1}".format(symbol_info.prefix, sym));
+        symbols.set(i, sym.contains(":") ? sym : String.format("{0}:{1}", symbol_info.prefix, sym));
     }
     if includeCurrentSymbolInput and not symbols.includes(symbol_info.ticker) {
         symbols.insert(0, symbol_info.tickerid);
@@ -319,7 +319,7 @@ var timeframesArray: Array<String> = getArrayFromString(
 var symbolsArray: Array<String> = getTickers();
 
 fn toPosition(y: String, x: String): Position {
-    switch "{0}_{1}".format(y, x) {
+    switch String.format("{0}_{1}", y, x) {
         "top_left" => Position.TopLeft,
         "top_center" => Position.TopCenter,
         "top_right" => Position.TopRight,

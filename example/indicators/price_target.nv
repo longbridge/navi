@@ -89,7 +89,7 @@ if not na(symbol_info.target_price_date) and na(symbol_info.target_price_date[1]
         color: Color.new(#2962ff, 100),
         style: LabelStyle.LabelCenter,
         text_color: Color.new(#2962ff, 0),
-        tooltip: "The {0} analysts offering 1 year price forecasts for {1} have a max estimate of {2} and a min estimate of {3}.".format(symbol_info.target_price_estimates, symbol_info.ticker, symbol_info.target_price_high, symbol_info.target_price_low)
+        tooltip: String.format("The {0} analysts offering 1 year price forecasts for {1} have a max estimate of {2} and a min estimate of {3}.", symbol_info.target_price_estimates, symbol_info.ticker, symbol_info.target_price_high, symbol_info.target_price_low)
     );
 }
 updateTarget();

@@ -137,7 +137,7 @@ fn aroon(length: simple int) {
 fn atr2(length: series float) {
     if length < 1 {
         runtime.error(
-            "Invalid length ({0}). The value must be greater than or equal to 1.".format(length)
+            String.format("Invalid length ({0}). The value must be greater than or equal to 1.", length)
         );
     }
     let alpha: float = 1.0 / length;
@@ -206,7 +206,7 @@ fn dema(source: series float, length: simple int) {
 fn ema2(source: series float, length: series float) {
     if length < 1 {
         runtime.error(
-            "Invalid length ({0}). The value must be greater than or equal to 1.".format(length)
+            String.format("Invalid length ({0}). The value must be greater than or equal to 1.", length)
         );
     }
     let alpha: float = 2.0 / (math.max(1.0, length) + 1.0);
@@ -484,7 +484,7 @@ fn checkLTF(lowerTimeframe: series String) {
         timeframe.main_period
     ) {
         runtime.error(
-            "Invalid lower timeframe: {2}{0}{2}. The timeframe must be lower than or equal to {2}{1}{2}".format(lowerTimeframe, timeframe.main_period, "'")
+            String.format("Invalid lower timeframe: {2}{0}{2}. The timeframe must be lower than or equal to {2}{1}{2}", lowerTimeframe, timeframe.main_period, "'")
         );
     }
 }
@@ -523,7 +523,7 @@ fn requestVolumeDelta(
 fn rma2(source: series float, length: series float) {
     if length < 1 {
         runtime.error(
-            "Invalid length ({0}). The value must be greater than or equal to 1.".format(length)
+            String.format("Invalid length ({0}). The value must be greater than or equal to 1.", length)
         );
     }
     let alpha: float = 1.0 / length;
@@ -1469,6 +1469,6 @@ alert_condition(
 
 if timeframe.in_seconds(currentTf) < timeframe.in_seconds() {
     runtime.error(
-        "Cannot plot ratings for all bars from the ''{0}'' timeframe on the current chart. Select a higher timeframe.".format(currentTf)
+        String.format("Cannot plot ratings for all bars from the ''{0}'' timeframe on the current chart. Select a higher timeframe.", currentTf)
     );
 }
