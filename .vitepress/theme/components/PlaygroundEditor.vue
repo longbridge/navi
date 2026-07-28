@@ -86,7 +86,7 @@ onMounted(async () => {
     minimap: { enabled: false },
     wordWrap: 'on',
     fontSize: 13,
-    fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+    fontFamily: 'Menlo, Monaco, Consolas, monospace',
     lineNumbers: 'on',
     scrollBeyondLastLine: false,
     automaticLayout: true,
