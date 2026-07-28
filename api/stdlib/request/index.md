@@ -9,7 +9,7 @@ title: "request"
 ### currency_rate {#currency_rate}
 
 ```navi
-request.currency_rate(
+currency_rate(
     from: series String,
     to: series String,
     ignore_invalid_currency: series bool = false
@@ -33,7 +33,7 @@ Returns the exchange rate for converting one unit of `from` currency into `to` c
 ### data {#data}
 
 ```navi
-request.data(
+data(
     function: simple String,
     args: series Map<String, any> = na,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,
@@ -59,7 +59,7 @@ Calls a user-defined function on the engine's DataProvider and maps the resultin
 ### dividends {#dividends}
 
 ```navi
-request.dividends(
+dividends(
     ticker: series String = symbol_info.tickerid,
     field: series DividendsField = DividendsField.Gross,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,
@@ -89,7 +89,7 @@ Queries the engine's DataProvider for a dividend value at the current bar. Suppo
 ### earnings {#earnings}
 
 ```navi
-request.earnings(
+earnings(
     ticker: series String = symbol_info.tickerid,
     field: series EarningsField = EarningsField.Actual,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,
@@ -119,7 +119,7 @@ Queries the engine's DataProvider for an earnings value at the current bar. Supp
 ### economic {#economic}
 
 ```navi
-request.economic(
+economic(
     country_code: series String,
     field: series String,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,
@@ -145,7 +145,7 @@ Queries the engine's DataProvider for a macroeconomic indicator value at the cur
 ### financial {#financial}
 
 ```navi
-request.financial(
+financial(
     symbol: series String,
     financial_id: series String,
     period: series String,
@@ -175,7 +175,7 @@ Queries the engine's DataProvider for a financial metric value at the current ba
 ### security {#security}
 
 ```navi
-request.security(
+security(
     symbol: series String,
     timeframe: series String,
     expression: instructions<T>,
@@ -224,7 +224,7 @@ plot(dLow,  title: "Daily Low",  color: Color.RED);
 ### security_lower_tf {#security_lower_tf}
 
 ```navi
-request.security_lower_tf(
+security_lower_tf(
     symbol: series String,
     timeframe: series String,
     expression: instructions<T>,
@@ -256,7 +256,7 @@ Evaluates `expression` on a lower timeframe and returns one array element per lo
 ### splits {#splits}
 
 ```navi
-request.splits(
+splits(
     ticker: series String = symbol_info.tickerid,
     field: series SplitsField = SplitsField.Denominator,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,

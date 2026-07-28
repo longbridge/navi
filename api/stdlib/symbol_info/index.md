@@ -337,7 +337,7 @@ The values are `base`, `quote`, `tick`.
 ### prefix {#fn-prefix}
 
 ```navi
-symbol_info.prefix(symbol: String): String
+prefix(symbol: String): String
 ```
 
 Returns the prefix of the symbol.
@@ -355,7 +355,7 @@ Returns the prefix of the symbol.
 ### ticker {#fn-ticker}
 
 ```navi
-symbol_info.ticker(symbol: String): String
+ticker(symbol: String): String
 ```
 
 Returns symbol name without exchange prefix.

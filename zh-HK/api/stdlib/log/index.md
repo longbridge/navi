@@ -9,7 +9,7 @@ title: "log"
 ### error {#error}
 
 ```navi
-log.error(message: series String)
+error(message: series String)
 ```
 
 將消息寫入錯誤級別的腳本日誌。
@@ -25,7 +25,7 @@ log.error(message: series String)
 ### info {#info}
 
 ```navi
-log.info(message: series String)
+info(message: series String)
 ```
 
 將消息寫入信息級別的腳本日誌。
@@ -41,7 +41,7 @@ log.info(message: series String)
 ### warning {#warning}
 
 ```navi
-log.warning(message: series String)
+warning(message: series String)
 ```
 
 將消息寫入警告級別的腳本日誌。

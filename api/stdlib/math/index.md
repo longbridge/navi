@@ -56,7 +56,7 @@ Equal to Ï† - 1. Used in Fibonacci analysis where 61.8% is a key retracement lev
 
 ### abs {#abs}
 
-<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s0 === 0">
 
@@ -95,7 +95,7 @@ For positive numbers, returns `n` unchanged. For negative numbers, returns `-n`.
 ### acos {#acos}
 
 ```navi
-math.acos(value: float): float
+acos(value: float): float
 ```
 
 Returns the arccosine (inverse cosine) of `value` in degrees.
@@ -115,7 +115,7 @@ Given a cosine value, returns the angle that produces it.
 ### asin {#asin}
 
 ```navi
-math.asin(value: float): float
+asin(value: float): float
 ```
 
 Returns the arcsine (inverse sine) of `value` in degrees.
@@ -135,7 +135,7 @@ Given a sine value, returns the angle that produces it.
 ### atan {#atan}
 
 ```navi
-math.atan(value: float): float
+atan(value: float): float
 ```
 
 Returns the arctangent (inverse tangent) of `value` in degrees.
@@ -155,7 +155,7 @@ Given a tangent value, returns the angle that produces it.
 ### atan2 {#atan2}
 
 ```navi
-math.atan2(y: float, x: float): float
+atan2(y: float, x: float): float
 ```
 
 Returns the four-quadrant arctangent of `y/x` in degrees.
@@ -175,7 +175,7 @@ Unlike <a class="stdlib-ref" data-key="math::atan" href="/api/stdlib/math/#atan"
 
 ### avg {#avg}
 
-<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s1 === 0">
 
@@ -212,7 +212,7 @@ Returns the average (arithmetic mean) of all provided arguments.
 ### cbrt {#cbrt}
 
 ```navi
-math.cbrt(n: float): float
+cbrt(n: float): float
 ```
 
 Returns the cube root of `n`.
@@ -232,7 +232,7 @@ Correctly handles negative inputs (e.g., `cbrt(-8.0) = -2.0`), unlike `pow(n, 1.
 ### ceil {#ceil}
 
 ```navi
-math.ceil(n: float): int
+ceil(n: float): int
 ```
 
 Returns the ceiling of `n`: the smallest integer greater than or equal to `n`.
@@ -252,7 +252,7 @@ E.g., ceil(2.3) = 3, ceil(-2.3) = -2.
 ### clamp {#clamp}
 
 ```navi
-math.clamp(value: float, min: float, max: float): float
+clamp(value: float, min: float, max: float): float
 ```
 
 Clamps `value` to the closed interval `[min, max]`.
@@ -274,7 +274,7 @@ Returns `min` if `value &lt; min`, `max` if `value &gt; max`, otherwise `value`.
 ### cos {#cos}
 
 ```navi
-math.cos(angle: float): float
+cos(angle: float): float
 ```
 
 Returns the cosine of `angle`.
@@ -294,7 +294,7 @@ Note: Navi uses degrees, not radians (unlike most programming languages).
 ### exp {#exp}
 
 ```navi
-math.exp(n: float): float
+exp(n: float): float
 ```
 
 Returns e (Euler's number) raised to the power of `n`.
@@ -314,7 +314,7 @@ The inverse of <a class="stdlib-ref" data-key="math::log" href="/api/stdlib/math
 ### floor {#floor}
 
 ```navi
-math.floor(n: float): int
+floor(n: float): int
 ```
 
 Returns the floor of `n`: the largest integer less than or equal to `n`.
@@ -334,7 +334,7 @@ E.g., floor(2.7) = 2, floor(-2.3) = -3.
 ### hypot {#hypot}
 
 ```navi
-math.hypot(x: float, y: float): float
+hypot(x: float, y: float): float
 ```
 
 Returns the hypotenuse of a right triangle with legs `x` and `y`.
@@ -355,7 +355,7 @@ Equivalent to `sqrt(x*x + y*y)` but numerically stable (avoids overflow for larg
 ### log {#log}
 
 ```navi
-math.log(n: float): float
+log(n: float): float
 ```
 
 Returns the natural logarithm (base e) of `n`.
@@ -375,7 +375,7 @@ The inverse of <a class="stdlib-ref" data-key="math::exp" href="/api/stdlib/math
 ### log10 {#log10}
 
 ```navi
-math.log10(n: float): float
+log10(n: float): float
 ```
 
 Returns the base-10 (common) logarithm of `n`.
@@ -394,7 +394,7 @@ Useful for calculating orders of magnitude. Returns `na` for non-positive values
 
 ### max {#max}
 
-<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s2 === 0">
 
@@ -430,7 +430,7 @@ Returns the maximum value among all provided arguments.
 
 ### min {#min}
 
-<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s3 === 0">
 
@@ -467,7 +467,7 @@ Returns the minimum value among all provided arguments.
 ### pow {#pow}
 
 ```navi
-math.pow(base: float, exponent: float): float
+pow(base: float, exponent: float): float
 ```
 
 Returns `base` raised to the power of `exponent`.
@@ -486,7 +486,7 @@ Returns `base` raised to the power of `exponent`.
 ### random {#random}
 
 ```navi
-math.random(
+random(
     min: series float = 0,
     max: series float = 1,
     seed: series int = na
@@ -512,7 +512,7 @@ The same seed produces the same sequence of numbers, useful for reproducible res
 ### round {#round}
 
 ```navi
-math.round(n: float, precision: int = 0): int
+round(n: float, precision: int = 0): int
 ```
 
 Rounds `n` to the nearest integer, or to `precision` decimal places.
@@ -533,7 +533,7 @@ Uses round-half-up: 0.5 rounds to 1.
 ### round_to_mintick {#round_to_mintick}
 
 ```navi
-math.round_to_mintick(n: float): float
+round_to_mintick(n: float): float
 ```
 
 Rounds `n` to the nearest tick value for the current symbol.
@@ -553,7 +553,7 @@ The result is always a valid price that can be used for orders. Uses `symbol_inf
 ### sign {#sign}
 
 ```navi
-math.sign(n: float): float
+sign(n: float): float
 ```
 
 Returns the sign of `n`: 1.0 for positive, -1.0 for negative, 0.0 for zero.
@@ -573,7 +573,7 @@ Useful for determining direction without magnitude.
 ### sin {#sin}
 
 ```navi
-math.sin(angle: float): float
+sin(angle: float): float
 ```
 
 Returns the sine of `angle`.
@@ -593,7 +593,7 @@ Note: Navi uses degrees, not radians (unlike most programming languages).
 ### sqrt {#sqrt}
 
 ```navi
-math.sqrt(n: float): float
+sqrt(n: float): float
 ```
 
 Returns the square root of `n`.
@@ -611,7 +611,7 @@ Returns the square root of `n`.
 ### sum {#sum}
 
 ```navi
-math.sum(source: series float, length: series int): series float
+sum(source: series float, length: series int): series float
 ```
 
 Calculates the rolling sum of `source` over the last `length` bars.
@@ -630,7 +630,7 @@ Calculates the rolling sum of `source` over the last `length` bars.
 ### tan {#tan}
 
 ```navi
-math.tan(angle: float): float
+tan(angle: float): float
 ```
 
 Returns the tangent of `angle`.
@@ -650,7 +650,7 @@ Note: Navi uses degrees, not radians. Undefined (returns very large values) at Â
 ### to_degrees {#to_degrees}
 
 ```navi
-math.to_degrees(rad: float): float
+to_degrees(rad: float): float
 ```
 
 Converts an angle from radians to degrees.
@@ -668,7 +668,7 @@ Converts an angle from radians to degrees.
 ### to_radians {#to_radians}
 
 ```navi
-math.to_radians(deg: float): float
+to_radians(deg: float): float
 ```
 
 Converts an angle from degrees to radians.
@@ -686,7 +686,7 @@ Converts an angle from degrees to radians.
 ### trunc {#trunc}
 
 ```navi
-math.trunc(n: float): int
+trunc(n: float): int
 ```
 
 Truncates `n` toward zero (removes the fractional part).

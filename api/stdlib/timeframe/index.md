@@ -109,7 +109,7 @@ A String representation of the script's main timeframe or a requested timeframe.
 ### change {#change}
 
 ```navi
-timeframe.change(timeframe: String): bool
+change(timeframe: String): bool
 ```
 
 Detects changes in the specified timeframe.
@@ -127,7 +127,7 @@ Detects changes in the specified timeframe.
 ### from_seconds {#from_seconds}
 
 ```navi
-timeframe.from_seconds(seconds: int): String
+from_seconds(seconds: int): String
 ```
 
 Converts seconds into a timeframe String.
@@ -145,7 +145,7 @@ Converts seconds into a timeframe String.
 ### in_seconds {#in_seconds}
 
 ```navi
-timeframe.in_seconds(timeframe: String = timeframe.period): simple int
+in_seconds(timeframe: String = timeframe.period): simple int
 ```
 
 Converts a timeframe String into seconds.

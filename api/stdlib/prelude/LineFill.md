@@ -11,7 +11,7 @@ Handle for a linefill between two lines.
 ### new {#new}
 
 ```navi
-LineFill.new(
+new(
     line1: series Line,
     line2: series Line,
     color: series Color
@@ -43,7 +43,7 @@ Returns an array filled with all the current linefills drawn by the script.
 ### delete {#delete}
 
 ```navi
-LineFill.delete(id: series LineFill)
+delete(id: series LineFill)
 ```
 
 Deletes the specified linefill from the chart.
@@ -59,7 +59,7 @@ Deletes the specified linefill from the chart.
 ### get_line1 {#get_line1}
 
 ```navi
-LineFill.get_line1(id: series LineFill): series Line
+get_line1(id: series LineFill): series Line
 ```
 
 Returns the first line of the linefill.
@@ -77,7 +77,7 @@ Returns the first line of the linefill.
 ### get_line2 {#get_line2}
 
 ```navi
-LineFill.get_line2(id: series LineFill): series Line
+get_line2(id: series LineFill): series Line
 ```
 
 Returns the second line of the linefill.
@@ -95,7 +95,7 @@ Returns the second line of the linefill.
 ### set_color {#set_color}
 
 ```navi
-LineFill.set_color(id: series LineFill, color: series Color)
+set_color(id: series LineFill, color: series Color)
 ```
 
 Sets the color of the linefill.

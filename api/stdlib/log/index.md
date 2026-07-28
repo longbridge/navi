@@ -9,7 +9,7 @@ title: "log"
 ### error {#error}
 
 ```navi
-log.error(message: series String)
+error(message: series String)
 ```
 
 Writes the message to the script's log at error level.
@@ -25,7 +25,7 @@ Writes the message to the script's log at error level.
 ### info {#info}
 
 ```navi
-log.info(message: series String)
+info(message: series String)
 ```
 
 Writes the message to the script's log at info level.
@@ -41,7 +41,7 @@ Writes the message to the script's log at info level.
 ### warning {#warning}
 
 ```navi
-log.warning(message: series String)
+warning(message: series String)
 ```
 
 Writes the message to the script's log at warning level.

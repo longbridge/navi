@@ -127,7 +127,7 @@ It adjusts the accumulation/distribution calculation by considering the position
 ### alma {#alma}
 
 ```navi
-ta.alma(
+alma(
     series: series float,
     length: series int,
     offset: simple float,
@@ -157,7 +157,7 @@ It uses Gaussian distribution as weights for moving average.
 ### atr {#atr}
 
 ```navi
-ta.atr(length: simple int): series float
+atr(length: simple int): series float
 ```
 
 Calculates the Average True Range (ATR) of a financial instrument over a specified `length`.
@@ -175,7 +175,7 @@ Calculates the Average True Range (ATR) of a financial instrument over a specifi
 ### bars_since {#bars_since}
 
 ```navi
-ta.bars_since(condition: series bool): series int
+bars_since(condition: series bool): series int
 ```
 
 Counts the number of bars since the last time the condition was true.
@@ -195,7 +195,7 @@ If the condition has never been true, it returns na.
 ### bb {#bb}
 
 ```navi
-ta.bb(series: series float, length: series int, mult: simple float)
+bb(series: series float, length: series int, mult: simple float)
 ```
 
 Bollinger Bands (BB).
@@ -224,11 +224,7 @@ plot(bbLower, title: "BB Lower", color: Color.BLUE);
 ### bbw {#bbw}
 
 ```navi
-ta.bbw(
-    source: series float,
-    length: series int,
-    mult: simple float
-  ): series float
+bbw(source: series float, length: series int, mult: simple float): series float
 ```
 
 Bollinger Band Width (BBW).
@@ -250,7 +246,7 @@ It measures the width of the Bollinger Bands relative to the moving average.
 ### cci {#cci}
 
 ```navi
-ta.cci(source: series float, length: series int): series float
+cci(source: series float, length: series int): series float
 ```
 
 Commodity Channel Index (CCI).
@@ -270,7 +266,7 @@ It measures the deviation of the `series` series from its statistical mean.
 
 ### change {#change}
 
-<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 1</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 1</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 1</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span>"]' />
+<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 1</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 1</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 1</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span>"]' />
 
 <div v-show="_s0 === 0">
 
@@ -326,7 +322,7 @@ Useful for detecting state transitions (e.g., signal flips).
 ### chop {#chop}
 
 ```navi
-ta.chop(length: simple int): series float
+chop(length: simple int): series float
 ```
 
 Choppiness Index (CHOP).
@@ -346,7 +342,7 @@ Quantifies how directional (trending) or sideways (choppy) the market is. Values
 ### cmf {#cmf}
 
 ```navi
-ta.cmf(length: simple int): series float
+cmf(length: simple int): series float
 ```
 
 Chaikin Money Flow (CMF).
@@ -366,7 +362,7 @@ Measures buying and selling pressure over `length` bars using the Money Flow Mul
 ### cmo {#cmo}
 
 ```navi
-ta.cmo(series: series float, length: series int): series float
+cmo(series: series float, length: series int): series float
 ```
 
 Chande Momentum Oscillator (CMO).
@@ -387,7 +383,7 @@ It measures the momentum of the `series` series over the specified `length`.
 ### cog {#cog}
 
 ```navi
-ta.cog(source: series float, length: series int): series float
+cog(source: series float, length: series int): series float
 ```
 
 Center of Gravity (COG).
@@ -408,7 +404,7 @@ It identifies the center of gravity of the `source` series over the specified `l
 ### correlation {#correlation}
 
 ```navi
-ta.correlation(
+correlation(
     source1: series float,
     source2: series float,
     length: series int
@@ -432,7 +428,7 @@ Pearson Correlation Coefficient between two series over the specified `length`.
 ### cross {#cross}
 
 ```navi
-ta.cross(source1: series float, source2: series float): series bool
+cross(source1: series float, source2: series float): series bool
 ```
 
 Detects if `source1` has crossed `source2` in either direction.
@@ -451,7 +447,7 @@ Detects if `source1` has crossed `source2` in either direction.
 ### cross_over {#cross_over}
 
 ```navi
-ta.cross_over(source1: series float, source2: series float): series bool
+cross_over(source1: series float, source2: series float): series bool
 ```
 
 Detects if `source1` has crossed over `source2`.
@@ -480,7 +476,7 @@ label.new(bar_index, low, "Buy", style: LabelStyle.Up);
 ### cross_under {#cross_under}
 
 ```navi
-ta.cross_under(source1: series float, source2: series float): series bool
+cross_under(source1: series float, source2: series float): series bool
 ```
 
 Detects if `source1` has crossed under `source2`.
@@ -509,7 +505,7 @@ label.new(bar_index, high, "Sell", style: LabelStyle.Down);
 ### cum {#cum}
 
 ```navi
-ta.cum(source: series float): series float
+cum(source: series float): series float
 ```
 
 Cumulative sum of the `source` series.
@@ -529,7 +525,7 @@ In other words it's a sum of all elements of the `source` series.
 ### dema {#dema}
 
 ```navi
-ta.dema(source: series float, length: simple int): series float
+dema(source: series float, length: simple int): series float
 ```
 
 Double Exponential Moving Average (DEMA).
@@ -550,7 +546,7 @@ Reduces the lag of a standard EMA by subtracting an EMA of the EMA. Formula: `2 
 ### dev {#dev}
 
 ```navi
-ta.dev(source: series float, length: series int): series float
+dev(source: series float, length: series int): series float
 ```
 
 Mean Deviation of the `source` series over the specified `length`.
@@ -569,7 +565,7 @@ Mean Deviation of the `source` series over the specified `length`.
 ### dmi {#dmi}
 
 ```navi
-ta.dmi(di_length: simple int, adx_smoothing: simple int)
+dmi(di_length: simple int, adx_smoothing: simple int)
 ```
 
 Directional Movement Index (DMI).
@@ -588,7 +584,7 @@ Directional Movement Index (DMI).
 ### ema {#ema}
 
 ```navi
-ta.ema(source: series float, length: simple int): series float
+ema(source: series float, length: simple int): series float
 ```
 
 Exponential Moving Average (EMA).
@@ -618,7 +614,7 @@ plot(ema26, title: "EMA 26", color: Color.RED);
 ### falling {#falling}
 
 ```navi
-ta.falling(source: series float, length: series int): series bool
+falling(source: series float, length: series int): series bool
 ```
 
 Checks if the `source` series is falling over the specified `length`.
@@ -636,7 +632,7 @@ Checks if the `source` series is falling over the specified `length`.
 
 ### highest {#highest}
 
-<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s1 === 0">
 
@@ -679,7 +675,7 @@ style: PlotStyle.Stepline);
 
 ### highest_bars {#highest_bars}
 
-<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>"]' />
+<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">highest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>"]' />
 
 <div v-show="_s2 === 0">
 
@@ -715,7 +711,7 @@ Returns the number of bars since the highest value of the `high` series over the
 ### hma {#hma}
 
 ```navi
-ta.hma(source: series float, length: simple int): series float
+hma(source: series float, length: simple int): series float
 ```
 
 Hull Moving Average (HMA).
@@ -736,7 +732,7 @@ It aims to reduce lag while maintaining a smooth curve.
 ### kc {#kc}
 
 ```navi
-ta.kc(
+kc(
     series: series float,
     length: simple int,
     mult: simple float,
@@ -762,7 +758,7 @@ Keltner Channels (KC).
 ### kcw {#kcw}
 
 ```navi
-ta.kcw(
+kcw(
     series: series float,
     length: simple int,
     mult: simple float,
@@ -790,7 +786,7 @@ It measures the width of the Keltner Channels relative to the moving average.
 ### linreg {#linreg}
 
 ```navi
-ta.linreg(
+linreg(
     source: series float,
     length: series int,
     offset: simple int
@@ -815,7 +811,7 @@ It fits a linear regression line to the `source` series over the specified `leng
 
 ### lowest {#lowest}
 
-<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s3 === 0">
 
@@ -850,7 +846,7 @@ Returns the lowest value of the `source` series over the specified `length`.
 
 ### lowest_bars {#lowest_bars}
 
-<OverloadTabs v-model="_s4" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>"]' />
+<OverloadTabs v-model="_s4" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">lowest_bars</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(length</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>"]' />
 
 <div v-show="_s4 === 0">
 
@@ -886,7 +882,7 @@ Returns the number of bars since the lowest value of the `low` series over the s
 ### macd {#macd}
 
 ```navi
-ta.macd(
+macd(
     source: series float,
     fast_length: simple int,
     slow_length: simple int,
@@ -921,7 +917,7 @@ plot(histLine, title: "Hist", color: Color.GRAY, style: PlotStyle.Histogram);
 ### max {#max}
 
 ```navi
-ta.max(source: series float): series float
+max(source: series float): series float
 ```
 
 Returns the maximum value of the `source` series.
@@ -939,7 +935,7 @@ Returns the maximum value of the `source` series.
 ### median {#median}
 
 ```navi
-ta.median(source: series float, length: series int): series float
+median(source: series float, length: series int): series float
 ```
 
 Returns the median value of the `source` series over the specified `length`.
@@ -958,7 +954,7 @@ Returns the median value of the `source` series over the specified `length`.
 ### mfi {#mfi}
 
 ```navi
-ta.mfi(series: series float, length: series int): series float
+mfi(series: series float, length: series int): series float
 ```
 
 Money Flow Index (MFI).
@@ -979,7 +975,7 @@ It measures the inflow and outflow of money into an asset over the specified `le
 ### min {#min}
 
 ```navi
-ta.min(source: series float): series float
+min(source: series float): series float
 ```
 
 Returns the minimum value of the `source` series.
@@ -997,7 +993,7 @@ Returns the minimum value of the `source` series.
 ### mode {#mode}
 
 ```navi
-ta.mode(source: series float, length: series int): series float
+mode(source: series float, length: series int): series float
 ```
 
 Returns the mode (most frequently occurring value) of the `series` series over the specified `length`.
@@ -1016,7 +1012,7 @@ Returns the mode (most frequently occurring value) of the `series` series over t
 ### mom {#mom}
 
 ```navi
-ta.mom(source: series float, length: series int): series float
+mom(source: series float, length: series int): series float
 ```
 
 Calculates the momentum of the `source` series over the specified `length`.
@@ -1035,7 +1031,7 @@ Calculates the momentum of the `source` series over the specified `length`.
 ### percent_rank {#percent_rank}
 
 ```navi
-ta.percent_rank(source: series float, length: series int): series float
+percent_rank(source: series float, length: series int): series float
 ```
 
 Returns the percentile rank of the current value in the `source` series over the specified `length`.
@@ -1054,7 +1050,7 @@ Returns the percentile rank of the current value in the `source` series over the
 ### percentile_linear_interpolation {#percentile_linear_interpolation}
 
 ```navi
-ta.percentile_linear_interpolation(
+percentile_linear_interpolation(
     source: series float,
     length: series int,
     percentage: simple float
@@ -1078,7 +1074,7 @@ Returns the percentile value of the `source` series over the specified `length` 
 ### percentile_nearest_rank {#percentile_nearest_rank}
 
 ```navi
-ta.percentile_nearest_rank(
+percentile_nearest_rank(
     source: series float,
     length: series int,
     percentage: simple float
@@ -1101,7 +1097,7 @@ Returns the percentile value of the `source` series over the specified `length` 
 
 ### pivot_high {#pivot_high}
 
-<OverloadTabs v-model="_s5" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_high</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_high</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s5" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_high</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_high</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s5 === 0">
 
@@ -1142,7 +1138,7 @@ It returns 'NaN', if there was no pivot high point.
 
 ### pivot_low {#pivot_low}
 
-<OverloadTabs v-model="_s6" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_low</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_low</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s6" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_low</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">pivot_low</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(left_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, right_bars</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s6 === 0">
 
@@ -1184,7 +1180,7 @@ It returns 'NaN', if there was no pivot low point.
 ### pivot_point_levels {#pivot_point_levels}
 
 ```navi
-ta.pivot_point_levels(
+pivot_point_levels(
     type: series PivotType,
     change: series bool
   ): series Array<float>
@@ -1208,7 +1204,7 @@ The returned array contains up to 11 values in the order: [P, S1, R1, S2, R2, S3
 ### range {#range}
 
 ```navi
-ta.range(source: series float, length: series int): series float
+range(source: series float, length: series int): series float
 ```
 
 Returns the range (difference between highest and lowest) of the `source` series over the specified `length`.
@@ -1227,7 +1223,7 @@ Returns the range (difference between highest and lowest) of the `source` series
 ### rci {#rci}
 
 ```navi
-ta.rci(source: series float, length: simple int): series float
+rci(source: series float, length: simple int): series float
 ```
 
 Rank Correlation Index (RCI).
@@ -1248,7 +1244,7 @@ It measures the strength and direction of a linear relationship between the rank
 ### rising {#rising}
 
 ```navi
-ta.rising(source: series float, length: series int): series bool
+rising(source: series float, length: series int): series bool
 ```
 
 Checks if the `source` series is rising over the specified `length`.
@@ -1267,7 +1263,7 @@ Checks if the `source` series is rising over the specified `length`.
 ### rma {#rma}
 
 ```navi
-ta.rma(source: series float, length: series int): series float
+rma(source: series float, length: series int): series float
 ```
 
 Recursive Moving Average (RMA).
@@ -1288,7 +1284,7 @@ It is similar to an Exponential Moving Average (EMA) but uses a different smooth
 ### roc {#roc}
 
 ```navi
-ta.roc(source: series float, length: series int): series float
+roc(source: series float, length: series int): series float
 ```
 
 Rate of Change (ROC).
@@ -1309,7 +1305,7 @@ It measures the percentage change between the current value and the value `lengt
 ### rsi {#rsi}
 
 ```navi
-ta.rsi(source: series float, length: series int): series float
+rsi(source: series float, length: series int): series float
 ```
 
 Relative Strength Index (RSI).
@@ -1339,7 +1335,7 @@ hline(30, "Oversold", color: Color.GREEN);
 ### sar {#sar}
 
 ```navi
-ta.sar(start: simple float, inc: simple float, max: simple float): series float
+sar(start: simple float, inc: simple float, max: simple float): series float
 ```
 
 Parabolic SAR.
@@ -1359,7 +1355,7 @@ Parabolic SAR.
 ### sma {#sma}
 
 ```navi
-ta.sma(source: series float, length: series int): series float
+sma(source: series float, length: series int): series float
 ```
 
 Simple Moving Average (SMA).
@@ -1387,7 +1383,7 @@ plot(sma20, title: "SMA 20", color: Color.BLUE);
 ### stdev {#stdev}
 
 ```navi
-ta.stdev(
+stdev(
     source: series float,
     length: series int,
     biased: series bool = true
@@ -1411,7 +1407,7 @@ Calculates the standard deviation of the `source` series over the specified `len
 ### stoch {#stoch}
 
 ```navi
-ta.stoch(
+stoch(
     source: series float,
     high: series float,
     low: series float,
@@ -1439,7 +1435,7 @@ It compares the `source` series to its price range over the specified `length`.
 ### supertrend {#supertrend}
 
 ```navi
-ta.supertrend(factor: series float, atr_period: simple int)
+supertrend(factor: series float, atr_period: simple int)
 ```
 
 SuperTrend indicator.
@@ -1458,7 +1454,7 @@ SuperTrend indicator.
 ### swma {#swma}
 
 ```navi
-ta.swma(source: series float): series float
+swma(source: series float): series float
 ```
 
 Smoothed Weighted Moving Average (SWMA).
@@ -1478,7 +1474,7 @@ It applies weighted moving average smoothing to the `source` series.
 ### tema {#tema}
 
 ```navi
-ta.tema(source: series float, length: simple int): series float
+tema(source: series float, length: simple int): series float
 ```
 
 Triple Exponential Moving Average (TEMA).
@@ -1499,7 +1495,7 @@ Further reduces EMA lag using three layers of smoothing. Formula: `3*EMA1 - 3*EM
 ### tr {#fn-tr}
 
 ```navi
-ta.tr(handle_na: simple bool): series float
+tr(handle_na: simple bool): series float
 ```
 
 True Range (TR).
@@ -1519,7 +1515,7 @@ Measures volatility by accounting for gaps between bars. TR is the greatest of: 
 ### tsi {#tsi}
 
 ```navi
-ta.tsi(
+tsi(
     source: series float,
     short_length: simple int,
     long_length: simple int
@@ -1543,7 +1539,7 @@ True Strength Index (TSI).
 ### value_when {#value_when}
 
 ```navi
-ta.value_when(
+value_when(
     condition: series bool,
     source: series T,
     occurrence: simple int
@@ -1569,7 +1565,7 @@ The `occurrence` parameter selects which match to return: 0 for the most recent,
 ### variance {#variance}
 
 ```navi
-ta.variance(
+variance(
     source: series float,
     length: series int,
     biased: series bool = true
@@ -1593,7 +1589,7 @@ Variance of the `source` series over the specified `length`.
 ### vhf {#vhf}
 
 ```navi
-ta.vhf(source: series float, length: simple int): series float
+vhf(source: series float, length: simple int): series float
 ```
 
 Vertical Horizontal Filter (VHF).
@@ -1613,7 +1609,7 @@ Identifies whether the market is trending or ranging by comparing the price rang
 
 ### vwap {#fn-vwap}
 
-<OverloadTabs v-model="_s7" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">vwap</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, anchor</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, stdev_mult</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">ta.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">vwap</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, anchor</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> timeframe.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">\"1D\"</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">))</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s7" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">vwap</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, anchor</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, stdev_mult</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">vwap</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(source</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, anchor</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> bool</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> timeframe.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">change</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">\"1D\"</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">))</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s7 === 0">
 
@@ -1653,7 +1649,7 @@ Volume Weighted Average Price without bands.
 ### vwma {#vwma}
 
 ```navi
-ta.vwma(source: series float, length: series int): series float
+vwma(source: series float, length: series int): series float
 ```
 
 Volume Weighted Moving Average (VWMA).
@@ -1674,7 +1670,7 @@ It gives more weight to periods with higher volume.
 ### wma {#wma}
 
 ```navi
-ta.wma(source: series float, length: series int): series float
+wma(source: series float, length: series int): series float
 ```
 
 Weighted Moving Average (WMA).
@@ -1695,7 +1691,7 @@ It assigns more weight to recent data points.
 ### wpr {#wpr}
 
 ```navi
-ta.wpr(length: series int): series float
+wpr(length: series int): series float
 ```
 
 Williams Percent Range (WPR).

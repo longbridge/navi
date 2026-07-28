@@ -406,27 +406,14 @@ function processDesc(text, currentModule) {
 // Signature formatting
 // ---------------------------------------------------------------------------
 
-function formatSignature(moduleName, funcName, ov, { singleLine = false } = {}) {
-  if (ov.kind === "property") {
+function formatSignature(_moduleName, funcName, ov, { singleLine = false } = {}) {
+  // Signatures omit the module and receiver prefixes — the page already
+  // documents the owning module/type, so `ta.sma(...)` / `Map.put_all(...)`
+  // would just be redundant.
+  if (ov.kind === "property" || ov.kind === "staticproperty") {
     const ret = ov.returnType ? `: ${typeRefToString(ov.returnType)}` : "";
-    const prefix = moduleName !== "prelude" ? `${moduleName}.` : "";
-    return `${prefix}${funcName}${ret}`;
+    return `${funcName}${ret}`;
   }
-
-  if (ov.kind === "staticproperty") {
-    const ret = ov.returnType ? `: ${typeRefToString(ov.returnType)}` : "";
-    const prefix = ov.receiverType ? `${ov.receiverType.valueType.name}.` : "";
-    return `${prefix}${funcName}${ret}`;
-  }
-
-  const prefix =
-    (ov.kind === "method" || ov.kind === "staticmethod") && ov.receiverType
-      ? `${ov.receiverType.valueType.name}.`
-      : ov.kind === "operator"
-        ? ""
-        : moduleName !== "prelude"
-          ? `${moduleName}.`
-          : "";
 
   const paramParts = ov.params.map((p) => {
     let s = `${p.name}: ${typeRefToString(p.type)}`;
@@ -441,7 +428,7 @@ function formatSignature(moduleName, funcName, ov, { singleLine = false } = {}) 
   const ret = ov.returnType ? `: ${typeRefToString(ov.returnType)}` : "";
 
   // Single-line attempt (always used for tab labels)
-  const oneLine = `${prefix}${funcName}(${paramParts.join(", ")})${ret}`;
+  const oneLine = `${funcName}(${paramParts.join(", ")})${ret}`;
   if (singleLine || oneLine.length <= 80 || paramParts.length === 0) {
     return oneLine;
   }
@@ -451,7 +438,7 @@ function formatSignature(moduleName, funcName, ov, { singleLine = false } = {}) 
   const joined = paramParts.map((p, i) =>
     i < paramParts.length - 1 ? `${indent}${p},` : `${indent}${p}`
   ).join("\n");
-  return `${prefix}${funcName}(\n${joined}\n  )${ret}`;
+  return `${funcName}(\n${joined}\n  )${ret}`;
 }
 
 // ---------------------------------------------------------------------------

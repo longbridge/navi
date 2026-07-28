@@ -281,7 +281,7 @@ title: "strategy"
 ### cancel {#cancel}
 
 ```navi
-strategy.cancel(id: series String)
+cancel(id: series String)
 ```
 
 通过 ID 取消挂单。
@@ -297,7 +297,7 @@ strategy.cancel(id: series String)
 ### cancel_all {#cancel_all}
 
 ```navi
-strategy.cancel_all()
+cancel_all()
 ```
 
 取消策略创建的每个挂单。
@@ -307,7 +307,7 @@ strategy.cancel_all()
 ### close {#close}
 
 ```navi
-strategy.close(
+close(
     id: series String,
     comment: series String = na,
     qty: series float = na,
@@ -337,7 +337,7 @@ strategy.close(
 ### close_all {#close_all}
 
 ```navi
-strategy.close_all(
+close_all(
     comment: series String = na,
     alert_message: series String = na,
     immediately: series bool = false,
@@ -361,7 +361,7 @@ strategy.close_all(
 ### convert_to_account {#convert_to_account}
 
 ```navi
-strategy.convert_to_account(value: series float): series float
+convert_to_account(value: series float): series float
 ```
 
 将货币值从代码的货币转换为策略的账户货币。使用配置的货币转换器。当未提供转换器时，返回原值不变。
@@ -379,7 +379,7 @@ strategy.convert_to_account(value: series float): series float
 ### convert_to_symbol {#convert_to_symbol}
 
 ```navi
-strategy.convert_to_symbol(value: series float): series float
+convert_to_symbol(value: series float): series float
 ```
 
 将货币值从策略的账户货币转换为代码的货币。使用配置的货币转换器。当未提供转换器时，返回原值不变。
@@ -397,7 +397,7 @@ strategy.convert_to_symbol(value: series float): series float
 ### entry {#entry}
 
 ```navi
-strategy.entry(
+entry(
     id: series String,
     direction: series Direction,
     qty: series float = na,
@@ -433,7 +433,7 @@ strategy.entry(
 ### exit {#exit}
 
 ```navi
-strategy.exit(
+exit(
     id: series String,
     from_entry: series String = na,
     qty: series float = na,
@@ -491,7 +491,7 @@ strategy.exit(
 ### order {#order}
 
 ```navi
-strategy.order(
+order(
     id: series String,
     direction: series Direction,
     qty: series float = na,

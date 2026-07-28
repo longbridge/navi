@@ -21,7 +21,7 @@ A point on the chart (index, time, price).
 ### from_index {#from_index}
 
 ```navi
-Point.from_index(index: int, price: float): Point
+from_index(index: int, price: float): Point
 ```
 
 Returns a <a class="stdlib-ref" data-key="chart::Point" href="/api/stdlib/chart/Point">chart.Point</a> object at the specified bar index and price.
@@ -40,7 +40,7 @@ Returns a <a class="stdlib-ref" data-key="chart::Point" href="/api/stdlib/chart/
 ### from_time {#from_time}
 
 ```navi
-Point.from_time(time: int, price: float): Point
+from_time(time: int, price: float): Point
 ```
 
 Returns a <a class="stdlib-ref" data-key="chart::Point" href="/api/stdlib/chart/Point">chart.Point</a> object with specified time and price.
@@ -59,7 +59,7 @@ Returns a <a class="stdlib-ref" data-key="chart::Point" href="/api/stdlib/chart/
 ### now {#now}
 
 ```navi
-Point.now(price: float = close): Point
+now(price: float = close): Point
 ```
 
 Returns a <a class="stdlib-ref" data-key="chart::Point" href="/api/stdlib/chart/Point">chart.Point</a> object with price as the y-coordinate.

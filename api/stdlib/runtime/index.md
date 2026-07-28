@@ -9,7 +9,7 @@ title: "runtime"
 ### error {#error}
 
 ```navi
-runtime.error(message: series String)
+error(message: series String)
 ```
 
 When called, raises a runtime error with the given message.

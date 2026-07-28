@@ -11,7 +11,7 @@ Handle for a polyline drawing.
 ### new {#new}
 
 ```navi
-Polyline.new(
+new(
     points: series Array<chart.Point>,
     curved: series bool = false,
     closed: series bool = false,
@@ -57,7 +57,7 @@ Returns an array filled with all the current polylines drawn by the script.
 ### delete {#delete}
 
 ```navi
-Polyline.delete(id: series Polyline)
+delete(id: series Polyline)
 ```
 
 Deletes the specified polyline from the chart.

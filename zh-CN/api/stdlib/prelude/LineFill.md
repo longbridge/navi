@@ -11,7 +11,7 @@ title: "LineFill"
 ### new {#new}
 
 ```navi
-LineFill.new(
+new(
     line1: series Line,
     line2: series Line,
     color: series Color
@@ -43,7 +43,7 @@ LineFill.new(
 ### delete {#delete}
 
 ```navi
-LineFill.delete(id: series LineFill)
+delete(id: series LineFill)
 ```
 
 从图表中删除指定的线条填充。
@@ -59,7 +59,7 @@ LineFill.delete(id: series LineFill)
 ### get_line1 {#get_line1}
 
 ```navi
-LineFill.get_line1(id: series LineFill): series Line
+get_line1(id: series LineFill): series Line
 ```
 
 返回行填充的第一行。
@@ -77,7 +77,7 @@ LineFill.get_line1(id: series LineFill): series Line
 ### get_line2 {#get_line2}
 
 ```navi
-LineFill.get_line2(id: series LineFill): series Line
+get_line2(id: series LineFill): series Line
 ```
 
 返回换行符的第二行。
@@ -95,7 +95,7 @@ LineFill.get_line2(id: series LineFill): series Line
 ### set_color {#set_color}
 
 ```navi
-LineFill.set_color(id: series LineFill, color: series Color)
+set_color(id: series LineFill, color: series Color)
 ```
 
 设置线条填充的颜色。

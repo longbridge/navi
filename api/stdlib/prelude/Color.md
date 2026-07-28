@@ -11,7 +11,7 @@ A 32-bit RGBA color value.
 ### from_gradient {#from_gradient}
 
 ```navi
-Color.from_gradient(
+from_gradient(
     value: float,
     bottom_value: float,
     top_value: float,
@@ -39,7 +39,7 @@ Creates a color that is a gradient between `bottom_color` and `top_color` based 
 ### mix {#mix}
 
 ```navi
-Color.mix(c1: Color, c2: Color, weight: float = 0.5): Color
+mix(c1: Color, c2: Color, weight: float = 0.5): Color
 ```
 
 Linearly blends two colors.
@@ -59,7 +59,7 @@ Linearly blends two colors.
 ### new {#new}
 
 ```navi
-Color.new(color: Color, transp: float): Color
+new(color: Color, transp: float): Color
 ```
 
 Creates a new color by changing the transparency of the given `color` to `transp` (0-100).
@@ -78,7 +78,7 @@ Creates a new color by changing the transparency of the given `color` to `transp
 ### rgb {#rgb}
 
 ```navi
-Color.rgb(red: float, green: float, blue: float, transp: float = 0): Color
+rgb(red: float, green: float, blue: float, transp: float = 0): Color
 ```
 
 Creates a color from the specified red, green, blue components (0-255) and optional transparency (0-100).
@@ -291,7 +291,7 @@ Color constant for `#FDD835`.
 ### alpha {#alpha}
 
 ```navi
-Color.alpha(self: Color): float
+alpha(self: Color): float
 ```
 
 Returns the transparency component of the given `color`.
@@ -309,7 +309,7 @@ Returns the transparency component of the given `color`.
 ### blue {#blue}
 
 ```navi
-Color.blue(self: Color): float
+blue(self: Color): float
 ```
 
 Returns the blue component of the given `color`.
@@ -327,7 +327,7 @@ Returns the blue component of the given `color`.
 ### green {#green}
 
 ```navi
-Color.green(self: Color): float
+green(self: Color): float
 ```
 
 Returns the green component of the given `color`.
@@ -345,7 +345,7 @@ Returns the green component of the given `color`.
 ### red {#red}
 
 ```navi
-Color.red(self: Color): float
+red(self: Color): float
 ```
 
 Returns the red component of the given `color`.

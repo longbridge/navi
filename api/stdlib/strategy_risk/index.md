@@ -9,7 +9,7 @@ title: "strategy.risk"
 ### allow_entry_in {#allow_entry_in}
 
 ```navi
-strategy.risk.allow_entry_in(dir: simple Direction)
+allow_entry_in(dir: simple Direction)
 ```
 
 Sets which direction strategy entries are allowed in.
@@ -25,7 +25,7 @@ Sets which direction strategy entries are allowed in.
 ### max_cons_loss_days {#max_cons_loss_days}
 
 ```navi
-strategy.risk.max_cons_loss_days(count: simple int)
+max_cons_loss_days(count: simple int)
 ```
 
 Sets the maximum number of consecutive losing days allowed.
@@ -43,7 +43,7 @@ A losing day is one where the equity at the end of the day is lower than at the 
 ### max_drawdown {#max_drawdown}
 
 ```navi
-strategy.risk.max_drawdown(value: simple float, type: simple DefaultQtyType)
+max_drawdown(value: simple float, type: simple DefaultQtyType)
 ```
 
 Sets the maximum allowed drawdown for the strategy.
@@ -62,7 +62,7 @@ When the strategy's equity drawdown exceeds this limit, all pending orders are c
 ### max_intraday_filled_orders {#max_intraday_filled_orders}
 
 ```navi
-strategy.risk.max_intraday_filled_orders(count: simple int)
+max_intraday_filled_orders(count: simple int)
 ```
 
 Sets the maximum number of filled orders allowed per trading day.
@@ -80,10 +80,7 @@ When the daily limit is reached, no further orders will be filled for the rest o
 ### max_intraday_loss {#max_intraday_loss}
 
 ```navi
-strategy.risk.max_intraday_loss(
-    value: simple float,
-    type: simple DefaultQtyType
-  )
+max_intraday_loss(value: simple float, type: simple DefaultQtyType)
 ```
 
 Sets the maximum allowed intraday loss for the strategy.
@@ -102,7 +99,7 @@ When the intraday loss exceeds this limit, all pending orders are cancelled and 
 ### max_position_size {#max_position_size}
 
 ```navi
-strategy.risk.max_position_size(size: simple float)
+max_position_size(size: simple float)
 ```
 
 Sets the max absolute position size.

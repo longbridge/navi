@@ -11,7 +11,7 @@ title: "Color"
 ### from_gradient {#from_gradient}
 
 ```navi
-Color.from_gradient(
+from_gradient(
     value: float,
     bottom_value: float,
     top_value: float,
@@ -39,7 +39,7 @@ Color.from_gradient(
 ### mix {#mix}
 
 ```navi
-Color.mix(c1: Color, c2: Color, weight: float = 0.5): Color
+mix(c1: Color, c2: Color, weight: float = 0.5): Color
 ```
 
 线性混合两种颜色。
@@ -59,7 +59,7 @@ Color.mix(c1: Color, c2: Color, weight: float = 0.5): Color
 ### new {#new}
 
 ```navi
-Color.new(color: Color, transp: float): Color
+new(color: Color, transp: float): Color
 ```
 
 通过将给定 `color` 的透明度更改为 `transp`（0-100）来创建新颜色。
@@ -78,7 +78,7 @@ Color.new(color: Color, transp: float): Color
 ### rgb {#rgb}
 
 ```navi
-Color.rgb(red: float, green: float, blue: float, transp: float = 0): Color
+rgb(red: float, green: float, blue: float, transp: float = 0): Color
 ```
 
 根据指定的红、绿、蓝分量（0-255）和可选透明度（0-100）创建颜色。
@@ -291,7 +291,7 @@ Color.rgb(red: float, green: float, blue: float, transp: float = 0): Color
 ### alpha {#alpha}
 
 ```navi
-Color.alpha(self: Color): float
+alpha(self: Color): float
 ```
 
 返回给定 `color` 的透明度分量。
@@ -309,7 +309,7 @@ Color.alpha(self: Color): float
 ### blue {#blue}
 
 ```navi
-Color.blue(self: Color): float
+blue(self: Color): float
 ```
 
 返回给定 `color` 的蓝色分量。
@@ -327,7 +327,7 @@ Color.blue(self: Color): float
 ### green {#green}
 
 ```navi
-Color.green(self: Color): float
+green(self: Color): float
 ```
 
 返回给定 `color` 的绿色分量。
@@ -345,7 +345,7 @@ Color.green(self: Color): float
 ### red {#red}
 
 ```navi
-Color.red(self: Color): float
+red(self: Color): float
 ```
 
 返回给定 `color` 的红色分量。

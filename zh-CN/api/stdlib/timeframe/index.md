@@ -105,7 +105,7 @@ title: "timeframe"
 ### change {#change}
 
 ```navi
-timeframe.change(timeframe: String): bool
+change(timeframe: String): bool
 ```
 
 检测指定时间范围内的变化。
@@ -123,7 +123,7 @@ timeframe.change(timeframe: String): bool
 ### from_seconds {#from_seconds}
 
 ```navi
-timeframe.from_seconds(seconds: int): String
+from_seconds(seconds: int): String
 ```
 
 将秒转换为时间范围字符串。
@@ -141,7 +141,7 @@ timeframe.from_seconds(seconds: int): String
 ### in_seconds {#in_seconds}
 
 ```navi
-timeframe.in_seconds(timeframe: String = timeframe.period): simple int
+in_seconds(timeframe: String = timeframe.period): simple int
 ```
 
 将时间范围字符串转换为秒。

@@ -11,7 +11,7 @@ title: "Polyline"
 ### new {#new}
 
 ```navi
-Polyline.new(
+new(
     points: series Array<chart.Point>,
     curved: series bool = false,
     closed: series bool = false,
@@ -55,7 +55,7 @@ Polyline.new(
 ### delete {#delete}
 
 ```navi
-Polyline.delete(id: series Polyline)
+delete(id: series Polyline)
 ```
 
 從圖表中刪除指定的折線。

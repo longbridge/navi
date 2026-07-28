@@ -337,7 +337,7 @@ A trade is considered winning when its profit is greater than zero.
 ### cancel {#cancel}
 
 ```navi
-strategy.cancel(id: series String)
+cancel(id: series String)
 ```
 
 Cancels a pending order by ID.
@@ -353,7 +353,7 @@ Cancels a pending order by ID.
 ### cancel_all {#cancel_all}
 
 ```navi
-strategy.cancel_all()
+cancel_all()
 ```
 
 Cancels every pending order created by the strategy.
@@ -363,7 +363,7 @@ Cancels every pending order created by the strategy.
 ### close {#close}
 
 ```navi
-strategy.close(
+close(
     id: series String,
     comment: series String = na,
     qty: series float = na,
@@ -395,7 +395,7 @@ Use either `qty` or `qty_percent` to request a partial close.
 ### close_all {#close_all}
 
 ```navi
-strategy.close_all(
+close_all(
     comment: series String = na,
     alert_message: series String = na,
     immediately: series bool = false,
@@ -419,7 +419,7 @@ Closes every open position.
 ### convert_to_account {#convert_to_account}
 
 ```navi
-strategy.convert_to_account(value: series float): series float
+convert_to_account(value: series float): series float
 ```
 
 Converts a monetary value from the symbol's currency to the strategy's account currency.
@@ -439,7 +439,7 @@ Uses the configured currency converter. When no converter is provided, returns t
 ### convert_to_symbol {#convert_to_symbol}
 
 ```navi
-strategy.convert_to_symbol(value: series float): series float
+convert_to_symbol(value: series float): series float
 ```
 
 Converts a monetary value from the strategy's account currency to the symbol's currency.
@@ -459,7 +459,7 @@ Uses the configured currency converter. When no converter is provided, returns t
 ### entry {#entry}
 
 ```navi
-strategy.entry(
+entry(
     id: series String,
     direction: series Direction,
     qty: series float = na,
@@ -497,7 +497,7 @@ Reusing an existing pending `id` updates that order instead of creating a new on
 ### exit {#exit}
 
 ```navi
-strategy.exit(
+exit(
     id: series String,
     from_entry: series String = na,
     qty: series float = na,
@@ -557,7 +557,7 @@ The order can combine take-profit, stop-loss, and trailing-stop settings. If bot
 ### order {#order}
 
 ```navi
-strategy.order(
+order(
     id: series String,
     direction: series Direction,
     qty: series float = na,

@@ -13,7 +13,7 @@ title: "Map<K, V>"
 ### new {#new}
 
 ```navi
-Map.new(): const Map<K, V>
+new(): const Map<K, V>
 ```
 
 Creates a new empty map of the specified key and value types.
@@ -25,7 +25,7 @@ Creates a new empty map of the specified key and value types.
 ### clear {#clear}
 
 ```navi
-Map.clear(id: Map<K, V>)
+clear(id: Map<K, V>)
 ```
 
 清空给定地图中的所有条目。
@@ -41,7 +41,7 @@ Map.clear(id: Map<K, V>)
 ### contains {#contains}
 
 ```navi
-Map.contains(id: Map<K, V>, key: K): bool
+contains(id: Map<K, V>, key: K): bool
 ```
 
 检查给定映射中是否存在指定的键。如果找到该键，则返回 `true`，否则返回 `false`。
@@ -60,7 +60,7 @@ Map.contains(id: Map<K, V>, key: K): bool
 ### copy {#copy}
 
 ```navi
-Map.copy(id: Map<K, V>): Map<K, V>
+copy(id: Map<K, V>): Map<K, V>
 ```
 
 创建给定 `map` 的拷贝并返回新映射。
@@ -78,7 +78,7 @@ Map.copy(id: Map<K, V>): Map<K, V>
 ### get {#get}
 
 ```navi
-Map.get(id: Map<K, V>, key: K): V
+get(id: Map<K, V>, key: K): V
 ```
 
 检索与给定映射中指定键关联的值，如果该键不存在，则返回 `na`。
@@ -97,7 +97,7 @@ Map.get(id: Map<K, V>, key: K): V
 ### keys {#keys}
 
 ```navi
-Map.keys(id: Map<K, V>): Array<K>
+keys(id: Map<K, V>): Array<K>
 ```
 
 返回一个数组，其中包含给定映射中存在的所有键。
@@ -115,7 +115,7 @@ Map.keys(id: Map<K, V>): Array<K>
 ### put {#put}
 
 ```navi
-Map.put(id: Map<K, V>, key: K, value: V): V
+put(id: Map<K, V>, key: K, value: V): V
 ```
 
 插入或更新与给定映射中指定键关联的值。如果该键存在，则返回先前的值；如果是新条目，则返回 `na`。
@@ -135,7 +135,7 @@ Map.put(id: Map<K, V>, key: K, value: V): V
 ### put_all {#put_all}
 
 ```navi
-Map.put_all(id: Map<K, V>, id2: Map<K, V>)
+put_all(id: Map<K, V>, id2: Map<K, V>)
 ```
 
 将所有键值对从源映射复制到目标映射。目标映射中的现有键将使用源映射中的值进行更新。
@@ -152,7 +152,7 @@ Map.put_all(id: Map<K, V>, id2: Map<K, V>)
 ### remove {#remove}
 
 ```navi
-Map.remove(id: Map<K, V>, key: K): V
+remove(id: Map<K, V>, key: K): V
 ```
 
 从给定映射中删除与指定键关联的条目。如果该键存在，则返回删除的值；如果未找到该键，则返回 `na`。
@@ -171,7 +171,7 @@ Map.remove(id: Map<K, V>, key: K): V
 ### size {#size}
 
 ```navi
-Map.size(id: Map<K, V>): int
+size(id: Map<K, V>): int
 ```
 
 返回当前存储在给定映射中的键值对的数量。
@@ -189,7 +189,7 @@ Map.size(id: Map<K, V>): int
 ### values {#values}
 
 ```navi
-Map.values(id: Map<K, V>): Array<V>
+values(id: Map<K, V>): Array<V>
 ```
 
 返回一个包含给定映射中存在的所有值的数组。

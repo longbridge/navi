@@ -16,7 +16,7 @@ const _s0 = ref(0)
 ### format {#format}
 
 ```navi
-String.format(template: String, values: any): String
+format(template: String, values: any): String
 ```
 
 将字符串作为模板进行格式化，用提供的值替换带索引的占位符。
@@ -57,7 +57,7 @@ String.format(template: String, values: any): String
 ### format_time {#format_time}
 
 ```navi
-String.format_time(
+format_time(
     time: int,
     format: String,
     timezone: String = symbol_info.timezone
@@ -109,7 +109,7 @@ String.format_time(
 
 ### from {#from}
 
-<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> T)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>"]' />
+<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> T)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>"]' />
 
 <div v-show="_s0 === 0">
 
@@ -214,7 +214,7 @@ String.format_time(
 ### contains {#contains}
 
 ```navi
-String.contains(self: String, str: String): bool
+contains(self: String, str: String): bool
 ```
 
 检查字符串是否包含指定的子字符串。
@@ -233,7 +233,7 @@ String.contains(self: String, str: String): bool
 ### ends_with {#ends_with}
 
 ```navi
-String.ends_with(self: String, str: String): bool
+ends_with(self: String, str: String): bool
 ```
 
 检查字符串是否以指定的后缀结尾。
@@ -252,7 +252,7 @@ String.ends_with(self: String, str: String): bool
 ### index_of {#index_of}
 
 ```navi
-String.index_of(self: String, str: String): int
+index_of(self: String, str: String): int
 ```
 
 返回子字符串第一次出现的从零开始的索引，如果未找到则返回 `na`。
@@ -271,7 +271,7 @@ String.index_of(self: String, str: String): int
 ### length {#length}
 
 ```navi
-String.length(self: String): int
+length(self: String): int
 ```
 
 返回字符串的长度。
@@ -289,7 +289,7 @@ String.length(self: String): int
 ### lower {#lower}
 
 ```navi
-String.lower(self: String): String
+lower(self: String): String
 ```
 
 将字符串中的所有字符转换为小写。
@@ -307,7 +307,7 @@ String.lower(self: String): String
 ### match {#match}
 
 ```navi
-String.match(self: String, regex: String): String
+match(self: String, regex: String): String
 ```
 
 如果字符串匹配正则表达式模式，则返回匹配的子字符串，否则返回空字符串。
@@ -326,7 +326,7 @@ String.match(self: String, regex: String): String
 ### pad_end {#pad_end}
 
 ```navi
-String.pad_end(self: String, len: int, fill: String = " "): String
+pad_end(self: String, len: int, fill: String = " "): String
 ```
 
 用 `fill` 在字符串右侧填充，直到长度至少为 `len` 个字符。
@@ -346,7 +346,7 @@ String.pad_end(self: String, len: int, fill: String = " "): String
 ### pad_start {#pad_start}
 
 ```navi
-String.pad_start(self: String, len: int, fill: String = " "): String
+pad_start(self: String, len: int, fill: String = " "): String
 ```
 
 用 `fill` 在字符串左侧填充，直到长度至少为 `len` 个字符。
@@ -366,7 +366,7 @@ String.pad_start(self: String, len: int, fill: String = " "): String
 ### repeat {#repeat}
 
 ```navi
-String.repeat(self: String, repeat: int): String
+repeat(self: String, repeat: int): String
 ```
 
 返回将字符串重复指定次数后的新字符串。
@@ -385,7 +385,7 @@ String.repeat(self: String, repeat: int): String
 ### replace {#replace}
 
 ```navi
-String.replace(
+replace(
     self: String,
     target: String,
     replacement: String,
@@ -411,7 +411,7 @@ String.replace(
 ### replace_all {#replace_all}
 
 ```navi
-String.replace_all(self: String, target: String, replacement: String): String
+replace_all(self: String, target: String, replacement: String): String
 ```
 
 将目标子字符串的所有出现替换为指定内容。
@@ -431,7 +431,7 @@ String.replace_all(self: String, target: String, replacement: String): String
 ### split {#split}
 
 ```navi
-String.split(self: String, separator: String): Array<String>
+split(self: String, separator: String): Array<String>
 ```
 
 根据分隔符将字符串拆分为子字符串数组。
@@ -450,7 +450,7 @@ String.split(self: String, separator: String): Array<String>
 ### starts_with {#starts_with}
 
 ```navi
-String.starts_with(self: String, str: String): bool
+starts_with(self: String, str: String): bool
 ```
 
 检查字符串是否以指定前缀开头。
@@ -469,7 +469,7 @@ String.starts_with(self: String, str: String): bool
 ### substring {#substring}
 
 ```navi
-String.substring(self: String, begin_pos: int, end_pos: int): String
+substring(self: String, begin_pos: int, end_pos: int): String
 ```
 
 返回从 `begin_pos` 到 `end_pos`（不含）的子字符串。
@@ -489,7 +489,7 @@ String.substring(self: String, begin_pos: int, end_pos: int): String
 ### to_number {#to_number}
 
 ```navi
-String.to_number(self: String): float
+to_number(self: String): float
 ```
 
 将字符串转换为浮点数。
@@ -507,7 +507,7 @@ String.to_number(self: String): float
 ### trim {#trim}
 
 ```navi
-String.trim(self: String): String
+trim(self: String): String
 ```
 
 去除字符串首尾的空白字符。
@@ -525,7 +525,7 @@ String.trim(self: String): String
 ### trim_end {#trim_end}
 
 ```navi
-String.trim_end(self: String): String
+trim_end(self: String): String
 ```
 
 去除字符串末尾的空白字符。
@@ -543,7 +543,7 @@ String.trim_end(self: String): String
 ### trim_start {#trim_start}
 
 ```navi
-String.trim_start(self: String): String
+trim_start(self: String): String
 ```
 
 去除字符串开头的空白字符。
@@ -561,7 +561,7 @@ String.trim_start(self: String): String
 ### upper {#upper}
 
 ```navi
-String.upper(self: String): String
+upper(self: String): String
 ```
 
 将字符串中的所有字符转换为大写。

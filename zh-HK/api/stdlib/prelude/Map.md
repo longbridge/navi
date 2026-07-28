@@ -13,7 +13,7 @@ title: "Map<K, V>"
 ### new {#new}
 
 ```navi
-Map.new(): const Map<K, V>
+new(): const Map<K, V>
 ```
 
 Creates a new empty map of the specified key and value types.
@@ -25,7 +25,7 @@ Creates a new empty map of the specified key and value types.
 ### clear {#clear}
 
 ```navi
-Map.clear(id: Map<K, V>)
+clear(id: Map<K, V>)
 ```
 
 清空給定地圖中的所有條目。
@@ -41,7 +41,7 @@ Map.clear(id: Map<K, V>)
 ### contains {#contains}
 
 ```navi
-Map.contains(id: Map<K, V>, key: K): bool
+contains(id: Map<K, V>, key: K): bool
 ```
 
 檢查給定映射中是否存在指定的鍵。如果找到該鍵，則傳回 `true`，否則傳回 `false`。
@@ -60,7 +60,7 @@ Map.contains(id: Map<K, V>, key: K): bool
 ### copy {#copy}
 
 ```navi
-Map.copy(id: Map<K, V>): Map<K, V>
+copy(id: Map<K, V>): Map<K, V>
 ```
 
 創建給定 `map` 的複本並傳回新映射。
@@ -78,7 +78,7 @@ Map.copy(id: Map<K, V>): Map<K, V>
 ### get {#get}
 
 ```navi
-Map.get(id: Map<K, V>, key: K): V
+get(id: Map<K, V>, key: K): V
 ```
 
 檢索與給定映射中指定鍵關聯的值，如果該鍵不存在，則傳回 `na`。
@@ -97,7 +97,7 @@ Map.get(id: Map<K, V>, key: K): V
 ### keys {#keys}
 
 ```navi
-Map.keys(id: Map<K, V>): Array<K>
+keys(id: Map<K, V>): Array<K>
 ```
 
 傳回一個陣列，其中包含給定映射中存在的所有鍵。
@@ -115,7 +115,7 @@ Map.keys(id: Map<K, V>): Array<K>
 ### put {#put}
 
 ```navi
-Map.put(id: Map<K, V>, key: K, value: V): V
+put(id: Map<K, V>, key: K, value: V): V
 ```
 
 插入或更新與給定映射中指定鍵關聯的值。如果該鍵存在，則傳回先前的值；如果是新條目，則傳回 `na`。
@@ -135,7 +135,7 @@ Map.put(id: Map<K, V>, key: K, value: V): V
 ### put_all {#put_all}
 
 ```navi
-Map.put_all(id: Map<K, V>, id2: Map<K, V>)
+put_all(id: Map<K, V>, id2: Map<K, V>)
 ```
 
 將所有鍵值對從源映射覆制到目標映射。目標映射中的現有鍵將使用源映射中的值進行更新。
@@ -152,7 +152,7 @@ Map.put_all(id: Map<K, V>, id2: Map<K, V>)
 ### remove {#remove}
 
 ```navi
-Map.remove(id: Map<K, V>, key: K): V
+remove(id: Map<K, V>, key: K): V
 ```
 
 從給定映射中刪除與指定鍵關聯的條目。如果該鍵存在，則傳回刪除的值；如果未找到該鍵，則傳回 `na`。
@@ -171,7 +171,7 @@ Map.remove(id: Map<K, V>, key: K): V
 ### size {#size}
 
 ```navi
-Map.size(id: Map<K, V>): int
+size(id: Map<K, V>): int
 ```
 
 傳回當前存儲在給定映射中的鍵值對的數量。
@@ -189,7 +189,7 @@ Map.size(id: Map<K, V>): int
 ### values {#values}
 
 ```navi
-Map.values(id: Map<K, V>): Array<V>
+values(id: Map<K, V>): Array<V>
 ```
 
 傳回一個包含給定映射中存在的所有值的陣列。

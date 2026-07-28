@@ -48,7 +48,7 @@ const _s3 = ref(0)
 
 ### abs {#abs}
 
-<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">abs</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(n</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s0 === 0">
 
@@ -83,7 +83,7 @@ const _s3 = ref(0)
 ### acos {#acos}
 
 ```navi
-math.acos(value: float): float
+acos(value: float): float
 ```
 
 傳回 `value` 的反餘弦（反餘弦），以度為單位。給定一個餘弦值，傳回產生該值的角度。
@@ -101,7 +101,7 @@ math.acos(value: float): float
 ### asin {#asin}
 
 ```navi
-math.asin(value: float): float
+asin(value: float): float
 ```
 
 傳回 `value` 的反正弦（反正弦），以度為單位。給定一個正弦值，傳回產生該值的角度。
@@ -119,7 +119,7 @@ math.asin(value: float): float
 ### atan {#atan}
 
 ```navi
-math.atan(value: float): float
+atan(value: float): float
 ```
 
 傳回 `value` 的反正切（反正切），以度為單位。給定正切值，傳回產生該正切值的角度。
@@ -137,7 +137,7 @@ math.atan(value: float): float
 ### atan2 {#atan2}
 
 ```navi
-math.atan2(y: float, x: float): float
+atan2(y: float, x: float): float
 ```
 
 Returns the four-quadrant arctangent of `y/x` in degrees.
@@ -157,7 +157,7 @@ Unlike <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/
 
 ### avg {#avg}
 
-<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">avg</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s1 === 0">
 
@@ -192,7 +192,7 @@ Unlike <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/
 ### cbrt {#cbrt}
 
 ```navi
-math.cbrt(n: float): float
+cbrt(n: float): float
 ```
 
 返回 `n` 的立方根。
@@ -213,7 +213,7 @@ math.cbrt(n: float): float
 ### ceil {#ceil}
 
 ```navi
-math.ceil(n: float): int
+ceil(n: float): int
 ```
 
 傳回 `n` 的上限：大於或等於 `n` 的最小整數。例如，ceil(2.3) = 3，ceil(-2.3) = -2。
@@ -231,7 +231,7 @@ math.ceil(n: float): int
 ### clamp {#clamp}
 
 ```navi
-math.clamp(value: float, min: float, max: float): float
+clamp(value: float, min: float, max: float): float
 ```
 
 將 `value` 限制在閉區間 `[min, max]` 內。
@@ -254,7 +254,7 @@ math.clamp(value: float, min: float, max: float): float
 ### cos {#cos}
 
 ```navi
-math.cos(angle: float): float
+cos(angle: float): float
 ```
 
 傳回 `angle` 的餘弦。注意：Navi 使用度數，而不是弧度（與大多數編程語言不同）。
@@ -272,7 +272,7 @@ math.cos(angle: float): float
 ### exp {#exp}
 
 ```navi
-math.exp(n: float): float
+exp(n: float): float
 ```
 
 傳回 e（歐拉數）的 `n` 次方。 <a class="stdlib-ref" data-key="math::log" href="/zh-HK/api/stdlib/math/#log">log</a> 的逆。對於指數增長/衰減計算很有用。
@@ -290,7 +290,7 @@ math.exp(n: float): float
 ### floor {#floor}
 
 ```navi
-math.floor(n: float): int
+floor(n: float): int
 ```
 
 傳回 `n` 的下限：小於或等於 `n` 的最大整數。例如，地板（2.7）= 2，地板（-2.3）= -3。
@@ -308,7 +308,7 @@ math.floor(n: float): int
 ### hypot {#hypot}
 
 ```navi
-math.hypot(x: float, y: float): float
+hypot(x: float, y: float): float
 ```
 
 返回直角三角形兩直角邊 `x` 和 `y` 所對應的斜邊長。
@@ -330,7 +330,7 @@ math.hypot(x: float, y: float): float
 ### log {#log}
 
 ```navi
-math.log(n: float): float
+log(n: float): float
 ```
 
 傳回 `n` 的自然對數（以 e 為底）。 <a class="stdlib-ref" data-key="math::exp" href="/zh-HK/api/stdlib/math/#exp">exp</a> 的逆。對於非正值，傳回 `na`。
@@ -348,7 +348,7 @@ math.log(n: float): float
 ### log10 {#log10}
 
 ```navi
-math.log10(n: float): float
+log10(n: float): float
 ```
 
 傳回 `n` 的以 10 為底的（常用）對數。對於計算數量級很有用。對於非正值，傳回 `na`。
@@ -365,7 +365,7 @@ math.log10(n: float): float
 
 ### max {#max}
 
-<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">max</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s2 === 0">
 
@@ -399,7 +399,7 @@ math.log10(n: float): float
 
 ### min {#min}
 
-<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">math.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
+<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">min</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(numbers</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span>"]' />
 
 <div v-show="_s3 === 0">
 
@@ -434,7 +434,7 @@ math.log10(n: float): float
 ### pow {#pow}
 
 ```navi
-math.pow(base: float, exponent: float): float
+pow(base: float, exponent: float): float
 ```
 
 傳回 `base` 的 `exponent` 次方。
@@ -453,7 +453,7 @@ math.pow(base: float, exponent: float): float
 ### random {#random}
 
 ```navi
-math.random(
+random(
     min: series float = 0,
     max: series float = 1,
     seed: series int = na
@@ -477,7 +477,7 @@ math.random(
 ### round {#round}
 
 ```navi
-math.round(n: float, precision: int = 0): int
+round(n: float, precision: int = 0): int
 ```
 
 將 `n` 四捨五入到最接近的整數，或四捨五入到 `precision` 小數位。使用向上舍入：0.5 舍入到 1。
@@ -496,7 +496,7 @@ math.round(n: float, precision: int = 0): int
 ### round_to_mintick {#round_to_mintick}
 
 ```navi
-math.round_to_mintick(n: float): float
+round_to_mintick(n: float): float
 ```
 
 將 `n` 舍入到當前交易品種最接近的刻度值。結果始終是可用於訂單的有效價格。使用 `syminfo.mintick` 作為舍入增量。
@@ -514,7 +514,7 @@ math.round_to_mintick(n: float): float
 ### sign {#sign}
 
 ```navi
-math.sign(n: float): float
+sign(n: float): float
 ```
 
 傳回 `n` 的符號：1.0 表示正數，-1.0 表示負數，0.0 表示零。對於確定沒有大小的方向很有用。
@@ -532,7 +532,7 @@ math.sign(n: float): float
 ### sin {#sin}
 
 ```navi
-math.sin(angle: float): float
+sin(angle: float): float
 ```
 
 傳回 `angle` 的正弦值。注意：Navi 使用度數，而不是弧度（與大多數編程語言不同）。
@@ -550,7 +550,7 @@ math.sin(angle: float): float
 ### sqrt {#sqrt}
 
 ```navi
-math.sqrt(n: float): float
+sqrt(n: float): float
 ```
 
 傳回 `n` 的平方根。
@@ -568,7 +568,7 @@ math.sqrt(n: float): float
 ### sum {#sum}
 
 ```navi
-math.sum(source: series float, length: series int): series float
+sum(source: series float, length: series int): series float
 ```
 
 計算 `source` 對最後一個 `length` bars 的滾動總和。
@@ -587,7 +587,7 @@ math.sum(source: series float, length: series int): series float
 ### tan {#tan}
 
 ```navi
-math.tan(angle: float): float
+tan(angle: float): float
 ```
 
 傳回 `angle` 的正切值。注意：Navi 使用度數，而不是弧度。 ±90°、±270° 等處未定義（傳回非常大的值）。
@@ -605,7 +605,7 @@ math.tan(angle: float): float
 ### to_degrees {#to_degrees}
 
 ```navi
-math.to_degrees(rad: float): float
+to_degrees(rad: float): float
 ```
 
 將角度從弧度轉換為度數。
@@ -623,7 +623,7 @@ math.to_degrees(rad: float): float
 ### to_radians {#to_radians}
 
 ```navi
-math.to_radians(deg: float): float
+to_radians(deg: float): float
 ```
 
 將角度從度數轉換為弧度。
@@ -641,7 +641,7 @@ math.to_radians(deg: float): float
 ### trunc {#trunc}
 
 ```navi
-math.trunc(n: float): int
+trunc(n: float): int
 ```
 
 將 `n` 向零截斷（去除小數部分）。

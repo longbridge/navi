@@ -16,7 +16,7 @@ An immutable sequence of Unicode characters.
 ### format {#format}
 
 ```navi
-String.format(template: String, values: any): String
+format(template: String, values: any): String
 ```
 
 Formats the String as a template, substituting indexed placeholders with the provided values.
@@ -43,7 +43,7 @@ Formats the String as a template, substituting indexed placeholders with the pro
 ### format_time {#format_time}
 
 ```navi
-String.format_time(
+format_time(
     time: int,
     format: String,
     timezone: String = symbol_info.timezone
@@ -74,7 +74,7 @@ Any character that is not a format token is output as a literal (e.g. `-`, `:`, 
 
 ### from {#from}
 
-<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#24292E;--shiki-dark:#E1E4E8\">String.</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> T)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>"]' />
+<OverloadTabs v-model="_s0" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> float</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, format</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Format)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">from</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(value</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> T)</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String</span>"]' />
 
 <div v-show="_s0 === 0">
 
@@ -159,7 +159,7 @@ Converts any value to its String representation.
 ### contains {#contains}
 
 ```navi
-String.contains(self: String, str: String): bool
+contains(self: String, str: String): bool
 ```
 
 Checks if the String contains the specified substring.
@@ -178,7 +178,7 @@ Checks if the String contains the specified substring.
 ### ends_with {#ends_with}
 
 ```navi
-String.ends_with(self: String, str: String): bool
+ends_with(self: String, str: String): bool
 ```
 
 Checks if the String ends with the specified suffix.
@@ -197,7 +197,7 @@ Checks if the String ends with the specified suffix.
 ### index_of {#index_of}
 
 ```navi
-String.index_of(self: String, str: String): int
+index_of(self: String, str: String): int
 ```
 
 Returns the zero-based index of the first occurrence of a substring, or `na` if not found.
@@ -216,7 +216,7 @@ Returns the zero-based index of the first occurrence of a substring, or `na` if 
 ### length {#length}
 
 ```navi
-String.length(self: String): int
+length(self: String): int
 ```
 
 Returns the length of the String.
@@ -234,7 +234,7 @@ Returns the length of the String.
 ### lower {#lower}
 
 ```navi
-String.lower(self: String): String
+lower(self: String): String
 ```
 
 Converts all characters in the String to lowercase.
@@ -252,7 +252,7 @@ Converts all characters in the String to lowercase.
 ### match {#match}
 
 ```navi
-String.match(self: String, regex: String): String
+match(self: String, regex: String): String
 ```
 
 Returns the matched substring if the String matches a regex pattern, or an empty String otherwise.
@@ -271,7 +271,7 @@ Returns the matched substring if the String matches a regex pattern, or an empty
 ### pad_end {#pad_end}
 
 ```navi
-String.pad_end(self: String, len: int, fill: String = " "): String
+pad_end(self: String, len: int, fill: String = " "): String
 ```
 
 Right-pads the String with `fill` until it reaches at least `len` characters.
@@ -291,7 +291,7 @@ Right-pads the String with `fill` until it reaches at least `len` characters.
 ### pad_start {#pad_start}
 
 ```navi
-String.pad_start(self: String, len: int, fill: String = " "): String
+pad_start(self: String, len: int, fill: String = " "): String
 ```
 
 Left-pads the String with `fill` until it reaches at least `len` characters.
@@ -311,7 +311,7 @@ Left-pads the String with `fill` until it reaches at least `len` characters.
 ### repeat {#repeat}
 
 ```navi
-String.repeat(self: String, repeat: int): String
+repeat(self: String, repeat: int): String
 ```
 
 Returns a new String consisting of the String repeated a specified number of times.
@@ -330,7 +330,7 @@ Returns a new String consisting of the String repeated a specified number of tim
 ### replace {#replace}
 
 ```navi
-String.replace(
+replace(
     self: String,
     target: String,
     replacement: String,
@@ -356,7 +356,7 @@ Replaces the N-th occurrence of a target substring with a replacement.
 ### replace_all {#replace_all}
 
 ```navi
-String.replace_all(self: String, target: String, replacement: String): String
+replace_all(self: String, target: String, replacement: String): String
 ```
 
 Replaces all occurrences of a target substring with a replacement.
@@ -376,7 +376,7 @@ Replaces all occurrences of a target substring with a replacement.
 ### split {#split}
 
 ```navi
-String.split(self: String, separator: String): Array<String>
+split(self: String, separator: String): Array<String>
 ```
 
 Splits the String into an array of substrings based on a separator.
@@ -395,7 +395,7 @@ Splits the String into an array of substrings based on a separator.
 ### starts_with {#starts_with}
 
 ```navi
-String.starts_with(self: String, str: String): bool
+starts_with(self: String, str: String): bool
 ```
 
 Checks if the String starts with the specified prefix.
@@ -414,7 +414,7 @@ Checks if the String starts with the specified prefix.
 ### substring {#substring}
 
 ```navi
-String.substring(self: String, begin_pos: int, end_pos: int): String
+substring(self: String, begin_pos: int, end_pos: int): String
 ```
 
 Returns a substring from `begin_pos` to `end_pos` (exclusive).
@@ -434,7 +434,7 @@ Returns a substring from `begin_pos` to `end_pos` (exclusive).
 ### to_number {#to_number}
 
 ```navi
-String.to_number(self: String): float
+to_number(self: String): float
 ```
 
 Converts the String to a floating-point number.
@@ -452,7 +452,7 @@ Converts the String to a floating-point number.
 ### trim {#trim}
 
 ```navi
-String.trim(self: String): String
+trim(self: String): String
 ```
 
 Trims leading and trailing whitespace from the String.
@@ -470,7 +470,7 @@ Trims leading and trailing whitespace from the String.
 ### trim_end {#trim_end}
 
 ```navi
-String.trim_end(self: String): String
+trim_end(self: String): String
 ```
 
 Trims trailing whitespace from the String.
@@ -488,7 +488,7 @@ Trims trailing whitespace from the String.
 ### trim_start {#trim_start}
 
 ```navi
-String.trim_start(self: String): String
+trim_start(self: String): String
 ```
 
 Trims leading whitespace from the String.
@@ -506,7 +506,7 @@ Trims leading whitespace from the String.
 ### upper {#upper}
 
 ```navi
-String.upper(self: String): String
+upper(self: String): String
 ```
 
 Converts all characters in the String to uppercase.

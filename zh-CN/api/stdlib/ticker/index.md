@@ -9,7 +9,7 @@ title: "ticker"
 ### heikin_ashi {#heikin_ashi}
 
 ```navi
-ticker.heikin_ashi(ticker_id: series String): series String
+heikin_ashi(ticker_id: series String): series String
 ```
 
 创建用于请求平均K线（Heikin Ashi）数据的代码标识符。
@@ -27,10 +27,7 @@ ticker.heikin_ashi(ticker_id: series String): series String
 ### inherit {#inherit}
 
 ```navi
-ticker.inherit(
-    from_ticker_id: series String,
-    ticker_id: series String
-  ): series String
+inherit(from_ticker_id: series String, ticker_id: series String): series String
 ```
 
 构建一个继承另一代码标识符所有修饰符的代码标识符。
@@ -49,7 +46,7 @@ ticker.inherit(
 ### kagi {#kagi}
 
 ```navi
-ticker.kagi(
+kagi(
     ticker_id: series String,
     param: series float,
     style: series BoxStyle = BoxStyle.Traditional
@@ -73,10 +70,7 @@ ticker.kagi(
 ### line_break {#line_break}
 
 ```navi
-ticker.line_break(
-    ticker_id: series String,
-    num_lines: series int = 3
-  ): series String
+line_break(ticker_id: series String, num_lines: series int = 3): series String
 ```
 
 创建用于请求折线图（Line Break）数据的代码标识符。
@@ -95,7 +89,7 @@ ticker.line_break(
 ### modify {#modify}
 
 ```navi
-ticker.modify(
+modify(
     ticker_id: series String,
     session: series Session = na,
     adjustment: series Adjustment = na,
@@ -123,7 +117,7 @@ ticker.modify(
 ### new {#new}
 
 ```navi
-ticker.new(
+new(
     prefix: series String,
     ticker: series String,
     session: series Session = Session.Regular,
@@ -153,7 +147,7 @@ ticker.new(
 ### point_figure {#point_figure}
 
 ```navi
-ticker.point_figure(
+point_figure(
     ticker_id: series String,
     source: series PnfSource,
     style: series BoxStyle,
@@ -181,7 +175,7 @@ ticker.point_figure(
 ### renko {#renko}
 
 ```navi
-ticker.renko(
+renko(
     ticker_id: series String,
     style: series BoxStyle = BoxStyle.Atr,
     param: series float = 10,
@@ -209,7 +203,7 @@ ticker.renko(
 ### standard {#standard}
 
 ```navi
-ticker.standard(ticker_id: series String): series String
+standard(ticker_id: series String): series String
 ```
 
 创建用于请求标准图表数据的代码标识符，不受非标准图表类型修饰符（Heikin Ashi、Renko 等）的影响。

@@ -329,7 +329,7 @@ title: "symbol_info"
 ### prefix {#fn-prefix}
 
 ```navi
-symbol_info.prefix(symbol: String): String
+prefix(symbol: String): String
 ```
 
 返回符号的前缀。
@@ -347,7 +347,7 @@ symbol_info.prefix(symbol: String): String
 ### ticker {#fn-ticker}
 
 ```navi
-symbol_info.ticker(symbol: String): String
+ticker(symbol: String): String
 ```
 
 返回不带交换前缀的交易品种名称。

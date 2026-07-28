@@ -17,7 +17,7 @@ Returns the capital amount currently held by open trades.
 ### commission {#commission}
 
 ```navi
-strategy.open_trades.commission(trade_num: int): series float
+commission(trade_num: int): series float
 ```
 
 Returns the sum of entry and exit fees paid in the open trade, expressed in `strategy.account_currency`.
@@ -35,7 +35,7 @@ Returns the sum of entry and exit fees paid in the open trade, expressed in `str
 ### entry_bar_index {#entry_bar_index}
 
 ```navi
-strategy.open_trades.entry_bar_index(trade_num: int): series int
+entry_bar_index(trade_num: int): series int
 ```
 
 Returns the bar index of the entry bar of the open trade.
@@ -53,7 +53,7 @@ Returns the bar index of the entry bar of the open trade.
 ### entry_comment {#entry_comment}
 
 ```navi
-strategy.open_trades.entry_comment(trade_num: int): series String
+entry_comment(trade_num: int): series String
 ```
 
 Returns the comment of the entry order of the open trade.
@@ -71,7 +71,7 @@ Returns the comment of the entry order of the open trade.
 ### entry_id {#entry_id}
 
 ```navi
-strategy.open_trades.entry_id(trade_num: int): series String
+entry_id(trade_num: int): series String
 ```
 
 Returns the entry order ID of the open trade.
@@ -89,7 +89,7 @@ Returns the entry order ID of the open trade.
 ### entry_price {#entry_price}
 
 ```navi
-strategy.open_trades.entry_price(trade_num: int): series float
+entry_price(trade_num: int): series float
 ```
 
 Returns the entry price of the open trade.
@@ -107,7 +107,7 @@ Returns the entry price of the open trade.
 ### entry_time {#entry_time}
 
 ```navi
-strategy.open_trades.entry_time(trade_num: int): series int
+entry_time(trade_num: int): series int
 ```
 
 Returns the entry time of the open trade, in UNIX time (milliseconds).
@@ -125,7 +125,7 @@ Returns the entry time of the open trade, in UNIX time (milliseconds).
 ### max_drawdown {#max_drawdown}
 
 ```navi
-strategy.open_trades.max_drawdown(trade_num: int): series float
+max_drawdown(trade_num: int): series float
 ```
 
 Returns the maximum drawdown (in `strategy.account_currency`) of the open trade.
@@ -143,7 +143,7 @@ Returns the maximum drawdown (in `strategy.account_currency`) of the open trade.
 ### max_drawdown_percent {#max_drawdown_percent}
 
 ```navi
-strategy.open_trades.max_drawdown_percent(trade_num: int): series float
+max_drawdown_percent(trade_num: int): series float
 ```
 
 Returns the maximum drawdown (percent) of the open trade.
@@ -161,7 +161,7 @@ Returns the maximum drawdown (percent) of the open trade.
 ### max_runup {#max_runup}
 
 ```navi
-strategy.open_trades.max_runup(trade_num: int): series float
+max_runup(trade_num: int): series float
 ```
 
 Returns the maximum run-up (in `strategy.account_currency`) of the open trade.
@@ -179,7 +179,7 @@ Returns the maximum run-up (in `strategy.account_currency`) of the open trade.
 ### max_runup_percent {#max_runup_percent}
 
 ```navi
-strategy.open_trades.max_runup_percent(trade_num: int): series float
+max_runup_percent(trade_num: int): series float
 ```
 
 Returns the maximum run-up (percent) of the open trade.
@@ -197,7 +197,7 @@ Returns the maximum run-up (percent) of the open trade.
 ### profit {#profit}
 
 ```navi
-strategy.open_trades.profit(trade_num: int): series float
+profit(trade_num: int): series float
 ```
 
 Returns the current profit/loss (in `strategy.account_currency`) of the open trade.
@@ -215,7 +215,7 @@ Returns the current profit/loss (in `strategy.account_currency`) of the open tra
 ### profit_percent {#profit_percent}
 
 ```navi
-strategy.open_trades.profit_percent(trade_num: int): series float
+profit_percent(trade_num: int): series float
 ```
 
 Returns the current profit/loss (percent) of the open trade.
@@ -233,7 +233,7 @@ Returns the current profit/loss (percent) of the open trade.
 ### size {#size}
 
 ```navi
-strategy.open_trades.size(trade_num: int): series float
+size(trade_num: int): series float
 ```
 
 Returns the size (quantity) of the open trade.

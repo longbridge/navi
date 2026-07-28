@@ -21,7 +21,7 @@ title: "chart.Point"
 ### from_index {#from_index}
 
 ```navi
-Point.from_index(index: int, price: float): Point
+from_index(index: int, price: float): Point
 ```
 
 傳回指定 bar 索引和價格處的 <a class="stdlib-ref" data-key="chart::Point" href="/zh-HK/api/stdlib/chart/Point">chart.Point</a> 物件。
@@ -40,7 +40,7 @@ Point.from_index(index: int, price: float): Point
 ### from_time {#from_time}
 
 ```navi
-Point.from_time(time: int, price: float): Point
+from_time(time: int, price: float): Point
 ```
 
 傳回具有指定時間和價格的 <code>chart.point</code> 對象。
@@ -59,7 +59,7 @@ Point.from_time(time: int, price: float): Point
 ### now {#now}
 
 ```navi
-Point.now(price: float = close): Point
+now(price: float = close): Point
 ```
 
 傳回一個 <code>chart.point</code> 對象，其中價格為 y 座標。
