@@ -67,9 +67,9 @@ const allItems = computed<ListItem[]>(() => {
       items.push({ key: `${mod}::${fn.name}`, label, module: mod, kind, entry: fn })
     }
     for (const td of doc.types) {
-      const genericSuffix = td.genericParams?.length ? `<${td.genericParams.join(', ')}>` : ''
-      const baseName = td.name + genericSuffix
-      const typeLabel = mod === 'prelude' ? baseName : `${mod}.${baseName}`
+      // List labels keep the type name (and module prefix) but omit generic
+      // parameters — `Map`, not `Map<K, V>`.
+      const typeLabel = mod === 'prelude' ? td.name : `${mod}.${td.name}`
       items.push({ key: `${mod}::${td.name}`, label: typeLabel, module: mod, kind: 'type', entry: td })
       // Add type members so they are searchable and selectable.
       // Order: staticmethod → staticproperty → method
@@ -81,7 +81,7 @@ const allItems = computed<ListItem[]>(() => {
       for (const f of members) {
         const firstOv = f.overloads[0]
         const memberKind = (firstOv?.kind ?? 'method') as 'method' | 'staticmethod' | 'staticproperty'
-        const memberLabel = mod === 'prelude' ? `${baseName}.${f.name}` : `${mod}.${baseName}.${f.name}`
+        const memberLabel = mod === 'prelude' ? `${td.name}.${f.name}` : `${mod}.${td.name}.${f.name}`
         items.push({
           key: `${mod}::${td.name}.${f.name}`,
           label: memberLabel,
@@ -338,50 +338,40 @@ function formatParam(p: Overload['params'][number]): string {
 }
 
 /**
- * The display name to pass to formatSignature. Methods and static members
- * already include the receiver type as prefix, so we use only the bare name;
- * for module-level functions we keep the module-qualified label.
+ * The display name to pass to formatSignature. Always the bare callable name:
+ * the dialog's context (the module list on the left and the type member panel)
+ * already conveys the module or receiver type, so signatures omit both.
  */
-function signatureLabel(item: ListItem, overload: Overload): string {
-  if (['method', 'staticmethod', 'staticproperty'].includes(overload.kind))
-    return item.entry.name
-  return item.label
+function signatureLabel(item: ListItem, _overload: Overload): string {
+  return item.entry.name
 }
 
 /** Compact single-line signature for overload selector buttons. */
 function formatSignature(name: string, overload: Overload): string {
   if (overload.kind === 'property' || overload.kind === 'staticproperty') {
-    const receiver = overload.receiverType ? `${formatTypeRef(overload.receiverType)}.` : ''
     const ret = overload.returnType ? `: ${formatTypeRef(overload.returnType)}` : ''
-    return `${receiver}${name}${ret}`
+    return `${name}${ret}`
   }
-  const receiver = (overload.kind === 'method' || overload.kind === 'staticmethod') && overload.receiverType
-    ? `${formatTypeRef(overload.receiverType)}.`
-    : ''
   const params = overload.params.map(formatParam).join(', ')
   const ret = overload.returnType ? `: ${formatTypeRef(overload.returnType)}` : ''
   const prefix = overload.kind === 'method' ? 'method ' : ''
-  return `${prefix}${receiver}${name}(${params})${ret}`
+  return `${prefix}${name}(${params})${ret}`
 }
 
 /** Multi-line signature for the Syntax block (one param per line when > 2). */
 function formatSignatureBlock(name: string, overload: Overload): string {
   if (overload.kind === 'property' || overload.kind === 'staticproperty') {
-    const receiver = overload.receiverType ? `${formatTypeRef(overload.receiverType)}.` : ''
     const ret = overload.returnType ? `: ${formatTypeRef(overload.returnType)}` : ''
-    return `${receiver}${name}${ret}`
+    return `${name}${ret}`
   }
-  const receiver = (overload.kind === 'method' || overload.kind === 'staticmethod') && overload.receiverType
-    ? `${formatTypeRef(overload.receiverType)}.`
-    : ''
   const ret = overload.returnType ? `: ${formatTypeRef(overload.returnType)}` : ''
   const prefix = overload.kind === 'method' ? 'method ' : ''
   if (overload.params.length > 2) {
     const params = overload.params.map(formatParam).join(',\n    ')
-    return `${prefix}${receiver}${name}(\n    ${params}\n  )${ret}`
+    return `${prefix}${name}(\n    ${params}\n  )${ret}`
   }
   const params = overload.params.map(formatParam).join(', ')
-  return `${prefix}${receiver}${name}(${params})${ret}`
+  return `${prefix}${name}(${params})${ret}`
 }
 
 function isFunctionEntry(entry: FunctionEntry | TypeDefEntry): entry is FunctionEntry {
