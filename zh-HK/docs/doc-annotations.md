@@ -18,6 +18,7 @@ Navi 支援特殊註釋標籤來為聲明附加文件。這些註解被 LSP（�
 | `@variable` | 變數聲明上方 | 為變數添加自訂描述 |
 | `@example` | 函式或類型聲明上方 | 開啟一個程式碼範例區塊（由 `@endexample` 關閉） |
 | `@endexample` | 關閉 `@example` 區塊 | — |
+| `@see` | 函式或類型聲明上方 | 添加一條指向相關符號的「參見」交叉引用 |
 
 所有標籤支援**多行續寫**：緊跟在標籤行之後以 `//` 開頭（不帶 `@` 標籤）的行會被追加到該標籤的文字中。
 
@@ -151,6 +152,28 @@ export series float sma(series float src, simple int length) => ...
 ```
 
 範例會顯示在 VS Code 的 **LSP 懸停提示**中。
+
+## 參見連結
+
+在函式、方法、屬性或類型聲明上方使用 `@see` 來連結相關符號。每行 `@see` 添加一條交叉引用。這些引用會顯示在 API 參考對話框和產生的文件頁面的**參見**區域中。
+
+```navi
+// @function 指數移動平均線。
+// @see func:ta.sma
+// @see func:ta.wma
+export fn ema(series: series float, length: simple int): series float { ... }
+```
+
+引用語法與內聯交叉引用相同：
+
+| 語法 | 解析目標 |
+|------|---------|
+| `@see sma` | 裸名 — 依次在當前模組、prelude、全域範圍中查找 |
+| `@see func:ta.sma` | `ta` 模組中的 `sma` 函式 |
+| `@see type:Color` | `Color` 類型 |
+| `@see Array.push` | `Array` 類型的 `push` 方法 |
+
+每行 `@see` 只寫一個引用。`@see` 支援函式、方法、屬性和類型聲明；不支援變數。
 
 ## 交叉引用連結
 

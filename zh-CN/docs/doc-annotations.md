@@ -18,6 +18,7 @@ Navi 支持特殊注释标签来为声明附加文档。这些注解被 LSP（�
 | `@variable` | 变量声明上方 | 为变量添加自定义描述 |
 | `@example` | 函数或类型声明上方 | 开启一个代码示例块（由 `@endexample` 关闭） |
 | `@endexample` | 关闭 `@example` 块 | — |
+| `@see` | 函数或类型声明上方 | 添加一条指向相关符号的"参见"交叉引用 |
 
 所有标签支持**多行续写**：紧跟在标签行之后以 `//` 开头（不带 `@` 标签）的行会被追加到该标签的文本中。
 
@@ -151,6 +152,28 @@ export series float sma(series float src, simple int length) => ...
 ```
 
 示例会显示在 VS Code 的 **LSP 悬停提示**中。
+
+## 参见链接
+
+在函数、方法、属性或类型声明上方使用 `@see` 来链接相关符号。每行 `@see` 添加一条交叉引用。这些引用会显示在 API 参考对话框和生成的文档页面的**参见**区域中。
+
+```navi
+// @function 指数移动平均线。
+// @see func:ta.sma
+// @see func:ta.wma
+export fn ema(series: series float, length: simple int): series float { ... }
+```
+
+引用语法与内联交叉引用相同：
+
+| 语法 | 解析目标 |
+|------|---------|
+| `@see sma` | 裸名 — 依次在当前模块、prelude、全局范围中查找 |
+| `@see func:ta.sma` | `ta` 模块中的 `sma` 函数 |
+| `@see type:Color` | `Color` 类型 |
+| `@see Array.push` | `Array` 类型的 `push` 方法 |
+
+每行 `@see` 只写一个引用。`@see` 支持函数、方法、属性和类型声明；不支持变量。
 
 ## 交叉引用链接
 

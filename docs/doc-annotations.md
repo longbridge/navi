@@ -18,6 +18,7 @@ Both `//@tag` and `// @tag` (with a space after `//`) formats are supported.
 | `@variable` | Above a variable declaration | Adds a custom description for the variable |
 | `@example` | Above a function or type declaration | Opens a code example block (closed by `@endexample`) |
 | `@endexample` | Closes an `@example` block | — |
+| `@see` | Above a function or type declaration | Adds a "See Also" cross-reference to a related symbol |
 
 All tags support **multi-line continuation**: lines starting with `//` (without a `@` tag) immediately after a tag line are appended to that tag's text.
 
@@ -153,6 +154,28 @@ export fn sma(src: series float, length: simple int): series float {
 ```
 
 Examples are shown in the **LSP hover** tooltip in VS Code.
+
+## See Also Links
+
+Use `@see` above a function, method, property, or type declaration to link related symbols. Each `@see` line adds one cross-reference entry. These appear in a **See Also** section in the API reference dialog and in the generated documentation pages.
+
+```navi
+// @function Exponential Moving Average.
+// @see func:ta.sma
+// @see func:ta.wma
+export fn ema(series: series float, length: simple int): series float { ... }
+```
+
+The reference syntax is the same as for inline cross-references:
+
+| Syntax | Resolves to |
+|--------|-------------|
+| `@see sma` | Bare name — resolved in the current module, then prelude, then globally |
+| `@see func:ta.sma` | The `sma` function in the `ta` module |
+| `@see type:Color` | The `Color` type |
+| `@see Array.push` | The `push` method of the `Array` type |
+
+One reference per `@see` line. `@see` is supported on functions, methods, properties, and types; it is not supported on variables.
 
 ## Cross-Reference Links
 
