@@ -406,7 +406,7 @@ function formatTypeRefHtml(t: TypeRef | undefined): string {
   if (vt.genericArgs?.length) {
     nameHtml += `&lt;${vt.genericArgs.map(formatTypeRefHtml).join(', ')}&gt;`
   }
-  return t.qualifier ? `${t.qualifier} ${nameHtml}` : nameHtml
+  return t.qualifier ? `${t.qualifier}&nbsp;${nameHtml}` : nameHtml
 }
 
 /**
