@@ -448,6 +448,12 @@ function resolveDocRef(ref: string, currentModule?: string): string | null {
     const key = `${mod}::${sym}`
     const match = allItems.value.find(i => i.key === key && matchesQualifier(i))
     if (match) return qualifier === 'type' || qualifier === 'enum' ? `${key}#type` : key
+    // Try as a type member (e.g. "Array.last" → key "prelude::Array.last").
+    const typeMemberKey = `${name}`  // e.g. "Array.last"
+    const typeMemberMatch = allItems.value.find(
+      i => i.key.endsWith(`::${typeMemberKey}`) && matchesQualifier(i)
+    )
+    if (typeMemberMatch) return typeMemberMatch.key
     // Fall back: check if `mod` is an enum type name and `sym` is one of its variants.
     // Resolve to the enum type itself.
     const enumTypeMatch = allItems.value.find(

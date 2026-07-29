@@ -294,9 +294,15 @@ function buildSymbolIndex(docs) {
 
       // Index type members (methods / static methods / static properties)
       for (const f of [...(t.methods ?? []), ...(t.staticMethods ?? []), ...(t.staticProperties ?? [])]) {
+        const memberUrl = `${typePageUrl(modName, t.name)}#${f.name}`;
         index.set(`${modName}::${f.name}::func`, {
           key: `${modName}::${f.name}`,
-          url: `${typePageUrl(modName, t.name)}#${f.name}`,
+          url: memberUrl,
+        });
+        // Also index as "TypeName.memberName" for @see cross-refs like "Array.last".
+        index.set(`${t.name}.${f.name}::func`, {
+          key: `${modName}::${t.name}.${f.name}`,
+          url: memberUrl,
         });
       }
 
@@ -354,6 +360,11 @@ function resolveRef(ref, currentModule) {
     // First try as a module member (e.g. "barmerge.gaps_off").
     const r = lookup(mod, sym);
     if (r) return r;
+    // Try as a type member (e.g. "Array.last" indexed as "Array.last::func").
+    if (!qualifier || qualifier === "func") {
+      const tm = symbolIndex.get(`${name}::func`);
+      if (tm) return tm;
+    }
     // Fall back: check if `mod` is an enum type name with a variant `sym`.
     // In that case, resolve to the enum type itself (linking to its type section).
     const enumResult = lookupEnumVariant(mod, sym);
