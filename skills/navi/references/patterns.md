@@ -81,6 +81,8 @@ library("TaHelpers");
 // @param length Moving-average length.
 // @param maType Moving-average type.
 // @returns Moving-average series.
+// @see func:ta.ema
+// @see func:ta.sma
 export fn ma(src: series float, length: simple int, ma_type: simple String): series float {
     let result = switch ma_type {
         "EMA" => ta.ema(src, length),

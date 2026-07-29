@@ -80,7 +80,16 @@ export fn smooth(src: series float, length: simple int): series float {
 }
 ```
 
-Common tags: `@description`, `@function`, `@param`, `@returns`, `@type`, `@enum`, `@field`, `@variable`.
+Common tags: `@description`, `@function`, `@param`, `@returns`, `@type`, `@enum`, `@field`, `@variable`, `@example`/`@endexample`, `@see`.
+
+Use `@see` to add "See Also" cross-references to related symbols (one reference per line):
+
+```navi
+// @function Exponential Moving Average.
+// @see func:ta.sma
+// @see func:ta.wma
+export fn ema(src: series float, length: simple int): series float { ... }
+```
 
 ## Types
 

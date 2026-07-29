@@ -156,6 +156,8 @@ library("MaLib");
 // @param src Source series.
 // @param length EMA length.
 // @returns EMA series.
+// @see func:ta.sma
+// @see func:ta.wma
 export fn ema_of(src: series float, length: simple int): series float {
     ta.ema(src, length);
 }
