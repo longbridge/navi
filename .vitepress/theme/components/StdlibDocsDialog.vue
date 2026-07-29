@@ -972,6 +972,21 @@ watchEffect(async () => {
                     ><span v-if="highlightedExamples[idx]?.[exIdx]" v-html="highlightedExamples[idx][exIdx]" /><span v-else>{{ ex }}</span></pre>
                   </div>
                 </div>
+
+                <!-- See Also -->
+                <div v-if="overload.seeAlso?.length">
+                  <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.seeAlsoSection') }}</h3>
+                  <div class="flex flex-wrap gap-x-3 gap-y-1">
+                    <template v-for="ref in overload.seeAlso" :key="ref">
+                      <button
+                        v-if="resolveDocRef(ref, selectedItem?.module)"
+                        class="doc-ref"
+                        @click="navigateTo(resolveDocRef(ref, selectedItem?.module)!)"
+                      ><code>{{ ref.includes(':') ? ref.slice(ref.indexOf(':') + 1) : ref }}</code></button>
+                      <code v-else>{{ ref.includes(':') ? ref.slice(ref.indexOf(':') + 1) : ref }}</code>
+                    </template>
+                  </div>
+                </div>
               </div>
             </div>
           </template>
@@ -1072,6 +1087,21 @@ watchEffect(async () => {
                     :key="exIdx"
                     class="docs-pre"
                   ><span v-if="highlightedTypeExamples[exIdx]" v-html="highlightedTypeExamples[exIdx]" /><span v-else>{{ ex }}</span></pre>
+                </div>
+              </div>
+
+              <!-- See Also -->
+              <div v-if="(selectedItem.entry as TypeDefEntry).seeAlso?.length">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.seeAlsoSection') }}</h3>
+                <div class="flex flex-wrap gap-x-3 gap-y-1">
+                  <template v-for="ref in (selectedItem.entry as TypeDefEntry).seeAlso" :key="ref">
+                    <button
+                      v-if="resolveDocRef(ref, selectedItem?.module)"
+                      class="doc-ref"
+                      @click="navigateTo(resolveDocRef(ref, selectedItem?.module)!)"
+                    ><code>{{ ref.includes(':') ? ref.slice(ref.indexOf(':') + 1) : ref }}</code></button>
+                    <code v-else>{{ ref.includes(':') ? ref.slice(ref.indexOf(':') + 1) : ref }}</code>
+                  </template>
                 </div>
               </div>
 

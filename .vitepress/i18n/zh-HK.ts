@@ -317,6 +317,7 @@ export default {
     fieldsSection: "欄位",
     variantsSection: "成員",
     examplesSection: "示例",
+    seeAlsoSection: "參見",
     name: "名稱",
     type: "類型",
     description: "說明",

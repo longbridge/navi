@@ -22,6 +22,7 @@ export interface Overload {
   description?: string
   returnsDescription?: string
   examples?: string[]
+  seeAlso?: string[]
 }
 
 export interface ParamDoc {
@@ -54,6 +55,7 @@ export interface TypeDefEntry {
   variants?: EnumVariantDoc[]
   description?: string
   examples?: string[]
+  seeAlso?: string[]
   methods?: FunctionEntry[]
   staticMethods?: FunctionEntry[]
   staticProperties?: FunctionEntry[]

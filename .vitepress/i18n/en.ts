@@ -317,6 +317,7 @@ export default {
     fieldsSection: "Fields",
     variantsSection: "Variants",
     examplesSection: "Examples",
+    seeAlsoSection: "See Also",
     name: "Name",
     type: "Type",
     description: "Description",

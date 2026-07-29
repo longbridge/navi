@@ -37,6 +37,7 @@ const LOCALE_CONFIGS = {
       parameters: "Parameters",
       returns: "Returns",
       examples: "Examples",
+      seeAlso: "See Also",
       kind: "Kind",
       fields: "Fields",
       variants: "Variants",
@@ -71,6 +72,7 @@ const LOCALE_CONFIGS = {
       parameters: "参数",
       returns: "返回",
       examples: "示例",
+      seeAlso: "参见",
       kind: "种类",
       fields: "字段",
       variants: "成员",
@@ -105,6 +107,7 @@ const LOCALE_CONFIGS = {
       parameters: "參數",
       returns: "返回",
       examples: "示例",
+      seeAlso: "參見",
       kind: "種類",
       fields: "欄位",
       variants: "成員",
@@ -508,6 +511,19 @@ function generateSingleOverload(moduleName, funcName, ov) {
     }
   }
 
+  // See Also
+  if (ov.seeAlso && ov.seeAlso.length > 0) {
+    const refs = ov.seeAlso.map((ref) => {
+      const displayName = ref.includes(":") ? ref.slice(ref.indexOf(":") + 1) : ref;
+      const result = resolveRef(ref, moduleName);
+      return result
+        ? `<a class="stdlib-ref" data-key="${result.key}" href="${result.url}">${escapeHtml(displayName)}</a>`
+        : `<code>${escapeHtml(displayName)}</code>`;
+    });
+    lines.push(`**${tr("seeAlso")}:** ${refs.join(", ")}`);
+    lines.push("");
+  }
+
   return lines.join("\n");
 }
 
@@ -591,6 +607,18 @@ function generateTypeDefBody(t, lines, moduleName) {
       lines.push("```");
       lines.push("");
     }
+  }
+
+  if (t.seeAlso && t.seeAlso.length > 0) {
+    const refs = t.seeAlso.map((ref) => {
+      const displayName = ref.includes(":") ? ref.slice(ref.indexOf(":") + 1) : ref;
+      const result = resolveRef(ref, moduleName);
+      return result
+        ? `<a class="stdlib-ref" data-key="${result.key}" href="${result.url}">${escapeHtml(displayName)}</a>`
+        : `<code>${escapeHtml(displayName)}</code>`;
+    });
+    lines.push(`**${tr("seeAlso")}:** ${refs.join(", ")}`);
+    lines.push("");
   }
 
   return lines.join("\n");
