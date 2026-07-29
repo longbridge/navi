@@ -130,6 +130,8 @@ alma(
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::sma" href="/zh-HK/api/stdlib/ta/#sma">ta.sma</a>, <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>
+
 ---
 
 ### atr {#atr}
@@ -148,6 +150,8 @@ atr(length: simple int): series float
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::rma" href="/zh-HK/api/stdlib/ta/#rma">ta.rma</a>, <a class="stdlib-ref" data-key="ta::supertrend" href="/zh-HK/api/stdlib/ta/#supertrend">ta.supertrend</a>
+
 ---
 
 ### bars_since {#bars_since}
@@ -165,6 +169,8 @@ bars_since(condition: series bool): series int
 | `condition` | <code>series&nbsp;bool</code> |  | 要檢查的布爾條件。 |
 
 **返回:** <code>series&nbsp;int</code> — 自上次條件為真以來 bars 的數量，如果從未為真，則為 `na`。
+
+**參見:** <a class="stdlib-ref" data-key="ta::highest_bars" href="/zh-HK/api/stdlib/ta/#highest_bars">ta.highest_bars</a>, <a class="stdlib-ref" data-key="ta::lowest_bars" href="/zh-HK/api/stdlib/ta/#lowest_bars">ta.lowest_bars</a>
 
 ---
 
@@ -195,6 +201,8 @@ plot(bbUpper, title: "BB Upper", color: Color.BLUE);
 plot(bbLower, title: "BB Lower", color: Color.BLUE);
 ```
 
+**參見:** <a class="stdlib-ref" data-key="ta::bbw" href="/zh-HK/api/stdlib/ta/#bbw">ta.bbw</a>, <a class="stdlib-ref" data-key="ta::sma" href="/zh-HK/api/stdlib/ta/#sma">ta.sma</a>, <a class="stdlib-ref" data-key="ta::stdev" href="/zh-HK/api/stdlib/ta/#stdev">ta.stdev</a>
+
 ---
 
 ### bbw {#bbw}
@@ -215,6 +223,8 @@ bbw(source: series float, length: series int, mult: simple float): series float
 
 **返回:** <code>series&nbsp;float</code> — 帶寬百分比：`(upper - lower) / basis × 100`。
 
+**參見:** <a class="stdlib-ref" data-key="ta::bb" href="/zh-HK/api/stdlib/ta/#bb">ta.bb</a>, <a class="stdlib-ref" data-key="ta::stdev" href="/zh-HK/api/stdlib/ta/#stdev">ta.stdev</a>
+
 ---
 
 ### cci {#cci}
@@ -233,6 +243,8 @@ cci(source: series float, length: series int): series float
 | `length` | <code>series&nbsp;int</code> |  | 用於計算的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::sma" href="/zh-HK/api/stdlib/ta/#sma">ta.sma</a>, <a class="stdlib-ref" data-key="ta::dev" href="/zh-HK/api/stdlib/ta/#dev">ta.dev</a>
 
 ---
 
@@ -340,6 +352,8 @@ cmo(series: series float, length: series int): series float
 
 **返回:** <code>series&nbsp;float</code> — 介於 -100 和 100 之間的值。正值表示向上動量，負值表示向下動量。
 
+**參見:** <a class="stdlib-ref" data-key="ta::change" href="/zh-HK/api/stdlib/ta/#change">ta.change</a>
+
 ---
 
 ### cog {#cog}
@@ -402,6 +416,8 @@ cross(source1: series float, source2: series float): series bool
 
 **返回:** <code>series&nbsp;bool</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::cross_over" href="/zh-HK/api/stdlib/ta/#cross_over">ta.cross_over</a>, <a class="stdlib-ref" data-key="ta::cross_under" href="/zh-HK/api/stdlib/ta/#cross_under">ta.cross_under</a>
+
 ---
 
 ### cross_over {#cross_over}
@@ -431,6 +447,8 @@ label.new(bar_index, low, "Buy", style: LabelStyle.Up);
 }
 ```
 
+**參見:** <a class="stdlib-ref" data-key="ta::cross_under" href="/zh-HK/api/stdlib/ta/#cross_under">ta.cross_under</a>, <a class="stdlib-ref" data-key="ta::cross" href="/zh-HK/api/stdlib/ta/#cross">ta.cross</a>
+
 ---
 
 ### cross_under {#cross_under}
@@ -459,6 +477,8 @@ if ta.cross_under(fastEma, slowEma) {
 label.new(bar_index, high, "Sell", style: LabelStyle.Down);
 }
 ```
+
+**參見:** <a class="stdlib-ref" data-key="ta::cross_over" href="/zh-HK/api/stdlib/ta/#cross_over">ta.cross_over</a>, <a class="stdlib-ref" data-key="ta::cross" href="/zh-HK/api/stdlib/ta/#cross">ta.cross</a>
 
 ---
 
@@ -496,6 +516,8 @@ dema(source: series float, length: simple int): series float
 | `length` | <code>simple&nbsp;int</code> |  | The smoothing period. |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>, <a class="stdlib-ref" data-key="ta::tema" href="/zh-HK/api/stdlib/ta/#tema">ta.tema</a>
 
 ---
 
@@ -535,6 +557,8 @@ dmi(di_length: simple int, adx_smoothing: simple int)
 
 **返回:** `[plus_di, minus_di, adx]` 的元組，全部表示為百分比 (0–100)。
 
+**參見:** <a class="stdlib-ref" data-key="ta::atr" href="/zh-HK/api/stdlib/ta/#atr">ta.atr</a>, <a class="stdlib-ref" data-key="ta::rma" href="/zh-HK/api/stdlib/ta/#rma">ta.rma</a>
+
 ---
 
 ### ema {#ema}
@@ -563,6 +587,8 @@ plot(ema12, title: "EMA 12", color: Color.GREEN);
 plot(ema26, title: "EMA 26", color: Color.RED);
 ```
 
+**參見:** <a class="stdlib-ref" data-key="ta::sma" href="/zh-HK/api/stdlib/ta/#sma">ta.sma</a>, <a class="stdlib-ref" data-key="ta::wma" href="/zh-HK/api/stdlib/ta/#wma">ta.wma</a>, <a class="stdlib-ref" data-key="ta::rma" href="/zh-HK/api/stdlib/ta/#rma">ta.rma</a>, <a class="stdlib-ref" data-key="ta::dema" href="/zh-HK/api/stdlib/ta/#dema">ta.dema</a>, <a class="stdlib-ref" data-key="ta::tema" href="/zh-HK/api/stdlib/ta/#tema">ta.tema</a>
+
 ---
 
 ### falling {#falling}
@@ -581,6 +607,8 @@ falling(source: series float, length: series int): series bool
 | `length` | <code>series&nbsp;int</code> |  | 要檢查的 bars 數量。 |
 
 **返回:** <code>series&nbsp;bool</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::rising" href="/zh-HK/api/stdlib/ta/#rising">ta.rising</a>
 
 ---
 
@@ -679,6 +707,8 @@ hma(source: series float, length: simple int): series float
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::sma" href="/zh-HK/api/stdlib/ta/#sma">ta.sma</a>, <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>, <a class="stdlib-ref" data-key="ta::wma" href="/zh-HK/api/stdlib/ta/#wma">ta.wma</a>
+
 ---
 
 ### kc {#kc}
@@ -705,6 +735,8 @@ kc(
 
 **返回:** `[basis, upper, lower]` 的元組，其中基礎是 EMA，上限/下限是基礎 ± 乘數 × 範圍 EMA。
 
+**參見:** <a class="stdlib-ref" data-key="ta::kcw" href="/zh-HK/api/stdlib/ta/#kcw">ta.kcw</a>, <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>, <a class="stdlib-ref" data-key="ta::atr" href="/zh-HK/api/stdlib/ta/#atr">ta.atr</a>
+
 ---
 
 ### kcw {#kcw}
@@ -730,6 +762,8 @@ kcw(
 | `use_true_range` | <code>simple&nbsp;bool</code> | `true` | 是否使用真實範圍。 |
 
 **返回:** <code>series&nbsp;float</code> — 通道寬度的比率：`(upper - lower) / basis`。
+
+**參見:** <a class="stdlib-ref" data-key="ta::kc" href="/zh-HK/api/stdlib/ta/#kc">ta.kc</a>
 
 ---
 
@@ -860,6 +894,8 @@ plot(signalLine, title: "Signal",   color: Color.ORANGE);
 plot(histLine, title: "Hist", color: Color.GRAY, style: PlotStyle.Histogram);
 ```
 
+**參見:** <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>
+
 ---
 
 ### max {#max}
@@ -896,6 +932,8 @@ median(source: series float, length: series int): series float
 | `length` | <code>series&nbsp;int</code> |  | 用於計算的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::mode" href="/zh-HK/api/stdlib/ta/#mode">ta.mode</a>
 
 ---
 
@@ -953,6 +991,8 @@ mode(source: series float, length: series int): series float
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::median" href="/zh-HK/api/stdlib/ta/#median">ta.median</a>
+
 ---
 
 ### mom {#mom}
@@ -971,6 +1011,8 @@ mom(source: series float, length: series int): series float
 | `length` | <code>series&nbsp;int</code> |  | 用於計算的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::change" href="/zh-HK/api/stdlib/ta/#change">ta.change</a>, <a class="stdlib-ref" data-key="ta::roc" href="/zh-HK/api/stdlib/ta/#roc">ta.roc</a>
 
 ---
 
@@ -1015,6 +1057,8 @@ percentile_linear_interpolation(
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::percentile_nearest_rank" href="/zh-HK/api/stdlib/ta/#percentile_nearest_rank">ta.percentile_nearest_rank</a>
+
 ---
 
 ### percentile_nearest_rank {#percentile_nearest_rank}
@@ -1038,6 +1082,8 @@ percentile_nearest_rank(
 | `percentage` | <code>simple&nbsp;float</code> |  | 百分位值 (0-100)。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::percentile_linear_interpolation" href="/zh-HK/api/stdlib/ta/#percentile_linear_interpolation">ta.percentile_linear_interpolation</a>
 
 ---
 
@@ -1204,6 +1250,8 @@ rising(source: series float, length: series int): series bool
 
 **返回:** <code>series&nbsp;bool</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::falling" href="/zh-HK/api/stdlib/ta/#falling">ta.falling</a>
+
 ---
 
 ### rma {#rma}
@@ -1223,6 +1271,8 @@ rma(source: series float, length: series int): series float
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>
+
 ---
 
 ### roc {#roc}
@@ -1241,6 +1291,8 @@ roc(source: series float, length: series int): series float
 | `length` | <code>series&nbsp;int</code> |  | 用於比較的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code> — 百分比變化：`100 × (source − source[length]) / source[length]`。
+
+**參見:** <a class="stdlib-ref" data-key="ta::change" href="/zh-HK/api/stdlib/ta/#change">ta.change</a>, <a class="stdlib-ref" data-key="ta::mom" href="/zh-HK/api/stdlib/ta/#mom">ta.mom</a>
 
 ---
 
@@ -1269,6 +1321,8 @@ plot(rsiValue, title: "RSI", color: Color.PURPLE);
 hline(70, "Overbought", color: Color.RED);
 hline(30, "Oversold", color: Color.GREEN);
 ```
+
+**參見:** <a class="stdlib-ref" data-key="ta::rma" href="/zh-HK/api/stdlib/ta/#rma">ta.rma</a>, <a class="stdlib-ref" data-key="ta::stoch" href="/zh-HK/api/stdlib/ta/#stoch">ta.stoch</a>
 
 ---
 
@@ -1316,6 +1370,8 @@ let sma20 = ta.sma(close, 20);
 plot(sma20, title: "SMA 20", color: Color.BLUE);
 ```
 
+**參見:** <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>, <a class="stdlib-ref" data-key="ta::wma" href="/zh-HK/api/stdlib/ta/#wma">ta.wma</a>, <a class="stdlib-ref" data-key="ta::rma" href="/zh-HK/api/stdlib/ta/#rma">ta.rma</a>, <a class="stdlib-ref" data-key="ta::hma" href="/zh-HK/api/stdlib/ta/#hma">ta.hma</a>
+
 ---
 
 ### stdev {#stdev}
@@ -1339,6 +1395,8 @@ stdev(
 | `biased` | <code>series&nbsp;bool</code> | `true` | 如果為 true，函數將使用整個總體的有偏估計進行計算，如果為 false，則使用樣本的無偏估計進行計算。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::variance" href="/zh-HK/api/stdlib/ta/#variance">ta.variance</a>, <a class="stdlib-ref" data-key="ta::bb" href="/zh-HK/api/stdlib/ta/#bb">ta.bb</a>
 
 ---
 
@@ -1366,6 +1424,8 @@ stoch(
 
 **返回:** <code>series&nbsp;float</code> — 0 到 100 之間的值，表示源在高低範圍內的位置。
 
+**參見:** <a class="stdlib-ref" data-key="ta::rsi" href="/zh-HK/api/stdlib/ta/#rsi">ta.rsi</a>, <a class="stdlib-ref" data-key="ta::wpr" href="/zh-HK/api/stdlib/ta/#wpr">ta.wpr</a>
+
 ---
 
 ### supertrend {#supertrend}
@@ -1384,6 +1444,8 @@ supertrend(factor: series float, atr_period: simple int)
 | `atr_period` | <code>simple&nbsp;int</code> |  | ATR 計算的週期。 |
 
 **返回:** `[super_trend, direction]` 的元組，其中方向為 -1（上升趨勢/看漲）或 1（下降趨勢/看跌）。
+
+**參見:** <a class="stdlib-ref" data-key="ta::atr" href="/zh-HK/api/stdlib/ta/#atr">ta.atr</a>
 
 ---
 
@@ -1421,6 +1483,8 @@ tema(source: series float, length: simple int): series float
 | `length` | <code>simple&nbsp;int</code> |  | The smoothing period. |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>, <a class="stdlib-ref" data-key="ta::dema" href="/zh-HK/api/stdlib/ta/#dema">ta.dema</a>
 
 ---
 
@@ -1511,6 +1575,8 @@ variance(
 | `biased` | <code>series&nbsp;bool</code> | `true` | 如果為真，則使用有偏估計；如果為 false，則使用無偏估計。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**參見:** <a class="stdlib-ref" data-key="ta::stdev" href="/zh-HK/api/stdlib/ta/#stdev">ta.stdev</a>
 
 ---
 
@@ -1606,6 +1672,8 @@ wma(source: series float, length: series int): series float
 
 **返回:** <code>series&nbsp;float</code>
 
+**參見:** <a class="stdlib-ref" data-key="ta::sma" href="/zh-HK/api/stdlib/ta/#sma">ta.sma</a>, <a class="stdlib-ref" data-key="ta::ema" href="/zh-HK/api/stdlib/ta/#ema">ta.ema</a>, <a class="stdlib-ref" data-key="ta::hma" href="/zh-HK/api/stdlib/ta/#hma">ta.hma</a>
+
 ---
 
 ### wpr {#wpr}
@@ -1623,3 +1691,5 @@ wpr(length: series int): series float
 | `length` | <code>series&nbsp;int</code> |  | 用於計算的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code> — 介於 -100 和 0 之間的值。高於 -20 的值表示超買，低於 -80 的值表示超賣。
+
+**參見:** <a class="stdlib-ref" data-key="ta::stoch" href="/zh-HK/api/stdlib/ta/#stoch">ta.stoch</a>

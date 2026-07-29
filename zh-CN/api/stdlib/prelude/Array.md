@@ -658,6 +658,8 @@ first(id: Array<T>): T
 
 **返回:** <code>T</code>
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Array.last" href="/zh-CN/api/stdlib/prelude/Array#last">Array.last</a>
+
 ---
 
 ### get {#get}
@@ -801,6 +803,8 @@ last(id: Array<T>): T
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | 要从中检索最后一个元素的数组。 |
 
 **返回:** <code>T</code>
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Array.first" href="/zh-CN/api/stdlib/prelude/Array#first">Array.first</a>
 
 ---
 
@@ -1087,6 +1091,8 @@ pop(id: Array<T>): T
 
 **返回:** <code>T</code>
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Array.push" href="/zh-CN/api/stdlib/prelude/Array#push">Array.push</a>
+
 ---
 
 ### push {#push}
@@ -1103,6 +1109,8 @@ push(id: Array<T>, value: T)
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | 将附加值的数组。 |
 | `value` | <code>T</code> |  | 要附加到数组的值。 |
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Array.pop" href="/zh-CN/api/stdlib/prelude/Array#pop">Array.pop</a>
 
 ---
 
@@ -1208,6 +1216,8 @@ shift(id: Array<T>): T
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | 要从中移动元素的数组。 |
 
 **返回:** <code>T</code>
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Array.unshift" href="/zh-CN/api/stdlib/prelude/Array#unshift">Array.unshift</a>
 
 ---
 
@@ -1511,6 +1521,8 @@ unshift(id: Array<T>, value: T)
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | 要修改的数组。 |
 | `value` | <code>T</code> |  | 要添加到开头的值。 |
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Array.shift" href="/zh-CN/api/stdlib/prelude/Array#shift">Array.shift</a>
 
 ---
 

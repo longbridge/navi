@@ -34,6 +34,8 @@ Creates a color that is a gradient between `bottom_color` and `top_color` based 
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/Color">Color</a></code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.new" href="/api/stdlib/prelude/Color#new">Color.new</a>, <a class="stdlib-ref" data-key="prelude::Color.rgb" href="/api/stdlib/prelude/Color#rgb">Color.rgb</a>, <a class="stdlib-ref" data-key="prelude::Color.mix" href="/api/stdlib/prelude/Color#mix">Color.mix</a>
+
 ---
 
 ### mix {#mix}
@@ -54,6 +56,8 @@ Linearly blends two colors.
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/Color">Color</a></code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.from_gradient" href="/api/stdlib/prelude/Color#from_gradient">Color.from_gradient</a>
+
 ---
 
 ### new {#new}
@@ -72,6 +76,8 @@ Creates a new color by changing the transparency of the given `color` to `transp
 | `transp` | <code>float</code> |  | The new transparency value (0-100). |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/Color">Color</a></code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.rgb" href="/api/stdlib/prelude/Color#rgb">Color.rgb</a>, <a class="stdlib-ref" data-key="prelude::Color.from_gradient" href="/api/stdlib/prelude/Color#from_gradient">Color.from_gradient</a>
 
 ---
 
@@ -93,6 +99,8 @@ Creates a color from the specified red, green, blue components (0-255) and optio
 | `transp` | <code>float</code> | `0` | The transparency value (0-100, default: 0.0). |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/Color">Color</a></code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.new" href="/api/stdlib/prelude/Color#new">Color.new</a>, <a class="stdlib-ref" data-key="prelude::Color.from_gradient" href="/api/stdlib/prelude/Color#from_gradient">Color.from_gradient</a>
 
 ## Static Properties
 
@@ -304,6 +312,8 @@ Returns the transparency component of the given `color`.
 
 **Returns:** <code>float</code> — A value in the range [0, 100] where 0 is fully opaque and 100 is fully transparent.
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.red" href="/api/stdlib/prelude/Color#red">Color.red</a>, <a class="stdlib-ref" data-key="prelude::Color.green" href="/api/stdlib/prelude/Color#green">Color.green</a>, <a class="stdlib-ref" data-key="prelude::Color.blue" href="/api/stdlib/prelude/Color#blue">Color.blue</a>
+
 ---
 
 ### blue {#blue}
@@ -321,6 +331,8 @@ Returns the blue component of the given `color`.
 | `self` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Color">Color</a></code> |  |  |
 
 **Returns:** <code>float</code> — A value in the range [0, 255].
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.red" href="/api/stdlib/prelude/Color#red">Color.red</a>, <a class="stdlib-ref" data-key="prelude::Color.green" href="/api/stdlib/prelude/Color#green">Color.green</a>, <a class="stdlib-ref" data-key="prelude::Color.alpha" href="/api/stdlib/prelude/Color#alpha">Color.alpha</a>
 
 ---
 
@@ -340,6 +352,8 @@ Returns the green component of the given `color`.
 
 **Returns:** <code>float</code> — A value in the range [0, 255].
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.red" href="/api/stdlib/prelude/Color#red">Color.red</a>, <a class="stdlib-ref" data-key="prelude::Color.blue" href="/api/stdlib/prelude/Color#blue">Color.blue</a>, <a class="stdlib-ref" data-key="prelude::Color.alpha" href="/api/stdlib/prelude/Color#alpha">Color.alpha</a>
+
 ---
 
 ### red {#red}
@@ -357,3 +371,5 @@ Returns the red component of the given `color`.
 | `self` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Color">Color</a></code> |  |  |
 
 **Returns:** <code>float</code> — A value in the range [0, 255].
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Color.green" href="/api/stdlib/prelude/Color#green">Color.green</a>, <a class="stdlib-ref" data-key="prelude::Color.blue" href="/api/stdlib/prelude/Color#blue">Color.blue</a>, <a class="stdlib-ref" data-key="prelude::Color.alpha" href="/api/stdlib/prelude/Color#alpha">Color.alpha</a>

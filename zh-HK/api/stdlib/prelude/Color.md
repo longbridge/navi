@@ -34,6 +34,8 @@ from_gradient(
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Color">Color</a></code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.new" href="/zh-HK/api/stdlib/prelude/Color#new">Color.new</a>, <a class="stdlib-ref" data-key="prelude::Color.rgb" href="/zh-HK/api/stdlib/prelude/Color#rgb">Color.rgb</a>, <a class="stdlib-ref" data-key="prelude::Color.mix" href="/zh-HK/api/stdlib/prelude/Color#mix">Color.mix</a>
+
 ---
 
 ### mix {#mix}
@@ -54,6 +56,8 @@ mix(c1: Color, c2: Color, weight: float = 0.5): Color
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Color">Color</a></code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.from_gradient" href="/zh-HK/api/stdlib/prelude/Color#from_gradient">Color.from_gradient</a>
+
 ---
 
 ### new {#new}
@@ -72,6 +76,8 @@ new(color: Color, transp: float): Color
 | `transp` | <code>float</code> |  | 新的透明度值（0-100）。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Color">Color</a></code>
+
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.rgb" href="/zh-HK/api/stdlib/prelude/Color#rgb">Color.rgb</a>, <a class="stdlib-ref" data-key="prelude::Color.from_gradient" href="/zh-HK/api/stdlib/prelude/Color#from_gradient">Color.from_gradient</a>
 
 ---
 
@@ -93,6 +99,8 @@ rgb(red: float, green: float, blue: float, transp: float = 0): Color
 | `transp` | <code>float</code> | `0` | 透明度值（0-100，預設值：0.0）。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Color">Color</a></code>
+
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.new" href="/zh-HK/api/stdlib/prelude/Color#new">Color.new</a>, <a class="stdlib-ref" data-key="prelude::Color.from_gradient" href="/zh-HK/api/stdlib/prelude/Color#from_gradient">Color.from_gradient</a>
 
 ## 靜態屬性
 
@@ -304,6 +312,8 @@ alpha(self: Color): float
 
 **返回:** <code>float</code> — 範圍 [0, 100] 內的值，0 為完全不透明，100 為完全透明。
 
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.red" href="/zh-HK/api/stdlib/prelude/Color#red">Color.red</a>, <a class="stdlib-ref" data-key="prelude::Color.green" href="/zh-HK/api/stdlib/prelude/Color#green">Color.green</a>, <a class="stdlib-ref" data-key="prelude::Color.blue" href="/zh-HK/api/stdlib/prelude/Color#blue">Color.blue</a>
+
 ---
 
 ### blue {#blue}
@@ -321,6 +331,8 @@ blue(self: Color): float
 | `self` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Color">Color</a></code> |  |  |
 
 **返回:** <code>float</code> — 範圍 [0, 255] 內的值。
+
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.red" href="/zh-HK/api/stdlib/prelude/Color#red">Color.red</a>, <a class="stdlib-ref" data-key="prelude::Color.green" href="/zh-HK/api/stdlib/prelude/Color#green">Color.green</a>, <a class="stdlib-ref" data-key="prelude::Color.alpha" href="/zh-HK/api/stdlib/prelude/Color#alpha">Color.alpha</a>
 
 ---
 
@@ -340,6 +352,8 @@ green(self: Color): float
 
 **返回:** <code>float</code> — 範圍 [0, 255] 內的值。
 
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.red" href="/zh-HK/api/stdlib/prelude/Color#red">Color.red</a>, <a class="stdlib-ref" data-key="prelude::Color.blue" href="/zh-HK/api/stdlib/prelude/Color#blue">Color.blue</a>, <a class="stdlib-ref" data-key="prelude::Color.alpha" href="/zh-HK/api/stdlib/prelude/Color#alpha">Color.alpha</a>
+
 ---
 
 ### red {#red}
@@ -357,3 +371,5 @@ red(self: Color): float
 | `self` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Color">Color</a></code> |  |  |
 
 **返回:** <code>float</code> — 範圍 [0, 255] 內的值。
+
+**參見:** <a class="stdlib-ref" data-key="prelude::Color.green" href="/zh-HK/api/stdlib/prelude/Color#green">Color.green</a>, <a class="stdlib-ref" data-key="prelude::Color.blue" href="/zh-HK/api/stdlib/prelude/Color#blue">Color.blue</a>, <a class="stdlib-ref" data-key="prelude::Color.alpha" href="/zh-HK/api/stdlib/prelude/Color#alpha">Color.alpha</a>

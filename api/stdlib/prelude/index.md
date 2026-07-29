@@ -393,6 +393,8 @@ Each bar can have its own color, allowing for dynamic coloring based on indicato
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Title shown in the style dialog. |
 | `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> |  | Controls where the coloring is visible. |
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::bg_color" href="/api/stdlib/prelude/#bg_color">bg_color</a>
+
 ---
 
 ### bg_color {#bg_color}
@@ -424,6 +426,8 @@ Useful for highlighting specific conditions or time periods on the chart.
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Title shown in the style dialog. |
 | `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | Controls where the background is visible. |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | If true, forces display on the main chart pane. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::bar_color" href="/api/stdlib/prelude/#bar_color">bar_color</a>
 
 ---
 
@@ -653,6 +657,8 @@ Carries forward the most recent valid value, effectively "filling" gaps in the d
 
 **Returns:** <code>series&nbsp;T</code> — The current value if it is not `na`, otherwise the most recent non-na value, or `na` if no valid value has been seen yet.
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::na" href="/api/stdlib/prelude/#na">na</a>, <a class="stdlib-ref" data-key="prelude::nz" href="/api/stdlib/prelude/#nz">nz</a>
+
 ---
 
 ### float {#float}
@@ -720,6 +726,8 @@ Unlike <a class="stdlib-ref" data-key="prelude::plot" href="/api/stdlib/prelude/
 | `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | Controls where the line is visible. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/HLine">HLine</a></code> — An hline handle that can be used with <a class="stdlib-ref" data-key="prelude::fill" href="/api/stdlib/prelude/Matrix#fill">fill</a>.
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::fill" href="/api/stdlib/prelude/Matrix#fill">fill</a>, <a class="stdlib-ref" data-key="prelude::plot" href="/api/stdlib/prelude/#plot">plot</a>
 
 ---
 
@@ -1122,6 +1130,8 @@ Essential for handling gaps in data, missing values in series, or uninitialized 
 
 **Returns:** <code>bool</code> — `true` if the value is undefined or missing, `false` otherwise.
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::nz" href="/api/stdlib/prelude/#nz">nz</a>, <a class="stdlib-ref" data-key="prelude::fixnan" href="/api/stdlib/prelude/#fixnan">fixnan</a>
+
 ---
 
 ### nz {#nz}
@@ -1240,7 +1250,7 @@ Supports various styles including line, histogram, area, columns, and more.
 | `join` | <code>input&nbsp;bool</code> | `false` | If true, connects gaps in the series with a line. |
 | `editable` | <code>input&nbsp;bool</code> | `true` | If true, the plot style can be edited in the style dialog. |
 | `show_last` | <code>input&nbsp;int</code> | `na` | If set, only the last N bars are displayed. |
-| `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | Controls where the plot is displayed. Use <code>PlotDisplay.ALL</code>, <code>PlotDisplay.NONE</code>, <code>PlotDisplay.PANE</code>, <code>PlotDisplay.PRICE_SCALE</code>, etc. |
+| `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | Controls where the plot is displayed. Use <a class="stdlib-ref" data-key="prelude::PlotDisplay.ALL" href="/api/stdlib/prelude/PlotDisplay#ALL">PlotDisplay.ALL</a>, <a class="stdlib-ref" data-key="prelude::PlotDisplay.NONE" href="/api/stdlib/prelude/PlotDisplay#NONE">PlotDisplay.NONE</a>, <a class="stdlib-ref" data-key="prelude::PlotDisplay.PANE" href="/api/stdlib/prelude/PlotDisplay#PANE">PlotDisplay.PANE</a>, <a class="stdlib-ref" data-key="prelude::PlotDisplay.PRICE_SCALE" href="/api/stdlib/prelude/PlotDisplay#PRICE_SCALE">PlotDisplay.PRICE_SCALE</a>, etc. |
 | `format` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | Overrides the default number format for this plot in the data window. |
 | `precision` | <code>input&nbsp;int</code> | `na` | Number of decimal places for display. |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | If true, forces the plot to display on the main chart pane. |
@@ -1261,6 +1271,8 @@ let p1 = plot(ta.ema(close, 9), title: "EMA 9", color: Color.GREEN); let p2 =
 plot(ta.ema(close, 21), title: "EMA 21", color: Color.RED); fill(p1, p2,
 color: Color.new(Color.GRAY, 80));
 ```
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::fill" href="/api/stdlib/prelude/Matrix#fill">fill</a>, <a class="stdlib-ref" data-key="prelude::hline" href="/api/stdlib/prelude/#hline">hline</a>
 
 ---
 
@@ -1306,6 +1318,8 @@ An up arrow is drawn when the value is positive, a down arrow when negative. The
 | `precision` | <code>input&nbsp;int</code> | `na` | Number of decimal places for display. |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | If true, forces display on the main chart pane. |
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::plot_shape" href="/api/stdlib/prelude/#plot_shape">plot_shape</a>, <a class="stdlib-ref" data-key="prelude::plot_char" href="/api/stdlib/prelude/#plot_char">plot_char</a>
+
 ---
 
 ### plot_bar {#plot_bar}
@@ -1347,6 +1361,8 @@ Each bar shows open, high, low, and close prices as a traditional bar chart elem
 | `format` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | Overrides the default number format in the data window. |
 | `precision` | <code>input&nbsp;int</code> | `na` | Number of decimal places for display. |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | If true, forces display on the main chart pane. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::plot_candle" href="/api/stdlib/prelude/#plot_candle">plot_candle</a>
 
 ---
 
@@ -1393,6 +1409,8 @@ Each candle shows open, high, low, and close prices with a body and wicks. Usefu
 | `format` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | Overrides the default number format in the data window. |
 | `precision` | <code>input&nbsp;int</code> | `na` | Number of decimal places for display. |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | If true, forces display on the main chart pane. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::plot_bar" href="/api/stdlib/prelude/#plot_bar">plot_bar</a>
 
 ---
 

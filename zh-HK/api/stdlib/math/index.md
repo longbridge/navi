@@ -96,6 +96,8 @@ acos(value: float): float
 
 **返回:** <code>float</code> — 範圍 [0, 180] 內的角度（以度為單位）。
 
+**參見:** <a class="stdlib-ref" data-key="math::cos" href="/zh-HK/api/stdlib/math/#cos">math.cos</a>
+
 ---
 
 ### asin {#asin}
@@ -114,6 +116,8 @@ asin(value: float): float
 
 **返回:** <code>float</code> — 範圍 [-90, 90] 內的角度（以度為單位）。
 
+**參見:** <a class="stdlib-ref" data-key="math::sin" href="/zh-HK/api/stdlib/math/#sin">math.sin</a>
+
 ---
 
 ### atan {#atan}
@@ -131,6 +135,8 @@ atan(value: float): float
 | `value` | <code>float</code> |  | 正切值（任何實數）。 |
 
 **返回:** <code>float</code> — (-90, 90) 範圍內的角度（以度為單位）。
+
+**參見:** <a class="stdlib-ref" data-key="math::tan" href="/zh-HK/api/stdlib/math/#tan">math.tan</a>, <a class="stdlib-ref" data-key="math::atan2" href="/zh-HK/api/stdlib/math/#atan2">math.atan2</a>
 
 ---
 
@@ -152,6 +158,8 @@ Unlike <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/
 | `x` | <code>float</code> |  | The X component (denominator). |
 
 **返回:** <code>float</code> — An angle in degrees in the range (-180, 180].
+
+**參見:** <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/#atan">math.atan</a>
 
 ---
 
@@ -208,6 +216,8 @@ cbrt(n: float): float
 
 **返回:** <code>float</code>
 
+**參見:** <a class="stdlib-ref" data-key="math::pow" href="/zh-HK/api/stdlib/math/#pow">math.pow</a>, <a class="stdlib-ref" data-key="math::sqrt" href="/zh-HK/api/stdlib/math/#sqrt">math.sqrt</a>
+
 ---
 
 ### ceil {#ceil}
@@ -225,6 +235,8 @@ ceil(n: float): int
 | `n` | <code>float</code> |  | 要向上舍入的值。 |
 
 **返回:** <code>int</code>
+
+**參見:** <a class="stdlib-ref" data-key="math::floor" href="/zh-HK/api/stdlib/math/#floor">math.floor</a>, <a class="stdlib-ref" data-key="math::trunc" href="/zh-HK/api/stdlib/math/#trunc">math.trunc</a>
 
 ---
 
@@ -267,6 +279,8 @@ cos(angle: float): float
 
 **返回:** <code>float</code> — 介於 -1 和 1 之間的值。
 
+**參見:** <a class="stdlib-ref" data-key="math::acos" href="/zh-HK/api/stdlib/math/#acos">math.acos</a>
+
 ---
 
 ### exp {#exp}
@@ -285,6 +299,8 @@ exp(n: float): float
 
 **返回:** <code>float</code>
 
+**參見:** <a class="stdlib-ref" data-key="math::log" href="/zh-HK/api/stdlib/math/#log">math.log</a>
+
 ---
 
 ### floor {#floor}
@@ -302,6 +318,8 @@ floor(n: float): int
 | `n` | <code>float</code> |  | 要向下舍入的值。 |
 
 **返回:** <code>int</code>
+
+**參見:** <a class="stdlib-ref" data-key="math::ceil" href="/zh-HK/api/stdlib/math/#ceil">math.ceil</a>, <a class="stdlib-ref" data-key="math::trunc" href="/zh-HK/api/stdlib/math/#trunc">math.trunc</a>
 
 ---
 
@@ -343,6 +361,8 @@ log(n: float): float
 
 **返回:** <code>float</code>
 
+**參見:** <a class="stdlib-ref" data-key="math::exp" href="/zh-HK/api/stdlib/math/#exp">math.exp</a>, <a class="stdlib-ref" data-key="math::log10" href="/zh-HK/api/stdlib/math/#log10">math.log10</a>
+
 ---
 
 ### log10 {#log10}
@@ -360,6 +380,8 @@ log10(n: float): float
 | `n` | <code>float</code> |  | 值（必須為正）。 |
 
 **返回:** <code>float</code>
+
+**參見:** <a class="stdlib-ref" data-key="math::log" href="/zh-HK/api/stdlib/math/#log">math.log</a>
 
 ---
 
@@ -448,6 +470,8 @@ pow(base: float, exponent: float): float
 
 **返回:** <code>float</code>
 
+**參見:** <a class="stdlib-ref" data-key="math::sqrt" href="/zh-HK/api/stdlib/math/#sqrt">math.sqrt</a>, <a class="stdlib-ref" data-key="math::cbrt" href="/zh-HK/api/stdlib/math/#cbrt">math.cbrt</a>
+
 ---
 
 ### random {#random}
@@ -527,6 +551,8 @@ sign(n: float): float
 
 **返回:** <code>float</code> — 1.0、-1.0 或 0.0。
 
+**參見:** <a class="stdlib-ref" data-key="math::abs" href="/zh-HK/api/stdlib/math/#abs">math.abs</a>
+
 ---
 
 ### sin {#sin}
@@ -545,6 +571,8 @@ sin(angle: float): float
 
 **返回:** <code>float</code> — 介於 -1 和 1 之間的值。
 
+**參見:** <a class="stdlib-ref" data-key="math::asin" href="/zh-HK/api/stdlib/math/#asin">math.asin</a>
+
 ---
 
 ### sqrt {#sqrt}
@@ -562,6 +590,8 @@ sqrt(n: float): float
 | `n` | <code>float</code> |  | 該值（必須是非負數）。 |
 
 **返回:** <code>float</code> — 平方根，或 `na` 表示負值。
+
+**參見:** <a class="stdlib-ref" data-key="math::pow" href="/zh-HK/api/stdlib/math/#pow">math.pow</a>, <a class="stdlib-ref" data-key="math::cbrt" href="/zh-HK/api/stdlib/math/#cbrt">math.cbrt</a>
 
 ---
 
@@ -600,6 +630,8 @@ tan(angle: float): float
 
 **返回:** <code>float</code>
 
+**參見:** <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/#atan">math.atan</a>, <a class="stdlib-ref" data-key="math::atan2" href="/zh-HK/api/stdlib/math/#atan2">math.atan2</a>
+
 ---
 
 ### to_degrees {#to_degrees}
@@ -618,6 +650,8 @@ to_degrees(rad: float): float
 
 **返回:** <code>float</code>
 
+**參見:** <a class="stdlib-ref" data-key="math::to_radians" href="/zh-HK/api/stdlib/math/#to_radians">math.to_radians</a>
+
 ---
 
 ### to_radians {#to_radians}
@@ -635,6 +669,8 @@ to_radians(deg: float): float
 | `deg` | <code>float</code> |  | 角度（以度為單位）。 |
 
 **返回:** <code>float</code>
+
+**參見:** <a class="stdlib-ref" data-key="math::to_degrees" href="/zh-HK/api/stdlib/math/#to_degrees">math.to_degrees</a>
 
 ---
 
@@ -656,3 +692,5 @@ trunc(n: float): int
 | `n` | <code>float</code> |  | 要截斷的數值。 |
 
 **返回:** <code>int</code>
+
+**參見:** <a class="stdlib-ref" data-key="math::floor" href="/zh-HK/api/stdlib/math/#floor">math.floor</a>, <a class="stdlib-ref" data-key="math::ceil" href="/zh-HK/api/stdlib/math/#ceil">math.ceil</a>

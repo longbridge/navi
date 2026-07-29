@@ -171,7 +171,7 @@ columns(id: Matrix<T>): int
 ### concat {#concat}
 
 ```navi
-concat(id1: Matrix<T>, id2: Matrix<T>)
+concat(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
 ```
 
 将两个相同类型的矩阵连接到 `mat1` 并返回 `mat1`。
@@ -183,12 +183,14 @@ concat(id1: Matrix<T>, id2: Matrix<T>)
 | `id1` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code> |  | 要连接的第一个矩阵。 |
 | `id2` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code> |  | 要连接的第二个矩阵。 |
 
+**返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code>
+
 ---
 
 ### copy {#copy}
 
 ```navi
-copy(id: Matrix<T>)
+copy(id: Matrix<T>): Matrix<T>
 ```
 
 创建给定矩阵的拷贝并返回新矩阵。
@@ -198,6 +200,8 @@ copy(id: Matrix<T>)
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code> |  | 要复制的矩阵。 |
+
+**返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code>
 
 ---
 

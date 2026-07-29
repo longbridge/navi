@@ -110,6 +110,8 @@ Given a cosine value, returns the angle that produces it.
 
 **Returns:** <code>float</code> — An angle in degrees in the range [0, 180].
 
+**See Also:** <a class="stdlib-ref" data-key="math::cos" href="/api/stdlib/math/#cos">math.cos</a>
+
 ---
 
 ### asin {#asin}
@@ -129,6 +131,8 @@ Given a sine value, returns the angle that produces it.
 | `value` | <code>float</code> |  | The sine value (must be between -1 and 1). |
 
 **Returns:** <code>float</code> — An angle in degrees in the range [-90, 90].
+
+**See Also:** <a class="stdlib-ref" data-key="math::sin" href="/api/stdlib/math/#sin">math.sin</a>
 
 ---
 
@@ -150,6 +154,8 @@ Given a tangent value, returns the angle that produces it.
 
 **Returns:** <code>float</code> — An angle in degrees in the range (-90, 90).
 
+**See Also:** <a class="stdlib-ref" data-key="math::tan" href="/api/stdlib/math/#tan">math.tan</a>, <a class="stdlib-ref" data-key="math::atan2" href="/api/stdlib/math/#atan2">math.atan2</a>
+
 ---
 
 ### atan2 {#atan2}
@@ -170,6 +176,8 @@ Unlike <a class="stdlib-ref" data-key="math::atan" href="/api/stdlib/math/#atan"
 | `x` | <code>float</code> |  | The X component (denominator). |
 
 **Returns:** <code>float</code> — An angle in degrees in the range (-180, 180].
+
+**See Also:** <a class="stdlib-ref" data-key="math::atan" href="/api/stdlib/math/#atan">math.atan</a>
 
 ---
 
@@ -227,6 +235,8 @@ Correctly handles negative inputs (e.g., `cbrt(-8.0) = -2.0`), unlike `pow(n, 1.
 
 **Returns:** <code>float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="math::pow" href="/api/stdlib/math/#pow">math.pow</a>, <a class="stdlib-ref" data-key="math::sqrt" href="/api/stdlib/math/#sqrt">math.sqrt</a>
+
 ---
 
 ### ceil {#ceil}
@@ -246,6 +256,8 @@ E.g., ceil(2.3) = 3, ceil(-2.3) = -2.
 | `n` | <code>float</code> |  | The value to round up. |
 
 **Returns:** <code>int</code>
+
+**See Also:** <a class="stdlib-ref" data-key="math::floor" href="/api/stdlib/math/#floor">math.floor</a>, <a class="stdlib-ref" data-key="math::trunc" href="/api/stdlib/math/#trunc">math.trunc</a>
 
 ---
 
@@ -289,6 +301,8 @@ Note: Navi uses degrees, not radians (unlike most programming languages).
 
 **Returns:** <code>float</code> — A value between -1 and 1.
 
+**See Also:** <a class="stdlib-ref" data-key="math::acos" href="/api/stdlib/math/#acos">math.acos</a>
+
 ---
 
 ### exp {#exp}
@@ -309,6 +323,8 @@ The inverse of <a class="stdlib-ref" data-key="math::log" href="/api/stdlib/math
 
 **Returns:** <code>float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="math::log" href="/api/stdlib/math/#log">math.log</a>
+
 ---
 
 ### floor {#floor}
@@ -328,6 +344,8 @@ E.g., floor(2.7) = 2, floor(-2.3) = -3.
 | `n` | <code>float</code> |  | The value to round down. |
 
 **Returns:** <code>int</code>
+
+**See Also:** <a class="stdlib-ref" data-key="math::ceil" href="/api/stdlib/math/#ceil">math.ceil</a>, <a class="stdlib-ref" data-key="math::trunc" href="/api/stdlib/math/#trunc">math.trunc</a>
 
 ---
 
@@ -370,6 +388,8 @@ The inverse of <a class="stdlib-ref" data-key="math::exp" href="/api/stdlib/math
 
 **Returns:** <code>float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="math::exp" href="/api/stdlib/math/#exp">math.exp</a>, <a class="stdlib-ref" data-key="math::log10" href="/api/stdlib/math/#log10">math.log10</a>
+
 ---
 
 ### log10 {#log10}
@@ -389,6 +409,8 @@ Useful for calculating orders of magnitude. Returns `na` for non-positive values
 | `n` | <code>float</code> |  | The value (must be positive). |
 
 **Returns:** <code>float</code>
+
+**See Also:** <a class="stdlib-ref" data-key="math::log" href="/api/stdlib/math/#log">math.log</a>
 
 ---
 
@@ -481,6 +503,8 @@ Returns `base` raised to the power of `exponent`.
 
 **Returns:** <code>float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="math::sqrt" href="/api/stdlib/math/#sqrt">math.sqrt</a>, <a class="stdlib-ref" data-key="math::cbrt" href="/api/stdlib/math/#cbrt">math.cbrt</a>
+
 ---
 
 ### random {#random}
@@ -568,6 +592,8 @@ Useful for determining direction without magnitude.
 
 **Returns:** <code>float</code> — 1.0, -1.0, or 0.0.
 
+**See Also:** <a class="stdlib-ref" data-key="math::abs" href="/api/stdlib/math/#abs">math.abs</a>
+
 ---
 
 ### sin {#sin}
@@ -588,6 +614,8 @@ Note: Navi uses degrees, not radians (unlike most programming languages).
 
 **Returns:** <code>float</code> — A value between -1 and 1.
 
+**See Also:** <a class="stdlib-ref" data-key="math::asin" href="/api/stdlib/math/#asin">math.asin</a>
+
 ---
 
 ### sqrt {#sqrt}
@@ -605,6 +633,8 @@ Returns the square root of `n`.
 | `n` | <code>float</code> |  | The value (must be non-negative). |
 
 **Returns:** <code>float</code> — The square root, or `na` for negative values.
+
+**See Also:** <a class="stdlib-ref" data-key="math::pow" href="/api/stdlib/math/#pow">math.pow</a>, <a class="stdlib-ref" data-key="math::cbrt" href="/api/stdlib/math/#cbrt">math.cbrt</a>
 
 ---
 
@@ -645,6 +675,8 @@ Note: Navi uses degrees, not radians. Undefined (returns very large values) at �
 
 **Returns:** <code>float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="math::atan" href="/api/stdlib/math/#atan">math.atan</a>, <a class="stdlib-ref" data-key="math::atan2" href="/api/stdlib/math/#atan2">math.atan2</a>
+
 ---
 
 ### to_degrees {#to_degrees}
@@ -663,6 +695,8 @@ Converts an angle from radians to degrees.
 
 **Returns:** <code>float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="math::to_radians" href="/api/stdlib/math/#to_radians">math.to_radians</a>
+
 ---
 
 ### to_radians {#to_radians}
@@ -680,6 +714,8 @@ Converts an angle from degrees to radians.
 | `deg` | <code>float</code> |  | The angle in degrees. |
 
 **Returns:** <code>float</code>
+
+**See Also:** <a class="stdlib-ref" data-key="math::to_degrees" href="/api/stdlib/math/#to_degrees">math.to_degrees</a>
 
 ---
 
@@ -700,3 +736,5 @@ Unlike <a class="stdlib-ref" data-key="math::floor" href="/api/stdlib/math/#floo
 | `n` | <code>float</code> |  | The value to truncate. |
 
 **Returns:** <code>int</code>
+
+**See Also:** <a class="stdlib-ref" data-key="math::floor" href="/api/stdlib/math/#floor">math.floor</a>, <a class="stdlib-ref" data-key="math::ceil" href="/api/stdlib/math/#ceil">math.ceil</a>

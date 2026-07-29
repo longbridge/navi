@@ -140,6 +140,8 @@ Returns UNIX time or bar index (depending on the last xloc value set) of the fir
 
 **Returns:** <code>series&nbsp;int</code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.get_x2" href="/api/stdlib/prelude/Line#get_x2">Line.get_x2</a>, <a class="stdlib-ref" data-key="prelude::Line.get_y1" href="/api/stdlib/prelude/Line#get_y1">Line.get_y1</a>
+
 ---
 
 ### get_x2 {#get_x2}
@@ -157,6 +159,8 @@ Returns UNIX time or bar index (depending on the last xloc value set) of the sec
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Line">Line</a></code> |  | The line to get the x2 coordinate from. |
 
 **Returns:** <code>series&nbsp;int</code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.get_x1" href="/api/stdlib/prelude/Line#get_x1">Line.get_x1</a>, <a class="stdlib-ref" data-key="prelude::Line.get_y2" href="/api/stdlib/prelude/Line#get_y2">Line.get_y2</a>
 
 ---
 
@@ -176,6 +180,8 @@ Returns price of the first point of the line.
 
 **Returns:** <code>series&nbsp;float</code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.get_y2" href="/api/stdlib/prelude/Line#get_y2">Line.get_y2</a>, <a class="stdlib-ref" data-key="prelude::Line.get_x1" href="/api/stdlib/prelude/Line#get_x1">Line.get_x1</a>
+
 ---
 
 ### get_y2 {#get_y2}
@@ -193,6 +199,8 @@ Returns price of the second point of the line.
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Line">Line</a></code> |  | The line to get the y2 coordinate from. |
 
 **Returns:** <code>series&nbsp;float</code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.get_y1" href="/api/stdlib/prelude/Line#get_y1">Line.get_y1</a>, <a class="stdlib-ref" data-key="prelude::Line.get_x2" href="/api/stdlib/prelude/Line#get_x2">Line.get_x2</a>
 
 ---
 
@@ -313,6 +321,8 @@ Sets bar index or bar time (depending on the xloc) of the first point.
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Line">Line</a></code> |  | The line to modify. |
 | `x` | <code>series&nbsp;int</code> |  | The new x-coordinate for the first point. |
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.set_x2" href="/api/stdlib/prelude/Line#set_x2">Line.set_x2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy1" href="/api/stdlib/prelude/Line#set_xy1">Line.set_xy1</a>
+
 ---
 
 ### set_x2 {#set_x2}
@@ -329,6 +339,8 @@ Sets bar index or bar time (depending on the xloc) of the second point.
 | --- | --- | --- | --- |
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Line">Line</a></code> |  | The line to modify. |
 | `x` | <code>series&nbsp;int</code> |  | The new x-coordinate for the second point. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.set_x1" href="/api/stdlib/prelude/Line#set_x1">Line.set_x1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy2" href="/api/stdlib/prelude/Line#set_xy2">Line.set_xy2</a>
 
 ---
 
@@ -367,6 +379,8 @@ Sets bar index/time and price of the first point.
 | `x` | <code>series&nbsp;int</code> |  | The new x-coordinate for the first point. |
 | `y` | <code>series&nbsp;float</code> |  | The new y-coordinate for the first point. |
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.set_xy2" href="/api/stdlib/prelude/Line#set_xy2">Line.set_xy2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_x1" href="/api/stdlib/prelude/Line#set_x1">Line.set_x1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_y1" href="/api/stdlib/prelude/Line#set_y1">Line.set_y1</a>
+
 ---
 
 ### set_xy2 {#set_xy2}
@@ -385,6 +399,8 @@ Sets bar index/time and price of the second point.
 | `x` | <code>series&nbsp;int</code> |  | The new x-coordinate for the second point. |
 | `y` | <code>series&nbsp;float</code> |  | The new y-coordinate for the second point. |
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.set_xy1" href="/api/stdlib/prelude/Line#set_xy1">Line.set_xy1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_x2" href="/api/stdlib/prelude/Line#set_x2">Line.set_x2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_y2" href="/api/stdlib/prelude/Line#set_y2">Line.set_y2</a>
+
 ---
 
 ### set_y1 {#set_y1}
@@ -402,6 +418,8 @@ Sets price of the first point.
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Line">Line</a></code> |  | The line to modify. |
 | `y` | <code>series&nbsp;float</code> |  | The new y-coordinate for the first point. |
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.set_y2" href="/api/stdlib/prelude/Line#set_y2">Line.set_y2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy1" href="/api/stdlib/prelude/Line#set_xy1">Line.set_xy1</a>
+
 ---
 
 ### set_y2 {#set_y2}
@@ -418,3 +436,5 @@ Sets price of the second point.
 | --- | --- | --- | --- |
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Line">Line</a></code> |  | The line to modify. |
 | `y` | <code>series&nbsp;float</code> |  | The new y-coordinate for the second point. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Line.set_y1" href="/api/stdlib/prelude/Line#set_y1">Line.set_y1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy2" href="/api/stdlib/prelude/Line#set_xy2">Line.set_xy2</a>

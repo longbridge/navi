@@ -175,7 +175,7 @@ Returns the number of columns in the specified matrix.
 ### concat {#concat}
 
 ```navi
-concat(id1: Matrix<T>, id2: Matrix<T>)
+concat(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
 ```
 
 Concatenates two matrices of the same type to the matrix and returns `id`.
@@ -187,12 +187,14 @@ Concatenates two matrices of the same type to the matrix and returns `id`.
 | `id1` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code> |  | The first matrix to concatenate. |
 | `id2` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code> |  | The second matrix to concatenate. |
 
+**Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code>
+
 ---
 
 ### copy {#copy}
 
 ```navi
-copy(id: Matrix<T>)
+copy(id: Matrix<T>): Matrix<T>
 ```
 
 Creates a copy of the given matrix and returns the new matrix.
@@ -202,6 +204,8 @@ Creates a copy of the given matrix and returns the new matrix.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code> |  | The matrix to copy. |
+
+**Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code>
 
 ---
 

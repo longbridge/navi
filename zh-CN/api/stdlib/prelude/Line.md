@@ -140,6 +140,8 @@ get_x1(id: series Line): series int
 
 **返回:** <code>series&nbsp;int</code>
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.get_x2" href="/zh-CN/api/stdlib/prelude/Line#get_x2">Line.get_x2</a>, <a class="stdlib-ref" data-key="prelude::Line.get_y1" href="/zh-CN/api/stdlib/prelude/Line#get_y1">Line.get_y1</a>
+
 ---
 
 ### get_x2 {#get_x2}
@@ -157,6 +159,8 @@ get_x2(id: series Line): series int
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> |  | 从中获取 x2 坐标的线。 |
 
 **返回:** <code>series&nbsp;int</code>
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.get_x1" href="/zh-CN/api/stdlib/prelude/Line#get_x1">Line.get_x1</a>, <a class="stdlib-ref" data-key="prelude::Line.get_y2" href="/zh-CN/api/stdlib/prelude/Line#get_y2">Line.get_y2</a>
 
 ---
 
@@ -176,6 +180,8 @@ get_y1(id: series Line): series float
 
 **返回:** <code>series&nbsp;float</code>
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.get_y2" href="/zh-CN/api/stdlib/prelude/Line#get_y2">Line.get_y2</a>, <a class="stdlib-ref" data-key="prelude::Line.get_x1" href="/zh-CN/api/stdlib/prelude/Line#get_x1">Line.get_x1</a>
+
 ---
 
 ### get_y2 {#get_y2}
@@ -193,6 +199,8 @@ get_y2(id: series Line): series float
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> |  | 从中获取 y2 坐标的线。 |
 
 **返回:** <code>series&nbsp;float</code>
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.get_y1" href="/zh-CN/api/stdlib/prelude/Line#get_y1">Line.get_y1</a>, <a class="stdlib-ref" data-key="prelude::Line.get_x2" href="/zh-CN/api/stdlib/prelude/Line#get_x2">Line.get_x2</a>
 
 ---
 
@@ -313,6 +321,8 @@ set_x1(id: series Line, x: series int)
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> |  | 要修改的行。 |
 | `x` | <code>series&nbsp;int</code> |  | 第一个点的新 x 坐标。 |
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.set_x2" href="/zh-CN/api/stdlib/prelude/Line#set_x2">Line.set_x2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy1" href="/zh-CN/api/stdlib/prelude/Line#set_xy1">Line.set_xy1</a>
+
 ---
 
 ### set_x2 {#set_x2}
@@ -329,6 +339,8 @@ set_x2(id: series Line, x: series int)
 | --- | --- | --- | --- |
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> |  | 要修改的行。 |
 | `x` | <code>series&nbsp;int</code> |  | 第二个点的新 x 坐标。 |
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.set_x1" href="/zh-CN/api/stdlib/prelude/Line#set_x1">Line.set_x1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy2" href="/zh-CN/api/stdlib/prelude/Line#set_xy2">Line.set_xy2</a>
 
 ---
 
@@ -367,6 +379,8 @@ set_xy1(id: series Line, x: series int, y: series float)
 | `x` | <code>series&nbsp;int</code> |  | 第一个点的新 x 坐标。 |
 | `y` | <code>series&nbsp;float</code> |  | 第一个点的新 y 坐标。 |
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.set_xy2" href="/zh-CN/api/stdlib/prelude/Line#set_xy2">Line.set_xy2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_x1" href="/zh-CN/api/stdlib/prelude/Line#set_x1">Line.set_x1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_y1" href="/zh-CN/api/stdlib/prelude/Line#set_y1">Line.set_y1</a>
+
 ---
 
 ### set_xy2 {#set_xy2}
@@ -385,6 +399,8 @@ set_xy2(id: series Line, x: series int, y: series float)
 | `x` | <code>series&nbsp;int</code> |  | 第二个点的新 x 坐标。 |
 | `y` | <code>series&nbsp;float</code> |  | 第二个点的新 y 坐标。 |
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.set_xy1" href="/zh-CN/api/stdlib/prelude/Line#set_xy1">Line.set_xy1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_x2" href="/zh-CN/api/stdlib/prelude/Line#set_x2">Line.set_x2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_y2" href="/zh-CN/api/stdlib/prelude/Line#set_y2">Line.set_y2</a>
+
 ---
 
 ### set_y1 {#set_y1}
@@ -402,6 +418,8 @@ set_y1(id: series Line, y: series float)
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> |  | 要修改的行。 |
 | `y` | <code>series&nbsp;float</code> |  | 第一个点的新 y 坐标。 |
 
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.set_y2" href="/zh-CN/api/stdlib/prelude/Line#set_y2">Line.set_y2</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy1" href="/zh-CN/api/stdlib/prelude/Line#set_xy1">Line.set_xy1</a>
+
 ---
 
 ### set_y2 {#set_y2}
@@ -418,3 +436,5 @@ set_y2(id: series Line, y: series float)
 | --- | --- | --- | --- |
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> |  | 要修改的行。 |
 | `y` | <code>series&nbsp;float</code> |  | 第二个点的新 y 坐标。 |
+
+**参见:** <a class="stdlib-ref" data-key="prelude::Line.set_y1" href="/zh-CN/api/stdlib/prelude/Line#set_y1">Line.set_y1</a>, <a class="stdlib-ref" data-key="prelude::Line.set_xy2" href="/zh-CN/api/stdlib/prelude/Line#set_xy2">Line.set_xy2</a>

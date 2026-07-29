@@ -658,6 +658,8 @@ Returns the first element of the given array.
 
 **Returns:** <code>T</code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Array.last" href="/api/stdlib/prelude/Array#last">Array.last</a>
+
 ---
 
 ### get {#get}
@@ -805,6 +807,8 @@ Returns the last element of the given array.
 | `id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | the array to retrieve the last element from. |
 
 **Returns:** <code>T</code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Array.first" href="/api/stdlib/prelude/Array#first">Array.first</a>
 
 ---
 
@@ -1097,6 +1101,8 @@ Removes and returns the last element from the given `id`.
 
 **Returns:** <code>T</code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::Array.push" href="/api/stdlib/prelude/Array#push">Array.push</a>
+
 ---
 
 ### push {#push}
@@ -1113,6 +1119,8 @@ Appends the given `value` to the end of the array.
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | the array to which the value will be appended. |
 | `value` | <code>T</code> |  | The value to append to the array. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Array.pop" href="/api/stdlib/prelude/Array#pop">Array.pop</a>
 
 ---
 
@@ -1220,6 +1228,8 @@ Removes and returns the first element from the given `id`.
 | `id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | the array from which to shift an element. |
 
 **Returns:** <code>T</code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Array.unshift" href="/api/stdlib/prelude/Array#unshift">Array.unshift</a>
 
 ---
 
@@ -1525,6 +1535,8 @@ Adds the specified `value` to the beginning of the given array.
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code> |  | the array to modify. |
 | `value` | <code>T</code> |  | The value to add to the beginning. |
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::Array.shift" href="/api/stdlib/prelude/Array#shift">Array.shift</a>
 
 ---
 

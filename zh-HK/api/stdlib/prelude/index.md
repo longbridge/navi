@@ -355,6 +355,8 @@ bar_color(
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 標題顯示在樣式對話框中。 |
 | `display` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> |  | 控制顏色可見的位置。 |
 
+**參見:** <a class="stdlib-ref" data-key="prelude::bg_color" href="/zh-HK/api/stdlib/prelude/#bg_color">bg_color</a>
+
 ---
 
 ### bg_color {#bg_color}
@@ -384,6 +386,8 @@ bg_color(
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 標題顯示在樣式對話框中。 |
 | `display` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | 控制背景可見的位置。 |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | 如果為 true，力將顯示在主圖表窗格上。 |
+
+**參見:** <a class="stdlib-ref" data-key="prelude::bar_color" href="/zh-HK/api/stdlib/prelude/#bar_color">bar_color</a>
 
 ---
 
@@ -603,6 +607,8 @@ fixnan(value: series T): series T
 
 **返回:** <code>series&nbsp;T</code> — 當前值（如果不是 `na`），否則為最新的非 na 值，或者 `na`（如果尚未看到有效值）。
 
+**參見:** <a class="stdlib-ref" data-key="prelude::na" href="/zh-HK/api/stdlib/prelude/#na">na</a>, <a class="stdlib-ref" data-key="prelude::nz" href="/zh-HK/api/stdlib/prelude/#nz">nz</a>
+
 ---
 
 ### float {#float}
@@ -668,6 +674,8 @@ hline(
 | `display` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | 控制線的可見位置。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/HLine">HLine</a></code> — 可與 <a class="stdlib-ref" data-key="prelude::fill" href="/zh-HK/api/stdlib/prelude/Matrix#fill">fill</a> 一起使用的 hline 句柄。
+
+**參見:** <a class="stdlib-ref" data-key="prelude::fill" href="/zh-HK/api/stdlib/prelude/Matrix#fill">fill</a>, <a class="stdlib-ref" data-key="prelude::plot" href="/zh-HK/api/stdlib/prelude/#plot">plot</a>
 
 ---
 
@@ -1062,6 +1070,8 @@ na(value: any): bool
 
 **返回:** <code>bool</code> — 如果值未定義或缺失，則為 `true`，否則為 `false`。
 
+**參見:** <a class="stdlib-ref" data-key="prelude::nz" href="/zh-HK/api/stdlib/prelude/#nz">nz</a>, <a class="stdlib-ref" data-key="prelude::fixnan" href="/zh-HK/api/stdlib/prelude/#fixnan">fixnan</a>
+
 ---
 
 ### nz {#nz}
@@ -1192,6 +1202,8 @@ plot(ta.ema(close, 21), title: "EMA 21", color: Color.RED); fill(p1, p2,
 color: Color.new(Color.GRAY, 80));
 ```
 
+**參見:** <a class="stdlib-ref" data-key="prelude::fill" href="/zh-HK/api/stdlib/prelude/Matrix#fill">fill</a>, <a class="stdlib-ref" data-key="prelude::hline" href="/zh-HK/api/stdlib/prelude/#hline">hline</a>
+
 ---
 
 ### plot_arrow {#plot_arrow}
@@ -1234,6 +1246,8 @@ plot_arrow(
 | `precision` | <code>input&nbsp;int</code> | `na` | 顯示的小數位數。 |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | 如果為 true，力將顯示在主圖表窗格上。 |
 
+**參見:** <a class="stdlib-ref" data-key="prelude::plot_shape" href="/zh-HK/api/stdlib/prelude/#plot_shape">plot_shape</a>, <a class="stdlib-ref" data-key="prelude::plot_char" href="/zh-HK/api/stdlib/prelude/#plot_char">plot_char</a>
+
 ---
 
 ### plot_bar {#plot_bar}
@@ -1273,6 +1287,8 @@ plot_bar(
 | `format` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | 覆蓋資料窗口中的默認數字格式。 |
 | `precision` | <code>input&nbsp;int</code> | `na` | 顯示的小數位數。 |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | 如果為 true，力將顯示在主圖表窗格上。 |
+
+**參見:** <a class="stdlib-ref" data-key="prelude::plot_candle" href="/zh-HK/api/stdlib/prelude/#plot_candle">plot_candle</a>
 
 ---
 
@@ -1317,6 +1333,8 @@ plot_candle(
 | `format` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | 覆蓋資料窗口中的默認數字格式。 |
 | `precision` | <code>input&nbsp;int</code> | `na` | 顯示的小數位數。 |
 | `force_overlay` | <code>const&nbsp;bool</code> | `na` | 如果為 true，力將顯示在主圖表窗格上。 |
+
+**參見:** <a class="stdlib-ref" data-key="prelude::plot_bar" href="/zh-HK/api/stdlib/prelude/#plot_bar">plot_bar</a>
 
 ---
 

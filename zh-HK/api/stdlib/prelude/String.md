@@ -247,6 +247,8 @@ ends_with(self: String, str: String): bool
 
 **返回:** <code>bool</code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::String.starts_with" href="/zh-HK/api/stdlib/prelude/String#starts_with">String.starts_with</a>
+
 ---
 
 ### index_of {#index_of}
@@ -341,6 +343,8 @@ pad_end(self: String, len: int, fill: String = " "): String
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::String.pad_start" href="/zh-HK/api/stdlib/prelude/String#pad_start">String.pad_start</a>
+
 ---
 
 ### pad_start {#pad_start}
@@ -360,6 +364,8 @@ pad_start(self: String, len: int, fill: String = " "): String
 | `fill` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `" "` | 填充字串，預設為 `" "`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
+
+**參見:** <a class="stdlib-ref" data-key="prelude::String.pad_end" href="/zh-HK/api/stdlib/prelude/String#pad_end">String.pad_end</a>
 
 ---
 
@@ -406,6 +412,8 @@ replace(
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::String.replace_all" href="/zh-HK/api/stdlib/prelude/String#replace_all">String.replace_all</a>
+
 ---
 
 ### replace_all {#replace_all}
@@ -425,6 +433,8 @@ replace_all(self: String, target: String, replacement: String): String
 | `replacement` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 替換內容。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
+
+**參見:** <a class="stdlib-ref" data-key="prelude::String.replace" href="/zh-HK/api/stdlib/prelude/String#replace">String.replace</a>
 
 ---
 
@@ -463,6 +473,8 @@ starts_with(self: String, str: String): bool
 | `str` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 要搜尋的前綴。 |
 
 **返回:** <code>bool</code>
+
+**參見:** <a class="stdlib-ref" data-key="prelude::String.ends_with" href="/zh-HK/api/stdlib/prelude/String#ends_with">String.ends_with</a>
 
 ---
 
@@ -520,6 +532,8 @@ trim(self: String): String
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::String.trim_start" href="/zh-HK/api/stdlib/prelude/String#trim_start">String.trim_start</a>, <a class="stdlib-ref" data-key="prelude::String.trim_end" href="/zh-HK/api/stdlib/prelude/String#trim_end">String.trim_end</a>
+
 ---
 
 ### trim_end {#trim_end}
@@ -538,6 +552,8 @@ trim_end(self: String): String
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
 
+**參見:** <a class="stdlib-ref" data-key="prelude::String.trim" href="/zh-HK/api/stdlib/prelude/String#trim">String.trim</a>, <a class="stdlib-ref" data-key="prelude::String.trim_start" href="/zh-HK/api/stdlib/prelude/String#trim_start">String.trim_start</a>
+
 ---
 
 ### trim_start {#trim_start}
@@ -555,6 +571,8 @@ trim_start(self: String): String
 | `self` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  |  |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code>
+
+**參見:** <a class="stdlib-ref" data-key="prelude::String.trim" href="/zh-HK/api/stdlib/prelude/String#trim">String.trim</a>, <a class="stdlib-ref" data-key="prelude::String.trim_end" href="/zh-HK/api/stdlib/prelude/String#trim_end">String.trim_end</a>
 
 ---
 

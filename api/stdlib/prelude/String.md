@@ -192,6 +192,8 @@ Checks if the String ends with the specified suffix.
 
 **Returns:** <code>bool</code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.starts_with" href="/api/stdlib/prelude/String#starts_with">String.starts_with</a>
+
 ---
 
 ### index_of {#index_of}
@@ -286,6 +288,8 @@ Right-pads the String with `fill` until it reaches at least `len` characters.
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.pad_start" href="/api/stdlib/prelude/String#pad_start">String.pad_start</a>
+
 ---
 
 ### pad_start {#pad_start}
@@ -305,6 +309,8 @@ Left-pads the String with `fill` until it reaches at least `len` characters.
 | `fill` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `" "` | The padding String. Defaults to `" "`. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.pad_end" href="/api/stdlib/prelude/String#pad_end">String.pad_end</a>
 
 ---
 
@@ -351,6 +357,8 @@ Replaces the N-th occurrence of a target substring with a replacement.
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.replace_all" href="/api/stdlib/prelude/String#replace_all">String.replace_all</a>
+
 ---
 
 ### replace_all {#replace_all}
@@ -370,6 +378,8 @@ Replaces all occurrences of a target substring with a replacement.
 | `replacement` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The replacement substring. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.replace" href="/api/stdlib/prelude/String#replace">String.replace</a>
 
 ---
 
@@ -408,6 +418,8 @@ Checks if the String starts with the specified prefix.
 | `str` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The prefix to search for. |
 
 **Returns:** <code>bool</code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.ends_with" href="/api/stdlib/prelude/String#ends_with">String.ends_with</a>
 
 ---
 
@@ -465,6 +477,8 @@ Trims leading and trailing whitespace from the String.
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.trim_start" href="/api/stdlib/prelude/String#trim_start">String.trim_start</a>, <a class="stdlib-ref" data-key="prelude::String.trim_end" href="/api/stdlib/prelude/String#trim_end">String.trim_end</a>
+
 ---
 
 ### trim_end {#trim_end}
@@ -483,6 +497,8 @@ Trims trailing whitespace from the String.
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.trim" href="/api/stdlib/prelude/String#trim">String.trim</a>, <a class="stdlib-ref" data-key="prelude::String.trim_start" href="/api/stdlib/prelude/String#trim_start">String.trim_start</a>
+
 ---
 
 ### trim_start {#trim_start}
@@ -500,6 +516,8 @@ Trims leading whitespace from the String.
 | `self` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  |  |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
+
+**See Also:** <a class="stdlib-ref" data-key="prelude::String.trim" href="/api/stdlib/prelude/String#trim">String.trim</a>, <a class="stdlib-ref" data-key="prelude::String.trim_end" href="/api/stdlib/prelude/String#trim_end">String.trim_end</a>
 
 ---
 
