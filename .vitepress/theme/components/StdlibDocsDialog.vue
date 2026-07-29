@@ -426,7 +426,7 @@ function resolveDocRef(ref: string, currentModule?: string): string | null {
 
   function matchesQualifier(item: ListItem): boolean {
     if (!qualifier) return true
-    if (qualifier === 'func') return item.kind === 'function' || item.kind === 'property'
+    if (qualifier === 'func') return item.kind !== 'type'
     if (qualifier === 'type') return item.kind === 'type'
     if (qualifier === 'enum') return item.kind === 'type' && (item.entry as TypeDefEntry).kind === 'enum'
     return true
