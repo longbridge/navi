@@ -909,7 +909,7 @@ watchEffect(async () => {
                 />
 
                 <!-- Syntax (only when single overload — selector already shows signatures) -->
-                <div v-if="(selectedItem.entry as FunctionEntry).overloads.length === 1">
+                <div v-if="(selectedItem.entry as FunctionEntry).overloads.length === 1 && overload.kind !== 'property' && overload.kind !== 'staticproperty'">
                   <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.syntax') }}</h3>
                   <pre
                     v-if="highlightedSignatureBlocks[idx]"
@@ -920,7 +920,7 @@ watchEffect(async () => {
                 </div>
 
                 <!-- Parameters -->
-                <div v-if="overload.params.length && overload.kind !== 'property'">
+                <div v-if="overload.params.length && overload.kind !== 'property' && overload.kind !== 'staticproperty'">
                   <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.parametersSection') }}</h3>
                   <div class="docs-table-wrap">
                     <table class="docs-table">
@@ -954,13 +954,13 @@ watchEffect(async () => {
                   </div>
                 </div>
 
-                <!-- Returns -->
+                <!-- Type (for properties) / Returns (for functions) -->
                 <div v-if="overload.returnType">
-                  <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ t('stdlibDialog.returnsSection') }}</h3>
+                  <h3 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{{ overload.kind === 'property' || overload.kind === 'staticproperty' ? t('stdlibDialog.typeSection') : t('stdlibDialog.returnsSection') }}</h3>
                   <div class="flex items-start gap-2">
                     <code class="docs-code" v-html="formatTypeRefHtml(overload.returnType)" />
                     <div
-                      v-if="overload.returnsDescription"
+                      v-if="overload.returnsDescription && overload.kind !== 'property' && overload.kind !== 'staticproperty'"
                       class="min-w-0 text-sm text-muted-foreground [&_p]:m-0 [&_p+p]:mt-3"
                       v-html="md(overload.returnsDescription, selectedItem.module)"
                     />

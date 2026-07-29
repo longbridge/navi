@@ -313,6 +313,7 @@ export default {
     syntax: "語法",
     parametersSection: "參數",
     returnsSection: "返回",
+    typeSection: "類型",
     underlyingType: "底層類型",
     fieldsSection: "欄位",
     variantsSection: "成員",

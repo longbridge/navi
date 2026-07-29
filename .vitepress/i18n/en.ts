@@ -313,6 +313,7 @@ export default {
     syntax: "Syntax",
     parametersSection: "Parameters",
     returnsSection: "Returns",
+    typeSection: "Type",
     underlyingType: "Underlying Type",
     fieldsSection: "Fields",
     variantsSection: "Variants",

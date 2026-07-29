@@ -313,6 +313,7 @@ export default {
     syntax: "语法",
     parametersSection: "参数",
     returnsSection: "返回",
+    typeSection: "类型",
     underlyingType: "底层类型",
     fieldsSection: "字段",
     variantsSection: "成员",
