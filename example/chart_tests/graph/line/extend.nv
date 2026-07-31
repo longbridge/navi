@@ -1,10 +1,11 @@
-// 正确结果：最后一根柱附近 4 条线段，Extend.None 不延伸，Left/Right/Both 分别向对应方向延伸
+// 正确结果：最后一根柱附近 4 条水平线；BLUE 只在 x1~x2 范围内，RED 向左延伸至图表左边，
+// GREEN 向右延伸至图表右边，ORANGE 两端都延伸
 indicator("Chart Test: graph/line/extend", overlay: true, max_lines_count: 10);
 
 if bar_state.is_last {
     let step = (high - low) / 5.0;
-    Line.new(bar_index - 10, close + step * 2, bar_index, close + step * 2, extend: Extend.None,  color: Color.BLUE,   width: 2);
-    Line.new(bar_index - 10, close + step * 1, bar_index, close + step * 1, extend: Extend.Left,  color: Color.RED,    width: 2);
-    Line.new(bar_index - 10, close,            bar_index, close,            extend: Extend.Right, color: Color.GREEN,  width: 2);
-    Line.new(bar_index - 10, close - step * 1, bar_index, close - step * 1, extend: Extend.Both,  color: Color.ORANGE, width: 2);
+    Line.new(bar_index - 30, close + step * 2, bar_index - 10, close + step * 2, extend: Extend.None,  color: Color.BLUE,   width: 2);
+    Line.new(bar_index - 30, close + step * 1, bar_index - 10, close + step * 1, extend: Extend.Left,  color: Color.RED,    width: 2);
+    Line.new(bar_index - 30, close,            bar_index - 10, close,            extend: Extend.Right, color: Color.GREEN,  width: 2);
+    Line.new(bar_index - 30, close - step * 1, bar_index - 10, close - step * 1, extend: Extend.Both,  color: Color.ORANGE, width: 2);
 }

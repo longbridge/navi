@@ -1,8 +1,8 @@
-// 正确结果：最后一根柱附近三个方块标签，多行文本分别为左/居中/右对齐
+// 正确结果：最后一根柱附近三个方块标签，多行文本长短不一，分别为左/居中/右对齐
 indicator("Chart Test: graph/label/text_align", overlay: true, max_labels_count: 10);
 
 if bar_state.is_last {
-    let txt = "Line 1\nLine 2\nLine 3";
+    let txt = "Short\nMedium line\nA much longer line";
     Label.new(bar_index - 8, close * 1.03, txt, style: LabelStyle.LabelCenter,
         color: Color.BLUE, text_color: Color.WHITE, text_align: TextHAlign.Left);
     Label.new(bar_index - 4, close * 1.03, txt, style: LabelStyle.LabelCenter,

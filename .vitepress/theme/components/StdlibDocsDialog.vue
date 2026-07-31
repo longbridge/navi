@@ -261,10 +261,20 @@ watch(() => props.open, async (isOpen) => {
   if (props.initialModule && props.initialName) {
     let key = `${props.initialModule}::${props.initialName}`
     if (!allItems.value.find(i => i.key === key)) {
-      // Module name mismatch (LSP returns e.g. 'format_enums', docs index under
-      // 'prelude'): fall back to searching by name only.
-      const found = allItems.value.find(i => i.entry.name === props.initialName)
-      if (found) key = found.key
+      // Module name mismatch: LSP returns the file's module (e.g. 'label') but
+      // the docs index puts members under the type-owner module (e.g. 'prelude').
+      const dotIdx = props.initialName.indexOf('.')
+      if (dotIdx !== -1) {
+        // Type member like "Label.new": match by parentType + entry name
+        const parentType = props.initialName.slice(0, dotIdx)
+        const memberName = props.initialName.slice(dotIdx + 1)
+        const found = allItems.value.find(i => i.parentType === parentType && i.entry.name === memberName)
+        if (found) key = found.key
+      } else {
+        // Top-level symbol: fall back to name-only search
+        const found = allItems.value.find(i => i.entry.name === props.initialName)
+        if (found) key = found.key
+      }
     }
     pushHistory(key)
     selectedKey.value = key

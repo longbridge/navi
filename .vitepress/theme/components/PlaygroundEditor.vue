@@ -400,7 +400,9 @@ function registerLspProviders(monaco: typeof import('monaco-editor')) {
           const name =
             resolved.kind === 'enumVariant' && resolved.parent
               ? resolved.parent
-              : resolved.name
+              : (resolved.kind === 'staticMethod' || resolved.kind === 'method' || resolved.kind === 'staticProperty') && resolved.parent
+                ? `${resolved.parent}.${resolved.name}`
+                : resolved.name
           emit('show-docs', { module: resolved.module, name })
         }
         return true // handled — prevent Monaco from navigating away
@@ -429,9 +431,15 @@ function registerLspProviders(monaco: typeof import('monaco-editor')) {
         const resolved = eng.analyzer.resolveSymbolAt(
           pos.lineNumber - 1,
           pos.column - 1,
-        ) as { name: string; kind: string; module?: string } | null
+        ) as { name: string; kind: string; module?: string; parent?: string } | null
         if (resolved?.module) {
-          emit('show-docs', { module: resolved.module, name: resolved.name })
+          const name =
+            resolved.kind === 'enumVariant' && resolved.parent
+              ? resolved.parent
+              : (resolved.kind === 'staticMethod' || resolved.kind === 'method' || resolved.kind === 'staticProperty') && resolved.parent
+                ? `${resolved.parent}.${resolved.name}`
+                : resolved.name
+          emit('show-docs', { module: resolved.module, name })
         } else {
           emit('show-docs', null)
         }

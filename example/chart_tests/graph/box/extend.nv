@@ -1,16 +1,12 @@
-// 正确结果：最后一根柱附近四个矩形，Extend.None 不延伸，Left/Right/Both 分别向对应方向延伸
+// 正确结果：最后一根柱附近 4 个矩形；BLUE 不延伸，RED 向左延伸至图表左边，
+// GREEN 向右延伸至图表右边，ORANGE 两端都延伸
 indicator("Chart Test: graph/box/extend", overlay: true, max_boxes_count: 10);
 
 if bar_state.is_last {
     let top = close * 1.015;
     let bot = close * 0.985;
-    let step = 6;
-    Box.new(bar_index - 4 * step, top, bar_index - 3 * step, bot,
-        bg_color: Color.new(Color.BLUE, 80),   border_color: Color.BLUE,   extend: Extend.None);
-    Box.new(bar_index - 2 * step, top, bar_index - 1 * step, bot,
-        bg_color: Color.new(Color.RED, 80),    border_color: Color.RED,    extend: Extend.Left);
-    Box.new(bar_index,            top, bar_index + step,      bot,
-        bg_color: Color.new(Color.GREEN, 80),  border_color: Color.GREEN,  extend: Extend.Right);
-    Box.new(bar_index + 2 * step, top, bar_index + 3 * step,  bot,
-        bg_color: Color.new(Color.ORANGE, 80), border_color: Color.ORANGE, extend: Extend.Both);
+    Box.new(bar_index - 30, top, bar_index - 24, bot, bg_color: Color.new(Color.BLUE,   80), border_color: Color.BLUE,   extend: Extend.None);
+    Box.new(bar_index - 22, top, bar_index - 16, bot, bg_color: Color.new(Color.RED,    80), border_color: Color.RED,    extend: Extend.Left);
+    Box.new(bar_index - 14, top, bar_index - 10, bot, bg_color: Color.new(Color.GREEN,  80), border_color: Color.GREEN,  extend: Extend.Right);
+    Box.new(bar_index - 8,  top, bar_index - 2,  bot, bg_color: Color.new(Color.ORANGE, 80), border_color: Color.ORANGE, extend: Extend.Both);
 }

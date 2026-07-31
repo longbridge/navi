@@ -1,16 +1,25 @@
-// 正确结果：最后一根柱附近依次展示 Down/Up/Left/Right/Circle/Flag/Diamond/Square/TriangleDown/TriangleUp/XCross 共 11 种标签样式
-indicator("Chart Test: graph/label/styles", overlay: true, max_labels_count: 20);
+// 正确结果：最后一根柱附近依次展示全部 20 种 LabelStyle
+indicator("Chart Test: graph/label/styles", overlay: true, max_labels_count: 25);
 
 if bar_state.is_last {
-    Label.new(bar_index - 10, close * 1.01, "Down",    style: LabelStyle.Down,         color: Color.RED,    text_color: Color.WHITE);
-    Label.new(bar_index - 9,  close * 0.99, "Up",      style: LabelStyle.Up,           color: Color.GREEN,  text_color: Color.WHITE);
-    Label.new(bar_index - 8,  close,        "Left",    style: LabelStyle.Left,         color: Color.BLUE,   text_color: Color.WHITE);
-    Label.new(bar_index - 7,  close,        "Right",   style: LabelStyle.Right,        color: Color.ORANGE, text_color: Color.WHITE);
-    Label.new(bar_index - 6,  close,        "Circle",  style: LabelStyle.Circle,       color: Color.PURPLE, text_color: Color.WHITE);
-    Label.new(bar_index - 5,  close,        "Flag",    style: LabelStyle.Flag,         color: Color.RED,    text_color: Color.WHITE);
-    Label.new(bar_index - 4,  close,        "Diamond", style: LabelStyle.Diamond,      color: Color.GREEN,  text_color: Color.WHITE);
-    Label.new(bar_index - 3,  close,        "Square",  style: LabelStyle.Square,       color: Color.BLUE,   text_color: Color.WHITE);
-    Label.new(bar_index - 2,  close,        "TriD",    style: LabelStyle.TriangleDown, color: Color.ORANGE, text_color: Color.WHITE);
-    Label.new(bar_index - 1,  close,        "TriU",    style: LabelStyle.TriangleUp,   color: Color.PURPLE, text_color: Color.WHITE);
-    Label.new(bar_index,      close,        "XCross",  style: LabelStyle.XCross,       color: Color.YELLOW, text_color: Color.BLACK);
+    Label.new(bar_index - 38, close, "Down",    style: LabelStyle.Down,          color: Color.RED,    text_color: Color.WHITE);
+    Label.new(bar_index - 36, close, "Up",      style: LabelStyle.Up,            color: Color.GREEN,  text_color: Color.WHITE);
+    Label.new(bar_index - 34, close, "Left",    style: LabelStyle.Left,          color: Color.BLUE,   text_color: Color.WHITE);
+    Label.new(bar_index - 32, close, "Right",   style: LabelStyle.Right,         color: Color.ORANGE, text_color: Color.WHITE);
+    Label.new(bar_index - 30, close, "Center",  style: LabelStyle.LabelCenter,   color: Color.PURPLE, text_color: Color.WHITE);
+    Label.new(bar_index - 28, close, "LL",      style: LabelStyle.LowerLeft,  color: Color.RED,    text_color: Color.WHITE);
+    Label.new(bar_index - 26, close, "LR",      style: LabelStyle.LowerRight, color: Color.GREEN,  text_color: Color.WHITE);
+    Label.new(bar_index - 24, close, "UL",      style: LabelStyle.UpperLeft,  color: Color.BLUE,   text_color: Color.WHITE);
+    Label.new(bar_index - 22, close, "UR",      style: LabelStyle.UpperRight, color: Color.ORANGE, text_color: Color.WHITE);
+    Label.new(bar_index - 20, close, "ArrD",    style: LabelStyle.ArrowDown,     color: Color.RED,    text_color: Color.WHITE);
+    Label.new(bar_index - 18, close, "ArrU",    style: LabelStyle.ArrowUp,       color: Color.GREEN,  text_color: Color.WHITE);
+    Label.new(bar_index - 16, close, "Circle",  style: LabelStyle.Circle,        color: Color.PURPLE, text_color: Color.WHITE);
+    Label.new(bar_index - 14, close, "Cross",   style: LabelStyle.Cross,         color: Color.RED,    text_color: Color.WHITE);
+    Label.new(bar_index - 12, close, "Diamond", style: LabelStyle.Diamond,       color: Color.GREEN,  text_color: Color.WHITE);
+    Label.new(bar_index - 10, close, "Flag",    style: LabelStyle.Flag,          color: Color.BLUE,   text_color: Color.WHITE);
+    Label.new(bar_index - 8,  close, "Square",  style: LabelStyle.Square,        color: Color.ORANGE, text_color: Color.WHITE);
+    Label.new(bar_index - 6,  close, "TriD",    style: LabelStyle.TriangleDown,  color: Color.PURPLE, text_color: Color.WHITE);
+    Label.new(bar_index - 4,  close, "TriU",    style: LabelStyle.TriangleUp,    color: Color.RED,    text_color: Color.WHITE);
+    Label.new(bar_index - 2,  close, "XCross",  style: LabelStyle.XCross,        color: Color.YELLOW, text_color: Color.BLACK);
+    Label.new(bar_index,      close, "TxtO",    style: LabelStyle.TextOutline,   color: Color.BLUE,   text_color: Color.WHITE);
 }
