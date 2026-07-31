@@ -1,0 +1,8 @@
+// 正确结果：四条水平线线宽依次为 1/2/3/4 像素，粗细差异肉眼明显
+indicator("Chart Test: graph/hline/width", overlay: false);
+
+plot(ta.rsi(close, 14), "RSI", color: Color.BLUE);
+hline(80, "W1", color: Color.BLUE,   line_width: 1);
+hline(65, "W2", color: Color.RED,    line_width: 2);
+hline(50, "W3", color: Color.GREEN,  line_width: 3);
+hline(35, "W4", color: Color.ORANGE, line_width: 4);

@@ -1,0 +1,19 @@
+// 正确结果：最后一根柱附近三个矩形，文本分别水平对齐 Left/Center/Right
+indicator("Chart Test: graph/box/text_align", overlay: true, max_boxes_count: 10);
+
+if bar_state.is_last {
+    let top = close * 1.03;
+    let bot = close * 0.97;
+    Box.new(bar_index - 18, top, bar_index - 13, bot,
+        bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE,
+        text: "Left",   text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Left,   text_valign: TextVAlign.Center);
+    Box.new(bar_index - 11, top, bar_index - 6, bot,
+        bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN,
+        text: "Center", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Center, text_valign: TextVAlign.Center);
+    Box.new(bar_index - 4, top, bar_index, bot,
+        bg_color: Color.new(Color.RED, 85), border_color: Color.RED,
+        text: "Right",  text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Right,  text_valign: TextVAlign.Center);
+}

@@ -1,0 +1,10 @@
+// 正确结果：每隔 20 根柱子在最高价处显示蓝色向下箭头标签，文字为当前收盘价
+indicator("Chart Test: graph/label/basic", overlay: true, max_labels_count: 500);
+
+if bar_index % 20 == 0 {
+    Label.new(bar_index, high,
+        String.from(close, Format.Mintick),
+        color: Color.BLUE,
+        text_color: Color.WHITE
+    );
+}

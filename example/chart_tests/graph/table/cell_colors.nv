@@ -1,0 +1,19 @@
+// 正确结果：图表右上角 3×3 表格，正值格绿底，负值格红底，零值格灰底
+indicator("Chart Test: graph/table/cell_colors", overlay: true);
+
+if bar_state.is_last {
+    let t = Table.new(Position.TopRight, 3, 3,
+        frame_color: Color.GRAY, frame_width: 1,
+        border_color: Color.GRAY, border_width: 1
+    );
+    for row = 0 to 2 {
+        for col = 0 to 2 {
+            let val = (row - 1) * 3 + (col - 1);
+            let bg = val > 0 ? Color.new(Color.GREEN, 60)
+                             : (val < 0 ? Color.new(Color.RED, 60)
+                                        : Color.new(Color.GRAY, 60));
+            let txt = val > 0 ? "+" : (val < 0 ? "-" : "0");
+            t.cell(col, row, txt, bg_color: bg, text_color: chart.fg_color);
+        }
+    }
+}

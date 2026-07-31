@@ -1,0 +1,16 @@
+// 正确结果：左侧矩形（TextWrap.None）长文本超出宽度被截断，右侧矩形（TextWrap.Auto）长文本自动换行
+indicator("Chart Test: graph/box/text_wrap", overlay: true, max_boxes_count: 10);
+
+if bar_state.is_last {
+    let longText = "This is a very long text that may overflow the box width";
+    let top = close * 1.03;
+    let bot = close * 0.97;
+    Box.new(bar_index - 20, top, bar_index - 11, bot,
+        bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE, border_width: 2,
+        text: longText, text_color: Color.WHITE, text_size: Size.Small,
+        text_wrap: TextWrap.None);
+    Box.new(bar_index - 9, top, bar_index, bot,
+        bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN, border_width: 2,
+        text: longText, text_color: Color.WHITE, text_size: Size.Small,
+        text_wrap: TextWrap.Auto);
+}

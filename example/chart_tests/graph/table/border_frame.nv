@@ -1,0 +1,16 @@
+// 正确结果：图表右上角 2×2 表格，蓝色粗外框（frame_width: 3），橙色细内部分隔线（border_width: 2）
+indicator("Chart Test: graph/table/border_frame", overlay: true);
+
+if bar_state.is_last {
+    let t = Table.new(Position.TopRight, 2, 2,
+        bg_color: Color.new(Color.BLUE, 90),
+        frame_color: Color.BLUE,
+        frame_width: 3,
+        border_color: Color.ORANGE,
+        border_width: 2
+    );
+    t.cell(0, 0, "A", text_color: chart.fg_color, bg_color: Color.new(Color.BLUE, 80));
+    t.cell(1, 0, "B", text_color: chart.fg_color, bg_color: Color.new(Color.RED, 80));
+    t.cell(0, 1, "C", text_color: chart.fg_color, bg_color: Color.new(Color.GREEN, 80));
+    t.cell(1, 1, "D", text_color: chart.fg_color, bg_color: Color.new(Color.ORANGE, 80));
+}

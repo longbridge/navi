@@ -1,0 +1,9 @@
+// 正确结果：每隔 20 根柱子，红色标签固定在柱上方（YLoc.AboveBar），绿色标签固定在柱下方（YLoc.BelowBar）
+indicator("Chart Test: graph/label/yloc", overlay: true, max_labels_count: 500);
+
+if bar_index % 20 == 0 {
+    Label.new(bar_index, 0.0, "Above", yloc: YLoc.AboveBar,
+        color: Color.RED, text_color: Color.WHITE, style: LabelStyle.Down);
+    Label.new(bar_index, 0.0, "Below", yloc: YLoc.BelowBar,
+        color: Color.GREEN, text_color: Color.WHITE, style: LabelStyle.Up);
+}

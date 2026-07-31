@@ -1,0 +1,9 @@
+// 正确结果：最后一根柱附近高低点连线之间，收盘高于开盘填充绿色，否则填充红色
+indicator("Chart Test: graph/linefill/color", overlay: true, max_lines_count: 10);
+
+if bar_state.is_last {
+    let fillColor = close > open ? Color.new(Color.GREEN, 70) : Color.new(Color.RED, 70);
+    let l1 = Line.new(bar_index - 20, high[20], bar_index, high, color: Color.GREEN);
+    let l2 = Line.new(bar_index - 20, low[20],  bar_index, low,  color: Color.RED);
+    LineFill.new(l1, l2, fillColor);
+}

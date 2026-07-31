@@ -1,0 +1,7 @@
+// 正确结果：在 RSI 子图上显示三条水平线——红色上轨（70）、灰色中线（50）、绿色下轨（30）
+indicator("Chart Test: graph/hline/basic", overlay: false);
+
+plot(ta.rsi(close, 14), "RSI", color: Color.BLUE);
+hline(70, "Overbought", color: Color.RED,   line_style: HLineStyle.Solid);
+hline(50, "Middle",     color: Color.GRAY,  line_style: HLineStyle.Dashed);
+hline(30, "Oversold",   color: Color.GREEN, line_style: HLineStyle.Solid);

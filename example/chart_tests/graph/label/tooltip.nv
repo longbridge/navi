@@ -1,0 +1,14 @@
+// 正确结果：最后一根柱显示一个标签，鼠标悬停时弹出含 O/H/L/C 详情的 tooltip
+indicator("Chart Test: graph/label/tooltip", overlay: true, max_labels_count: 5);
+
+if bar_state.is_last {
+    let tip = "Open:  " + String.from(open,  Format.Mintick)
+            + "\nHigh:  " + String.from(high,  Format.Mintick)
+            + "\nLow:   " + String.from(low,   Format.Mintick)
+            + "\nClose: " + String.from(close, Format.Mintick);
+    Label.new(bar_index, high, "Hover me",
+        color: Color.BLUE,
+        text_color: Color.WHITE,
+        tooltip: tip
+    );
+}

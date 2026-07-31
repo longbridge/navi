@@ -1,0 +1,11 @@
+// 正确结果：图表最右侧始终显示一个实时标签（跟随最后一根柱），涨显绿色、跌显红色，文字为当前收盘价
+indicator("Chart Test: graph/label/dynamic_update", overlay: true, max_labels_count: 5);
+
+var lbl: Label = na;
+if na(lbl) {
+    lbl = Label.new(bar_index, high, "", color: Color.BLUE, text_color: Color.WHITE);
+} else {
+    lbl.set_xy(bar_index, high);
+    lbl.set_text(String.from(close, Format.Mintick));
+    lbl.set_color(close > open ? Color.GREEN : Color.RED);
+}

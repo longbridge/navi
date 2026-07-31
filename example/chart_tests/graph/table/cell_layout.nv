@@ -1,0 +1,21 @@
+// 正确结果：图表右上角 3×3 表格；列 0=左对齐小字，列 1=居中普通字，列 2=右对齐大字；行 0/1/2 分别上/中/下垂直对齐
+indicator("Chart Test: graph/table/cell_layout", overlay: true);
+
+if bar_state.is_last {
+    let t = Table.new(Position.TopRight, 3, 3,
+        frame_color: Color.GRAY, frame_width: 2,
+        border_color: Color.GRAY, border_width: 1
+    );
+    let bg = Color.new(Color.BLUE, 85);
+    let fg = chart.fg_color;
+
+    t.cell(0, 0, "L\nTop", width: 60, height: 40, text_halign: TextHAlign.Left,   text_valign: TextVAlign.Top,    text_size: Size.Small,  bg_color: bg, text_color: fg);
+    t.cell(0, 1, "L\nMid", width: 60, height: 40, text_halign: TextHAlign.Left,   text_valign: TextVAlign.Center, text_size: Size.Small,  bg_color: bg, text_color: fg);
+    t.cell(0, 2, "L\nBot", width: 60, height: 40, text_halign: TextHAlign.Left,   text_valign: TextVAlign.Bottom, text_size: Size.Small,  bg_color: bg, text_color: fg);
+    t.cell(1, 0, "C\nTop", width: 60, height: 40, text_halign: TextHAlign.Center, text_valign: TextVAlign.Top,    text_size: Size.Normal, bg_color: bg, text_color: fg);
+    t.cell(1, 1, "C\nMid", width: 60, height: 40, text_halign: TextHAlign.Center, text_valign: TextVAlign.Center, text_size: Size.Normal, bg_color: bg, text_color: fg);
+    t.cell(1, 2, "C\nBot", width: 60, height: 40, text_halign: TextHAlign.Center, text_valign: TextVAlign.Bottom, text_size: Size.Normal, bg_color: bg, text_color: fg);
+    t.cell(2, 0, "R\nTop", width: 60, height: 40, text_halign: TextHAlign.Right,  text_valign: TextVAlign.Top,    text_size: Size.Large,  bg_color: bg, text_color: fg);
+    t.cell(2, 1, "R\nMid", width: 60, height: 40, text_halign: TextHAlign.Right,  text_valign: TextVAlign.Center, text_size: Size.Large,  bg_color: bg, text_color: fg);
+    t.cell(2, 2, "R\nBot", width: 60, height: 40, text_halign: TextHAlign.Right,  text_valign: TextVAlign.Bottom, text_size: Size.Large,  bg_color: bg, text_color: fg);
+}

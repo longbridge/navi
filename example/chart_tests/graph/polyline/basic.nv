@@ -1,0 +1,10 @@
+// 正确结果：连接最近 20 根柱最高价的蓝色折线段
+indicator("Chart Test: graph/polyline/basic", overlay: true);
+
+if bar_state.is_last {
+    let pts = Array.new<chart.Point>();
+    for i = 0 to 19 {
+        pts.push(chart.Point.from_index(bar_index - 19 + i, high[19 - i]));
+    }
+    Polyline.new(pts, line_color: Color.BLUE, line_width: 2);
+}

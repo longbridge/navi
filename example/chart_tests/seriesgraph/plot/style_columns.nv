@@ -3,5 +3,6 @@
 indicator("Chart Test: plot/style_columns", overlay: false);
 
 let val = close - open;
-plot(val + 2, "Columns", style: PlotStyle.Columns, color: Color.BLUE);
-plot(val - 2, "Histogram", style: PlotStyle.Histogram, color: Color.RED);
+let step = ta.atr(14) * 0.3;
+plot(val + step, "Columns",   style: PlotStyle.Columns,   color: Color.BLUE);
+plot(val - step, "Histogram", style: PlotStyle.Histogram, color: Color.RED);

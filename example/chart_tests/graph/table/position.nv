@@ -1,0 +1,17 @@
+// 正确结果：图表七个角落和中心各显示一个小表格，标注对应位置名称
+indicator("Chart Test: graph/table/position", overlay: true);
+
+fn mkTable(pos: Position, label: String) {
+    let t = Table.new(pos, 1, 1, border_color: Color.BLUE, border_width: 1);
+    t.cell(0, 0, label, text_color: chart.fg_color);
+}
+
+if bar_state.is_last {
+    mkTable(Position.TopLeft,      "TopLeft");
+    mkTable(Position.TopCenter,    "TopCenter");
+    mkTable(Position.TopRight,     "TopRight");
+    mkTable(Position.MiddleCenter, "MiddleCenter");
+    mkTable(Position.BottomLeft,   "BottomLeft");
+    mkTable(Position.BottomCenter, "BottomCenter");
+    mkTable(Position.BottomRight,  "BottomRight");
+}

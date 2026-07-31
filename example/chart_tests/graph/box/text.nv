@@ -1,0 +1,18 @@
+// 正确结果：最后一根柱附近一个矩形框，内部居中显示该段最高/最低价文本
+indicator("Chart Test: graph/box/text", overlay: true, max_boxes_count: 10);
+
+if bar_state.is_last {
+    let h = ta.highest(high, 20);
+    let l = ta.lowest(low, 20);
+    let txt = "H: " + String.from(h, Format.Mintick) + "\nL: " + String.from(l, Format.Mintick);
+    Box.new(bar_index - 20, h, bar_index, l,
+        bg_color: Color.new(Color.BLUE, 85),
+        border_color: Color.BLUE,
+        border_width: 2,
+        text: txt,
+        text_color: Color.WHITE,
+        text_size: Size.Normal,
+        text_halign: TextHAlign.Center,
+        text_valign: TextVAlign.Center
+    );
+}

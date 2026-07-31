@@ -1,0 +1,6 @@
+// 正确结果：每隔 30 根柱子，从当前最高价到最低价绘制一条蓝色竖线
+indicator("Chart Test: graph/line/basic", overlay: true, max_lines_count: 500);
+
+if bar_index % 30 == 0 {
+    Line.new(bar_index, high, bar_index, low, color: Color.BLUE, width: 2);
+}

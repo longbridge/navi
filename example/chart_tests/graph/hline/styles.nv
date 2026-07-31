@@ -1,0 +1,7 @@
+// 正确结果：三条水平线分别为 Solid / Dashed / Dotted 样式，颜色各异
+indicator("Chart Test: graph/hline/styles", overlay: false);
+
+plot(ta.rsi(close, 14), "RSI", color: Color.BLUE);
+hline(75, "Solid",  color: Color.RED,    line_style: HLineStyle.Solid,  line_width: 2);
+hline(55, "Dashed", color: Color.ORANGE, line_style: HLineStyle.Dashed, line_width: 2);
+hline(35, "Dotted", color: Color.GREEN,  line_style: HLineStyle.Dotted, line_width: 2);

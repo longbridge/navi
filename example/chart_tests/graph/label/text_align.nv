@@ -1,0 +1,12 @@
+// 正确结果：最后一根柱附近三个方块标签，多行文本分别为左/居中/右对齐
+indicator("Chart Test: graph/label/text_align", overlay: true, max_labels_count: 10);
+
+if bar_state.is_last {
+    let txt = "Line 1\nLine 2\nLine 3";
+    Label.new(bar_index - 8, close * 1.03, txt, style: LabelStyle.LabelCenter,
+        color: Color.BLUE, text_color: Color.WHITE, text_align: TextHAlign.Left);
+    Label.new(bar_index - 4, close * 1.03, txt, style: LabelStyle.LabelCenter,
+        color: Color.GREEN, text_color: Color.WHITE, text_align: TextHAlign.Center);
+    Label.new(bar_index,     close * 1.03, txt, style: LabelStyle.LabelCenter,
+        color: Color.RED, text_color: Color.WHITE, text_align: TextHAlign.Right);
+}

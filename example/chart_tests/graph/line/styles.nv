@@ -1,0 +1,12 @@
+// 正确结果：最后一根柱附近显示 6 条水平线，依次为 Solid/Dashed/Dotted/ArrowLeft/ArrowRight/ArrowBoth
+indicator("Chart Test: graph/line/styles", overlay: true, max_lines_count: 10);
+
+if bar_state.is_last {
+    let step = (high - low) / 7.0;
+    Line.new(bar_index - 20, close + step * 3, bar_index, close + step * 3, style: LineStyle.Solid,      color: Color.BLUE,   width: 2);
+    Line.new(bar_index - 20, close + step * 2, bar_index, close + step * 2, style: LineStyle.Dashed,     color: Color.RED,    width: 2);
+    Line.new(bar_index - 20, close + step * 1, bar_index, close + step * 1, style: LineStyle.Dotted,     color: Color.GREEN,  width: 2);
+    Line.new(bar_index - 20, close,            bar_index, close,            style: LineStyle.ArrowLeft,  color: Color.ORANGE, width: 2);
+    Line.new(bar_index - 20, close - step * 1, bar_index, close - step * 1, style: LineStyle.ArrowRight, color: Color.PURPLE, width: 2);
+    Line.new(bar_index - 20, close - step * 2, bar_index, close - step * 2, style: LineStyle.ArrowBoth,  color: Color.GRAY,   width: 2);
+}

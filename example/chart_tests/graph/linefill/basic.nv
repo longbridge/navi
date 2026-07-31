@@ -1,0 +1,8 @@
+// 正确结果：最后一根柱附近两条斜线（高低点连线）之间填充半透明蓝色区域
+indicator("Chart Test: graph/linefill/basic", overlay: true, max_lines_count: 10);
+
+if bar_state.is_last {
+    let l1 = Line.new(bar_index - 20, ta.highest(high, 20), bar_index, close * 1.01, color: Color.BLUE);
+    let l2 = Line.new(bar_index - 20, ta.lowest(low, 20),   bar_index, close * 0.99, color: Color.RED);
+    LineFill.new(l1, l2, Color.new(Color.BLUE, 70));
+}

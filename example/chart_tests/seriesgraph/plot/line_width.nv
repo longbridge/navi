@@ -2,7 +2,8 @@
 indicator("Chart Test: plot/line_width", overlay: false);
 
 let base = close - ta.sma(close, 20);
-plot(base + 6, "Width 1", color: Color.BLUE, line_width: 1);
-plot(base + 2, "Width 2", color: Color.RED, line_width: 2);
-plot(base - 2, "Width 3", color: Color.GREEN, line_width: 3);
-plot(base - 6, "Width 4", color: Color.PURPLE, line_width: 4);
+let step = ta.atr(14) * 0.3;
+plot(base + step * 3, "Width 1", color: Color.BLUE,   line_width: 1);
+plot(base + step,     "Width 2", color: Color.RED,    line_width: 2);
+plot(base - step,     "Width 3", color: Color.GREEN,  line_width: 3);
+plot(base - step * 3, "Width 4", color: Color.PURPLE, line_width: 4);

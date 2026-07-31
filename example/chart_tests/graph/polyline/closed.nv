@@ -1,0 +1,11 @@
+// 正确结果：由最近 10 根柱最高、最低和当前收盘价构成的闭合三角形，蓝色边框，半透明橙色填充
+indicator("Chart Test: graph/polyline/closed", overlay: true);
+
+if bar_state.is_last {
+    let pts = Array.new<chart.Point>();
+    pts.push(chart.Point.from_index(bar_index - 10, ta.highest(high, 10)));
+    pts.push(chart.Point.from_index(bar_index,      close));
+    pts.push(chart.Point.from_index(bar_index - 10, ta.lowest(low, 10)));
+    Polyline.new(pts, closed: true, line_color: Color.BLUE,
+        fill_color: Color.new(Color.ORANGE, 70), line_width: 2);
+}

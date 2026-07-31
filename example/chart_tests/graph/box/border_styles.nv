@@ -1,0 +1,10 @@
+// 正确结果：最后一根柱附近三个并排矩形，边框样式分别为 Solid/Dashed/Dotted
+indicator("Chart Test: graph/box/border_styles", overlay: true, max_boxes_count: 10);
+
+if bar_state.is_last {
+    let top = close * 1.02;
+    let bot = close * 0.98;
+    Box.new(bar_index - 18, top, bar_index - 13, bot, bg_color: Color.new(Color.BLUE, 85),  border_color: Color.BLUE,  border_width: 2, border_style: LineStyle.Solid);
+    Box.new(bar_index - 11, top, bar_index - 6,  bot, bg_color: Color.new(Color.RED, 85),   border_color: Color.RED,   border_width: 2, border_style: LineStyle.Dashed);
+    Box.new(bar_index - 4,  top, bar_index,      bot, bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN, border_width: 2, border_style: LineStyle.Dotted);
+}

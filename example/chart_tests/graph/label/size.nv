@@ -1,0 +1,10 @@
+// 正确结果：最后一根柱附近显示 5 个标签，字号依次为 Tiny/Small/Normal/Large/Huge
+indicator("Chart Test: graph/label/size", overlay: true, max_labels_count: 10);
+
+if bar_state.is_last {
+    Label.new(bar_index - 8, close, "Tiny",   color: Color.BLUE, text_color: Color.WHITE, size: Size.Tiny);
+    Label.new(bar_index - 6, close, "Small",  color: Color.BLUE, text_color: Color.WHITE, size: Size.Small);
+    Label.new(bar_index - 4, close, "Normal", color: Color.BLUE, text_color: Color.WHITE, size: Size.Normal);
+    Label.new(bar_index - 2, close, "Large",  color: Color.BLUE, text_color: Color.WHITE, size: Size.Large);
+    Label.new(bar_index,     close, "Huge",   color: Color.BLUE, text_color: Color.WHITE, size: Size.Huge);
+}

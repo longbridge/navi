@@ -1,0 +1,12 @@
+// 正确结果：最后一根柱附近 5 个并排矩形，蓝色背景透明度从 0% 到 80% 依次递增
+indicator("Chart Test: graph/box/bg_color", overlay: true, max_boxes_count: 10);
+
+if bar_state.is_last {
+    let top = close * 1.02;
+    let bot = close * 0.98;
+    Box.new(bar_index - 20, top, bar_index - 17, bot, bg_color: Color.new(Color.BLUE, 0),  border_color: Color.BLUE);
+    Box.new(bar_index - 15, top, bar_index - 12, bot, bg_color: Color.new(Color.BLUE, 20), border_color: Color.BLUE);
+    Box.new(bar_index - 10, top, bar_index - 7,  bot, bg_color: Color.new(Color.BLUE, 40), border_color: Color.BLUE);
+    Box.new(bar_index - 5,  top, bar_index - 2,  bot, bg_color: Color.new(Color.BLUE, 60), border_color: Color.BLUE);
+    Box.new(bar_index - 1,  top, bar_index,      bot, bg_color: Color.new(Color.BLUE, 80), border_color: Color.BLUE);
+}

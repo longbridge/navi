@@ -1,0 +1,10 @@
+// 正确结果：每隔 20 根柱子绘制一个覆盖该段高低范围的矩形，蓝色边框，半透明蓝色背景
+indicator("Chart Test: graph/box/basic", overlay: true, max_boxes_count: 500);
+
+if bar_index % 20 == 0 and bar_index >= 20 {
+    Box.new(bar_index - 19, ta.highest(high, 20), bar_index, ta.lowest(low, 20),
+        bg_color: Color.new(Color.BLUE, 80),
+        border_color: Color.BLUE,
+        border_width: 1
+    );
+}

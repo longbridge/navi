@@ -1,0 +1,10 @@
+// 正确结果：最后一根柱附近 4 条蓝色水平线，线宽依次为 1/2/3/4 像素
+indicator("Chart Test: graph/line/width", overlay: true, max_lines_count: 10);
+
+if bar_state.is_last {
+    let step = (high - low) / 5.0;
+    Line.new(bar_index - 20, close + step * 2, bar_index, close + step * 2, color: Color.BLUE, width: 1);
+    Line.new(bar_index - 20, close + step * 1, bar_index, close + step * 1, color: Color.BLUE, width: 2);
+    Line.new(bar_index - 20, close,            bar_index, close,            color: Color.BLUE, width: 3);
+    Line.new(bar_index - 20, close - step * 1, bar_index, close - step * 1, color: Color.BLUE, width: 4);
+}
