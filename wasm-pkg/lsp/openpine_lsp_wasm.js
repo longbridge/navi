@@ -30,6 +30,22 @@ function getStringFromWasm0(ptr, len) {
     return decodeText(ptr, len);
 }
 
+function logError(f, args) {
+    try {
+        return f.apply(this, args);
+    } catch (e) {
+        let error = (function () {
+            try {
+                return e instanceof Error ? `${e.message}\n\nStack:\n${e.stack}` : e.toString();
+            } catch(_) {
+                return "<failed to stringify thrown value>";
+            }
+        }());
+        console.error("wasm-bindgen: imported JS function that was not marked as `catch` threw an error:", error);
+        throw e;
+    }
+}
+
 let WASM_VECTOR_LEN = 0;
 
 const cachedTextEncoder = new TextEncoder();
@@ -46,6 +62,8 @@ if (!('encodeInto' in cachedTextEncoder)) {
 }
 
 function passStringToWasm0(arg, malloc, realloc) {
+
+    if (typeof(arg) !== 'string') throw new Error(`expected a string argument, found ${typeof(arg)}`);
 
     if (realloc === undefined) {
         const buf = cachedTextEncoder.encode(arg);
@@ -75,7 +93,7 @@ function passStringToWasm0(arg, malloc, realloc) {
         ptr = realloc(ptr, len, len = offset + arg.length * 3, 1) >>> 0;
         const view = getUint8ArrayMemory0().subarray(ptr + offset, ptr + len);
         const ret = cachedTextEncoder.encodeInto(arg, view);
-
+        if (ret.read !== arg.length) throw new Error('failed to pass whole string');
         offset += ret.written;
         ptr = realloc(ptr, len, offset, 1) >>> 0;
     }
@@ -95,6 +113,12 @@ function getDataViewMemory0() {
 
 function isLikeNone(x) {
     return x === undefined || x === null;
+}
+
+function _assertBoolean(n) {
+    if (typeof(n) !== 'boolean') {
+        throw new Error(`expected a boolean argument, found ${typeof(n)}`);
+    }
 }
 
 function debugString(val) {
@@ -160,6 +184,10 @@ function debugString(val) {
     }
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
+}
+
+function _assertNum(n) {
+    if (typeof(n) !== 'number') throw new Error(`expected a number argument, found ${typeof(n)}`);
 }
 
 function getArrayU8FromWasm0(ptr, len) {
@@ -241,6 +269,8 @@ export class Analyzer {
      * @param {string} locale
      */
     setLocale(locale) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(locale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.analyzer_setLocale(this.__wbg_ptr, ptr0, len0);
@@ -258,6 +288,8 @@ export class Analyzer {
      * @returns {any}
      */
     codeLenses(uri) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.analyzer_codeLenses(this.__wbg_ptr, ptr0, len0);
@@ -273,6 +305,8 @@ export class Analyzer {
      * @returns {any}
      */
     diagnostics() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_diagnostics(this.__wbg_ptr);
         return ret;
     }
@@ -294,6 +328,12 @@ export class Analyzer {
      * @returns {any}
      */
     inlayHints(start_line, start_character, end_line, end_character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(start_line);
+        _assertNum(start_character);
+        _assertNum(end_line);
+        _assertNum(end_character);
         const ret = wasm.analyzer_inlayHints(this.__wbg_ptr, start_line, start_character, end_line, end_character);
         return ret;
     }
@@ -327,6 +367,8 @@ export class Analyzer {
      * @returns {any}
      */
     sourceFiles() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_sourceFiles(this.__wbg_ptr);
         return ret;
     }
@@ -341,6 +383,10 @@ export class Analyzer {
      * @returns {any}
      */
     definitionAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_definitionAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -358,6 +404,10 @@ export class Analyzer {
      * @returns {any}
      */
     highlightsAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_highlightsAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -375,6 +425,11 @@ export class Analyzer {
      * @returns {any}
      */
     referencesAt(line, character, include_declaration) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
+        _assertBoolean(include_declaration);
         const ret = wasm.analyzer_referencesAt(this.__wbg_ptr, line, character, include_declaration);
         return ret;
     }
@@ -392,6 +447,10 @@ export class Analyzer {
      * @returns {any}
      */
     completionsAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_completionsAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -405,6 +464,8 @@ export class Analyzer {
      * @returns {any}
      */
     foldingRanges() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_foldingRanges(this.__wbg_ptr);
         return ret;
     }
@@ -418,6 +479,8 @@ export class Analyzer {
      * @returns {any}
      */
     allInlayHints() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_allInlayHints(this.__wbg_ptr);
         return ret;
     }
@@ -431,6 +494,8 @@ export class Analyzer {
      * @returns {any}
      */
     documentColors() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_documentColors(this.__wbg_ptr);
         return ret;
     }
@@ -452,6 +517,8 @@ export class Analyzer {
      * @returns {any}
      */
     semanticTokens() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_semanticTokens(this.__wbg_ptr);
         return ret;
     }
@@ -465,6 +532,8 @@ export class Analyzer {
      * @returns {any}
      */
     documentSymbols() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_documentSymbols(this.__wbg_ptr);
         return ret;
     }
@@ -482,6 +551,10 @@ export class Analyzer {
      * @returns {any}
      */
     prepareRenameAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_prepareRenameAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -500,6 +573,10 @@ export class Analyzer {
      * @returns {any}
      */
     resolveSymbolAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_resolveSymbolAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -518,6 +595,10 @@ export class Analyzer {
      * @returns {any}
      */
     signatureHelpAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_signatureHelpAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -533,6 +614,8 @@ export class Analyzer {
      * @returns {any}
      */
     workspaceSymbols(query) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(query, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.analyzer_workspaceSymbols(this.__wbg_ptr, ptr0, len0);
@@ -551,6 +634,8 @@ export class Analyzer {
      * @returns {any}
      */
     incomingCallsFor(item) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_incomingCallsFor(this.__wbg_ptr, item);
         return ret;
     }
@@ -567,6 +652,8 @@ export class Analyzer {
      * @returns {any}
      */
     outgoingCallsFor(item) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_outgoingCallsFor(this.__wbg_ptr, item);
         return ret;
     }
@@ -585,6 +672,10 @@ export class Analyzer {
      * @returns {any}
      */
     typeDefinitionAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_typeDefinitionAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -605,6 +696,8 @@ export class Analyzer {
      * @returns {any}
      */
     colorPresentations(red, green, blue, alpha) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.analyzer_colorPresentations(this.__wbg_ptr, red, green, blue, alpha);
         return ret;
     }
@@ -626,6 +719,10 @@ export class Analyzer {
      * @returns {any}
      */
     prepareCallHierarchyAt(line, character) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ret = wasm.analyzer_prepareCallHierarchyAt(this.__wbg_ptr, line, character);
         return ret;
     }
@@ -661,6 +758,8 @@ export class Analyzer {
      * @returns {any}
      */
     analyze(uri, source) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ptr1 = passStringToWasm0(source, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -685,6 +784,10 @@ export class Analyzer {
      * @returns {any}
      */
     hoverAt(line, character, suffix) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         var ptr0 = isLikeNone(suffix) ? 0 : passStringToWasm0(suffix, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         const ret = wasm.analyzer_hoverAt(this.__wbg_ptr, line, character, ptr0, len0);
@@ -707,6 +810,10 @@ export class Analyzer {
      * @returns {any}
      */
     renameAt(line, character, new_name) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(line);
+        _assertNum(character);
         const ptr0 = passStringToWasm0(new_name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.analyzer_renameAt(this.__wbg_ptr, line, character, ptr0, len0);
@@ -753,24 +860,27 @@ async function __wbg_load(module, imports) {
 function __wbg_get_imports() {
     const imports = {};
     imports.wbg = {};
-    imports.wbg.__wbg_Error_e83987f665cf5504 = function(arg0, arg1) {
+    imports.wbg.__wbg_Error_e83987f665cf5504 = function() { return logError(function (arg0, arg1) {
         const ret = Error(getStringFromWasm0(arg0, arg1));
         return ret;
-    };
-    imports.wbg.__wbg_Number_bb48ca12f395cd08 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_Number_bb48ca12f395cd08 = function() { return logError(function (arg0) {
         const ret = Number(arg0);
         return ret;
-    };
-    imports.wbg.__wbg_String_8f0eb39a4a4c2f66 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_String_8f0eb39a4a4c2f66 = function() { return logError(function (arg0, arg1) {
         const ret = String(arg1);
         const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len1 = WASM_VECTOR_LEN;
         getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
-    };
+    }, arguments) };
     imports.wbg.__wbg___wbindgen_boolean_get_6d5a1ee65bab5f68 = function(arg0) {
         const v = arg0;
         const ret = typeof(v) === 'boolean' ? v : undefined;
+        if (!isLikeNone(ret)) {
+            _assertBoolean(ret);
+        }
         return isLikeNone(ret) ? 0xFFFFFF : ret ? 1 : 0;
     };
     imports.wbg.__wbg___wbindgen_debug_string_df47ffb5e35e6763 = function(arg0, arg1) {
@@ -782,28 +892,36 @@ function __wbg_get_imports() {
     };
     imports.wbg.__wbg___wbindgen_in_bb933bd9e1b3bc0f = function(arg0, arg1) {
         const ret = arg0 in arg1;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_object_c818261d21f283a4 = function(arg0) {
         const val = arg0;
         const ret = typeof(val) === 'object' && val !== null;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_string_fbb76cb2940daafd = function(arg0) {
         const ret = typeof(arg0) === 'string';
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_undefined_2d472862bd29a478 = function(arg0) {
         const ret = arg0 === undefined;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_jsval_loose_eq_b664b38a2f582147 = function(arg0, arg1) {
         const ret = arg0 == arg1;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_number_get_a20bf9b85341449d = function(arg0, arg1) {
         const obj = arg1;
         const ret = typeof(obj) === 'number' ? obj : undefined;
+        if (!isLikeNone(ret)) {
+            _assertNum(ret);
+        }
         getDataViewMemory0().setFloat64(arg0 + 8 * 1, isLikeNone(ret) ? 0 : ret, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, !isLikeNone(ret), true);
     };
@@ -818,23 +936,23 @@ function __wbg_get_imports() {
     imports.wbg.__wbg___wbindgen_throw_b855445ff6a94295 = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbg_entries_e171b586f8f6bdbf = function(arg0) {
+    imports.wbg.__wbg_entries_e171b586f8f6bdbf = function() { return logError(function (arg0) {
         const ret = Object.entries(arg0);
         return ret;
-    };
-    imports.wbg.__wbg_getTime_14776bfb48a1bff9 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_getTime_14776bfb48a1bff9 = function() { return logError(function (arg0) {
         const ret = arg0.getTime();
         return ret;
-    };
-    imports.wbg.__wbg_get_7bed016f185add81 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_get_7bed016f185add81 = function() { return logError(function (arg0, arg1) {
         const ret = arg0[arg1 >>> 0];
         return ret;
-    };
-    imports.wbg.__wbg_get_with_ref_key_1dc361bd10053bfe = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_get_with_ref_key_1dc361bd10053bfe = function() { return logError(function (arg0, arg1) {
         const ret = arg0[arg1];
         return ret;
-    };
-    imports.wbg.__wbg_instanceof_ArrayBuffer_70beb1189ca63b38 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_instanceof_ArrayBuffer_70beb1189ca63b38 = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof ArrayBuffer;
@@ -842,9 +960,10 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_instanceof_Uint8Array_20c8e73002f7af98 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_instanceof_Uint8Array_20c8e73002f7af98 = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof Uint8Array;
@@ -852,73 +971,77 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_isSafeInteger_d216eda7911dde36 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_isSafeInteger_d216eda7911dde36 = function() { return logError(function (arg0) {
         const ret = Number.isSafeInteger(arg0);
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_length_69bca3cb64fc8748 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_length_69bca3cb64fc8748 = function() { return logError(function (arg0) {
         const ret = arg0.length;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_length_cdd215e10d9dd507 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_length_cdd215e10d9dd507 = function() { return logError(function (arg0) {
         const ret = arg0.length;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_new_0_f9740686d739025c = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_0_f9740686d739025c = function() { return logError(function () {
         const ret = new Date();
         return ret;
-    };
-    imports.wbg.__wbg_new_1acc0b6eea89d040 = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_1acc0b6eea89d040 = function() { return logError(function () {
         const ret = new Object();
         return ret;
-    };
-    imports.wbg.__wbg_new_5a79be3ab53b8aa5 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_new_5a79be3ab53b8aa5 = function() { return logError(function (arg0) {
         const ret = new Uint8Array(arg0);
         return ret;
-    };
-    imports.wbg.__wbg_new_68651c719dcda04e = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_68651c719dcda04e = function() { return logError(function () {
         const ret = new Map();
         return ret;
-    };
-    imports.wbg.__wbg_new_e17d9f43105b08be = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_e17d9f43105b08be = function() { return logError(function () {
         const ret = new Array();
         return ret;
-    };
-    imports.wbg.__wbg_prototypesetcall_2a6620b6922694b2 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_prototypesetcall_2a6620b6922694b2 = function() { return logError(function (arg0, arg1, arg2) {
         Uint8Array.prototype.set.call(getArrayU8FromWasm0(arg0, arg1), arg2);
-    };
-    imports.wbg.__wbg_set_3f1d0b984ed272ed = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_3f1d0b984ed272ed = function() { return logError(function (arg0, arg1, arg2) {
         arg0[arg1] = arg2;
-    };
-    imports.wbg.__wbg_set_907fb406c34a251d = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_907fb406c34a251d = function() { return logError(function (arg0, arg1, arg2) {
         const ret = arg0.set(arg1, arg2);
         return ret;
-    };
-    imports.wbg.__wbg_set_c213c871859d6500 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_c213c871859d6500 = function() { return logError(function (arg0, arg1, arg2) {
         arg0[arg1 >>> 0] = arg2;
-    };
-    imports.wbg.__wbindgen_cast_2241b6af4c4b2941 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_2241b6af4c4b2941 = function() { return logError(function (arg0, arg1) {
         // Cast intrinsic for `Ref(String) -> Externref`.
         const ret = getStringFromWasm0(arg0, arg1);
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_4625c577ab2ec9ee = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_4625c577ab2ec9ee = function() { return logError(function (arg0) {
         // Cast intrinsic for `U64 -> Externref`.
         const ret = BigInt.asUintN(64, arg0);
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_9ae0607507abb057 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_9ae0607507abb057 = function() { return logError(function (arg0) {
         // Cast intrinsic for `I64 -> Externref`.
         const ret = arg0;
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function() { return logError(function (arg0) {
         // Cast intrinsic for `F64 -> Externref`.
         const ret = arg0;
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbindgen_init_externref_table = function() {
         const table = wasm.__wbindgen_externrefs;
         const offset = table.grow(4);
