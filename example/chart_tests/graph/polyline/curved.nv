@@ -1,6 +1,9 @@
 // 正确结果：连接最近 20 根柱收盘价的蓝色平滑曲线（curved: true），与折线形态相比过渡更圆滑
 indicator("Chart Test: graph/polyline/curved", overlay: true);
 
+// close[19 - i] 是动态偏移，编译期无法推断回溯深度；显式声明缓冲深度 20。
+max_bars_back(close, 20);
+
 if bar_state.is_last {
     let pts = Array.new<chart.Point>();
     for i = 0 to 19 {

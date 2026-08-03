@@ -1,6 +1,9 @@
 // 正确结果：连接最近 20 根柱最高价的蓝色折线段
 indicator("Chart Test: graph/polyline/basic", overlay: true);
 
+// high[19 - i] 是动态偏移，编译期无法推断回溯深度；显式声明缓冲深度 20。
+max_bars_back(high, 20);
+
 if bar_state.is_last {
     let pts = Array.new<chart.Point>();
     for i = 0 to 19 {
