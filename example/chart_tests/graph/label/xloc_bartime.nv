@@ -1,10 +1,16 @@
-// 正确结果：每隔 20 根柱子用 XLoc.BarTime 坐标在最高价显示绿色标签，位置应与用 BarIndex 结果一致
+// 正确结果：每隔 20 根柱子画两个标签——绿色（XLoc.BarTime）在最高价，蓝色（XLoc.BarIndex）在最低价，
+// 两者 x 坐标应对齐（即上下对准同一根柱子）
 indicator("Chart Test: graph/label/xloc_bartime", overlay: true, max_labels_count: 500);
 
 if bar_index % 20 == 0 {
-    Label.new(time, high, String.from(close, Format.Mintick),
+    Label.new(time, high, "T",
         xloc: XLoc.BarTime,
         color: Color.GREEN,
+        text_color: Color.WHITE
+    );
+    Label.new(bar_index, low, "I",
+        xloc: XLoc.BarIndex,
+        color: Color.BLUE,
         text_color: Color.WHITE
     );
 }
