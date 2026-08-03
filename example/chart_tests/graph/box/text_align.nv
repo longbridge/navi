@@ -1,19 +1,48 @@
-// 正确结果：最后一根柱附近三个矩形，文本分别水平对齐 Left/Center/Right
+// 正确结果：最后一根柱附近 3×3 网格，覆盖水平(Left/Center/Right)×垂直(Top/Center/Bottom)
+// 全部 9 种文本对齐组合。标签首字母为水平对齐、次字母为垂直对齐（如 LT = Left+Top），
+// 可据文本在框内的位置核对对齐方向。三行颜色依次为蓝/绿/红。
 indicator("Chart Test: graph/box/text_align", overlay: true, max_boxes_count: 10);
 
 if bar_state.is_last {
-    let top = close * 1.03;
-    let bot = close * 0.97;
-    Box.new(bar_index - 18, top, bar_index - 13, bot,
-        bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE,
-        text: "Left",   text_color: Color.WHITE, text_size: Size.Normal,
+    // 三列的 x 区间
+    let x0a = bar_index - 18; let x0b = bar_index - 13;
+    let x1a = bar_index - 11; let x1b = bar_index - 6;
+    let x2a = bar_index - 4;  let x2b = bar_index;
+    // 三行的价格区间（每行高约 4%，行间留 1% 间隔）
+    let r0t = close * 1.10; let r0b = close * 1.06;
+    let r1t = close * 1.05; let r1b = close * 1.01;
+    let r2t = close * 1.00; let r2b = close * 0.96;
+
+    // 第 0 行：垂直 Top（蓝）
+    Box.new(x0a, r0t, x0b, r0b, bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE,
+        text: "LT", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Left,   text_valign: TextVAlign.Top);
+    Box.new(x1a, r0t, x1b, r0b, bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE,
+        text: "CT", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Center, text_valign: TextVAlign.Top);
+    Box.new(x2a, r0t, x2b, r0b, bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE,
+        text: "RT", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Right,  text_valign: TextVAlign.Top);
+
+    // 第 1 行：垂直 Center（绿）
+    Box.new(x0a, r1t, x0b, r1b, bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN,
+        text: "LC", text_color: Color.WHITE, text_size: Size.Normal,
         text_halign: TextHAlign.Left,   text_valign: TextVAlign.Center);
-    Box.new(bar_index - 11, top, bar_index - 6, bot,
-        bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN,
-        text: "Center", text_color: Color.WHITE, text_size: Size.Normal,
+    Box.new(x1a, r1t, x1b, r1b, bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN,
+        text: "CC", text_color: Color.WHITE, text_size: Size.Normal,
         text_halign: TextHAlign.Center, text_valign: TextVAlign.Center);
-    Box.new(bar_index - 4, top, bar_index, bot,
-        bg_color: Color.new(Color.RED, 85), border_color: Color.RED,
-        text: "Right",  text_color: Color.WHITE, text_size: Size.Normal,
+    Box.new(x2a, r1t, x2b, r1b, bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN,
+        text: "RC", text_color: Color.WHITE, text_size: Size.Normal,
         text_halign: TextHAlign.Right,  text_valign: TextVAlign.Center);
+
+    // 第 2 行：垂直 Bottom（红）
+    Box.new(x0a, r2t, x0b, r2b, bg_color: Color.new(Color.RED, 85), border_color: Color.RED,
+        text: "LB", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Left,   text_valign: TextVAlign.Bottom);
+    Box.new(x1a, r2t, x1b, r2b, bg_color: Color.new(Color.RED, 85), border_color: Color.RED,
+        text: "CB", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Center, text_valign: TextVAlign.Bottom);
+    Box.new(x2a, r2t, x2b, r2b, bg_color: Color.new(Color.RED, 85), border_color: Color.RED,
+        text: "RB", text_color: Color.WHITE, text_size: Size.Normal,
+        text_halign: TextHAlign.Right,  text_valign: TextVAlign.Bottom);
 }
