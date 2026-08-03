@@ -1,8 +1,13 @@
 // 正确结果：每隔 20 根柱子绘制一个覆盖该段高低范围的矩形，蓝色边框，半透明蓝色背景
 indicator("Chart Test: graph/box/basic", overlay: true, max_boxes_count: 500);
 
+// ta.highest/ta.lowest 需每根柱连续计算才能累积正确的回溯窗口，
+// 提取到全局作用域，条件块内引用其结果。
+let hh = ta.highest(high, 20);
+let ll = ta.lowest(low, 20);
+
 if bar_index % 20 == 0 and bar_index >= 20 {
-    Box.new(bar_index - 19, ta.highest(high, 20), bar_index, ta.lowest(low, 20),
+    Box.new(bar_index - 19, hh, bar_index, ll,
         bg_color: Color.new(Color.BLUE, 80),
         border_color: Color.BLUE,
         border_width: 1
