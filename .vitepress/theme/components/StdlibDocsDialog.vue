@@ -680,22 +680,22 @@ watchEffect(async () => {
           </div>
 
           <!-- Section quick-jump bar -->
-          <div v-if="visibleSectionCount > 1" class="flex sep-b shrink-0">
-            <button v-if="topTypes.length" @click="jumpToSection('types')"
-              class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors cursor-pointer">
-              <Box class="h-3 w-3 shrink-0" />{{ t('stdlibDialog.types') }}
+          <div v-if="visibleSectionCount > 1" class="flex items-center justify-center gap-1 px-1.5 py-1.5 sep-b shrink-0">
+            <button v-if="topTypes.length" @click="jumpToSection('types')" :title="t('stdlibDialog.types')"
+              class="group/jump flex items-center py-1 px-1.5 rounded-md text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer">
+              <Box class="h-3.5 w-3.5 shrink-0" /><span class="max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-200 ease-out group-hover/jump:max-w-[90px] group-hover/jump:opacity-100 group-hover/jump:ml-1">{{ t('stdlibDialog.types') }}</span>
             </button>
-            <button v-if="topFunctions.length" @click="jumpToSection('functions')"
-              class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors cursor-pointer">
-              <Code class="h-3 w-3 shrink-0" />{{ t('stdlibDialog.functions') }}
+            <button v-if="topFunctions.length" @click="jumpToSection('functions')" :title="t('stdlibDialog.functions')"
+              class="group/jump flex items-center py-1 px-1.5 rounded-md text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer">
+              <Code class="h-3.5 w-3.5 shrink-0" /><span class="max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-200 ease-out group-hover/jump:max-w-[90px] group-hover/jump:opacity-100 group-hover/jump:ml-1">{{ t('stdlibDialog.functions') }}</span>
             </button>
-            <button v-if="topProperties.length" @click="jumpToSection('properties')"
-              class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors cursor-pointer">
-              <Hash class="h-3 w-3 shrink-0" />{{ t('stdlibDialog.properties') }}
+            <button v-if="topProperties.length" @click="jumpToSection('properties')" :title="t('stdlibDialog.properties')"
+              class="group/jump flex items-center py-1 px-1.5 rounded-md text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer">
+              <Hash class="h-3.5 w-3.5 shrink-0" /><span class="max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-200 ease-out group-hover/jump:max-w-[90px] group-hover/jump:opacity-100 group-hover/jump:ml-1">{{ t('stdlibDialog.properties') }}</span>
             </button>
-            <button v-if="!search && moduleNames.length" @click="jumpToSection('modules')"
-              class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors cursor-pointer">
-              <Library class="h-3 w-3 shrink-0" />{{ t('stdlibDialog.modules') }}
+            <button v-if="!search && moduleNames.length" @click="jumpToSection('modules')" :title="t('stdlibDialog.modules')"
+              class="group/jump flex items-center py-1 px-1.5 rounded-md text-[10px] text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer">
+              <Library class="h-3.5 w-3.5 shrink-0" /><span class="max-w-0 opacity-0 overflow-hidden whitespace-nowrap transition-all duration-200 ease-out group-hover/jump:max-w-[90px] group-hover/jump:opacity-100 group-hover/jump:ml-1">{{ t('stdlibDialog.modules') }}</span>
             </button>
           </div>
 
@@ -709,8 +709,14 @@ watchEffect(async () => {
                 {{ t('stdlibDialog.types') }}
               </div>
               <div v-for="item in topTypes" :key="item.key">
-                <!-- Type row: chevron (expand) + name (select) -->
-                <div class="flex items-center">
+                <!-- Type row: chevron (expand) + name (select); the full-width
+                     row carries the selection highlight so it spans the list. -->
+                <div
+                  class="flex items-center border-l-2 transition-colors"
+                  :class="selectedKey === item.key
+                    ? 'bg-primary/10 border-primary'
+                    : 'hover:bg-accent/50 border-transparent'"
+                >
                   <button
                     class="shrink-0 h-[27px] w-6 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                     :class="!typeMemberItems(item.key).length && 'opacity-0 pointer-events-none'"
@@ -720,10 +726,7 @@ watchEffect(async () => {
                   </button>
                   <button
                     :data-key="item.key"
-                    class="flex-1 min-w-0 text-left pr-2 py-[5px] truncate transition-colors cursor-pointer border-l-2"
-                    :class="selectedKey === item.key
-                      ? 'bg-primary/10 text-primary font-medium border-primary'
-                      : 'hover:bg-accent/50 border-transparent'"
+                    class="flex-1 min-w-0 text-left pr-2 py-[5px] truncate cursor-pointer"
                     @click="select(item.key)"
                   >
                     {{ item.label }}
@@ -732,19 +735,19 @@ watchEffect(async () => {
                 <!-- Type members (methods / static methods / static properties) -->
                 <div class="grid transition-[grid-template-rows] duration-150 ease-out" :class="expandedTypes.has(item.key) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
                   <div class="overflow-hidden">
-                    <button
+                    <div
                       v-for="member in typeMemberItems(item.key)"
                       :key="member.key"
                       :data-key="member.key"
                       class="w-full text-left pl-8 pr-2 py-[4px] truncate transition-colors cursor-pointer flex items-center gap-1.5 border-l-2"
                       :class="selectedKey === member.key
-                        ? 'bg-primary/10 text-primary font-medium border-primary'
+                        ? 'bg-primary/10 text-foreground border-primary'
                         : 'hover:bg-accent/50 border-transparent text-muted-foreground hover:text-foreground'"
                       @click="select(member.key)"
                     >
-                      <span class="truncate text-[12px]">{{ member.entry.name }}</span>
+                      <span class="truncate text-[12px] leading-5">{{ member.entry.name }}</span>
                       <span class="shrink-0 text-[9px] uppercase tracking-wider opacity-50">{{ member.kind === 'staticproperty' ? 'prop' : member.kind === 'staticmethod' ? 'static' : '' }}</span>
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -757,18 +760,18 @@ watchEffect(async () => {
                 <Code class="h-3 w-3" />
                 {{ t('stdlibDialog.functions') }}
               </div>
-              <button
+              <div
                 v-for="item in topFunctions"
                 :key="item.key"
                 :data-key="item.key"
-                class="group w-full text-left px-3 py-[5px] truncate transition-colors cursor-pointer"
+                class="group w-full text-left px-3 py-[5px] truncate transition-colors cursor-pointer border-l-2"
                 :class="selectedKey === item.key
-                  ? 'bg-primary/10 text-primary font-medium border-l-2 border-primary'
-                  : 'hover:bg-accent/50 border-l-2 border-transparent'"
+                  ? 'bg-primary/10 text-foreground border-primary'
+                  : 'hover:bg-accent/50 border-transparent'"
                 @click="select(item.key)"
               >
                 {{ item.label }}
-              </button>
+              </div>
             </template>
 
             <!-- Properties -->
@@ -778,18 +781,18 @@ watchEffect(async () => {
                 <Hash class="h-3 w-3" />
                 {{ t('stdlibDialog.properties') }}
               </div>
-              <button
+              <div
                 v-for="item in topProperties"
                 :key="item.key"
                 :data-key="item.key"
-                class="group w-full text-left px-3 py-[5px] truncate transition-colors cursor-pointer"
+                class="group w-full text-left px-3 py-[5px] truncate transition-colors cursor-pointer border-l-2"
                 :class="selectedKey === item.key
-                  ? 'bg-primary/10 text-primary font-medium border-l-2 border-primary'
-                  : 'hover:bg-accent/50 border-l-2 border-transparent'"
+                  ? 'bg-primary/10 text-foreground border-primary'
+                  : 'hover:bg-accent/50 border-transparent'"
                 @click="select(item.key)"
               >
                 {{ item.label }}
-              </button>
+              </div>
             </template>
 
             <!-- Modules (collapsed tree, only when not searching) -->
@@ -812,56 +815,60 @@ watchEffect(async () => {
                     <template v-for="item in moduleItems(mod)" :key="item.key">
                       <!-- Type item: expandable if it has members -->
                       <template v-if="item.kind === 'type'">
-                        <div class="flex items-center pl-4">
-                          <button
-                            class="shrink-0 h-[27px] w-5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                            :class="!typeMemberItems(item.key).length && 'opacity-0 pointer-events-none'"
-                            @click.stop="toggleType(item.key)"
-                          >
-                            <ChevronRight class="h-3 w-3 transition-transform duration-150" :class="expandedTypes.has(item.key) && 'rotate-90'" />
-                          </button>
-                          <button
-                            :data-key="item.key"
-                            class="flex-1 min-w-0 text-left pr-2 py-[5px] truncate transition-colors cursor-pointer border-l-2"
-                            :class="selectedKey === item.key
-                              ? 'bg-primary/10 text-primary font-medium border-primary'
-                              : 'hover:bg-accent/50 border-transparent'"
-                            @click="select(item.key)"
-                          >
-                            {{ item.entry.name }}
-                          </button>
+                        <div
+                          class="border-l-2 transition-colors"
+                          :class="selectedKey === item.key
+                            ? 'bg-primary/10 border-primary'
+                            : 'hover:bg-accent/50 border-transparent'"
+                        >
+                          <div class="flex items-center pl-4">
+                            <button
+                              class="shrink-0 h-[27px] w-5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                              :class="!typeMemberItems(item.key).length && 'opacity-0 pointer-events-none'"
+                              @click.stop="toggleType(item.key)"
+                            >
+                              <ChevronRight class="h-3 w-3 transition-transform duration-150" :class="expandedTypes.has(item.key) && 'rotate-90'" />
+                            </button>
+                            <button
+                              :data-key="item.key"
+                              class="flex-1 min-w-0 text-left pr-2 py-[5px] truncate cursor-pointer"
+                              @click="select(item.key)"
+                            >
+                              {{ item.entry.name }}
+                            </button>
+                          </div>
                         </div>
                         <!-- Type members within module -->
                         <div class="grid transition-[grid-template-rows] duration-150 ease-out" :class="expandedTypes.has(item.key) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
                           <div class="overflow-hidden">
-                            <button
+                            <div
                               v-for="member in typeMemberItems(item.key)"
                               :key="member.key"
                               :data-key="member.key"
                               class="w-full text-left pl-12 pr-2 py-[4px] truncate transition-colors cursor-pointer flex items-center gap-1.5 border-l-2"
                               :class="selectedKey === member.key
-                                ? 'bg-primary/10 text-primary font-medium border-primary'
+                                ? 'bg-primary/10 text-foreground border-primary'
                                 : 'hover:bg-accent/50 border-transparent text-muted-foreground hover:text-foreground'"
                               @click="select(member.key)"
                             >
-                              <span class="truncate text-[12px]">{{ member.entry.name }}</span>
+                              <span class="truncate text-[12px] leading-5">{{ member.entry.name }}</span>
                               <span class="shrink-0 text-[9px] uppercase tracking-wider opacity-50">{{ member.kind === 'staticproperty' ? 'prop' : member.kind === 'staticmethod' ? 'static' : '' }}</span>
-                            </button>
+                            </div>
                           </div>
                         </div>
                       </template>
-                      <!-- Non-type item: simple button -->
-                      <button
+                      <!-- Non-type item: simple selectable row -->
+                      <div
                         v-else
                         :data-key="item.key"
                         class="w-full text-left pl-8 pr-3 py-[5px] truncate transition-colors cursor-pointer border-l-2"
                         :class="selectedKey === item.key
-                          ? 'bg-primary/10 text-primary font-medium border-primary'
+                          ? 'bg-primary/10 text-foreground border-primary'
                           : 'hover:bg-accent/50 border-transparent'"
                         @click="select(item.key)"
                       >
                         {{ item.entry.name }}
-                      </button>
+                      </div>
                     </template>
                   </div>
                 </div>
