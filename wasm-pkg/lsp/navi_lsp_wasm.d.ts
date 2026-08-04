@@ -151,10 +151,19 @@ export interface ResolvedSymbol {
    */
   module: string | null;
   /**
-   * Parent symbol name. Set for `enumVariant` (the enum type name) and
-   * `objectField` (the struct/object type name). `null` otherwise.
+   * Parent symbol name. Set for `enumVariant` (the enum type name) and for
+   * `method`/`staticMethod`/`staticProperty` (the receiver type name).
+   * `null` otherwise.
    */
   parent: string | null;
+  /**
+   * For an overloaded callable, the 0-based index of the resolved overload
+   * within its overload set (ordered by source position, matching
+   * `FunctionEntry.overloads` in the stdlib docs). `null` for non-callable
+   * symbols. Use it to open a docs viewer on the exact overload the call
+   * resolves to.
+   */
+  overloadIndex: number | null;
   /** Location of the symbol's definition. */
   location: Location;
 }
