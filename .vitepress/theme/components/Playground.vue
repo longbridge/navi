@@ -642,7 +642,7 @@ const runtimeErrorDetail = ref<{
 const stdlibDocsCache = shallowRef<StdlibDocs | null>(null)
 const stdlibDocsCacheLocale = ref<string | null>(null)
 const stdlibDocsOpen = ref(false)
-const stdlibDocsInitial = ref<{ module: string; name: string } | null>(null)
+const stdlibDocsInitial = ref<{ module: string; name: string; overloadIndex?: number } | null>(null)
 
 function refreshStdlibDocs(localeCode: string) {
   if (!engine.value) return
@@ -654,7 +654,7 @@ function refreshStdlibDocs(localeCode: string) {
   })
 }
 
-function onShowStdlibDocs(info: { module: string; name: string } | null) {
+function onShowStdlibDocs(info: { module: string; name: string; overloadIndex?: number } | null) {
   const currentLocale = lang.value || 'en'
   if (!stdlibDocsCache.value || stdlibDocsCacheLocale.value !== currentLocale)
     refreshStdlibDocs(currentLocale)
@@ -1997,6 +1997,7 @@ watch(strategyReport, (report) => {
       :stdlib-docs="stdlibDocsCache"
       :initial-module="stdlibDocsInitial?.module"
       :initial-name="stdlibDocsInitial?.name"
+      :initial-overload="stdlibDocsInitial?.overloadIndex"
       @close="stdlibDocsOpen = false"
     />
   </div>

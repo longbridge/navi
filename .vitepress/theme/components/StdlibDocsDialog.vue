@@ -18,6 +18,8 @@ const props = defineProps<{
   stdlibDocs: StdlibDocs | null
   initialModule?: string
   initialName?: string
+  /** 0-based overload to preselect for the initial symbol (call-site match). */
+  initialOverload?: number
 }>()
 
 const emit = defineEmits<{ close: [] }>()
@@ -289,6 +291,11 @@ watch(() => props.open, async (isOpen) => {
     }
     await nextTick()
     scrollToSelected()
+    // Preselect the call-site overload. Applied after `nextTick` so it wins
+    // over the `watch(selectedKey)` reset-to-0 that fires during the flush.
+    const ovCount = displayedOverloads.value.length
+    if (ovCount > 0)
+      selectedOverloadIdx.value = Math.min(Math.max(props.initialOverload ?? 0, 0), ovCount - 1)
   } else {
     const key = allItems.value[0]?.key ?? null
     if (key) { pushHistory(key); selectedKey.value = key }

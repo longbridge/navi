@@ -12,10 +12,32 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   change: [source: string]
-  'show-docs': [info: { module: string; name: string } | null]
+  'show-docs': [info: { module: string; name: string; overloadIndex?: number } | null]
 }>()
 
 const { t } = useI18n()
+
+// Resolve the symbol at a position into a stdlib-docs target, or null when it
+// isn't a documented stdlib/prelude symbol. `kind` is returned so callers can
+// gate on it; for type members the name is qualified (`Label.new`) and
+// `overloadIndex` pins the exact overload the call site resolves to.
+function resolveDocsTargetAt(
+  eng: PlaygroundEngine,
+  line: number,
+  character: number,
+): { kind: string; module: string; name: string; overloadIndex?: number } | null {
+  const resolved = eng.analyzer.resolveSymbolAt(line, character) as
+    | { name: string; kind: string; module?: string; parent?: string; overloadIndex?: number }
+    | null
+  if (!resolved?.module) return null
+  const name =
+    resolved.kind === 'enumVariant' && resolved.parent
+      ? resolved.parent
+      : (resolved.kind === 'staticMethod' || resolved.kind === 'method' || resolved.kind === 'staticProperty') && resolved.parent
+        ? `${resolved.parent}.${resolved.name}`
+        : resolved.name
+  return { kind: resolved.kind, module: resolved.module, name, overloadIndex: resolved.overloadIndex ?? undefined }
+}
 
 const container = ref<HTMLDivElement | null>(null)
 const editorRef = shallowRef<import('monaco-editor').editor.IStandaloneCodeEditor | null>(null)
@@ -388,22 +410,13 @@ function registerLspProviders(monaco: typeof import('monaco-editor')) {
         if (!pos) return true
         const model = editor.getModel()
         if (model) ensureSourceSynced(eng, model)
-        const resolved = eng.analyzer.resolveSymbolAt(
-          pos.lineNumber - 1,
-          pos.column - 1,
-        ) as { name: string; kind: string; module?: string; parent?: string } | null
+        const target = resolveDocsTargetAt(eng, pos.lineNumber - 1, pos.column - 1)
         const docsKinds = new Set([
           'function', 'property', 'method', 'staticMethod',
           'object', 'enum', 'enumVariant',
         ])
-        if (resolved?.module && docsKinds.has(resolved.kind)) {
-          const name =
-            resolved.kind === 'enumVariant' && resolved.parent
-              ? resolved.parent
-              : (resolved.kind === 'staticMethod' || resolved.kind === 'method' || resolved.kind === 'staticProperty') && resolved.parent
-                ? `${resolved.parent}.${resolved.name}`
-                : resolved.name
-          emit('show-docs', { module: resolved.module, name })
+        if (target && docsKinds.has(target.kind)) {
+          emit('show-docs', { module: target.module, name: target.name, overloadIndex: target.overloadIndex })
         }
         return true // handled — prevent Monaco from navigating away
       },
@@ -428,18 +441,9 @@ function registerLspProviders(monaco: typeof import('monaco-editor')) {
         }
         const model = editor.getModel()
         if (model) ensureSourceSynced(eng, model)
-        const resolved = eng.analyzer.resolveSymbolAt(
-          pos.lineNumber - 1,
-          pos.column - 1,
-        ) as { name: string; kind: string; module?: string; parent?: string } | null
-        if (resolved?.module) {
-          const name =
-            resolved.kind === 'enumVariant' && resolved.parent
-              ? resolved.parent
-              : (resolved.kind === 'staticMethod' || resolved.kind === 'method' || resolved.kind === 'staticProperty') && resolved.parent
-                ? `${resolved.parent}.${resolved.name}`
-                : resolved.name
-          emit('show-docs', { module: resolved.module, name })
+        const target = resolveDocsTargetAt(eng, pos.lineNumber - 1, pos.column - 1)
+        if (target) {
+          emit('show-docs', { module: target.module, name: target.name, overloadIndex: target.overloadIndex })
         } else {
           emit('show-docs', null)
         }
