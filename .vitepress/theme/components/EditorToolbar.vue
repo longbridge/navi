@@ -117,10 +117,10 @@ const filteredChartTestGroups = computed(() => {
     <div class="flex flex-1 min-w-0 overflow-hidden items-center gap-1">
       <PopoverRoot v-model:open="scriptMenuOpen">
         <PopoverTrigger
-          class="flex h-8 min-w-0 items-center whitespace-nowrap rounded-md border px-2 text-xs font-medium ring-offset-background transition-all hover:bg-foreground/10 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          class="flex h-8 min-w-0 shrink items-center justify-between whitespace-nowrap rounded-md border px-2 text-xs font-medium ring-offset-background transition-all ease-out hover:bg-foreground/10 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           :class="scriptMenuOpen
-            ? 'flex-1 justify-between border-input bg-background px-3 shadow-sm'
-            : 'w-auto shrink justify-start gap-1 border-transparent bg-transparent shadow-none'"
+            ? 'grow border-input bg-background shadow-sm duration-200'
+            : 'grow-0 border-transparent bg-transparent shadow-none duration-300'"
           @click="openMenu"
         >
           <span class="truncate">{{ activeScriptName }}</span>
@@ -131,7 +131,7 @@ const filteredChartTestGroups = computed(() => {
             :side-offset="4"
             align="start"
             :avoid-collisions="true"
-            class="z-50 w-[var(--radix-popover-trigger-width)] min-w-[320px] rounded-md border bg-popover text-popover-foreground shadow-md outline-none"
+            class="z-50 w-[var(--radix-popover-trigger-width)] min-w-[320px] max-w-[calc(100vw-2rem)] rounded-md border bg-popover text-popover-foreground shadow-md outline-none"
             @open-auto-focus.prevent
           >
             <!-- Search -->
@@ -240,8 +240,8 @@ const filteredChartTestGroups = computed(() => {
       <span v-if="dirty" class="inline-block w-1.5 h-1.5 rounded-full bg-primary shrink-0" :title="t('toolbar.unsaved')" />
       <div
         v-if="!scriptsOnChart.has(scriptTag)"
-        class="flex shrink-0 items-center overflow-hidden transition-all duration-200 ease-out"
-        :class="scriptMenuOpen ? 'max-w-0 opacity-0 pointer-events-none' : 'max-w-[160px] opacity-100'"
+        class="flex shrink-0 items-center overflow-hidden transition-all ease-out"
+        :class="scriptMenuOpen ? 'max-w-0 opacity-0 translate-x-3 pointer-events-none duration-200' : 'max-w-[160px] opacity-100 translate-x-0 duration-300'"
       >
         <button
           class="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-md bg-primary/10 px-2.5 text-xs font-medium text-primary transition-colors hover:bg-primary/15"
@@ -256,8 +256,8 @@ const filteredChartTestGroups = computed(() => {
 
     <!-- Script actions: collapse away while the script picker is open -->
     <div
-      class="flex shrink-0 items-center gap-1 overflow-hidden transition-all duration-200 ease-out"
-      :class="scriptMenuOpen ? 'max-w-0 opacity-0 pointer-events-none' : 'max-w-[240px] opacity-100'"
+      class="flex shrink-0 items-center gap-1 overflow-hidden transition-all ease-out"
+      :class="scriptMenuOpen ? 'max-w-0 opacity-0 translate-x-3 pointer-events-none duration-200' : 'max-w-[240px] opacity-100 translate-x-0 duration-300'"
     >
       <div class="flex items-center gap-0.5" role="group" :aria-label="t('toolbar.fileActions')">
       <button
