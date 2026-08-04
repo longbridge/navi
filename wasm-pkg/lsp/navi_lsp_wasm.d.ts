@@ -8,6 +8,186 @@
  */
 export function stdlib_docs(locale: string): any;
 
+/** An RGBA color with components in the range `[0.0, 1.0]`. */
+export interface Color {
+  red: number;
+  green: number;
+  blue: number;
+  alpha: number;
+}
+
+/** A color literal found in the document, with its source range. */
+export interface DocumentColor {
+  /** Range of the color literal in the source (e.g. `#FF0000`). */
+  range: Range;
+  /** The parsed color value. */
+  color: Color;
+}
+
+
+
+/** A source file loaded as part of the analysis (entry script, prelude, or stdlib). */
+export interface SourceFileInfo {
+  /**
+   * File path / URI.
+   *
+   * - Entry script: the URI passed to `analyze(uri, source)`.
+   * - Prelude files: `"navi:///prelude/<name>.pine"`.
+   * - Stdlib files: `"navi:///stdlib/<name>.<order>.pine"`.
+   */
+  path: string;
+  /** Full source text of the file. */
+  source: string;
+}
+
+
+
+/** Severity level of a diagnostic message. */
+export type DiagnosticSeverity = "error" | "warning" | "information" | "hint";
+
+/**
+ * A diagnostic message (error, warning, or hint) attached to a range in the
+ * source document.
+ */
+export interface Diagnostic {
+  /** The range to which this diagnostic applies. */
+  range: Range;
+  /** Severity level. */
+  severity: DiagnosticSeverity;
+  /** Human-readable description of the problem. */
+  message: string;
+  /**
+   * Source-file index (into `sourceFiles[]`) when the diagnostic originates
+   * from a file other than the entry script (e.g. a stdlib module).
+   * Omitted when the file is the entry script or unknown.
+   */
+  fileId?: number;
+}
+
+
+
+/** Whether the highlighted occurrence is a read or a write. */
+export type DocumentHighlightKind = "read" | "write";
+
+/** A highlighted range for one occurrence of the symbol under the cursor. */
+export interface DocumentHighlight {
+  /** Range to highlight. */
+  range: Range;
+  /** Occurrence kind. */
+  kind: DocumentHighlightKind;
+}
+
+
+
+/** Hover card content returned for the symbol under the cursor. */
+export interface HoverResult {
+  /** Markdown-formatted hover text. */
+  contents: string;
+  /** Range of the hovered token, if known. */
+  range?: Range;
+}
+
+
+
+/** A callable symbol node in the call hierarchy tree. */
+export interface CallHierarchyItem {
+  /** Symbol name. */
+  name: string;
+  /** LSP symbol kind. */
+  kind: SymbolKind;
+  /** URI of the file containing this symbol. */
+  uri: string;
+  /** Full range of the symbol (including its body). */
+  range: Range;
+  /** Narrow range to select (typically just the name). */
+  selectionRange: Range;
+  /** Optional detail (e.g. function signature). */
+  detail?: string;
+}
+
+/** An incoming call: a function that calls the query symbol. */
+export interface CallHierarchyIncomingCall {
+  /** The calling function. */
+  from: CallHierarchyItem;
+  /**
+   * Ranges within `from` where the query symbol is called.
+   * Multiple entries when the same caller calls the symbol more than once.
+   */
+  fromRanges: Range[];
+}
+
+/** An outgoing call: a function that the query symbol calls. */
+export interface CallHierarchyOutgoingCall {
+  /** The called function. */
+  to: CallHierarchyItem;
+  /**
+   * Ranges within the query symbol where `to` is called.
+   * Multiple entries when `to` is called more than once.
+   */
+  fromRanges: Range[];
+}
+
+
+
+/** Result of a prepare-rename check — confirms the symbol is renameable. */
+export interface PrepareRenameResult {
+  /** The range of the symbol that will be renamed. */
+  range: Range;
+  /** Current name of the symbol (suggested placeholder in the rename box). */
+  placeholder: string;
+}
+
+/** A single text replacement that must be applied as part of a rename. */
+export interface RenameEdit {
+  /** URI of the file containing the edit. */
+  uri: string;
+  /** Range to replace. */
+  range: Range;
+  /** Replacement text (the new name). */
+  newText: string;
+}
+
+
+
+/** Documentation for a single function parameter. */
+export interface ParameterInfo {
+  /** Parameter name (e.g. `"source"`). */
+  label: string;
+  /** Type name, if known (e.g. `"series float"`). */
+  typeName?: string;
+  /** Parameter-level documentation. */
+  documentation?: string;
+  /**
+   * `[start, end)` byte offsets within the parent `SignatureInfo.label` string
+   * for precise parameter highlighting in the editor.
+   */
+  labelOffsets?: [number, number];
+}
+
+/** Signature information for one overload of a function call. */
+export interface SignatureInfo {
+  /** Full signature text, e.g. `"sma(series float source, int length) → series float"`. */
+  label: string;
+  /** Parameter list in the same order as they appear in the signature. */
+  parameters: ParameterInfo[];
+  /** 0-based index of the parameter the cursor is currently editing. */
+  activeParameter: number;
+  /** Markdown documentation for this overload. */
+  documentation?: string;
+}
+
+
+
+/** A collapsible region in the document (e.g. a function body). */
+export interface FoldingRange {
+  /** 0-based start line. */
+  startLine: number;
+  /** 0-based end line. */
+  endLine: number;
+}
+
+
+
 /** The kind of a completion item, used to select an icon in the editor UI. */
 export type CompletionItemKind =
   | "variable" | "function" | "property" | "method" | "field"
@@ -61,61 +241,6 @@ export interface CodeLens {
   uri: string;
   /** Position passed to the find-references command. */
   position: Position;
-}
-
-
-
-/** Severity level of a diagnostic message. */
-export type DiagnosticSeverity = "error" | "warning" | "information" | "hint";
-
-/**
- * A diagnostic message (error, warning, or hint) attached to a range in the
- * source document.
- */
-export interface Diagnostic {
-  /** The range to which this diagnostic applies. */
-  range: Range;
-  /** Severity level. */
-  severity: DiagnosticSeverity;
-  /** Human-readable description of the problem. */
-  message: string;
-  /**
-   * Source-file index (into `sourceFiles[]`) when the diagnostic originates
-   * from a file other than the entry script (e.g. a stdlib module).
-   * Omitted when the file is the entry script or unknown.
-   */
-  fileId?: number;
-}
-
-
-
-/** Distinguishes parameter-name hints from type-inference hints. */
-export type InlayHintKind = "parameter" | "type";
-
-/** An inline hint to display inside the editor (Monaco `IInlayHint`). */
-export interface InlayHint {
-  /** Position where the hint should be rendered (before the token). */
-  position: Position;
-  /** Label text, e.g. `"source:"` or `": float"`. */
-  label: string;
-  /** Hint kind. */
-  kind: InlayHintKind;
-}
-
-
-
-/** A source file loaded as part of the analysis (entry script, prelude, or stdlib). */
-export interface SourceFileInfo {
-  /**
-   * File path / URI.
-   *
-   * - Entry script: the URI passed to `analyze(uri, source)`.
-   * - Prelude files: `"navi:///prelude/<name>.pine"`.
-   * - Stdlib files: `"navi:///stdlib/<name>.<order>.pine"`.
-   */
-  path: string;
-  /** Full source text of the file. */
-  source: string;
 }
 
 
@@ -207,6 +332,44 @@ export interface WorkspaceSymbol {
 
 
 
+/**
+ * Semantic token type names, in legend order (index = type ID used in the
+ * encoded token stream).
+ *
+ * Matches the LSP `SemanticTokensLegend.tokenTypes` array.
+ */
+export type SemanticTokenType =
+  | "namespace" | "type" | "enum" | "struct" | "typeParameter"
+  | "parameter" | "variable" | "property" | "enumMember"
+  | "function" | "method" | "keyword" | "comment"
+  | "string" | "number" | "operator";
+
+/**
+ * Semantic token modifier names, in legend order (bit index = modifier ID).
+ *
+ * Matches the LSP `SemanticTokensLegend.tokenModifiers` array.
+ */
+export type SemanticTokenModifier =
+  | "declaration" | "definition" | "readonly" | "static"
+  | "deprecated" | "defaultLibrary";
+
+
+
+/** Distinguishes parameter-name hints from type-inference hints. */
+export type InlayHintKind = "parameter" | "type";
+
+/** An inline hint to display inside the editor (Monaco `IInlayHint`). */
+export interface InlayHint {
+  /** Position where the hint should be rendered (before the token). */
+  position: Position;
+  /** Label text, e.g. `"source:"` or `": float"`. */
+  label: string;
+  /** Hint kind. */
+  kind: InlayHintKind;
+}
+
+
+
 /** A 0-based position within a text document. */
 export interface Position {
   /** 0-based line number. */
@@ -233,169 +396,6 @@ export interface Location {
   /** The range within the document. */
   range: Range;
 }
-
-
-
-/** Documentation for a single function parameter. */
-export interface ParameterInfo {
-  /** Parameter name (e.g. `"source"`). */
-  label: string;
-  /** Type name, if known (e.g. `"series float"`). */
-  typeName?: string;
-  /** Parameter-level documentation. */
-  documentation?: string;
-  /**
-   * `[start, end)` byte offsets within the parent `SignatureInfo.label` string
-   * for precise parameter highlighting in the editor.
-   */
-  labelOffsets?: [number, number];
-}
-
-/** Signature information for one overload of a function call. */
-export interface SignatureInfo {
-  /** Full signature text, e.g. `"sma(series float source, int length) → series float"`. */
-  label: string;
-  /** Parameter list in the same order as they appear in the signature. */
-  parameters: ParameterInfo[];
-  /** 0-based index of the parameter the cursor is currently editing. */
-  activeParameter: number;
-  /** Markdown documentation for this overload. */
-  documentation?: string;
-}
-
-
-
-/** Hover card content returned for the symbol under the cursor. */
-export interface HoverResult {
-  /** Markdown-formatted hover text. */
-  contents: string;
-  /** Range of the hovered token, if known. */
-  range?: Range;
-}
-
-
-
-/** An RGBA color with components in the range `[0.0, 1.0]`. */
-export interface Color {
-  red: number;
-  green: number;
-  blue: number;
-  alpha: number;
-}
-
-/** A color literal found in the document, with its source range. */
-export interface DocumentColor {
-  /** Range of the color literal in the source (e.g. `#FF0000`). */
-  range: Range;
-  /** The parsed color value. */
-  color: Color;
-}
-
-
-
-/** A collapsible region in the document (e.g. a function body). */
-export interface FoldingRange {
-  /** 0-based start line. */
-  startLine: number;
-  /** 0-based end line. */
-  endLine: number;
-}
-
-
-
-/** A callable symbol node in the call hierarchy tree. */
-export interface CallHierarchyItem {
-  /** Symbol name. */
-  name: string;
-  /** LSP symbol kind. */
-  kind: SymbolKind;
-  /** URI of the file containing this symbol. */
-  uri: string;
-  /** Full range of the symbol (including its body). */
-  range: Range;
-  /** Narrow range to select (typically just the name). */
-  selectionRange: Range;
-  /** Optional detail (e.g. function signature). */
-  detail?: string;
-}
-
-/** An incoming call: a function that calls the query symbol. */
-export interface CallHierarchyIncomingCall {
-  /** The calling function. */
-  from: CallHierarchyItem;
-  /**
-   * Ranges within `from` where the query symbol is called.
-   * Multiple entries when the same caller calls the symbol more than once.
-   */
-  fromRanges: Range[];
-}
-
-/** An outgoing call: a function that the query symbol calls. */
-export interface CallHierarchyOutgoingCall {
-  /** The called function. */
-  to: CallHierarchyItem;
-  /**
-   * Ranges within the query symbol where `to` is called.
-   * Multiple entries when `to` is called more than once.
-   */
-  fromRanges: Range[];
-}
-
-
-
-/** Whether the highlighted occurrence is a read or a write. */
-export type DocumentHighlightKind = "read" | "write";
-
-/** A highlighted range for one occurrence of the symbol under the cursor. */
-export interface DocumentHighlight {
-  /** Range to highlight. */
-  range: Range;
-  /** Occurrence kind. */
-  kind: DocumentHighlightKind;
-}
-
-
-
-/** Result of a prepare-rename check — confirms the symbol is renameable. */
-export interface PrepareRenameResult {
-  /** The range of the symbol that will be renamed. */
-  range: Range;
-  /** Current name of the symbol (suggested placeholder in the rename box). */
-  placeholder: string;
-}
-
-/** A single text replacement that must be applied as part of a rename. */
-export interface RenameEdit {
-  /** URI of the file containing the edit. */
-  uri: string;
-  /** Range to replace. */
-  range: Range;
-  /** Replacement text (the new name). */
-  newText: string;
-}
-
-
-
-/**
- * Semantic token type names, in legend order (index = type ID used in the
- * encoded token stream).
- *
- * Matches the LSP `SemanticTokensLegend.tokenTypes` array.
- */
-export type SemanticTokenType =
-  | "namespace" | "type" | "enum" | "struct" | "typeParameter"
-  | "parameter" | "variable" | "property" | "enumMember"
-  | "function" | "method" | "keyword" | "comment"
-  | "string" | "number" | "operator";
-
-/**
- * Semantic token modifier names, in legend order (bit index = modifier ID).
- *
- * Matches the LSP `SemanticTokensLegend.tokenModifiers` array.
- */
-export type SemanticTokenModifier =
-  | "declaration" | "definition" | "readonly" | "static"
-  | "deprecated" | "defaultLibrary";
 
 
 /**

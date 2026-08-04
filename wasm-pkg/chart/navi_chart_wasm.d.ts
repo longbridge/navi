@@ -1,169 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Returns a JS object representing the built-in dark theme.
- *
- * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
- */
-export function darkTheme(): any;
-/**
  * Returns a JS object representing the built-in light theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
 /**
+ * Returns a JS object representing the built-in dark theme.
+ *
+ * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
+ */
+export function darkTheme(): any;
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
+/**
  * The `ReadableStreamType` enum.
  *
  * *This API requires the following crate features to be activated: `ReadableStreamType`*
  */
 type ReadableStreamType = "bytes";
-
-/** A position within a source file. */
-export interface Position {
-  /** Zero-based file identifier — look up the path in `sourceFiles[fileId]`. */
-  fileId: number;
-  /** One-based line number. */
-  line: number;
-  /** Zero-based column offset in characters. */
-  column: number;
-  /** Byte offset from the start of the source text. */
-  byteOffset: number;
-}
-
-/** A half-open `[start, end)` span in source code. */
-export interface Span {
-  start: Position;
-  end: Position;
-}
-
-/** A rectangular region in CSS pixel coordinates. */
-export interface Rect {
-  origin: { x: number; y: number };
-  size: { width: number; height: number };
-}
-
-/**
- * Keyboard modifier bitfield forwarded to interaction methods.
- *
- * | Bit | Key   |
- * |-----|-------|
- * | 1   | Ctrl  |
- * | 2   | Shift |
- * | 4   | Alt   |
- * | 8   | Meta  |
- */
-export type Modifiers = number;
-
-
-
-/** ISO 4217 currency code, e.g. `"USD"`, `"HKD"`. */
-export type Currency = string;
-
-/** Instrument type, e.g. `"stock"`, `"futures"`, `"crypto"`. */
-export type SymbolType = string;
-
-/** How volume is reported: `"base"` or `"quote"`. */
-export type VolumeType = string;
-
-/** Exchange / market identifier, e.g. `"NYSE"`, `"NASDAQ"`. */
-export type Market = string;
-
-/**
- * Partial symbol metadata returned by `DataProvider.symbolInfo()`.
- *
- * All fields are optional. Any field omitted (or set to `undefined`) falls
- * back to a default derived from the symbol's exchange prefix.
- */
-export interface PartialSymbolInfo {
-  /** Exchange that the symbol belongs to. */
-  market?: Market;
-  /** Human-readable description, e.g. `"Apple Inc."`. */
-  description?: string;
-  /** Instrument type. */
-  type?: SymbolType;
-  /** ISO 3166-1 alpha-2 country code, e.g. `"US"`. */
-  country?: string;
-  /** International Securities Identification Number. */
-  isin?: string;
-  /** Root symbol for derivatives, e.g. `"ES"` for `"ESZ4"`. */
-  root?: string;
-  /** Numerator of `mintick = minMove / priceScale`. */
-  minMove?: number;
-  /** Denominator of `mintick = minMove / priceScale`. */
-  priceScale?: number;
-  /** Point value multiplier (usually `1`; relevant for futures). */
-  pointValue?: number;
-  /** Currency of the symbol's prices. */
-  currency?: Currency;
-  /** ISO 8601 expiration date for futures contracts. */
-  expirationDate?: string;
-  /** Ticker of the current front-month contract. */
-  currentContract?: string;
-  /** Base currency for forex / crypto pairs. */
-  baseCurrency?: Currency;
-  employees?: number;
-  industry?: string;
-  sector?: string;
-  minContract?: number;
-  volumeType?: VolumeType;
-  shareholders?: number;
-  sharesOutstandingFloat?: number;
-  sharesOutstandingTotal?: number;
-  recommendationsBuy?: number;
-  recommendationsBuyStrong?: number;
-  recommendationsHold?: number;
-  recommendationsSell?: number;
-  recommendationsSellStrong?: number;
-  /** ISO 8601 date of the latest analyst recommendations. */
-  recommendationsDate?: string;
-  recommendationsTotal?: number;
-  targetPriceAverage?: number;
-  /** ISO 8601 date of the latest price target. */
-  targetPriceDate?: string;
-  targetPriceEstimates?: number;
-  targetPriceHigh?: number;
-  targetPriceLow?: number;
-  targetPriceMedian?: number;
-}
-
-/**
- * Set of `syminfo.*` property fields that the compiled script actually
- * accesses. Implementations may use this to fetch only the required data.
- */
-export interface SyminfoFields {
-  [key: string]: boolean;
-}
-
-/** Field selector for `DataProvider.earnings()`. */
-export type EarningsField = string;
-/** Field selector for `DataProvider.dividends()`. */
-export type DividendsField = string;
-/** Field selector for `DataProvider.splits()`. */
-export type SplitsField = string;
-
-/** A single typed argument value in a `DataArgs` map. */
-export interface DataArg {
-  [key: string]: unknown;
-}
-
-/** Named, typed arguments passed to `DataProvider.data()`. */
-export type DataArgs = Record<string, DataArg>;
-
-
-
-/**
- * Item yielded by auxiliary data streams (currency rates, financials,
- * earnings, dividends, economic data, splits, custom data).
- *
- * Follows the same `"historyEnd"` stream protocol as
- * {@link CandlestickItem}.
- */
-export type AuxDataItem =
-  | { data: { /** Epoch milliseconds. */ time: number; value: number } }
-  | "historyEnd";
-
-
 
 /**
  * Supplies candlestick and auxiliary data to a {@link Chart}.
@@ -281,121 +140,98 @@ export interface LibraryLoader {
 
 
 
-/** Trading session that a candlestick belongs to. */
-export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
+/** ISO 4217 currency code, e.g. `"USD"`, `"HKD"`. */
+export type Currency = string;
+
+/** Instrument type, e.g. `"stock"`, `"futures"`, `"crypto"`. */
+export type SymbolType = string;
+
+/** How volume is reported: `"base"` or `"quote"`. */
+export type VolumeType = string;
+
+/** Exchange / market identifier, e.g. `"NYSE"`, `"NASDAQ"`. */
+export type Market = string;
 
 /**
- * Timeframe string identifying a bar interval.
+ * Partial symbol metadata returned by `DataProvider.symbolInfo()`.
  *
- * Common values: `"1"`, `"5"`, `"15"`, `"60"` (minutes), `"D"` (daily),
- * `"W"` (weekly), `"M"` (monthly).
+ * All fields are optional. Any field omitted (or set to `undefined`) falls
+ * back to a default derived from the symbol's exchange prefix.
  */
-export type TimeFrame = string;
-
-/** A single OHLCV candlestick bar. */
-export interface Candlestick {
-  /** Bar open time as epoch milliseconds. */
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  /** Trade volume. */
-  volume: number;
-  /** Turnover (volume × price). */
-  turnover: number;
-  /** Turnover rate (fraction of float traded). `NaN` when unavailable. */
-  turnoverRate: number;
-  tradeSession: TradeSession;
-  /** Best ask price at bar close (`NaN` when unavailable). */
-  ask: number;
-  /** Best bid price at bar close (`NaN` when unavailable). */
-  bid: number;
+export interface PartialSymbolInfo {
+  /** Exchange that the symbol belongs to. */
+  market?: Market;
+  /** Human-readable description, e.g. `"Apple Inc."`. */
+  description?: string;
+  /** Instrument type. */
+  type?: SymbolType;
+  /** ISO 3166-1 alpha-2 country code, e.g. `"US"`. */
+  country?: string;
+  /** International Securities Identification Number. */
+  isin?: string;
+  /** Root symbol for derivatives, e.g. `"ES"` for `"ESZ4"`. */
+  root?: string;
+  /** Numerator of `mintick = minMove / priceScale`. */
+  minMove?: number;
+  /** Denominator of `mintick = minMove / priceScale`. */
+  priceScale?: number;
+  /** Point value multiplier (usually `1`; relevant for futures). */
+  pointValue?: number;
+  /** Currency of the symbol's prices. */
+  currency?: Currency;
+  /** ISO 8601 expiration date for futures contracts. */
+  expirationDate?: string;
+  /** Ticker of the current front-month contract. */
+  currentContract?: string;
+  /** Base currency for forex / crypto pairs. */
+  baseCurrency?: Currency;
+  employees?: number;
+  industry?: string;
+  sector?: string;
+  minContract?: number;
+  volumeType?: VolumeType;
+  shareholders?: number;
+  sharesOutstandingFloat?: number;
+  sharesOutstandingTotal?: number;
+  recommendationsBuy?: number;
+  recommendationsBuyStrong?: number;
+  recommendationsHold?: number;
+  recommendationsSell?: number;
+  recommendationsSellStrong?: number;
+  /** ISO 8601 date of the latest analyst recommendations. */
+  recommendationsDate?: string;
+  recommendationsTotal?: number;
+  targetPriceAverage?: number;
+  /** ISO 8601 date of the latest price target. */
+  targetPriceDate?: string;
+  targetPriceEstimates?: number;
+  targetPriceHigh?: number;
+  targetPriceLow?: number;
+  targetPriceMedian?: number;
 }
 
 /**
- * Item yielded by `DataProvider.candlesticks()`.
- *
- * - `{ bar }` — a confirmed historical bar (before `"historyEnd"`) or the
- *   current forming realtime bar (after `"historyEnd"`).
- * - `"historyEnd"` — boundary marker emitted once, after all historical bars
- *   and before the first realtime bar.
+ * Set of `syminfo.*` property fields that the compiled script actually
+ * accesses. Implementations may use this to fetch only the required data.
  */
-export type CandlestickItem =
-  | { bar: Candlestick }
-  | "historyEnd";
-
-
-
-/** A source file referenced by error spans. */
-export interface SourceFile {
-  /** File path (or a synthetic name like `"<main>"`). */
-  path: string;
-  /** Full source text. */
-  source: string;
+export interface SyminfoFields {
+  [key: string]: boolean;
 }
 
-/**
- * Which module a backtrace frame belongs to.
- *
- * - `"main"` — the user's script.
- * - `"prelude"` — auto-imported built-in functions.
- * - `"stdlib"` — standard library (e.g. `ta`, `math`).
- * - `"import"` — an explicitly imported library.
- */
-export type ModuleKind = "main" | "prelude" | "stdlib" | "import";
+/** Field selector for `DataProvider.earnings()`. */
+export type EarningsField = string;
+/** Field selector for `DataProvider.dividends()`. */
+export type DividendsField = string;
+/** Field selector for `DataProvider.splits()`. */
+export type SplitsField = string;
 
-/** A single compilation diagnostic (always an error). */
-export interface CompileDiagnostic {
-  message: string;
-  /** Source spans associated with this diagnostic. */
-  spans: Span[];
+/** A single typed argument value in a `DataArgs` map. */
+export interface DataArg {
+  [key: string]: unknown;
 }
 
-/** One frame in a runtime call-stack backtrace. */
-export interface BacktraceFrame {
-  /** Qualified function name, e.g. `"ta.sma"`, or `null` for top-level code. */
-  funcName: string | null;
-  /** Call-site location. */
-  span: Span;
-  moduleKind: ModuleKind;
-}
-
-/**
- * Error thrown by `Chart.addScript()` when a script fails to compile or
- * execute.
- *
- * Discriminate on the variant key:
- *
- * ```ts
- * try {
- *   await chart.addScript(source, "my-ind");
- * } catch (e: unknown) {
- *   const err = e as ScriptError;
- *   if ("compile" in err) {
- *     showDiagnostics(err.compile.diagnostics);
- *   } else if ("exception" in err) {
- *     showRuntimeError(err.exception);
- *   } else if (err === "missingScriptType") {
- *     console.error("missing script type");
- *   }
- * }
- * ```
- */
-export type ScriptError =
-  | { compile:                  { diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> } }
-  | { exception:                { message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> } }
-  | "missingScriptType"
-  | { inputValueNotFound:       { id: number } }
-  | { setInputValue:            { id: number; error: string } }
-  | { unsupportedTimeFrame:     { timeFrame: TimeFrame } }
-  | { sessionNotAllowed:        { session: TradeSession } }
-  | "invalidSymbol"
-  | "unknownMarket"
-  | "libraryScriptNotExecutable"
-  | { dataProvider:             { message: string } }
-  | "confirmedBarUpdate"
-  | { jitCompilation:           { message: string } };
+/** Named, typed arguments passed to `DataProvider.data()`. */
+export type DataArgs = Record<string, DataArg>;
 
 
 
@@ -487,6 +323,103 @@ export type ChartEvent =
 
 
 
+/** Trading session that a candlestick belongs to. */
+export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
+
+/**
+ * Timeframe string identifying a bar interval.
+ *
+ * Common values: `"1"`, `"5"`, `"15"`, `"60"` (minutes), `"D"` (daily),
+ * `"W"` (weekly), `"M"` (monthly).
+ */
+export type TimeFrame = string;
+
+/** A single OHLCV candlestick bar. */
+export interface Candlestick {
+  /** Bar open time as epoch milliseconds. */
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  /** Trade volume. */
+  volume: number;
+  /** Turnover (volume × price). */
+  turnover: number;
+  /** Turnover rate (fraction of float traded). `NaN` when unavailable. */
+  turnoverRate: number;
+  tradeSession: TradeSession;
+  /** Best ask price at bar close (`NaN` when unavailable). */
+  ask: number;
+  /** Best bid price at bar close (`NaN` when unavailable). */
+  bid: number;
+}
+
+/**
+ * Item yielded by `DataProvider.candlesticks()`.
+ *
+ * - `{ bar }` — a confirmed historical bar (before `"historyEnd"`) or the
+ *   current forming realtime bar (after `"historyEnd"`).
+ * - `"historyEnd"` — boundary marker emitted once, after all historical bars
+ *   and before the first realtime bar.
+ */
+export type CandlestickItem =
+  | { bar: Candlestick }
+  | "historyEnd";
+
+
+
+/**
+ * Item yielded by auxiliary data streams (currency rates, financials,
+ * earnings, dividends, economic data, splits, custom data).
+ *
+ * Follows the same `"historyEnd"` stream protocol as
+ * {@link CandlestickItem}.
+ */
+export type AuxDataItem =
+  | { data: { /** Epoch milliseconds. */ time: number; value: number } }
+  | "historyEnd";
+
+
+
+/** A position within a source file. */
+export interface Position {
+  /** Zero-based file identifier — look up the path in `sourceFiles[fileId]`. */
+  fileId: number;
+  /** One-based line number. */
+  line: number;
+  /** Zero-based column offset in characters. */
+  column: number;
+  /** Byte offset from the start of the source text. */
+  byteOffset: number;
+}
+
+/** A half-open `[start, end)` span in source code. */
+export interface Span {
+  start: Position;
+  end: Position;
+}
+
+/** A rectangular region in CSS pixel coordinates. */
+export interface Rect {
+  origin: { x: number; y: number };
+  size: { width: number; height: number };
+}
+
+/**
+ * Keyboard modifier bitfield forwarded to interaction methods.
+ *
+ * | Bit | Key   |
+ * |-----|-------|
+ * | 1   | Ctrl  |
+ * | 2   | Shift |
+ * | 4   | Alt   |
+ * | 8   | Meta  |
+ */
+export type Modifiers = number;
+
+
+
 /** A single market tick (one trade event). */
 export interface Tick {
   /** Tick timestamp as epoch milliseconds. */
@@ -508,6 +441,78 @@ export interface Tick {
 export type TickItem =
   | { tick: Tick }
   | "historyEnd";
+
+
+
+/** A source file referenced by error spans. */
+export interface SourceFile {
+  /** File path (or a synthetic name like `"<main>"`). */
+  path: string;
+  /** Full source text. */
+  source: string;
+}
+
+/**
+ * Which module a backtrace frame belongs to.
+ *
+ * - `"main"` — the user's script.
+ * - `"prelude"` — auto-imported built-in functions.
+ * - `"stdlib"` — standard library (e.g. `ta`, `math`).
+ * - `"import"` — an explicitly imported library.
+ */
+export type ModuleKind = "main" | "prelude" | "stdlib" | "import";
+
+/** A single compilation diagnostic (always an error). */
+export interface CompileDiagnostic {
+  message: string;
+  /** Source spans associated with this diagnostic. */
+  spans: Span[];
+}
+
+/** One frame in a runtime call-stack backtrace. */
+export interface BacktraceFrame {
+  /** Qualified function name, e.g. `"ta.sma"`, or `null` for top-level code. */
+  funcName: string | null;
+  /** Call-site location. */
+  span: Span;
+  moduleKind: ModuleKind;
+}
+
+/**
+ * Error thrown by `Chart.addScript()` when a script fails to compile or
+ * execute.
+ *
+ * Discriminate on the variant key:
+ *
+ * ```ts
+ * try {
+ *   await chart.addScript(source, "my-ind");
+ * } catch (e: unknown) {
+ *   const err = e as ScriptError;
+ *   if ("compile" in err) {
+ *     showDiagnostics(err.compile.diagnostics);
+ *   } else if ("exception" in err) {
+ *     showRuntimeError(err.exception);
+ *   } else if (err === "missingScriptType") {
+ *     console.error("missing script type");
+ *   }
+ * }
+ * ```
+ */
+export type ScriptError =
+  | { compile:                  { diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> } }
+  | { exception:                { message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> } }
+  | "missingScriptType"
+  | { inputValueNotFound:       { id: number } }
+  | { setInputValue:            { id: number; error: string } }
+  | { unsupportedTimeFrame:     { timeFrame: TimeFrame } }
+  | { sessionNotAllowed:        { session: TradeSession } }
+  | "invalidSymbol"
+  | "unknownMarket"
+  | "libraryScriptNotExecutable"
+  | { dataProvider:             { message: string } }
+  | "confirmedBarUpdate"
+  | { jitCompilation:           { message: string } };
 
 
 
@@ -1658,6 +1663,7 @@ export interface InitOutput {
   readonly __wbg_imageregistry_free: (a: number, b: number) => void;
   readonly imageregistry_add: (a: number, b: number, c: any) => void;
   readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly start: () => void;
   readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
   readonly intounderlyingsource_cancel: (a: number) => void;
   readonly intounderlyingsource_pull: (a: number, b: any) => any;
@@ -1671,8 +1677,8 @@ export interface InitOutput {
   readonly intounderlyingbytesource_pull: (a: number, b: any) => any;
   readonly intounderlyingbytesource_start: (a: number, b: any) => void;
   readonly intounderlyingbytesource_type: (a: number) => number;
-  readonly wasm_bindgen__convert__closures_____invoke__hdad8e08980442495: (a: number, b: number) => void;
-  readonly wasm_bindgen__closure__destroy__hb26f619182e21929: (a: number, b: number) => void;
+  readonly wasm_bindgen__convert__closures_____invoke__h32e249823a6c6c1f: (a: number, b: number) => void;
+  readonly wasm_bindgen__closure__destroy__h9f12c8187c41a197: (a: number, b: number) => void;
   readonly wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278: (a: number, b: number, c: any) => void;
   readonly wasm_bindgen__closure__destroy__h19febeda49f66582: (a: number, b: number) => void;
   readonly wasm_bindgen__convert__closures_____invoke__h09e1f75621400211: (a: number, b: number, c: any, d: any) => void;
