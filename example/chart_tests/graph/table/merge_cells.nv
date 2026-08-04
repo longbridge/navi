@@ -1,0 +1,17 @@
+// 正确结果：图表左中一个 3×3 表格，首行 3 列合并为一个绿色标题行，下方两行为普通单元格
+indicator("Chart Test: graph/table/merge_cells", overlay: true);
+
+if bar_state.is_last {
+    let fg = chart.fg_color;
+    let bg = Color.new(Color.BLUE, 85);
+    let t = Table.new(Position.MiddleLeft, 3, 3,
+        frame_color: Color.GRAY, frame_width: 2, border_color: Color.GRAY, border_width: 1);
+    t.cell(0, 0, "Merged Header", bg_color: Color.new(Color.GREEN, 70), text_color: fg);
+    t.cell(0, 1, "a", bg_color: bg, text_color: fg);
+    t.cell(1, 1, "b", bg_color: bg, text_color: fg);
+    t.cell(2, 1, "c", bg_color: bg, text_color: fg);
+    t.cell(0, 2, "d", bg_color: bg, text_color: fg);
+    t.cell(1, 2, "e", bg_color: bg, text_color: fg);
+    t.cell(2, 2, "f", bg_color: bg, text_color: fg);
+    t.merge_cells(0, 0, 2, 0); // 合并首行第 0..2 列
+}

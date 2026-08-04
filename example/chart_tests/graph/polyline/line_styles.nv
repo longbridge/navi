@@ -1,0 +1,20 @@
+// 正确结果：最后一根柱附近显示 6 条水平折线段，依次为 Solid/Dashed/Dotted/ArrowLeft/ArrowRight/ArrowBoth
+indicator("Chart Test: graph/polyline/line_styles", overlay: true, max_polylines_count: 10);
+
+// 两点水平折线段辅助函数（复用当前 bar_index / close）。
+fn seg(y: float): Array<chart.Point> {
+    let p = Array.new<chart.Point>();
+    p.push(chart.Point.from_index(bar_index - 20, y));
+    p.push(chart.Point.from_index(bar_index, y));
+    p;
+}
+
+if bar_state.is_last {
+    let step = (high - low) / 7.0;
+    Polyline.new(seg(close + step * 3.0), line_style: LineStyle.Solid,      line_color: Color.BLUE,   line_width: 2);
+    Polyline.new(seg(close + step * 2.0), line_style: LineStyle.Dashed,     line_color: Color.RED,    line_width: 2);
+    Polyline.new(seg(close + step * 1.0), line_style: LineStyle.Dotted,     line_color: Color.GREEN,  line_width: 2);
+    Polyline.new(seg(close),              line_style: LineStyle.ArrowLeft,  line_color: Color.ORANGE, line_width: 2);
+    Polyline.new(seg(close - step * 1.0), line_style: LineStyle.ArrowRight, line_color: Color.PURPLE, line_width: 2);
+    Polyline.new(seg(close - step * 2.0), line_style: LineStyle.ArrowBoth,  line_color: Color.GRAY,   line_width: 2);
+}

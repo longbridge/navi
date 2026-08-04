@@ -1,0 +1,11 @@
+// 正确结果：最后一根柱附近两个标签——默认字体与等宽字体（Monospace，数字等宽对齐）
+indicator("Chart Test: graph/label/text_font_family", overlay: true, max_labels_count: 10);
+
+if bar_state.is_last {
+    Label.new(bar_index - 5, close * 1.02, "Default 0123",
+        style: LabelStyle.LabelCenter, color: Color.BLUE, text_color: Color.WHITE,
+        text_font_family: FontFamily.Default);
+    Label.new(bar_index, close * 1.02, "Mono 0123",
+        style: LabelStyle.LabelCenter, color: Color.PURPLE, text_color: Color.WHITE,
+        text_font_family: FontFamily.Monospace);
+}

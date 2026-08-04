@@ -1,0 +1,16 @@
+// 正确结果：最后一段两个带文字矩形——粗体 Bold / 斜体 Italic
+indicator("Chart Test: graph/box/text_formatting", overlay: true, max_boxes_count: 10);
+
+let h = ta.highest(high, 20);
+let l = ta.lowest(low, 20);
+
+if bar_state.is_last {
+    Box.new(bar_index - 20, h, bar_index - 11, l,
+        bg_color: Color.new(Color.BLUE, 85), border_color: Color.BLUE, border_width: 1,
+        text: "Bold", text_color: Color.WHITE, text_size: 16,
+        text_formatting: TextFormat.BOLD);
+    Box.new(bar_index - 10, h, bar_index, l,
+        bg_color: Color.new(Color.GREEN, 85), border_color: Color.GREEN, border_width: 1,
+        text: "Italic", text_color: Color.WHITE, text_size: 16,
+        text_formatting: TextFormat.ITALIC);
+}

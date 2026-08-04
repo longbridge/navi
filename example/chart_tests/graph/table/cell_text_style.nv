@@ -1,0 +1,13 @@
+// 正确结果：图表右中一个 2×2 表格，单元格文本依次为粗体 / 斜体 / 等宽字体
+indicator("Chart Test: graph/table/cell_text_style", overlay: true);
+
+if bar_state.is_last {
+    let fg = chart.fg_color;
+    let bg = Color.new(Color.BLUE, 85);
+    let t = Table.new(Position.MiddleRight, 2, 2,
+        frame_color: Color.GRAY, frame_width: 2, border_color: Color.GRAY, border_width: 1);
+    t.cell(0, 0, "Bold",   bg_color: bg, text_color: fg, text_formatting: TextFormat.BOLD);
+    t.cell(1, 0, "Italic", bg_color: bg, text_color: fg, text_formatting: TextFormat.ITALIC);
+    t.cell(0, 1, "Mono12", bg_color: bg, text_color: fg, text_font_family: FontFamily.Monospace);
+    t.cell(1, 1, "abcXYZ", bg_color: bg, text_color: fg, text_font_family: FontFamily.Monospace);
+}

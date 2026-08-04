@@ -1,0 +1,8 @@
+// 正确结果：RSI 子图上显示两条线——红色实线 60（省略标题）、主题默认色点线 45（color=na 回退）；
+//           50 线因 PlotDisplay.NONE 被隐藏
+indicator("Chart Test: graph/hline/display", overlay: false);
+
+plot(ta.rsi(close, 14), "RSI", color: Color.BLUE);
+hline(60, color: Color.RED, line_style: HLineStyle.Solid);          // title 省略（na）
+hline(50, "Hidden", color: Color.GRAY, display: PlotDisplay.NONE);  // 被隐藏
+hline(45, color: na, line_style: HLineStyle.Dotted);               // color=na → 主题默认色回退
