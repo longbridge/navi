@@ -1,4 +1,5 @@
-// 正确结果：图表左中一个 3×3 表格，首行 3 列合并为一个绿色标题行，下方两行为普通单元格
+// 正确结果：图表左中一个 3×3 表格——首行 3 列横向合并为绿色标题；第 0 列第 1~2 行
+//           纵向合并为橙色侧栏；右下 2×2 为普通单元格
 indicator("Chart Test: graph/table/merge_cells", overlay: true);
 
 if bar_state.is_last {
@@ -6,12 +7,14 @@ if bar_state.is_last {
     let bg = Color.new(Color.BLUE, 85);
     let t = Table.new(Position.MiddleLeft, 3, 3,
         frame_color: Color.GRAY, frame_width: 2, border_color: Color.GRAY, border_width: 1);
+    // 首行横向合并（colspan=3）作标题
     t.cell(0, 0, "Merged Header", bg_color: Color.new(Color.GREEN, 70), text_color: fg);
-    t.cell(0, 1, "a", bg_color: bg, text_color: fg);
+    // 第 0 列纵向合并（rowspan=2）作侧栏
+    t.cell(0, 1, "Side", bg_color: Color.new(Color.ORANGE, 70), text_color: fg);
     t.cell(1, 1, "b", bg_color: bg, text_color: fg);
     t.cell(2, 1, "c", bg_color: bg, text_color: fg);
-    t.cell(0, 2, "d", bg_color: bg, text_color: fg);
     t.cell(1, 2, "e", bg_color: bg, text_color: fg);
     t.cell(2, 2, "f", bg_color: bg, text_color: fg);
-    t.merge_cells(0, 0, 2, 0); // 合并首行第 0..2 列
+    t.merge_cells(0, 0, 2, 0); // 横向：首行第 0..2 列
+    t.merge_cells(0, 1, 0, 2); // 纵向：第 0 列第 1..2 行
 }
