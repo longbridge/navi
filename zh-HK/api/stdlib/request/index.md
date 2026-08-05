@@ -33,15 +33,15 @@ currency_rate(
 ### data {#data}
 
 ```navi
-data(
+data<T>(
     function: simple String,
     args: series Map<String, any> = na,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,
     lookahead: simple BarmergeLookahead = BarmergeLookahead.Off
-  ): series float
+  ): series T
 ```
 
-呼叫引擎 DataProvider 上的自訂函式，並將回傳的時間序列對映到當前圖表 bar。`args` 對映僅接受 `bool`、`int`、`float` 和 `string` 型別的值；其他型別會導致執行時錯誤。對映中的 `na` 條目會被靜默忽略。無資料時回傳 `na`。
+呼叫引擎 DataProvider 上的自訂函式，並將回傳的時間序列對映到當前圖表 bar。結果型別由泛型參數 `T`（`float`、`int`、`bool` 或 `string`）決定；串流中的值會被歸一到 `T`（數值 `int`/`float` 相互轉換，其他跨型別不匹配會導致執行時錯誤，`na` 保持為 `na`）。`args` 對映僅接受 `bool`、`int`、`float` 和 `string` 型別的值；其他型別會導致執行時錯誤。對映中的 `na` 條目會被靜默忽略。無資料時回傳 `na`。
 
 **參數**
 
@@ -52,7 +52,7 @@ data(
 | `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | bar 對映模式（參見 `BarmergeGaps.Off` / `BarmergeGaps.On`）。 |
 | `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | 控制前瞻語義以確保回測正確性。 |
 
-**返回:** <code>series&nbsp;float</code>
+**返回:** <code>series&nbsp;T</code>
 
 ---
 
@@ -175,7 +175,7 @@ financial(
 ### security {#security}
 
 ```navi
-security(
+security<T>(
     symbol: series String,
     timeframe: series String,
     expression: instructions<T>,
@@ -224,7 +224,7 @@ plot(dLow,  title: "Daily Low",  color: Color.RED);
 ### security_lower_tf {#security_lower_tf}
 
 ```navi
-security_lower_tf(
+security_lower_tf<T>(
     symbol: series String,
     timeframe: series String,
     expression: instructions<T>,

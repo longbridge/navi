@@ -46,7 +46,7 @@ Create with `Matrix.new()`. Access elements with `get` / `set`; iterate rows wit
 ### new {#new}
 
 ```navi
-new(rows: int = 0, columns: int = 0, initial_value: T = na): const Matrix<T>
+new<T>(rows: int = 0, columns: int = 0, initial_value: T = na): const Matrix<T>
 ```
 
 Creates a new matrix with the specified number of rows and columns, initializing all elements to the given initial value.
@@ -66,7 +66,7 @@ Creates a new matrix with the specified number of rows and columns, initializing
 ### add_col {#add_col}
 
 ```navi
-add_col(id: Matrix<T>, column: int = na, values: Array<T> = na)
+add_col<T>(id: Matrix<T>, column: int = na, values: Array<T> = na)
 ```
 
 Adds a new column to the specified matrix at the given column index, filling it with the provided values or `na` if no values are given.
@@ -84,7 +84,7 @@ Adds a new column to the specified matrix at the given column index, filling it 
 ### add_row {#add_row}
 
 ```navi
-add_row(id: Matrix<T>, row: int = na, values: Array<T> = na)
+add_row<T>(id: Matrix<T>, row: int = na, values: Array<T> = na)
 ```
 
 Adds a new row to the specified matrix at the given row index, filling it with the provided values or `na` if no values are given.
@@ -138,7 +138,7 @@ Calculates and returns the average of all elements in the specified matrix.
 ### col {#col}
 
 ```navi
-col(id: Matrix<T>, column: int): Array<T>
+col<T>(id: Matrix<T>, column: int): Array<T>
 ```
 
 Retrieves all elements from the specified column of the matrix and returns them as an array.
@@ -157,7 +157,7 @@ Retrieves all elements from the specified column of the matrix and returns them 
 ### columns {#columns}
 
 ```navi
-columns(id: Matrix<T>): int
+columns<T>(id: Matrix<T>): int
 ```
 
 Returns the number of columns in the specified matrix.
@@ -175,7 +175,7 @@ Returns the number of columns in the specified matrix.
 ### concat {#concat}
 
 ```navi
-concat(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
+concat<T>(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
 ```
 
 Concatenates two matrices of the same type to the matrix and returns `id`.
@@ -194,7 +194,7 @@ Concatenates two matrices of the same type to the matrix and returns `id`.
 ### copy {#copy}
 
 ```navi
-copy(id: Matrix<T>): Matrix<T>
+copy<T>(id: Matrix<T>): Matrix<T>
 ```
 
 Creates a copy of the given matrix and returns the new matrix.
@@ -380,7 +380,7 @@ Returns the eigenvectors of the specified square matrix.
 ### elements_count {#elements_count}
 
 ```navi
-elements_count(id: Matrix<T>): int
+elements_count<T>(id: Matrix<T>): int
 ```
 
 Returns the total number of elements in the specified matrix by multiplying its number of rows by its number of columns.
@@ -398,7 +398,7 @@ Returns the total number of elements in the specified matrix by multiplying its 
 ### fill {#fill}
 
 ```navi
-fill(
+fill<T>(
     id: Matrix<T>,
     value: T,
     from_row: int = 0,
@@ -428,7 +428,7 @@ The submatrix is defined by the row and column ranges provided as parameters.
 ### get {#get}
 
 ```navi
-get(id: Matrix<T>, row: int, column: int): T
+get<T>(id: Matrix<T>, row: int, column: int): T
 ```
 
 Retrieves the value at the specified row and column indices from the given matrix.
@@ -652,7 +652,7 @@ Checks if the given matrix is an identity matrix, returning `true` if it is and 
 ### is_square {#is_square}
 
 ```navi
-is_square(id: Matrix<T>): bool
+is_square<T>(id: Matrix<T>): bool
 ```
 
 Checks if the given matrix is a square matrix, returning `true` if it is and `false` otherwise.
@@ -1160,7 +1160,7 @@ Returns the rank of the matrix.
 ### remove_col {#remove_col}
 
 ```navi
-remove_col(id: Matrix<T>, column: int = na): Array<T>
+remove_col<T>(id: Matrix<T>, column: int = na): Array<T>
 ```
 
 Removes the specified column from the given matrix and returns the removed column as an array.
@@ -1181,7 +1181,7 @@ If no column index is provided, it removes the last column by default.
 ### remove_row {#remove_row}
 
 ```navi
-remove_row(id: Matrix<T>, row: int = na): Array<T>
+remove_row<T>(id: Matrix<T>, row: int = na): Array<T>
 ```
 
 Removes the specified row from the given matrix and returns the removed row as an array.
@@ -1202,7 +1202,7 @@ If no row index is provided, it removes the last row by default.
 ### reshape {#reshape}
 
 ```navi
-reshape(id: Matrix<T>, rows: int, columns: int)
+reshape<T>(id: Matrix<T>, rows: int, columns: int)
 ```
 
 Reshapes the given matrix to the specified number of rows and columns.
@@ -1220,7 +1220,7 @@ Reshapes the given matrix to the specified number of rows and columns.
 ### reverse {#reverse}
 
 ```navi
-reverse(id: Matrix<T>)
+reverse<T>(id: Matrix<T>)
 ```
 
 Reverses the order of elements in the specified matrix in place.
@@ -1236,7 +1236,7 @@ Reverses the order of elements in the specified matrix in place.
 ### row {#row}
 
 ```navi
-row(id: Matrix<T>, row: int): Array<T>
+row<T>(id: Matrix<T>, row: int): Array<T>
 ```
 
 Retrieves all elements from the specified row of the matrix and returns them as an array.
@@ -1255,7 +1255,7 @@ Retrieves all elements from the specified row of the matrix and returns them as 
 ### rows {#rows}
 
 ```navi
-rows(id: Matrix<T>): int
+rows<T>(id: Matrix<T>): int
 ```
 
 Returns the number of rows in the specified matrix.
@@ -1273,7 +1273,7 @@ Returns the number of rows in the specified matrix.
 ### set {#set}
 
 ```navi
-set(id: Matrix<T>, row: int, column: int, value: T)
+set<T>(id: Matrix<T>, row: int, column: int, value: T)
 ```
 
 Sets the value at the specified row and column indices in the given matrix to the provided value.
@@ -1337,7 +1337,7 @@ Sorts matrix elements.
 ### sub_matrix {#sub_matrix}
 
 ```navi
-sub_matrix(
+sub_matrix<T>(
     id: Matrix<T>,
     from_row: int = 0,
     to_row: int = id.rows(),
@@ -1431,7 +1431,7 @@ Computes the element-wise sum of two matrices of the same dimensions and returns
 ### swap_columns {#swap_columns}
 
 ```navi
-swap_columns(id: Matrix<T>, column1: int, column2: int)
+swap_columns<T>(id: Matrix<T>, column1: int, column2: int)
 ```
 
 Swaps two columns in the specified matrix.
@@ -1449,7 +1449,7 @@ Swaps two columns in the specified matrix.
 ### swap_rows {#swap_rows}
 
 ```navi
-swap_rows(id: Matrix<T>, row1: int, row2: int)
+swap_rows<T>(id: Matrix<T>, row1: int, row2: int)
 ```
 
 Swaps two rows in the specified matrix.
@@ -1501,7 +1501,7 @@ Returns the trace of the square matrix.
 ### transpose {#transpose}
 
 ```navi
-transpose(id: Matrix<T>): Matrix<T>
+transpose<T>(id: Matrix<T>): Matrix<T>
 ```
 
 Transposes the given matrix and returns the new transposed matrix.

@@ -42,7 +42,7 @@ Create with `Array.new()` or an array literal `[1, 2, 3]`. Access elements with 
 ### from {#from}
 
 ```navi
-from(values: T): Array<T>
+from<T>(values: T): Array<T>
 ```
 
 Creates a new array containing the provided `values`.
@@ -60,7 +60,7 @@ Creates a new array containing the provided `values`.
 ### new {#new}
 
 ```navi
-new(size: int = 0, initial_value: T = na): const Array<T>
+new<T>(size: int = 0, initial_value: T = na): const Array<T>
 ```
 
 Creates a new empty array of type `T`.
@@ -453,7 +453,7 @@ When the value is not found, the function returns the index of the element to th
 ### clear {#clear}
 
 ```navi
-clear(id: series Array<T>)
+clear<T>(id: series Array<T>)
 ```
 
 Clears all elements from the given array.
@@ -469,7 +469,7 @@ Clears all elements from the given array.
 ### concat {#concat}
 
 ```navi
-concat(id1: Array<T>, id2: Array<T>): Array<T>
+concat<T>(id1: Array<T>, id2: Array<T>): Array<T>
 ```
 
 Concatenates two arrays of the same type `T` and returns a new array containing all elements from both arrays.
@@ -488,7 +488,7 @@ Concatenates two arrays of the same type `T` and returns a new array containing 
 ### copy {#copy}
 
 ```navi
-copy(id: Array<T>): Array<T>
+copy<T>(id: Array<T>): Array<T>
 ```
 
 Creates a copy of the given array and returns the new id.
@@ -626,7 +626,7 @@ Checks if every element in the given array evaluates to `true`.
 ### fill {#fill}
 
 ```navi
-fill(id: Array<T>, value: T, index_from: int = 0, index_to: int = na)
+fill<T>(id: Array<T>, value: T, index_from: int = 0, index_to: int = na)
 ```
 
 Fills the elements of the given array with the specified `value` from `index_from` to `index_to`.
@@ -645,7 +645,7 @@ Fills the elements of the given array with the specified `value` from `index_fro
 ### first {#first}
 
 ```navi
-first(id: Array<T>): T
+first<T>(id: Array<T>): T
 ```
 
 Returns the first element of the given array.
@@ -665,7 +665,7 @@ Returns the first element of the given array.
 ### get {#get}
 
 ```navi
-get(id: Array<T>, index: int): T
+get<T>(id: Array<T>, index: int): T
 ```
 
 Returns the element at the specified `index` from the given array.
@@ -684,7 +684,7 @@ Returns the element at the specified `index` from the given array.
 ### includes {#includes}
 
 ```navi
-includes(id: Array<T>, value: T): bool
+includes<T>(id: Array<T>, value: T): bool
 ```
 
 Checks if the given array includes the specified `value`.
@@ -705,7 +705,7 @@ It returns `true` if the value is found in the array, and `false` otherwise.
 ### indexof {#indexof}
 
 ```navi
-indexof(id: Array<T>, value: T): int
+indexof<T>(id: Array<T>, value: T): int
 ```
 
 Returns the index of the first occurrence of the specified `value` in the given array.
@@ -726,7 +726,7 @@ If the value is not found, it returns -1.
 ### insert {#insert}
 
 ```navi
-insert(id: Array<T>, index: int, value: T)
+insert<T>(id: Array<T>, index: int, value: T)
 ```
 
 Inserts the specified `value` at the given `index` in the `id`, shifting subsequent elements to the right.
@@ -795,7 +795,7 @@ Joins the elements of the given array into a single String, with each element se
 ### last {#last}
 
 ```navi
-last(id: Array<T>): T
+last<T>(id: Array<T>): T
 ```
 
 Returns the last element of the given array.
@@ -815,7 +815,7 @@ Returns the last element of the given array.
 ### lastindexof {#lastindexof}
 
 ```navi
-lastindexof(id: Array<T>, value: T): int
+lastindexof<T>(id: Array<T>, value: T): int
 ```
 
 Returns the index of the last occurrence of the specified `value` in the given array.
@@ -1088,7 +1088,7 @@ Returns value at percentile with nearest-rank.
 ### pop {#pop}
 
 ```navi
-pop(id: Array<T>): T
+pop<T>(id: Array<T>): T
 ```
 
 Removes and returns the last element from the given `id`.
@@ -1108,7 +1108,7 @@ Removes and returns the last element from the given `id`.
 ### push {#push}
 
 ```navi
-push(id: Array<T>, value: T)
+push<T>(id: Array<T>, value: T)
 ```
 
 Appends the given `value` to the end of the array.
@@ -1161,7 +1161,7 @@ Returns the range (difference between the maximum and minimum values) of the ele
 ### remove {#remove}
 
 ```navi
-remove(id: Array<T>, index: int): T
+remove<T>(id: Array<T>, index: int): T
 ```
 
 Removes the element at the specified `index` from the given array and returns the removed element.
@@ -1180,7 +1180,7 @@ Removes the element at the specified `index` from the given array and returns th
 ### reverse {#reverse}
 
 ```navi
-reverse(id: Array<T>)
+reverse<T>(id: Array<T>)
 ```
 
 Reverses the order of elements in the given array.
@@ -1196,7 +1196,7 @@ Reverses the order of elements in the given array.
 ### set {#set}
 
 ```navi
-set(id: Array<T>, index: int, value: T)
+set<T>(id: Array<T>, index: int, value: T)
 ```
 
 Sets the element at the specified index in the array to the provided value.
@@ -1216,7 +1216,7 @@ If the index is positive, the function counts from the beginning of the array (0
 ### shift {#shift}
 
 ```navi
-shift(id: Array<T>): T
+shift<T>(id: Array<T>): T
 ```
 
 Removes and returns the first element from the given `id`.
@@ -1236,7 +1236,7 @@ Removes and returns the first element from the given `id`.
 ### size {#size}
 
 ```navi
-size(id: Array<T>): int
+size<T>(id: Array<T>): int
 ```
 
 Returns the size (number of elements) of the given `id`.
@@ -1254,7 +1254,7 @@ Returns the size (number of elements) of the given `id`.
 ### slice {#slice}
 
 ```navi
-slice(id: Array<T>, index_from: int = 0, index_to: int = na): Array<T>
+slice<T>(id: Array<T>, index_from: int = 0, index_to: int = na): Array<T>
 ```
 
 Creates a new array that is a slice of the given `id`, starting from `index_from` to `index_to`.
@@ -1524,7 +1524,7 @@ Calculates the sum of the elements in the given array.
 ### unshift {#unshift}
 
 ```navi
-unshift(id: Array<T>, value: T)
+unshift<T>(id: Array<T>, value: T)
 ```
 
 Adds the specified `value` to the beginning of the given array.

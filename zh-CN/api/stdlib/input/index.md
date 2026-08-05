@@ -83,7 +83,7 @@ color(
 ### enum {#enum}
 
 ```navi
-enum(
+enum<T>(
     defval: const T,
     title: const String = na,
     options: const Array<T> = na,

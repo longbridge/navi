@@ -40,7 +40,7 @@ const _s22 = ref(0)
 ### from {#from}
 
 ```navi
-from(values: T): Array<T>
+from<T>(values: T): Array<T>
 ```
 
 Creates a new array containing the provided `values`.
@@ -58,7 +58,7 @@ Creates a new array containing the provided `values`.
 ### new {#new}
 
 ```navi
-new(size: int = 0, initial_value: T = na): const Array<T>
+new<T>(size: int = 0, initial_value: T = na): const Array<T>
 ```
 
 Creates a new empty array of type `T`.
@@ -455,7 +455,7 @@ Creates a new array of `Table` ids.
 ### clear {#clear}
 
 ```navi
-clear(id: series Array<T>)
+clear<T>(id: series Array<T>)
 ```
 
 清空給定 `array` 中的所有元素。
@@ -471,7 +471,7 @@ clear(id: series Array<T>)
 ### concat {#concat}
 
 ```navi
-concat(id1: Array<T>, id2: Array<T>): Array<T>
+concat<T>(id1: Array<T>, id2: Array<T>): Array<T>
 ```
 
 連接相同類型 `T` 的兩個陣列 `array1` 和 `array2` 並傳回一個包含兩個陣列中所有元素的新陣列。
@@ -490,7 +490,7 @@ concat(id1: Array<T>, id2: Array<T>): Array<T>
 ### copy {#copy}
 
 ```navi
-copy(id: Array<T>): Array<T>
+copy<T>(id: Array<T>): Array<T>
 ```
 
 創建給定 `array` 的複本並傳回新陣列。
@@ -626,7 +626,7 @@ copy(id: Array<T>): Array<T>
 ### fill {#fill}
 
 ```navi
-fill(id: Array<T>, value: T, index_from: int = 0, index_to: int = na)
+fill<T>(id: Array<T>, value: T, index_from: int = 0, index_to: int = na)
 ```
 
 使用指定的 `value` 從 `index_from` 到 `index_to` 填充給定 `array` 的元素。
@@ -645,7 +645,7 @@ fill(id: Array<T>, value: T, index_from: int = 0, index_to: int = na)
 ### first {#first}
 
 ```navi
-first(id: Array<T>): T
+first<T>(id: Array<T>): T
 ```
 
 傳回給定 `array` 的第一個元素。
@@ -665,7 +665,7 @@ first(id: Array<T>): T
 ### get {#get}
 
 ```navi
-get(id: Array<T>, index: int): T
+get<T>(id: Array<T>, index: int): T
 ```
 
 傳回給定 `array` 中指定 `index` 處的元素。
@@ -684,7 +684,7 @@ get(id: Array<T>, index: int): T
 ### includes {#includes}
 
 ```navi
-includes(id: Array<T>, value: T): bool
+includes<T>(id: Array<T>, value: T): bool
 ```
 
 檢查給定的 `array` 是否包含指定的 `value`。如果在陣列中找到該值，則傳回 `true`，否則傳回 `false`。
@@ -703,7 +703,7 @@ includes(id: Array<T>, value: T): bool
 ### indexof {#indexof}
 
 ```navi
-indexof(id: Array<T>, value: T): int
+indexof<T>(id: Array<T>, value: T): int
 ```
 
 傳回指定 `value` 在給定 `array` 中第一次出現的索引。如果沒有找到該值，則傳回-1。
@@ -722,7 +722,7 @@ indexof(id: Array<T>, value: T): int
 ### insert {#insert}
 
 ```navi
-insert(id: Array<T>, index: int, value: T)
+insert<T>(id: Array<T>, index: int, value: T)
 ```
 
 將指定的 `value` 插入到 `array` 中給定的 `index` 處，並將後續元素向右移動。
@@ -791,7 +791,7 @@ insert(id: Array<T>, index: int, value: T)
 ### last {#last}
 
 ```navi
-last(id: Array<T>): T
+last<T>(id: Array<T>): T
 ```
 
 傳回給定 `array` 的最後一個元素。
@@ -811,7 +811,7 @@ last(id: Array<T>): T
 ### lastindexof {#lastindexof}
 
 ```navi
-lastindexof(id: Array<T>, value: T): int
+lastindexof<T>(id: Array<T>, value: T): int
 ```
 
 傳回指定 `value` 在給定 `array` 中最後一次出現的索引。如果沒有找到該值，則傳回-1。
@@ -1078,7 +1078,7 @@ lastindexof(id: Array<T>, value: T): int
 ### pop {#pop}
 
 ```navi
-pop(id: Array<T>): T
+pop<T>(id: Array<T>): T
 ```
 
 刪除並傳回給定 `array` 中的最後一個元素。
@@ -1098,7 +1098,7 @@ pop(id: Array<T>): T
 ### push {#push}
 
 ```navi
-push(id: Array<T>, value: T)
+push<T>(id: Array<T>, value: T)
 ```
 
 將給定的 `value` 附加到 `array` 的末尾。
@@ -1151,7 +1151,7 @@ push(id: Array<T>, value: T)
 ### remove {#remove}
 
 ```navi
-remove(id: Array<T>, index: int): T
+remove<T>(id: Array<T>, index: int): T
 ```
 
 從給定的 `array` 中刪除指定 `index` 處的元素並傳回刪除的元素。
@@ -1170,7 +1170,7 @@ remove(id: Array<T>, index: int): T
 ### reverse {#reverse}
 
 ```navi
-reverse(id: Array<T>)
+reverse<T>(id: Array<T>)
 ```
 
 反轉給定 `array` 中元素的順序。
@@ -1186,7 +1186,7 @@ reverse(id: Array<T>)
 ### set {#set}
 
 ```navi
-set(id: Array<T>, index: int, value: T)
+set<T>(id: Array<T>, index: int, value: T)
 ```
 
 將陣列中指定索引處的元素設定為提供的值。如果索引為正，則該函數從陣列的開頭開始計數（從 0 開始），如果索引為負，則從陣列的末尾開始計數（-1 是最後一個元素）。例如，對於包含 `[10, 20, 30]` 的陣列，以下所有索引均有效：`0`、`1`、`2`、`-1`、`-2`、`-3`。
@@ -1204,7 +1204,7 @@ set(id: Array<T>, index: int, value: T)
 ### shift {#shift}
 
 ```navi
-shift(id: Array<T>): T
+shift<T>(id: Array<T>): T
 ```
 
 刪除並傳回給定 `array` 中的第一個元素。
@@ -1224,7 +1224,7 @@ shift(id: Array<T>): T
 ### size {#size}
 
 ```navi
-size(id: Array<T>): int
+size<T>(id: Array<T>): int
 ```
 
 傳回給定 `array` 的大小（元素數量）。
@@ -1242,7 +1242,7 @@ size(id: Array<T>): int
 ### slice {#slice}
 
 ```navi
-slice(id: Array<T>, index_from: int = 0, index_to: int = na): Array<T>
+slice<T>(id: Array<T>, index_from: int = 0, index_to: int = na): Array<T>
 ```
 
 創建一個新陣列，該陣列是給定 `array` 的一部分，從 `index_from` 到 `index_to`。
@@ -1510,7 +1510,7 @@ slice(id: Array<T>, index_from: int = 0, index_to: int = na): Array<T>
 ### unshift {#unshift}
 
 ```navi
-unshift(id: Array<T>, value: T)
+unshift<T>(id: Array<T>, value: T)
 ```
 
 將指定的 `value` 添加到給定 `array` 的開頭。

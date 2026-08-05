@@ -370,6 +370,15 @@ export type CandlestickItem =
 
 
 /**
+ * Value carried by an auxiliary data point.
+ *
+ * A bare `number` is a float, a bare `string`/`boolean` map to their types, and
+ * `null` means `na`. An `int`-typed `request.data<int>` result is produced by
+ * converting the float, so no separate integer form is needed.
+ */
+export type AuxValue = number | boolean | string | null;
+
+/**
  * Item yielded by auxiliary data streams (currency rates, financials,
  * earnings, dividends, economic data, splits, custom data).
  *
@@ -377,7 +386,7 @@ export type CandlestickItem =
  * {@link CandlestickItem}.
  */
 export type AuxDataItem =
-  | { data: { /** Epoch milliseconds. */ time: number; value: number } }
+  | { data: { /** Epoch milliseconds. */ time: number; value: AuxValue } }
   | "historyEnd";
 
 
@@ -1653,6 +1662,10 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly start: () => void;
   readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
   readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
@@ -1660,10 +1673,6 @@ export interface InitOutput {
   readonly localcharthandle_removeScript: (a: number, b: number) => void;
   readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
   readonly localchartprovider_new: (a: any) => number;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly start: () => void;
   readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
   readonly intounderlyingsource_cancel: (a: number) => void;
   readonly intounderlyingsource_pull: (a: number, b: any) => any;

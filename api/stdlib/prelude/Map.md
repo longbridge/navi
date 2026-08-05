@@ -15,7 +15,7 @@ Keys must be hashable: `int`, `float`, `bool`, `String`, `color`, or enum. Creat
 ### new {#new}
 
 ```navi
-new(): const Map<K, V>
+new<K, V>(): const Map<K, V>
 ```
 
 Creates a new empty map of the specified key and value types.
@@ -27,7 +27,7 @@ Creates a new empty map of the specified key and value types.
 ### clear {#clear}
 
 ```navi
-clear(id: Map<K, V>)
+clear<K, V>(id: Map<K, V>)
 ```
 
 Clears all entries from the given map.
@@ -43,7 +43,7 @@ Clears all entries from the given map.
 ### contains {#contains}
 
 ```navi
-contains(id: Map<K, V>, key: K): bool
+contains<K, V>(id: Map<K, V>, key: K): bool
 ```
 
 Checks if the specified key exists in the given map.
@@ -64,7 +64,7 @@ It returns `true` if the key is found, otherwise `false`.
 ### copy {#copy}
 
 ```navi
-copy(id: Map<K, V>): Map<K, V>
+copy<K, V>(id: Map<K, V>): Map<K, V>
 ```
 
 Creates a copy of the given map and returns the new id.
@@ -82,7 +82,7 @@ Creates a copy of the given map and returns the new id.
 ### get {#get}
 
 ```navi
-get(id: Map<K, V>, key: K): V
+get<K, V>(id: Map<K, V>, key: K): V
 ```
 
 Retrieves the value associated with the specified key in the given id, or returns `na` if the key does not exist.
@@ -101,7 +101,7 @@ Retrieves the value associated with the specified key in the given id, or return
 ### keys {#keys}
 
 ```navi
-keys(id: Map<K, V>): Array<K>
+keys<K, V>(id: Map<K, V>): Array<K>
 ```
 
 Returns an array containing all the keys present in the given id.
@@ -119,7 +119,7 @@ Returns an array containing all the keys present in the given id.
 ### put {#put}
 
 ```navi
-put(id: Map<K, V>, key: K, value: V): V
+put<K, V>(id: Map<K, V>, key: K, value: V): V
 ```
 
 Inserts or updates the value associated with the specified key in the given map.
@@ -141,7 +141,7 @@ It returns the previous value if the key existed, or `na` if it is a new entry.
 ### put_all {#put_all}
 
 ```navi
-put_all(id: Map<K, V>, id2: Map<K, V>)
+put_all<K, V>(id: Map<K, V>, id2: Map<K, V>)
 ```
 
 Copies all key-value pairs from the source map to the destination id.
@@ -160,7 +160,7 @@ Existing keys in the destination id will be updated with values from the source 
 ### remove {#remove}
 
 ```navi
-remove(id: Map<K, V>, key: K): V
+remove<K, V>(id: Map<K, V>, key: K): V
 ```
 
 Removes the entry associated with the specified key from the given map.
@@ -181,7 +181,7 @@ It returns the removed value if the key existed, or `na` if the key was not foun
 ### size {#size}
 
 ```navi
-size(id: Map<K, V>): int
+size<K, V>(id: Map<K, V>): int
 ```
 
 Returns the number of key-value pairs currently stored in the given map.
@@ -199,7 +199,7 @@ Returns the number of key-value pairs currently stored in the given map.
 ### values {#values}
 
 ```navi
-values(id: Map<K, V>): Array<V>
+values<K, V>(id: Map<K, V>): Array<V>
 ```
 
 Returns an array containing all the values present in the given id.

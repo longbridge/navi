@@ -44,7 +44,7 @@ const _s26 = ref(0)
 ### new {#new}
 
 ```navi
-new(rows: int = 0, columns: int = 0, initial_value: T = na): const Matrix<T>
+new<T>(rows: int = 0, columns: int = 0, initial_value: T = na): const Matrix<T>
 ```
 
 Creates a new matrix with the specified number of rows and columns, initializing all elements to the given initial value.
@@ -64,7 +64,7 @@ Creates a new matrix with the specified number of rows and columns, initializing
 ### add_col {#add_col}
 
 ```navi
-add_col(id: Matrix<T>, column: int = na, values: Array<T> = na)
+add_col<T>(id: Matrix<T>, column: int = na, values: Array<T> = na)
 ```
 
 将新列添加到给定列索引处的指定矩阵，用提供的值填充它，如果没有给出值，则用 `na` 填充。
@@ -82,7 +82,7 @@ add_col(id: Matrix<T>, column: int = na, values: Array<T> = na)
 ### add_row {#add_row}
 
 ```navi
-add_row(id: Matrix<T>, row: int = na, values: Array<T> = na)
+add_row<T>(id: Matrix<T>, row: int = na, values: Array<T> = na)
 ```
 
 将新行添加到指定矩阵的给定行索引处，用提供的值填充它，如果没有给出值，则用 `na` 填充。
@@ -134,7 +134,7 @@ add_row(id: Matrix<T>, row: int = na, values: Array<T> = na)
 ### col {#col}
 
 ```navi
-col(id: Matrix<T>, column: int): Array<T>
+col<T>(id: Matrix<T>, column: int): Array<T>
 ```
 
 从矩阵的指定列检索所有元素并将它们作为数组返回。
@@ -153,7 +153,7 @@ col(id: Matrix<T>, column: int): Array<T>
 ### columns {#columns}
 
 ```navi
-columns(id: Matrix<T>): int
+columns<T>(id: Matrix<T>): int
 ```
 
 返回指定矩阵中的列数。
@@ -171,7 +171,7 @@ columns(id: Matrix<T>): int
 ### concat {#concat}
 
 ```navi
-concat(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
+concat<T>(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
 ```
 
 将两个相同类型的矩阵连接到 `mat1` 并返回 `mat1`。
@@ -190,7 +190,7 @@ concat(id1: Matrix<T>, id2: Matrix<T>): Matrix<T>
 ### copy {#copy}
 
 ```navi
-copy(id: Matrix<T>): Matrix<T>
+copy<T>(id: Matrix<T>): Matrix<T>
 ```
 
 创建给定矩阵的拷贝并返回新矩阵。
@@ -376,7 +376,7 @@ copy(id: Matrix<T>): Matrix<T>
 ### elements_count {#elements_count}
 
 ```navi
-elements_count(id: Matrix<T>): int
+elements_count<T>(id: Matrix<T>): int
 ```
 
 通过将指定矩阵的行数乘以其列数来返回指定矩阵中的元素总数。
@@ -394,7 +394,7 @@ elements_count(id: Matrix<T>): int
 ### fill {#fill}
 
 ```navi
-fill(
+fill<T>(
     id: Matrix<T>,
     value: T,
     from_row: int = 0,
@@ -422,7 +422,7 @@ fill(
 ### get {#get}
 
 ```navi
-get(id: Matrix<T>, row: int, column: int): T
+get<T>(id: Matrix<T>, row: int, column: int): T
 ```
 
 从给定矩阵中检索指定行索引和列索引处的值。
@@ -646,7 +646,7 @@ get(id: Matrix<T>, row: int, column: int): T
 ### is_square {#is_square}
 
 ```navi
-is_square(id: Matrix<T>): bool
+is_square<T>(id: Matrix<T>): bool
 ```
 
 检查给定矩阵是否为方阵，如果是则返回 `true`，否则返回 `false`。
@@ -1142,7 +1142,7 @@ is_square(id: Matrix<T>): bool
 ### remove_col {#remove_col}
 
 ```navi
-remove_col(id: Matrix<T>, column: int = na): Array<T>
+remove_col<T>(id: Matrix<T>, column: int = na): Array<T>
 ```
 
 从给定矩阵中删除指定列并将删除的列作为数组返回。如果未提供列索引，则默认删除最后一列。
@@ -1161,7 +1161,7 @@ remove_col(id: Matrix<T>, column: int = na): Array<T>
 ### remove_row {#remove_row}
 
 ```navi
-remove_row(id: Matrix<T>, row: int = na): Array<T>
+remove_row<T>(id: Matrix<T>, row: int = na): Array<T>
 ```
 
 从给定矩阵中删除指定行并将删除的行作为数组返回。如果未提供行索引，则默认删除最后一行。
@@ -1180,7 +1180,7 @@ remove_row(id: Matrix<T>, row: int = na): Array<T>
 ### reshape {#reshape}
 
 ```navi
-reshape(id: Matrix<T>, rows: int, columns: int)
+reshape<T>(id: Matrix<T>, rows: int, columns: int)
 ```
 
 将给定矩阵重塑为指定的行数和列数。
@@ -1198,7 +1198,7 @@ reshape(id: Matrix<T>, rows: int, columns: int)
 ### reverse {#reverse}
 
 ```navi
-reverse(id: Matrix<T>)
+reverse<T>(id: Matrix<T>)
 ```
 
 就地反转指定矩阵中元素的顺序。
@@ -1214,7 +1214,7 @@ reverse(id: Matrix<T>)
 ### row {#row}
 
 ```navi
-row(id: Matrix<T>, row: int): Array<T>
+row<T>(id: Matrix<T>, row: int): Array<T>
 ```
 
 从矩阵的指定行检索所有元素并将它们作为数组返回。
@@ -1233,7 +1233,7 @@ row(id: Matrix<T>, row: int): Array<T>
 ### rows {#rows}
 
 ```navi
-rows(id: Matrix<T>): int
+rows<T>(id: Matrix<T>): int
 ```
 
 返回指定矩阵中的行数。
@@ -1251,7 +1251,7 @@ rows(id: Matrix<T>): int
 ### set {#set}
 
 ```navi
-set(id: Matrix<T>, row: int, column: int, value: T)
+set<T>(id: Matrix<T>, row: int, column: int, value: T)
 ```
 
 将给定矩阵中指定行索引和列索引处的值设置为提供的值。
@@ -1315,7 +1315,7 @@ set(id: Matrix<T>, row: int, column: int, value: T)
 ### sub_matrix {#sub_matrix}
 
 ```navi
-sub_matrix(
+sub_matrix<T>(
     id: Matrix<T>,
     from_row: int = 0,
     to_row: int = id.rows(),
@@ -1409,7 +1409,7 @@ sub_matrix(
 ### swap_columns {#swap_columns}
 
 ```navi
-swap_columns(id: Matrix<T>, column1: int, column2: int)
+swap_columns<T>(id: Matrix<T>, column1: int, column2: int)
 ```
 
 交换指定矩阵中的两列。
@@ -1427,7 +1427,7 @@ swap_columns(id: Matrix<T>, column1: int, column2: int)
 ### swap_rows {#swap_rows}
 
 ```navi
-swap_rows(id: Matrix<T>, row1: int, row2: int)
+swap_rows<T>(id: Matrix<T>, row1: int, row2: int)
 ```
 
 交换指定矩阵中的两行。
@@ -1479,7 +1479,7 @@ swap_rows(id: Matrix<T>, row1: int, row2: int)
 ### transpose {#transpose}
 
 ```navi
-transpose(id: Matrix<T>): Matrix<T>
+transpose<T>(id: Matrix<T>): Matrix<T>
 ```
 
 转置给定矩阵并返回新的转置矩阵。

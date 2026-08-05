@@ -33,15 +33,15 @@ Returns the exchange rate for converting one unit of `from` currency into `to` c
 ### data {#data}
 
 ```navi
-data(
+data<T>(
     function: simple String,
     args: series Map<String, any> = na,
     gaps: simple BarmergeGaps = BarmergeGaps.Off,
     lookahead: simple BarmergeLookahead = BarmergeLookahead.Off
-  ): series float
+  ): series T
 ```
 
-Calls a user-defined function on the engine's DataProvider and maps the resulting time-series onto the current chart bar. The `args` map accepts `bool`, `int`, `float`, and `String` values; other types cause a runtime error. `na` entries in the map are silently ignored. Returns `na` when no data is available.
+Calls a user-defined function on the engine's DataProvider and maps the resulting time-series onto the current chart bar. The result type is the generic argument `T` (`float`, `int`, `bool`, or `String`); the streamed value is coerced to `T` (numeric `int`/`float` convert, other cross-type mismatches raise a runtime error, `na` stays `na`). The `args` map accepts `bool`, `int`, `float`, and `String` values; other types cause a runtime error. `na` entries in the map are silently ignored. Returns `na` when no data is available.
 
 **Parameters**
 
@@ -52,7 +52,7 @@ Calls a user-defined function on the engine's DataProvider and maps the resultin
 | `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
 | `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls lookahead semantics for backtesting correctness. |
 
-**Returns:** <code>series&nbsp;float</code>
+**Returns:** <code>series&nbsp;T</code>
 
 ---
 
@@ -175,7 +175,7 @@ Queries the engine's DataProvider for a financial metric value at the current ba
 ### security {#security}
 
 ```navi
-security(
+security<T>(
     symbol: series String,
     timeframe: series String,
     expression: instructions<T>,
@@ -224,7 +224,7 @@ plot(dLow,  title: "Daily Low",  color: Color.RED);
 ### security_lower_tf {#security_lower_tf}
 
 ```navi
-security_lower_tf(
+security_lower_tf<T>(
     symbol: series String,
     timeframe: series String,
     expression: instructions<T>,

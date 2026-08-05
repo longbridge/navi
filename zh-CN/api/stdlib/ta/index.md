@@ -1533,7 +1533,7 @@ tsi(
 ### value_when {#value_when}
 
 ```navi
-value_when(
+value_when<T>(
     condition: series bool,
     source: series T,
     occurrence: simple int
