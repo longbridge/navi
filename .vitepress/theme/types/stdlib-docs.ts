@@ -16,6 +16,8 @@ export interface FunctionEntry {
 
 export interface Overload {
   kind: string
+  /** Generic type parameters declared after the name (e.g. `T` in `foo<T>`). */
+  genericParams?: string[]
   receiverType?: TypeRef
   returnType?: TypeRef
   params: ParamDoc[]

@@ -175,6 +175,46 @@ method contains<T>(self: Array<T>, value: T) {
 
 Generic functions allow you to write reusable code that works with multiple types.
 
+### Type Argument Inference
+
+Most of the time you don't write the type arguments — Navi infers them.
+
+**From arguments.** When a type parameter appears in a parameter type, it is inferred from the argument you pass:
+
+```navi
+fn first<T>(arr: Array<T>): T {
+    arr.get(0);
+}
+let x = first([1, 2, 3]);   // T inferred as int
+```
+
+**From the surrounding context.** When a type parameter appears only in the *return* type, there is no argument to infer it from. Navi then infers it from the context — a variable's declared type, or the expected type at an argument position:
+
+```navi
+fn make<T>(): T {
+    na;
+}
+fn scale(x: float): float {
+    x * 2.0;
+}
+
+let a: float = make();      // T inferred as float (from the annotation)
+let b: int = make();        // T inferred as int
+let c = scale(make());      // T inferred as float (scale's parameter is float)
+```
+
+**Explicitly.** When there is no context to infer from, give the type argument after the function name with `<...>` (there is no `::` before it):
+
+```navi
+let n = make<int>();        // T given explicitly
+```
+
+A return-only type parameter with neither context nor an explicit argument is an error:
+
+```navi
+let a = make();             // ERROR: cannot infer generic type `T`
+```
+
 ## Variadic Parameters
 
 Navi allows the last parameter to be variadic with `...`:

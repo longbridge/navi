@@ -429,6 +429,9 @@ function formatSignature(_moduleName, funcName, ov, { singleLine = false } = {})
     return `${funcName}${ret}`;
   }
 
+  const generics =
+    ov.genericParams && ov.genericParams.length ? `<${ov.genericParams.join(", ")}>` : "";
+
   const paramParts = ov.params.map((p) => {
     let s = `${p.name}: ${typeRefToString(p.type)}`;
     if (p.defaultValue !== undefined) {
@@ -442,7 +445,7 @@ function formatSignature(_moduleName, funcName, ov, { singleLine = false } = {})
   const ret = ov.returnType ? `: ${typeRefToString(ov.returnType)}` : "";
 
   // Single-line attempt (always used for tab labels)
-  const oneLine = `${funcName}(${paramParts.join(", ")})${ret}`;
+  const oneLine = `${funcName}${generics}(${paramParts.join(", ")})${ret}`;
   if (singleLine || oneLine.length <= 80 || paramParts.length === 0) {
     return oneLine;
   }
@@ -452,7 +455,7 @@ function formatSignature(_moduleName, funcName, ov, { singleLine = false } = {})
   const joined = paramParts.map((p, i) =>
     i < paramParts.length - 1 ? `${indent}${p},` : `${indent}${p}`
   ).join("\n");
-  return `${funcName}(\n${joined}\n  )${ret}`;
+  return `${funcName}${generics}(\n${joined}\n  )${ret}`;
 }
 
 // ---------------------------------------------------------------------------

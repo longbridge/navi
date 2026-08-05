@@ -363,6 +363,11 @@ function signatureLabel(item: ListItem, _overload: Overload): string {
   return item.entry.name
 }
 
+/** `<T, U>` suffix for a generic callable's name, or `''` when non-generic. */
+function genericsSuffix(overload: Overload): string {
+  return overload.genericParams?.length ? `<${overload.genericParams.join(', ')}>` : ''
+}
+
 /** Compact single-line signature for overload selector buttons. */
 function formatSignature(name: string, overload: Overload): string {
   if (overload.kind === 'property' || overload.kind === 'staticproperty') {
@@ -372,7 +377,7 @@ function formatSignature(name: string, overload: Overload): string {
   const params = overload.params.map(formatParam).join(', ')
   const ret = overload.returnType ? `: ${formatTypeRef(overload.returnType)}` : ''
   const prefix = overload.kind === 'method' ? 'method ' : ''
-  return `${prefix}${name}(${params})${ret}`
+  return `${prefix}${name}${genericsSuffix(overload)}(${params})${ret}`
 }
 
 /** Multi-line signature for the Syntax block (one param per line when > 2). */
@@ -383,12 +388,13 @@ function formatSignatureBlock(name: string, overload: Overload): string {
   }
   const ret = overload.returnType ? `: ${formatTypeRef(overload.returnType)}` : ''
   const prefix = overload.kind === 'method' ? 'method ' : ''
+  const generics = genericsSuffix(overload)
   if (overload.params.length > 2) {
     const params = overload.params.map(formatParam).join(',\n    ')
-    return `${prefix}${name}(\n    ${params}\n  )${ret}`
+    return `${prefix}${name}${generics}(\n    ${params}\n  )${ret}`
   }
   const params = overload.params.map(formatParam).join(', ')
-  return `${prefix}${name}(${params})${ret}`
+  return `${prefix}${name}${generics}(${params})${ret}`
 }
 
 function isFunctionEntry(entry: FunctionEntry | TypeDefEntry): entry is FunctionEntry {

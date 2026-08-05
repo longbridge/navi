@@ -321,6 +321,14 @@ fn first<T>(xs: Array<T>): T {
 }
 ```
 
+Type arguments are inferred from arguments. A type parameter that appears only in the return type is inferred from context — a `let` annotation or an argument's expected type — or given explicitly as `name<T>(...)` (there is no `::` before the `<`). Only when neither is available does Navi report `cannot infer generic type`:
+
+```navi
+fn make<T>(): T { na; }
+let a: float = make();   // inferred from the annotation
+let b = make<int>();     // given explicitly
+```
+
 Variadic parameters must be last:
 
 ```navi
