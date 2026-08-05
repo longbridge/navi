@@ -435,32 +435,34 @@ function isCategoryActive(catId: string): boolean {
         :aria-expanded="openFlyout === cat.id"
         @click.stop="toggleFlyout(cat.id)"
       >›</button>
-      <div
-        v-if="openFlyout === cat.id"
-        :ref="registerFlyoutEl(cat.id)"
-        class="cat-flyout"
-        :style="{ top: `${flyoutOffsetY}px` }"
-        role="menu"
-        @keydown.esc="openFlyout = null"
-      >
-        <template v-for="sec in cat.sections" :key="sec.titleKey">
-          <div class="cat-flyout__section-title">{{ t(sec.titleKey) }}</div>
-          <button
-            v-for="tool in sec.tools"
-            :key="tool.name"
-            type="button"
-            role="menuitem"
-            :class="[
-              'cat-flyout__item',
-              { 'cat-flyout__item--active': activeTool === tool.name },
-            ]"
-            @click="pickFromFlyout(tool.name)"
-          >
-            <ToolIcon :name="tool.name" />
-            <span>{{ toolLabel(tool.name) }}</span>
-          </button>
-        </template>
-      </div>
+      <Transition name="flyout-fade">
+        <div
+          v-if="openFlyout === cat.id"
+          :ref="registerFlyoutEl(cat.id)"
+          class="cat-flyout"
+          :style="{ top: `${flyoutOffsetY}px` }"
+          role="menu"
+          @keydown.esc="openFlyout = null"
+        >
+          <template v-for="sec in cat.sections" :key="sec.titleKey">
+            <div class="cat-flyout__section-title">{{ t(sec.titleKey) }}</div>
+            <button
+              v-for="tool in sec.tools"
+              :key="tool.name"
+              type="button"
+              role="menuitem"
+              :class="[
+                'cat-flyout__item',
+                { 'cat-flyout__item--active': activeTool === tool.name },
+              ]"
+              @click="pickFromFlyout(tool.name)"
+            >
+              <ToolIcon :name="tool.name" />
+              <span>{{ toolLabel(tool.name) }}</span>
+            </button>
+          </template>
+        </div>
+      </Transition>
     </div>
 
     <div class="drawing-toolbar__sep" />
@@ -490,6 +492,7 @@ function isCategoryActive(catId: string): boolean {
           </template>
         </svg>
       </button>
+      <Transition name="flyout-fade">
       <div
         v-if="magnetMenuOpen"
         class="cat-flyout"
@@ -528,6 +531,7 @@ function isCategoryActive(catId: string): boolean {
           </span>
         </button>
       </div>
+      </Transition>
     </div>
 
     <button
@@ -569,6 +573,9 @@ function isCategoryActive(catId: string): boolean {
   border-right: 1px solid hsl(var(--border));
   user-select: none;
   width: 44px;
+  /* Fill the full height of the chart column so the right border and
+     background run all the way to the bottom; tools stay top-aligned. */
+  height: 100%;
 }
 
 .drawing-toolbar__btn {
@@ -669,6 +676,19 @@ function isCategoryActive(catId: string): boolean {
   display: flex;
   flex-direction: column;
   gap: 1px;
+}
+
+/* Fade + subtle slide-in from the toolbar edge. The flyout is absolutely
+   positioned, so animating transform here doesn't disturb layout; leave the
+   opacity/visibility off the base rule and let the transition drive them. */
+.flyout-fade-enter-active,
+.flyout-fade-leave-active {
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+.flyout-fade-enter-from,
+.flyout-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-4px);
 }
 
 .cat-flyout__section-title {
