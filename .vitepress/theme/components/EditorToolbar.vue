@@ -6,9 +6,19 @@ import {
 } from 'radix-vue'
 import { Plus, Save, CopyPlus, Pencil, Trash2, ChevronsUpDown, Search, Check, ChartLine } from 'lucide-vue-next'
 import type { ScriptItem } from '../composables/script-store'
-import { isBuiltinId, getBuiltinScript, builtinIndicators, builtinStrategies, builtinChartTests } from '../composables/builtin-scripts'
+import { isBuiltinId, getBuiltinScript, builtinIndicators, builtinStrategies, builtinChartTests, localize } from '../composables/builtin-scripts'
+import type { BuiltinScript } from '../composables/builtin-scripts'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+/** Title of a builtin script, localized to the current UI language. */
+function builtinTitle(s: BuiltinScript): string {
+  return localize(s.titleLocales, s.title, locale.value)
+}
+/** Short title of a builtin script (localized), or null. */
+function builtinShort(s: BuiltinScript): string | null {
+  return s.shortTitle ? localize(s.shortTitleLocales, s.shortTitle, locale.value) : null
+}
 
 const props = defineProps<{
   activeScriptId: string | null
@@ -35,7 +45,11 @@ const isBuiltin = computed(() => isBuiltinId(props.activeScriptId))
 const activeScriptName = computed(() => {
   if (!props.activeScriptId) return t('toolbar.selectScript')
   const builtin = getBuiltinScript(props.activeScriptId)
-  if (builtin) return builtin.shortTitle ? `${builtin.title} (${builtin.shortTitle})` : builtin.title
+  if (builtin) {
+    const title = builtinTitle(builtin)
+    const short = builtinShort(builtin)
+    return short ? `${title} (${short})` : title
+  }
   const user = props.scripts.find(s => s.id === props.activeScriptId)
   if (user) return user.name
   return t('toolbar.selectScript')
@@ -70,22 +84,22 @@ const filteredUserScripts = computed(() =>
     : props.scripts,
 )
 
+/** Match a builtin script against the query, across localized + default text. */
+function matchesBuiltin(s: BuiltinScript): boolean {
+  const q = query.value
+  return (
+    builtinTitle(s).toLowerCase().includes(q) ||
+    s.title.toLowerCase().includes(q) ||
+    (builtinShort(s)?.toLowerCase().includes(q) ?? false)
+  )
+}
+
 const filteredIndicators = computed(() =>
-  query.value
-    ? builtinIndicators.filter(s =>
-        s.title.toLowerCase().includes(query.value) ||
-        (s.shortTitle?.toLowerCase().includes(query.value) ?? false),
-      )
-    : builtinIndicators,
+  query.value ? builtinIndicators.filter(matchesBuiltin) : builtinIndicators,
 )
 
 const filteredStrategies = computed(() =>
-  query.value
-    ? builtinStrategies.filter(s =>
-        s.title.toLowerCase().includes(query.value) ||
-        (s.shortTitle?.toLowerCase().includes(query.value) ?? false),
-      )
-    : builtinStrategies,
+  query.value ? builtinStrategies.filter(matchesBuiltin) : builtinStrategies,
 )
 
 const filteredChartTests = computed(() =>
@@ -179,8 +193,8 @@ const filteredChartTestGroups = computed(() => {
                     :class="s.id === activeScriptId ? 'bg-primary/10 text-primary font-medium' : ''"
                     @click="selectScript(s.id)"
                   >
-                    <span class="flex-1 min-w-0 truncate">{{ s.title }}</span>
-                    <span v-if="s.shortTitle" class="shrink-0 text-xs text-muted-foreground">{{ s.shortTitle }}</span>
+                    <span class="flex-1 min-w-0 truncate">{{ builtinTitle(s) }}</span>
+                    <span v-if="s.shortTitle" class="shrink-0 text-xs text-muted-foreground">{{ builtinShort(s) }}</span>
                     <Check v-if="scriptsOnChart.has(s.id)" class="h-3.5 w-3.5 shrink-0" />
                     <span v-else class="w-3.5 shrink-0" />
                   </button>
@@ -197,8 +211,8 @@ const filteredChartTestGroups = computed(() => {
                     :class="s.id === activeScriptId ? 'bg-primary/10 text-primary font-medium' : ''"
                     @click="selectScript(s.id)"
                   >
-                    <span class="flex-1 min-w-0 truncate">{{ s.title }}</span>
-                    <span v-if="s.shortTitle" class="shrink-0 text-xs text-muted-foreground">{{ s.shortTitle }}</span>
+                    <span class="flex-1 min-w-0 truncate">{{ builtinTitle(s) }}</span>
+                    <span v-if="s.shortTitle" class="shrink-0 text-xs text-muted-foreground">{{ builtinShort(s) }}</span>
                     <Check v-if="scriptsOnChart.has(s.id)" class="h-3.5 w-3.5 shrink-0" />
                     <span v-else class="w-3.5 shrink-0" />
                   </button>
@@ -219,7 +233,7 @@ const filteredChartTestGroups = computed(() => {
                     :class="s.id === activeScriptId ? 'bg-primary/10 text-primary font-medium' : ''"
                     @click="selectScript(s.id)"
                   >
-                    <span class="flex-1 min-w-0 truncate">{{ s.title }}</span>
+                    <span class="flex-1 min-w-0 truncate">{{ builtinTitle(s) }}</span>
                     <Check v-if="scriptsOnChart.has(s.id)" class="h-3.5 w-3.5 shrink-0" />
                     <span v-else class="w-3.5 shrink-0" />
                   </button>
