@@ -341,6 +341,20 @@ function formatTypeRef(t: TypeRef | undefined): string {
   return t.qualifier ? `${t.qualifier} ${name}` : name
 }
 
+/**
+ * The default-value text for a param (without the leading `= `), or '' when the
+ * param has no default. `na` and other symbolic defaults arrive via defaultExpr
+ * (docgen emits `na` as the string "na"); literal defaults arrive via
+ * defaultValue. The `=== null` branch is a defensive fallback in case a
+ * serializer encodes `na` as a JSON null instead.
+ */
+function paramDefault(p: Overload['params'][number]): string {
+  if (p.defaultExpr) return p.defaultExpr
+  if (p.defaultValue === null) return 'na'
+  if (p.defaultValue !== undefined) return JSON.stringify(p.defaultValue)
+  return ''
+}
+
 function formatParam(p: Overload['params'][number]): string {
   // Navi style: `name: type` (with qualifier if present)
   let s = p.name
@@ -349,8 +363,8 @@ function formatParam(p: Overload['params'][number]): string {
     s += `: ${typeStr}`
   }
   if (p.isVariadic) s += '...'
-  if (p.defaultExpr) s += ` = ${p.defaultExpr}`
-  else if (p.defaultValue !== undefined && p.defaultValue !== null) s += ` = ${JSON.stringify(p.defaultValue)}`
+  const def = paramDefault(p)
+  if (def) s += ` = ${def}`
   return s
 }
 
@@ -982,9 +996,9 @@ watchEffect(async () => {
                               v-html="md(p.description, selectedItem.module)"
                             />
                             <code
-                              v-if="p.defaultExpr || (p.defaultValue !== undefined && p.defaultValue !== null)"
+                              v-if="paramDefault(p)"
                               class="docs-code" style="margin-left:4px; font-size:11px;"
-                            >= {{ p.defaultExpr ?? JSON.stringify(p.defaultValue) }}</code>
+                            >= {{ paramDefault(p) }}</code>
                           </td>
                         </tr>
                       </tbody>
