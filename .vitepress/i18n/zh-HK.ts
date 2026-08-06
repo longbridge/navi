@@ -308,6 +308,7 @@ export default {
   stdlibDialog: {
     title: "標準函式庫參考",
     filterSymbols: "篩選符號...",
+    clearSearch: "清除搜尋",
     resultCount: "{count} 個結果",
     resultCountOne: "1 個結果",
     syntax: "語法",

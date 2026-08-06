@@ -308,6 +308,7 @@ export default {
   stdlibDialog: {
     title: "Stdlib Reference",
     filterSymbols: "Filter symbols...",
+    clearSearch: "Clear search",
     resultCount: "{count} results",
     resultCountOne: "1 result",
     syntax: "Syntax",

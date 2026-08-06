@@ -308,6 +308,7 @@ export default {
   stdlibDialog: {
     title: "标准库参考",
     filterSymbols: "筛选符号...",
+    clearSearch: "清除搜索",
     resultCount: "{count} 个结果",
     resultCountOne: "1 个结果",
     syntax: "语法",

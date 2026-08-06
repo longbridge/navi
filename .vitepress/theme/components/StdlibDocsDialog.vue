@@ -2,7 +2,7 @@
 import { ref, computed, watch, watchEffect, nextTick, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { DialogRoot, DialogTitle, DialogDescription, VisuallyHidden } from 'radix-vue'
-import { Search, ChevronRight, ChevronDown, BookOpen, Code, Hash, Box, Library, ArrowLeft, ArrowRight } from 'lucide-vue-next'
+import { Search, ChevronRight, ChevronDown, BookOpen, Code, Hash, Box, Library, ArrowLeft, ArrowRight, X } from 'lucide-vue-next'
 import snarkdown from 'snarkdown'
 import DialogContent from './ui/DialogContent.vue'
 import type {
@@ -677,8 +677,16 @@ watchEffect(async () => {
                 v-model="search"
                 type="text"
                 :placeholder="t('stdlibDialog.filterSymbols')"
-                class="w-full h-8 pl-8 pr-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-primary/50 transition-shadow placeholder:text-muted-foreground/60"
+                class="w-full h-8 pl-8 pr-8 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-primary/50 transition-shadow placeholder:text-muted-foreground/60"
               />
+              <button
+                v-if="search"
+                @click="search = ''; searchEl?.focus()"
+                :title="t('stdlibDialog.clearSearch')"
+                class="absolute right-1.5 top-1/2 -translate-y-1/2 h-5 w-5 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+              >
+                <X class="h-3.5 w-3.5" />
+              </button>
             </div>
             <p v-if="search" class="text-[10px] text-muted-foreground mt-1.5 px-0.5">
               {{ filteredCount === 1 ? t('stdlibDialog.resultCountOne') : t('stdlibDialog.resultCount', { count: filteredCount }) }}
@@ -1206,7 +1214,7 @@ watchEffect(async () => {
   vertical-align: top;
   line-height: 1.6;
 }
-.docs-table tbody tr:hover {
+.docs-table tbody tr:nth-child(even) {
   background: var(--vp-c-bg-soft);
 }
 .docs-table .col-name {
