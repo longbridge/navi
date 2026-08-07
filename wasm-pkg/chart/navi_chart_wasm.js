@@ -266,10 +266,6 @@ function wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278(arg0, arg
     wasm.wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278(arg0, arg1, arg2);
 }
 
-function wasm_bindgen__convert__closures_____invoke__h32e249823a6c6c1f(arg0, arg1) {
-    wasm.wasm_bindgen__convert__closures_____invoke__h32e249823a6c6c1f(arg0, arg1);
-}
-
 function wasm_bindgen__convert__closures_____invoke__h09e1f75621400211(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures_____invoke__h09e1f75621400211(arg0, arg1, arg2, arg3);
 }
@@ -758,6 +754,14 @@ export class Chart {
         wasm.chart_setScrollOffset(this.__wbg_ptr, offset);
     }
     /**
+     * Return whether entrance/reveal animations are enabled.
+     * @returns {boolean}
+     */
+    animationEnabled() {
+        const ret = wasm.chart_animationEnabled(this.__wbg_ptr);
+        return ret !== 0;
+    }
+    /**
      * Return the currently active candlestick rendering style as a string.
      * @returns {any}
      */
@@ -831,6 +835,14 @@ export class Chart {
         wasm.chart_updateAnnotation(this.__wbg_ptr, ptr0, len0, spec);
     }
     /**
+     * Return the entrance/reveal animation duration in milliseconds.
+     * @returns {number}
+     */
+    animationDuration() {
+        const ret = wasm.chart_animationDuration(this.__wbg_ptr);
+        return ret;
+    }
+    /**
      * Forward `compositionupdate` with the current composition `text` and
      * cursor byte offset within that text.
      * @param {string} text
@@ -890,6 +902,15 @@ export class Chart {
         }
     }
     /**
+     * Enable or disable entrance/reveal animations (currently the per-plot
+     * appearance reveal that plays when a script's data first arrives).
+     * Defaults to enabled.
+     * @param {boolean} enabled
+     */
+    setAnimationEnabled(enabled) {
+        wasm.chart_setAnimationEnabled(this.__wbg_ptr, enabled);
+    }
+    /**
      * Set the candlestick rendering style (e.g. `"candlestick"`, `"line"`,
      * `"heikinAshi"`). Accepts a JS string; re-renders on success.
      * @param {any} style
@@ -937,6 +958,14 @@ export class Chart {
     lastPriceLineVisible() {
         const ret = wasm.chart_lastPriceLineVisible(this.__wbg_ptr);
         return ret !== 0;
+    }
+    /**
+     * Set the entrance/reveal animation duration in milliseconds. Defaults to
+     * 500 (0.5 s); negative/non-finite values clamp to 0 (instant).
+     * @param {number} ms
+     */
+    setAnimationDuration(ms) {
+        wasm.chart_setAnimationDuration(this.__wbg_ptr, ms);
     }
     /**
      * Set the default style for a drawing tool.
@@ -2098,9 +2127,6 @@ function __wbg_get_imports() {
         const ret = arg0.chartStream(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), arg5);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_clearInterval_0675249bbe52da7b = function(arg0, arg1) {
-        arg0.clearInterval(arg1);
-    };
     imports.wbg.__wbg_clearRect_155b2e12f737565e = function(arg0, arg1, arg2, arg3, arg4) {
         arg0.clearRect(arg1, arg2, arg3, arg4);
     };
@@ -2437,10 +2463,6 @@ function __wbg_get_imports() {
     imports.wbg.__wbg_save_62f4925fcc246f6c = function(arg0) {
         arg0.save();
     };
-    imports.wbg.__wbg_setInterval_6714a9bec1e91fa3 = function() { return handleError(function (arg0, arg1, arg2) {
-        const ret = arg0.setInterval(arg1, arg2);
-        return ret;
-    }, arguments) };
     imports.wbg.__wbg_setLineDash_6e29ac9fc9f5947f = function() { return handleError(function (arg0, arg1) {
         arg0.setLineDash(arg1);
     }, arguments) };
@@ -2578,11 +2600,6 @@ function __wbg_get_imports() {
         const ret = arg0.writeText(getStringFromWasm0(arg1, arg2));
         return ret;
     };
-    imports.wbg.__wbindgen_cast_0b6015753f74c1d7 = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 983, function: Function { arguments: [], shim_idx: 984, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen__closure__destroy__h9f12c8187c41a197, wasm_bindgen__convert__closures_____invoke__h32e249823a6c6c1f);
-        return ret;
-    };
     imports.wbg.__wbindgen_cast_2241b6af4c4b2941 = function(arg0, arg1) {
         // Cast intrinsic for `Ref(String) -> Externref`.
         const ret = getStringFromWasm0(arg0, arg1);
@@ -2593,6 +2610,11 @@ function __wbg_get_imports() {
         const ret = BigInt.asUintN(64, arg0);
         return ret;
     };
+    imports.wbg.__wbindgen_cast_99237deb82a9e71e = function(arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 1816, function: Function { arguments: [Externref], shim_idx: 1817, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen__closure__destroy__h19febeda49f66582, wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278);
+        return ret;
+    };
     imports.wbg.__wbindgen_cast_9ae0607507abb057 = function(arg0) {
         // Cast intrinsic for `I64 -> Externref`.
         const ret = arg0;
@@ -2601,11 +2623,6 @@ function __wbg_get_imports() {
     imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
         // Cast intrinsic for `F64 -> Externref`.
         const ret = arg0;
-        return ret;
-    };
-    imports.wbg.__wbindgen_cast_df0bd88424101ace = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 1814, function: Function { arguments: [Externref], shim_idx: 1815, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen__closure__destroy__h19febeda49f66582, wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278);
         return ret;
     };
     imports.wbg.__wbindgen_init_externref_table = function() {

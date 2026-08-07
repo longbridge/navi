@@ -1009,6 +1009,10 @@ export class Chart {
    */
   setScrollOffset(offset: number): void;
   /**
+   * Return whether entrance/reveal animations are enabled.
+   */
+  animationEnabled(): boolean;
+  /**
    * Return the currently active candlestick rendering style as a string.
    */
   candlestickStyle(): any;
@@ -1051,6 +1055,10 @@ export class Chart {
    */
   updateAnnotation(id: string, spec: any): void;
   /**
+   * Return the entrance/reveal animation duration in milliseconds.
+   */
+  animationDuration(): number;
+  /**
    * Forward `compositionupdate` with the current composition `text` and
    * cursor byte offset within that text.
    */
@@ -1074,6 +1082,12 @@ export class Chart {
    */
   addSystemAnnotation(spec: any): string;
   /**
+   * Enable or disable entrance/reveal animations (currently the per-plot
+   * appearance reveal that plays when a script's data first arrives).
+   * Defaults to enabled.
+   */
+  setAnimationEnabled(enabled: boolean): void;
+  /**
    * Set the candlestick rendering style (e.g. `"candlestick"`, `"line"`,
    * `"heikinAshi"`). Accepts a JS string; re-renders on success.
    */
@@ -1095,6 +1109,11 @@ export class Chart {
    * Return whether the latest-close price line is currently shown.
    */
   lastPriceLineVisible(): boolean;
+  /**
+   * Set the entrance/reveal animation duration in milliseconds. Defaults to
+   * 500 (0.5 s); negative/non-finite values clamp to 0 (instant).
+   */
+  setAnimationDuration(ms: number): void;
   /**
    * Set the default style for a drawing tool.
    *
@@ -1539,6 +1558,8 @@ export interface InitOutput {
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
   readonly chart_addScript: (a: number, b: any, c: any) => any;
   readonly chart_addSystemAnnotation: (a: number, b: any) => [number, number];
+  readonly chart_animationDuration: (a: number) => number;
+  readonly chart_animationEnabled: (a: number) => number;
   readonly chart_annotationControlPointFlags: (a: number, b: number, c: number) => any;
   readonly chart_annotationProperties: (a: number, b: number, c: number) => any;
   readonly chart_barCount: (a: number) => number;
@@ -1622,6 +1643,8 @@ export interface InitOutput {
   readonly chart_selectedAnnotationIsHighlighter: (a: number) => number;
   readonly chart_selection: (a: number) => any;
   readonly chart_sendSelectedAnnotationToBack: (a: number) => void;
+  readonly chart_setAnimationDuration: (a: number, b: number) => void;
+  readonly chart_setAnimationEnabled: (a: number, b: number) => void;
   readonly chart_setAnnotationDefault: (a: number, b: number, c: number, d: any) => number;
   readonly chart_setAnnotationProperty: (a: number, b: number, c: number, d: number, e: number, f: any) => number;
   readonly chart_setCandlestickConfig: (a: number, b: any) => void;
@@ -1662,9 +1685,6 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly start: () => void;
   readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
   readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
@@ -1673,6 +1693,9 @@ export interface InitOutput {
   readonly localcharthandle_removeScript: (a: number, b: number) => void;
   readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
   readonly localchartprovider_new: (a: any) => number;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
   readonly intounderlyingsource_cancel: (a: number) => void;
   readonly intounderlyingsource_pull: (a: number, b: any) => any;
@@ -1688,8 +1711,6 @@ export interface InitOutput {
   readonly intounderlyingbytesource_type: (a: number) => number;
   readonly wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278: (a: number, b: number, c: any) => void;
   readonly wasm_bindgen__closure__destroy__h19febeda49f66582: (a: number, b: number) => void;
-  readonly wasm_bindgen__convert__closures_____invoke__h32e249823a6c6c1f: (a: number, b: number) => void;
-  readonly wasm_bindgen__closure__destroy__h9f12c8187c41a197: (a: number, b: number) => void;
   readonly wasm_bindgen__convert__closures_____invoke__h09e1f75621400211: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
