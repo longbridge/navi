@@ -106,6 +106,15 @@ export default defineConfig({
     outline: [2, 3],
     search: {
       provider: "local",
+      options: {
+        // Exclude the temporary Navi Stream docs from the search index so they
+        // are only reachable via a direct /navi-stream URL. Remove this
+        // `_render` override when the `navi-stream/` folders are deleted.
+        _render(src, env, md) {
+          if (/(^|\/)navi-stream\//.test(env.relativePath)) return "";
+          return md.render(src, env);
+        },
+      },
     },
   },
 
@@ -138,8 +147,12 @@ export default defineConfig({
     }
 
     // Pages for llms output: skip root-level non-content files
+    // (also skip the temporary Navi Stream docs — remove the extra filter
+    // when the `navi-stream/` folders are deleted)
     const SKIP_PAGES = new Set(["index.md", "playground.md", "README.md"]);
-    const llmsPages = enPages.filter((p) => !SKIP_PAGES.has(p));
+    const llmsPages = enPages.filter(
+      (p) => !SKIP_PAGES.has(p) && !p.startsWith("navi-stream/")
+    );
 
     const skillSection = [
       "## For AI Coding Assistants",
