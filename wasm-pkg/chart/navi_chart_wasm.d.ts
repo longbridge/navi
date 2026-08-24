@@ -1,17 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Returns a JS object representing the built-in light theme.
- *
- * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
- */
-export function lightTheme(): any;
-/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function darkTheme(): any;
+/**
+ * Returns a JS object representing the built-in light theme.
+ *
+ * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
+ */
+export function lightTheme(): any;
 /**
  * Module entry point: route Rust panics through `console.error` with a
  * readable message and source location instead of a bare wasm `unreachable`.
@@ -24,119 +24,87 @@ export function start(): void;
  */
 type ReadableStreamType = "bytes";
 
-/**
- * Supplies candlestick and auxiliary data to a {@link Chart}.
- *
- * Implement this interface and pass an instance to `new Chart(…)`.
- * All stream methods support infinite (live) streams — yield historical
- * data followed by `"historyEnd"`, then keep yielding realtime updates.
- * When the chart no longer needs data it cancels the generator via
- * `iterator.return()`.
- *
- * All methods are optional — omit any method and the engine uses a safe
- * default (empty stream or `{}` symbol info). Implement only what your
- * use-case needs.
- *
- * @example
- * ```ts
- * const provider: DataProvider = {
- *   async *candlesticks(symbol, tf, fromTime) {
- *     const bars = await fetchHistory(symbol, tf, fromTime);
- *     yield* bars;
- *     yield "historyEnd";
- *     // keep yielding realtime bars...
- *   },
- * };
- * ```
- */
-export interface DataProvider {
-  /**
-   * Return partial symbol metadata for `symbol`.
-   *
-   * `fields` lists which `syminfo.*` properties the script accesses;
-   * you may return only those fields, or return all fields unconditionally.
-   * If omitted, all `syminfo.*` fields fall back to their defaults.
-   */
-  symbolInfo?(symbol: string, fields: SyminfoFields): Promise<PartialSymbolInfo>;
+/** A position within a source file. */
+export interface Position {
+  /** Zero-based file identifier — look up the path in `sourceFiles[fileId]`. */
+  fileId: number;
+  /** One-based line number. */
+  line: number;
+  /** Zero-based column offset in characters. */
+  column: number;
+  /** Byte offset from the start of the source text. */
+  byteOffset: number;
+}
 
-  /**
-   * Stream candlestick items for `(symbol, tf)` starting at or before
-   * `fromTime` (epoch ms). `count` is an optional cap on historical bars.
-   * If omitted, the chart renders with no data.
-   */
-  candlesticks?(symbol: string, tf: TimeFrame, fromTime: number, count?: number): AsyncIterable<CandlestickItem>;
+/** A half-open `[start, end)` span in source code. */
+export interface Span {
+  start: Position;
+  end: Position;
+}
 
-  /** Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`). */
-  ticks?(symbol: string, fromTime: number, count?: number): AsyncIterable<TickItem>;
-
-  /** Stream historical exchange rate data for `from → to` currency conversion. */
-  currencyRate?(from: Currency, to: Currency, fromTime: number): AsyncIterable<AuxDataItem>;
-
-  /** Stream financial report data points (revenue, EPS, …). */
-  financial?(symbol: string, financialId: string, period: string, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
-
-  /** Stream earnings data points. */
-  earnings?(symbol: string, field: EarningsField, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
-
-  /** Stream dividend data points. */
-  dividends?(symbol: string, field: DividendsField, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
-
-  /** Stream macroeconomic data points for `countryCode`. */
-  economic?(countryCode: string, field: string, fromTime: number): AsyncIterable<AuxDataItem>;
-
-  /** Stream stock split data points. */
-  splits?(symbol: string, field: SplitsField, fromTime: number): AsyncIterable<AuxDataItem>;
-
-  /** Stream custom data identified by `fn` and `args`. */
-  data?(fn: string, args: DataArgs, fromTime: number): AsyncIterable<AuxDataItem>;
+/** A rectangular region in CSS pixel coordinates. */
+export interface Rect {
+  origin: { x: number; y: number };
+  size: { width: number; height: number };
 }
 
 /**
- * Supplies K-line data and script execution events to a {@link Chart}.
+ * Keyboard modifier bitfield forwarded to interaction methods.
  *
- * Implement `chartStream` to provide a unified stream of
- * {@link ChartStreamEvent} items. Pass an instance to `new Chart(…)`.
- *
- * For in-browser VM execution use `LocalChartProvider` (from the `local`
- * feature of `navi-chart-wasm`) instead of implementing this yourself.
- *
- * @example
- * ```ts
- * const provider: ChartProvider = {
- *   async *chartStream(symbol, tf, request) {
- *     // yield bars and script events...
- *   },
- * };
- * const chart = new Chart(provider, canvas, "NASDAQ:AAPL", "D", "en", false);
- * ```
+ * | Bit | Key   |
+ * |-----|-------|
+ * | 1   | Ctrl  |
+ * | 2   | Shift |
+ * | 4   | Alt   |
+ * | 8   | Meta  |
  */
-export interface ChartProvider {
-  /**
-   * Stream unified K-line + script events for `(symbol, tf)`.
-   *
-   * `request` contains the list of scripts (with their handles and overridden
-   * input values) plus global configuration (locale, inputSessions).
-   *
-   * Script events are tagged with `scriptId` values `0..n` corresponding to
-   * the index in `request.scripts`.
-   */
-  chartStream(
-    symbol: string,
-    tf: TimeFrame,
-    request: ChartStreamRequest,
-  ): AsyncIterable<ChartStreamEvent>;
+export type Modifiers = number;
+
+
+
+/** A single market tick (one trade event). */
+export interface Tick {
+  /** Tick timestamp as epoch milliseconds. */
+  time: number;
+  /** Last traded price. */
+  price: number;
+  /** Volume traded in this tick. */
+  volume: number;
+  /** Aggressor side: `"buy"`, `"sell"`, or `null` when unknown. */
+  side: string | null;
 }
 
 /**
- * Resolves `import` statements in Navi source code.
+ * Item yielded by `DataProvider.ticks()`.
  *
- * Pass an instance as the `loader` argument to `new Chart(…)`.
- * Return `null` when the library is not found (equivalent to `NopLoader`).
+ * Follows the same stream protocol as {@link CandlestickItem}: historical
+ * ticks precede `"historyEnd"`, realtime ticks follow it.
  */
-export interface LibraryLoader {
-  /** Return the Navi source for `path`, or `null` if not found. */
-  load(path: string): string | null;
-}
+export type TickItem =
+  | { tick: Tick }
+  | "historyEnd";
+
+
+
+/**
+ * Value carried by an auxiliary data point.
+ *
+ * A bare `number` is a float, a bare `string`/`boolean` map to their types, and
+ * `null` means `na`. An `int`-typed `request.data<int>` result is produced by
+ * converting the float, so no separate integer form is needed.
+ */
+export type AuxValue = number | boolean | string | null;
+
+/**
+ * Item yielded by auxiliary data streams (currency rates, financials,
+ * earnings, dividends, economic data, splits, custom data).
+ *
+ * Follows the same `"historyEnd"` stream protocol as
+ * {@link CandlestickItem}.
+ */
+export type AuxDataItem =
+  | { data: { /** Epoch milliseconds. */ time: number; value: AuxValue } }
+  | "historyEnd";
 
 
 
@@ -235,6 +203,192 @@ export type DataArgs = Record<string, DataArg>;
 
 
 
+/** A source file referenced by error spans. */
+export interface SourceFile {
+  /** File path (or a synthetic name like `"<main>"`). */
+  path: string;
+  /** Full source text. */
+  source: string;
+}
+
+/**
+ * Which module a backtrace frame belongs to.
+ *
+ * - `"main"` — the user's script.
+ * - `"prelude"` — auto-imported built-in functions.
+ * - `"stdlib"` — standard library (e.g. `ta`, `math`).
+ * - `"import"` — an explicitly imported library.
+ */
+export type ModuleKind = "main" | "prelude" | "stdlib" | "import";
+
+/** A single compilation diagnostic (always an error). */
+export interface CompileDiagnostic {
+  message: string;
+  /** Source spans associated with this diagnostic. */
+  spans: Span[];
+}
+
+/** One frame in a runtime call-stack backtrace. */
+export interface BacktraceFrame {
+  /** Qualified function name, e.g. `"ta.sma"`, or `null` for top-level code. */
+  funcName: string | null;
+  /** Call-site location. */
+  span: Span;
+  moduleKind: ModuleKind;
+}
+
+/**
+ * Error thrown by `Chart.addScript()` when a script fails to compile or
+ * execute.
+ *
+ * Discriminate on the variant key:
+ *
+ * ```ts
+ * try {
+ *   await chart.addScript(source, "my-ind");
+ * } catch (e: unknown) {
+ *   const err = e as ScriptError;
+ *   if ("compile" in err) {
+ *     showDiagnostics(err.compile.diagnostics);
+ *   } else if ("exception" in err) {
+ *     showRuntimeError(err.exception);
+ *   } else if (err === "missingScriptType") {
+ *     console.error("missing script type");
+ *   }
+ * }
+ * ```
+ */
+export type ScriptError =
+  | { compile:                  { diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> } }
+  | { exception:                { message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> } }
+  | "missingScriptType"
+  | { inputValueNotFound:       { id: number } }
+  | { setInputValue:            { id: number; error: string } }
+  | { unsupportedTimeFrame:     { timeFrame: TimeFrame } }
+  | { sessionNotAllowed:        { session: TradeSession } }
+  | "invalidSymbol"
+  | "unknownMarket"
+  | "libraryScriptNotExecutable"
+  | { dataProvider:             { message: string } }
+  | "confirmedBarUpdate"
+  | { jitCompilation:           { message: string } };
+
+
+
+/** Stable identifier for an annotation, allocated by the chart. */
+export type AnnotationId = string;
+
+
+/**
+ * Kebab-case drawing-tool identifier that determines the annotation's
+ * geometry and default style, e.g. `"trendline"`, `"rect"`, `"text"`.
+ */
+export type AnnotationKind = string;
+
+/** A control point in chart-space coordinates. */
+export interface ControlPoint {
+  /** Timestamp in milliseconds since the Unix epoch. */
+  time: number;
+  /** Price level. */
+  price: number;
+}
+
+/** Caller-facing specification used to create or replace an annotation. */
+export interface AnnotationSpec {
+  kind: AnnotationKind;
+  /** Text strings associated with the annotation (labels, callout text, …). */
+  texts: string[];
+  /** Ordered list of control points that define the annotation's geometry. */
+  points: ControlPoint[];
+  /** Zero-based sub-pane index (0 = main chart pane). */
+  pane: number;
+  visible: boolean;
+  /** When `true` the user cannot move or resize this annotation. */
+  locked: boolean;
+}
+
+/** An annotation as stored by the chart, including its assigned `id`. */
+export interface Annotation {
+  id: AnnotationId;
+  spec: AnnotationSpec;
+}
+
+/** Describes an editable property of an annotation. */
+export interface PropertyDescriptor {
+  /** Machine-readable property name used in `getAnnotationProperty` / `setAnnotationProperty`. */
+  name: string;
+  /** Human-readable label shown in a property editor UI. */
+  displayName: string;
+  kind: PropertyKindMeta;
+  /** When `true` the property can be individually enabled/disabled. */
+  enableable: boolean;
+}
+
+/** One localised option in an enum/flags property. */
+export interface EnumOption { displayName: string }
+
+/**
+ * Type metadata for a property — determines which UI widget renders it.
+ *
+ * Unit variants are plain strings; struct variants use the variant name as key.
+ */
+export type PropertyKindMeta =
+  | "fill"
+  | "textAlign"
+  | "bool"
+  | "text"
+  | "alpha"
+  | { textVAlign: { options: EnumOption[] } }
+  | { enum:       { options: EnumOption[] } }
+  | { flags:      { options: EnumOption[] } }
+  | { stroke:     { flags: { color: boolean; width: boolean; style: boolean } } }
+  | { textStyle:  { flags: { color: boolean; size: boolean; bold: boolean; italic: boolean } } }
+  | { group:      { hasNumber: boolean; items: PropertyDescriptor[] } }
+  | { [key: string]: unknown };
+
+/**
+ * A typed annotation property value.
+ *
+ * Discriminate on the variant key, e.g. `"color" in v`, `"stroke" in v`.
+ */
+export type PropertyValue =
+  | { color:      number }
+  | { float:      number }
+  | { bool:       boolean }
+  | { lineStyle:  number }
+  | { textAlign:  string }
+  | { enum:       number }
+  | { text:       string }
+  | { int:        number }
+  | { stroke:     { color: number; width: number; style: number } }
+  | { textStyle:  { color?: number; fontSize?: number; bold: boolean; italic: boolean } }
+  | { enableable: { enabled: boolean; value: PropertyValue } }
+  | { [key: string]: unknown };
+
+/**
+ * Result of `getAnnotationProperty()`.
+ *
+ * - `{ value }` — a single concrete value.
+ * - `"none"` — the property has no value (e.g. not applicable to this variant).
+ * - `"mixed"` — the selection contains annotations with different values.
+ */
+export type PropertyValueResult =
+  | { value: PropertyValue }
+  | "none"
+  | "mixed";
+
+/**
+ * A single item in a context menu returned by a `contextMenuRequested` event.
+ *
+ * - `{ action }` — a clickable menu item.
+ * - `"separator"` — a visual divider.
+ */
+export type ContextMenuItem =
+  | { action: { /** Stable id to pass back to `dispatchContextMenuAction()`. */ actionId: string; /** When `false`, render greyed-out but still visible. */ enabled: boolean } }
+  | "separator";
+
+
+
 /** Opaque string identifier for a running script slot. */
 export type ScriptId = string;
 
@@ -320,208 +474,6 @@ export type ChartEvent =
    * Echo the chosen item back with `dispatchContextMenuAction(actionId)`.
    */
   | { contextMenuRequested: { x: number; y: number; items: ContextMenuItem[] } };
-
-
-
-/** Trading session that a candlestick belongs to. */
-export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
-
-/**
- * Timeframe string identifying a bar interval.
- *
- * Common values: `"1"`, `"5"`, `"15"`, `"60"` (minutes), `"D"` (daily),
- * `"W"` (weekly), `"M"` (monthly).
- */
-export type TimeFrame = string;
-
-/** A single OHLCV candlestick bar. */
-export interface Candlestick {
-  /** Bar open time as epoch milliseconds. */
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  /** Trade volume. */
-  volume: number;
-  /** Turnover (volume × price). */
-  turnover: number;
-  /** Turnover rate (fraction of float traded). `NaN` when unavailable. */
-  turnoverRate: number;
-  tradeSession: TradeSession;
-  /** Best ask price at bar close (`NaN` when unavailable). */
-  ask: number;
-  /** Best bid price at bar close (`NaN` when unavailable). */
-  bid: number;
-}
-
-/**
- * Item yielded by `DataProvider.candlesticks()`.
- *
- * - `{ bar }` — a confirmed historical bar (before `"historyEnd"`) or the
- *   current forming realtime bar (after `"historyEnd"`).
- * - `"historyEnd"` — boundary marker emitted once, after all historical bars
- *   and before the first realtime bar.
- */
-export type CandlestickItem =
-  | { bar: Candlestick }
-  | "historyEnd";
-
-
-
-/**
- * Value carried by an auxiliary data point.
- *
- * A bare `number` is a float, a bare `string`/`boolean` map to their types, and
- * `null` means `na`. An `int`-typed `request.data<int>` result is produced by
- * converting the float, so no separate integer form is needed.
- */
-export type AuxValue = number | boolean | string | null;
-
-/**
- * Item yielded by auxiliary data streams (currency rates, financials,
- * earnings, dividends, economic data, splits, custom data).
- *
- * Follows the same `"historyEnd"` stream protocol as
- * {@link CandlestickItem}.
- */
-export type AuxDataItem =
-  | { data: { /** Epoch milliseconds. */ time: number; value: AuxValue } }
-  | "historyEnd";
-
-
-
-/** A position within a source file. */
-export interface Position {
-  /** Zero-based file identifier — look up the path in `sourceFiles[fileId]`. */
-  fileId: number;
-  /** One-based line number. */
-  line: number;
-  /** Zero-based column offset in characters. */
-  column: number;
-  /** Byte offset from the start of the source text. */
-  byteOffset: number;
-}
-
-/** A half-open `[start, end)` span in source code. */
-export interface Span {
-  start: Position;
-  end: Position;
-}
-
-/** A rectangular region in CSS pixel coordinates. */
-export interface Rect {
-  origin: { x: number; y: number };
-  size: { width: number; height: number };
-}
-
-/**
- * Keyboard modifier bitfield forwarded to interaction methods.
- *
- * | Bit | Key   |
- * |-----|-------|
- * | 1   | Ctrl  |
- * | 2   | Shift |
- * | 4   | Alt   |
- * | 8   | Meta  |
- */
-export type Modifiers = number;
-
-
-
-/** A single market tick (one trade event). */
-export interface Tick {
-  /** Tick timestamp as epoch milliseconds. */
-  time: number;
-  /** Last traded price. */
-  price: number;
-  /** Volume traded in this tick. */
-  volume: number;
-  /** Aggressor side: `"buy"`, `"sell"`, or `null` when unknown. */
-  side: string | null;
-}
-
-/**
- * Item yielded by `DataProvider.ticks()`.
- *
- * Follows the same stream protocol as {@link CandlestickItem}: historical
- * ticks precede `"historyEnd"`, realtime ticks follow it.
- */
-export type TickItem =
-  | { tick: Tick }
-  | "historyEnd";
-
-
-
-/** A source file referenced by error spans. */
-export interface SourceFile {
-  /** File path (or a synthetic name like `"<main>"`). */
-  path: string;
-  /** Full source text. */
-  source: string;
-}
-
-/**
- * Which module a backtrace frame belongs to.
- *
- * - `"main"` — the user's script.
- * - `"prelude"` — auto-imported built-in functions.
- * - `"stdlib"` — standard library (e.g. `ta`, `math`).
- * - `"import"` — an explicitly imported library.
- */
-export type ModuleKind = "main" | "prelude" | "stdlib" | "import";
-
-/** A single compilation diagnostic (always an error). */
-export interface CompileDiagnostic {
-  message: string;
-  /** Source spans associated with this diagnostic. */
-  spans: Span[];
-}
-
-/** One frame in a runtime call-stack backtrace. */
-export interface BacktraceFrame {
-  /** Qualified function name, e.g. `"ta.sma"`, or `null` for top-level code. */
-  funcName: string | null;
-  /** Call-site location. */
-  span: Span;
-  moduleKind: ModuleKind;
-}
-
-/**
- * Error thrown by `Chart.addScript()` when a script fails to compile or
- * execute.
- *
- * Discriminate on the variant key:
- *
- * ```ts
- * try {
- *   await chart.addScript(source, "my-ind");
- * } catch (e: unknown) {
- *   const err = e as ScriptError;
- *   if ("compile" in err) {
- *     showDiagnostics(err.compile.diagnostics);
- *   } else if ("exception" in err) {
- *     showRuntimeError(err.exception);
- *   } else if (err === "missingScriptType") {
- *     console.error("missing script type");
- *   }
- * }
- * ```
- */
-export type ScriptError =
-  | { compile:                  { diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> } }
-  | { exception:                { message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> } }
-  | "missingScriptType"
-  | { inputValueNotFound:       { id: number } }
-  | { setInputValue:            { id: number; error: string } }
-  | { unsupportedTimeFrame:     { timeFrame: TimeFrame } }
-  | { sessionNotAllowed:        { session: TradeSession } }
-  | "invalidSymbol"
-  | "unknownMarket"
-  | "libraryScriptNotExecutable"
-  | { dataProvider:             { message: string } }
-  | "confirmedBarUpdate"
-  | { jitCompilation:           { message: string } };
 
 
 
@@ -651,117 +603,165 @@ export interface ChartStreamRequest {
 
 
 
-/** Stable identifier for an annotation, allocated by the chart. */
-export type AnnotationId = string;
+/**
+ * Supplies candlestick and auxiliary data to a {@link Chart}.
+ *
+ * Implement this interface and pass an instance to `new Chart(…)`.
+ * All stream methods support infinite (live) streams — yield historical
+ * data followed by `"historyEnd"`, then keep yielding realtime updates.
+ * When the chart no longer needs data it cancels the generator via
+ * `iterator.return()`.
+ *
+ * All methods are optional — omit any method and the engine uses a safe
+ * default (empty stream or `{}` symbol info). Implement only what your
+ * use-case needs.
+ *
+ * @example
+ * ```ts
+ * const provider: DataProvider = {
+ *   async *candlesticks(symbol, tf, fromTime) {
+ *     const bars = await fetchHistory(symbol, tf, fromTime);
+ *     yield* bars;
+ *     yield "historyEnd";
+ *     // keep yielding realtime bars...
+ *   },
+ * };
+ * ```
+ */
+export interface DataProvider {
+  /**
+   * Return partial symbol metadata for `symbol`.
+   *
+   * `fields` lists which `syminfo.*` properties the script accesses;
+   * you may return only those fields, or return all fields unconditionally.
+   * If omitted, all `syminfo.*` fields fall back to their defaults.
+   */
+  symbolInfo?(symbol: string, fields: SyminfoFields): Promise<PartialSymbolInfo>;
 
+  /**
+   * Stream candlestick items for `(symbol, tf)` starting at or before
+   * `fromTime` (epoch ms). `count` is an optional cap on historical bars.
+   * If omitted, the chart renders with no data.
+   */
+  candlesticks?(symbol: string, tf: TimeFrame, fromTime: number, count?: number): AsyncIterable<CandlestickItem>;
+
+  /** Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`). */
+  ticks?(symbol: string, fromTime: number, count?: number): AsyncIterable<TickItem>;
+
+  /** Stream historical exchange rate data for `from → to` currency conversion. */
+  currencyRate?(from: Currency, to: Currency, fromTime: number): AsyncIterable<AuxDataItem>;
+
+  /** Stream financial report data points (revenue, EPS, …). */
+  financial?(symbol: string, financialId: string, period: string, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
+
+  /** Stream earnings data points. */
+  earnings?(symbol: string, field: EarningsField, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
+
+  /** Stream dividend data points. */
+  dividends?(symbol: string, field: DividendsField, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
+
+  /** Stream macroeconomic data points for `countryCode`. */
+  economic?(countryCode: string, field: string, fromTime: number): AsyncIterable<AuxDataItem>;
+
+  /** Stream stock split data points. */
+  splits?(symbol: string, field: SplitsField, fromTime: number): AsyncIterable<AuxDataItem>;
+
+  /** Stream custom data identified by `fn` and `args`. */
+  data?(fn: string, args: DataArgs, fromTime: number): AsyncIterable<AuxDataItem>;
+}
 
 /**
- * Kebab-case drawing-tool identifier that determines the annotation's
- * geometry and default style, e.g. `"trendline"`, `"rect"`, `"text"`.
+ * Supplies K-line data and script execution events to a {@link Chart}.
+ *
+ * Implement `chartStream` to provide a unified stream of
+ * {@link ChartStreamEvent} items. Pass an instance to `new Chart(…)`.
+ *
+ * For in-browser VM execution use `LocalChartProvider` (from the `local`
+ * feature of `navi-chart-wasm`) instead of implementing this yourself.
+ *
+ * @example
+ * ```ts
+ * const provider: ChartProvider = {
+ *   async *chartStream(symbol, tf, request) {
+ *     // yield bars and script events...
+ *   },
+ * };
+ * const chart = new Chart(provider, canvas, "NASDAQ:AAPL", "D", "en", false);
+ * ```
  */
-export type AnnotationKind = string;
+export interface ChartProvider {
+  /**
+   * Stream unified K-line + script events for `(symbol, tf)`.
+   *
+   * `request` contains the list of scripts (with their handles and overridden
+   * input values) plus global configuration (locale, inputSessions).
+   *
+   * Script events are tagged with `scriptId` values `0..n` corresponding to
+   * the index in `request.scripts`.
+   */
+  chartStream(
+    symbol: string,
+    tf: TimeFrame,
+    request: ChartStreamRequest,
+  ): AsyncIterable<ChartStreamEvent>;
+}
 
-/** A control point in chart-space coordinates. */
-export interface ControlPoint {
-  /** Timestamp in milliseconds since the Unix epoch. */
+/**
+ * Resolves `import` statements in Navi source code.
+ *
+ * Pass an instance as the `loader` argument to `new Chart(…)`.
+ * Return `null` when the library is not found (equivalent to `NopLoader`).
+ */
+export interface LibraryLoader {
+  /** Return the Navi source for `path`, or `null` if not found. */
+  load(path: string): string | null;
+}
+
+
+
+/** Trading session that a candlestick belongs to. */
+export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
+
+/**
+ * Timeframe string identifying a bar interval.
+ *
+ * Common values: `"1"`, `"5"`, `"15"`, `"60"` (minutes), `"D"` (daily),
+ * `"W"` (weekly), `"M"` (monthly).
+ */
+export type TimeFrame = string;
+
+/** A single OHLCV candlestick bar. */
+export interface Candlestick {
+  /** Bar open time as epoch milliseconds. */
   time: number;
-  /** Price level. */
-  price: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  /** Trade volume. */
+  volume: number;
+  /** Turnover (volume × price). */
+  turnover: number;
+  /** Turnover rate (fraction of float traded). `NaN` when unavailable. */
+  turnoverRate: number;
+  tradeSession: TradeSession;
+  /** Best ask price at bar close (`NaN` when unavailable). */
+  ask: number;
+  /** Best bid price at bar close (`NaN` when unavailable). */
+  bid: number;
 }
 
-/** Caller-facing specification used to create or replace an annotation. */
-export interface AnnotationSpec {
-  kind: AnnotationKind;
-  /** Text strings associated with the annotation (labels, callout text, …). */
-  texts: string[];
-  /** Ordered list of control points that define the annotation's geometry. */
-  points: ControlPoint[];
-  /** Zero-based sub-pane index (0 = main chart pane). */
-  pane: number;
-  visible: boolean;
-  /** When `true` the user cannot move or resize this annotation. */
-  locked: boolean;
-}
-
-/** An annotation as stored by the chart, including its assigned `id`. */
-export interface Annotation {
-  id: AnnotationId;
-  spec: AnnotationSpec;
-}
-
-/** Describes an editable property of an annotation. */
-export interface PropertyDescriptor {
-  /** Machine-readable property name used in `getAnnotationProperty` / `setAnnotationProperty`. */
-  name: string;
-  /** Human-readable label shown in a property editor UI. */
-  displayName: string;
-  kind: PropertyKindMeta;
-  /** When `true` the property can be individually enabled/disabled. */
-  enableable: boolean;
-}
-
-/** One localised option in an enum/flags property. */
-export interface EnumOption { displayName: string }
-
 /**
- * Type metadata for a property — determines which UI widget renders it.
+ * Item yielded by `DataProvider.candlesticks()`.
  *
- * Unit variants are plain strings; struct variants use the variant name as key.
+ * - `{ bar }` — a confirmed historical bar (before `"historyEnd"`) or the
+ *   current forming realtime bar (after `"historyEnd"`).
+ * - `"historyEnd"` — boundary marker emitted once, after all historical bars
+ *   and before the first realtime bar.
  */
-export type PropertyKindMeta =
-  | "fill"
-  | "textAlign"
-  | "bool"
-  | "text"
-  | "alpha"
-  | { textVAlign: { options: EnumOption[] } }
-  | { enum:       { options: EnumOption[] } }
-  | { flags:      { options: EnumOption[] } }
-  | { stroke:     { flags: { color: boolean; width: boolean; style: boolean } } }
-  | { textStyle:  { flags: { color: boolean; size: boolean; bold: boolean; italic: boolean } } }
-  | { group:      { hasNumber: boolean; items: PropertyDescriptor[] } }
-  | { [key: string]: unknown };
-
-/**
- * A typed annotation property value.
- *
- * Discriminate on the variant key, e.g. `"color" in v`, `"stroke" in v`.
- */
-export type PropertyValue =
-  | { color:      number }
-  | { float:      number }
-  | { bool:       boolean }
-  | { lineStyle:  number }
-  | { textAlign:  string }
-  | { enum:       number }
-  | { text:       string }
-  | { int:        number }
-  | { stroke:     { color: number; width: number; style: number } }
-  | { textStyle:  { color?: number; fontSize?: number; bold: boolean; italic: boolean } }
-  | { enableable: { enabled: boolean; value: PropertyValue } }
-  | { [key: string]: unknown };
-
-/**
- * Result of `getAnnotationProperty()`.
- *
- * - `{ value }` — a single concrete value.
- * - `"none"` — the property has no value (e.g. not applicable to this variant).
- * - `"mixed"` — the selection contains annotations with different values.
- */
-export type PropertyValueResult =
-  | { value: PropertyValue }
-  | "none"
-  | "mixed";
-
-/**
- * A single item in a context menu returned by a `contextMenuRequested` event.
- *
- * - `{ action }` — a clickable menu item.
- * - `"separator"` — a visual divider.
- */
-export type ContextMenuItem =
-  | { action: { /** Stable id to pass back to `dispatchContextMenuAction()`. */ actionId: string; /** When `false`, render greyed-out but still visible. */ enabled: boolean } }
-  | "separator";
+export type CandlestickItem =
+  | { bar: Candlestick }
+  | "historyEnd";
 
 
 /**
@@ -1685,7 +1685,6 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly start: () => void;
   readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
   readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
@@ -1696,9 +1695,7 @@ export interface InitOutput {
   readonly __wbg_imageregistry_free: (a: number, b: number) => void;
   readonly imageregistry_add: (a: number, b: number, c: any) => void;
   readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
-  readonly intounderlyingsource_cancel: (a: number) => void;
-  readonly intounderlyingsource_pull: (a: number, b: any) => any;
+  readonly start: () => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;
@@ -1709,9 +1706,12 @@ export interface InitOutput {
   readonly intounderlyingbytesource_pull: (a: number, b: any) => any;
   readonly intounderlyingbytesource_start: (a: number, b: any) => void;
   readonly intounderlyingbytesource_type: (a: number) => number;
-  readonly wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278: (a: number, b: number, c: any) => void;
-  readonly wasm_bindgen__closure__destroy__h19febeda49f66582: (a: number, b: number) => void;
-  readonly wasm_bindgen__convert__closures_____invoke__h09e1f75621400211: (a: number, b: number, c: any, d: any) => void;
+  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
+  readonly intounderlyingsource_cancel: (a: number) => void;
+  readonly intounderlyingsource_pull: (a: number, b: any) => any;
+  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any) => void;
+  readonly wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______: (a: number, b: number) => void;
+  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
