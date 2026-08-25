@@ -10,7 +10,7 @@ let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移", "zh-HK
 let lower = ta.lowest(length);
 let upper = ta.highest(length);
 let basis = math.avg(upper, lower);
-plot(basis, @locale { default: "Basis", "zh-CN": "中线", "zh-HK": "中線" }, color: #FF6D00, offset: offset);
-let u = plot(upper, @locale { default: "Upper", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #2962FF, offset: offset);
-let l = plot(lower, @locale { default: "Lower", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #2962FF, offset: offset);
+plot(basis, @locale { default: "Basis", "zh-CN": "中线", "zh-HK": "中線" }, color: #FF6D00, offset:);
+let u = plot(upper, @locale { default: "Upper", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #2962FF, offset:);
+let l = plot(lower, @locale { default: "Lower", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #2962FF, offset:);
 fill(u, l, color: Color.rgb(33, 150, 243, 95), title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" });

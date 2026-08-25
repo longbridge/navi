@@ -9,4 +9,4 @@ let len = input.int(20, @locale { default: "Length", "zh-CN": "周期", "zh-HK":
 let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
 let ma = ta.vwma(src, len);
 let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移", "zh-HK": "偏移" }, minval: -500, maxval: 500);
-plot(ma, title: "VWMA", color: #2962FF, offset: offset);
+plot(ma, title: "VWMA", color: #2962FF, offset:);

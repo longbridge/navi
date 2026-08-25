@@ -186,14 +186,14 @@ if not (hideonDWM and timeframe.is_dwm) {
     lowerBandValue3 = _vwap - bandBasis * bandMult_3;
 }
 
-plot(vwapValue, title: "VWAP", color: #2962FF, offset: offset);
+plot(vwapValue, title: "VWAP", color: #2962FF, offset:);
 
 let displayBand1 = showBand_1 ? PlotDisplay.ALL : PlotDisplay.NONE;
 let upperBand_1 = plot(
     upperBandValue1,
     title: @locale { default: "Upper Band #1", "zh-CN": "上轨 #1", "zh-HK": "上軌 #1" },
     color: Color.GREEN,
-    offset: offset,
+    offset:,
     display: displayBand1,
     editable: showBand_1
 );
@@ -201,7 +201,7 @@ let lowerBand_1 = plot(
     lowerBandValue1,
     title: @locale { default: "Lower Band #1", "zh-CN": "下轨 #1", "zh-HK": "下軌 #1" },
     color: Color.GREEN,
-    offset: offset,
+    offset:,
     display: displayBand1,
     editable: showBand_1
 );
@@ -219,7 +219,7 @@ let upperBand_2 = plot(
     upperBandValue2,
     title: @locale { default: "Upper Band #2", "zh-CN": "上轨 #2", "zh-HK": "上軌 #2" },
     color: Color.OLIVE,
-    offset: offset,
+    offset:,
     display: displayBand2,
     editable: showBand_2
 );
@@ -227,7 +227,7 @@ let lowerBand_2 = plot(
     lowerBandValue2,
     title: @locale { default: "Lower Band #2", "zh-CN": "下轨 #2", "zh-HK": "下軌 #2" },
     color: Color.OLIVE,
-    offset: offset,
+    offset:,
     display: displayBand2,
     editable: showBand_2
 );
@@ -245,7 +245,7 @@ let upperBand_3 = plot(
     upperBandValue3,
     title: @locale { default: "Upper Band #3", "zh-CN": "上轨 #3", "zh-HK": "上軌 #3" },
     color: Color.TEAL,
-    offset: offset,
+    offset:,
     display: displayBand3,
     editable: showBand_3
 );
@@ -253,7 +253,7 @@ let lowerBand_3 = plot(
     lowerBandValue3,
     title: @locale { default: "Lower Band #3", "zh-CN": "下轨 #3", "zh-HK": "下軌 #3" },
     color: Color.TEAL,
-    offset: offset,
+    offset:,
     display: displayBand3,
     editable: showBand_3
 );

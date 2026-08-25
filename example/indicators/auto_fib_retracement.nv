@@ -108,7 +108,7 @@ fn makePivotLabel(
             point,
             style: LabelStyle.NoLabel,
             xloc: XLoc.BarTime,
-            yloc: yloc,
+            yloc:,
             text_color: txtColor
         );
     }
@@ -637,7 +637,7 @@ fn _draw_label(price, txt, txtColor) {
     let labelsAlignStrRight = '       ' + txt + '\n ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏  ‏ \n';
     let labelsAlignStr = labelsPosition == "Left" ? labelsAlignStrLeft : labelsAlignStrRight;
     var id = Label.new(
-        x: x,
+        x:,
         y: price,
         xloc: XLoc.BarTime,
         text: labelsAlignStr,

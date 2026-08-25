@@ -20,7 +20,7 @@ hline(50, @locale { default: "Middle Band", "zh-CN": "中轨", "zh-HK": "中軌"
 let h1 = hline(20, @locale { default: "Lower Band", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #787B86);
 fill(h0, h1, color: Color.rgb(126, 87, 194, 90), title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" });
 
-plot(rvi, title: "RVI", color: #7E57C2, offset: offset);
+plot(rvi, title: "RVI", color: #7E57C2, offset:);
 
 let GRP = @locale { default: "Smoothing", "zh-CN": "平滑处理", "zh-HK": "平滑處理" };
 let TT_BB = @locale {

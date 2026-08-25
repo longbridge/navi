@@ -24,4 +24,4 @@ fn twap(source, anchorChange) {
 
 let twapValue = twap(src, timeframe.change(anchor));
 
-plot(twapValue, title: @locale { default: "TWAP", "zh-CN": "TWAP", "zh-HK": "TWAP" }, color: #dd7a28, offset: offset);
+plot(twapValue, title: @locale { default: "TWAP", "zh-CN": "TWAP", "zh-HK": "TWAP" }, color: #dd7a28, offset:);

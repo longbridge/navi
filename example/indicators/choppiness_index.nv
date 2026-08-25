@@ -11,7 +11,7 @@ let ci = 100 * math.log10(
     math.sum(ta.atr(1), length) / (ta.highest(length) - ta.lowest(length))
 ) / math.log10(length);
 let offset = input.int(0, @locale { default: "Offset", "zh-CN": "偏移量", "zh-HK": "偏移量" }, minval: -500, maxval: 500);
-plot(ci, "CHOP", color: #2962FF, offset: offset);
+plot(ci, "CHOP", color: #2962FF, offset:);
 let band1 = hline(
     61.8,
     @locale { default: "Upper Band", "zh-CN": "上轨", "zh-HK": "上軌" },

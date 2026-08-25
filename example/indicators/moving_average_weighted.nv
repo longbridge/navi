@@ -15,4 +15,4 @@ let offset = input.int(
     display: PlotDisplay.NONE
 );
 let out = ta.wma(src, len);
-plot(out, title: @locale { default: "WMA", "zh-CN": "WMA", "zh-HK": "WMA" }, color: Color.BLUE, offset: offset);
+plot(out, title: @locale { default: "WMA", "zh-CN": "WMA", "zh-HK": "WMA" }, color: Color.BLUE, offset:);

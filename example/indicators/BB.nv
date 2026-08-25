@@ -71,7 +71,7 @@ let dev = mult * ta.stdev(src, length);
 let upper = basis + dev;
 let lower = basis - dev;
 
-plot(basis, @locale { default: "Basis", "zh-CN": "基准线", "zh-HK": "基準線" }, color: #2962FF, offset: offset);
-let p1 = plot(upper, @locale { default: "Upper", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #F23645, offset: offset);
-let p2 = plot(lower, @locale { default: "Lower", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #089981, offset: offset);
+plot(basis, @locale { default: "Basis", "zh-CN": "基准线", "zh-HK": "基準線" }, color: #2962FF, offset:);
+let p1 = plot(upper, @locale { default: "Upper", "zh-CN": "上轨", "zh-HK": "上軌" }, color: #F23645, offset:);
+let p2 = plot(lower, @locale { default: "Lower", "zh-CN": "下轨", "zh-HK": "下軌" }, color: #089981, offset:);
 fill(p1, p2, title: @locale { default: "Background", "zh-CN": "背景", "zh-HK": "背景" }, color: Color.rgb(33, 150, 243, 95));

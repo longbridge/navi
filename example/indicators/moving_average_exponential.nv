@@ -15,7 +15,7 @@ let offset = input.int(
     display: PlotDisplay.NONE
 );
 let out = ta.ema(src, len);
-plot(out, title: @locale { default: "EMA", "zh-CN": "EMA", "zh-HK": "EMA" }, color: Color.BLUE, offset: offset);
+plot(out, title: @locale { default: "EMA", "zh-CN": "EMA", "zh-HK": "EMA" }, color: Color.BLUE, offset:);
 
 let GRP = @locale { default: "Smoothing", "zh-CN": "平滑处理", "zh-HK": "平滑處理" };
 let TT_BB = @locale {

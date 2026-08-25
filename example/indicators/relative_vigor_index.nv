@@ -19,5 +19,5 @@ let offset = input.int(
     maxval: 500,
     display: PlotDisplay.NONE
 );
-plot(rvi, color: #008000, title: @locale { default: "RVGI", "zh-CN": "RVGI", "zh-HK": "RVGI" }, offset: offset);
-plot(sig, color: #FF0000, title: @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "信號線" }, offset: offset);
+plot(rvi, color: #008000, title: @locale { default: "RVGI", "zh-CN": "RVGI", "zh-HK": "RVGI" }, offset:);
+plot(sig, color: #FF0000, title: @locale { default: "Signal", "zh-CN": "信号线", "zh-HK": "信號線" }, offset:);
