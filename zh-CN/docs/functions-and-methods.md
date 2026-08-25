@@ -47,7 +47,17 @@ fn myPlot(src, length:  14, title:  "Default") {
 调用函数时可以使用命名参数：
 
 ```navi
-plot(close, title: "Close", color: color.BLUE, linewidth: 2);
+plot(close, title: "Close", color: Color.BLUE, line_width: 2);
+```
+
+当作用域中已有同名变量时，可以省略参数值——`title:` 就是 `title: title` 的简写：
+
+```navi
+let title = "Close";
+let color = Color.BLUE;
+
+plot(close, title:, color:);           // 等同于 title: title, color: color
+plot(close, title:, color: Color.RED); // 可以和显式写法混用
 ```
 
 ## 函数重载

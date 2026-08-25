@@ -47,7 +47,18 @@ fn myPlot(src, length = 14, title = "Default") {
 When calling functions, you can use named arguments:
 
 ```navi
-plot(close, title: "Close", color: color.BLUE, linewidth: 2);
+plot(close, title: "Close", color: Color.BLUE, line_width: 2);
+```
+
+When a variable of the same name is already in scope, leave the value off —
+`title:` is shorthand for `title: title`:
+
+```navi
+let title = "Close";
+let color = Color.BLUE;
+
+plot(close, title:, color:);           // same as title: title, color: color
+plot(close, title:, color: Color.RED); // mix freely with explicit values
 ```
 
 ## Function Overloading

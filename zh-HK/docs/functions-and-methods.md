@@ -47,7 +47,17 @@ fn myPlot(src, length:  14, title:  "Default") {
 調用函數時可以使用命名參數：
 
 ```navi
-plot(close, title: "Close", color: color.BLUE, linewidth: 2);
+plot(close, title: "Close", color: Color.BLUE, line_width: 2);
+```
+
+當作用域中已有同名變量時，可以省略參數值——`title:` 就是 `title: title` 的簡寫：
+
+```navi
+let title = "Close";
+let color = Color.BLUE;
+
+plot(close, title:, color:);           // 等同於 title: title, color: color
+plot(close, title:, color: Color.RED); // 可以和顯式寫法混用
 ```
 
 ## 函數重載

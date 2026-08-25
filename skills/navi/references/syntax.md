@@ -193,6 +193,8 @@ count %= 3;
 - History reference: `seriesValue[1]`, `expr[n]`
 - Member/namespace access: `ta.sma`, `order.price`, `labelId.set_text(...)`
 - Named arguments: `plot(close, title: "Close", color: Color.BLUE)`
+- Shorthand named arguments — when a variable of the same name is in scope, the
+  value may be left off: `plot(close, title:)` means `plot(close, title: title)`
 
 ## Control Flow
 
@@ -464,5 +466,5 @@ plot(trend.slope(close, 20));
 - Use `Array<T>`, `Map<K, V>`, and `Matrix<T>`, not lowercase collection type names.
 - Use tuple destructuring immediately for multi-return functions.
 - Use `x[1]` only to look backward in bar history.
-- Use named arguments with `name: value`.
+- Use named arguments with `name: value`, or `name:` alone when a variable of that name is in scope.
 - Use PascalCase enum variants such as `Direction.Long` and `PlotStyle.Histogram`.
