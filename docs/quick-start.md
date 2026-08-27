@@ -15,34 +15,27 @@ plot(ta.sma(close, len), "SMA", color: Color.BLUE);
 
 <QuickStartSmaChart />
 
-The blue line is the 14-bar simple moving average produced by the indicator over the AAPL daily candles. The script was executed with `navi run` against the same OHLCV data.
+The blue line is the 14-bar simple moving average produced by the indicator over the AAPL daily candles.
 
 ## Check Locally (Optional)
 
 If you installed the standalone `navi` CLI for development, validate the script before running it:
 
 ```bash
-navi lint sma.nv
+navi check sma.nv
+navi fmt --check sma.nv
 ```
 
-`lint` checks syntax, types, compilation, imports, and canonical formatting. The standalone CLI does not contain market data. To verify execution, prepare an OHLCV CSV—synthetic bars are sufficient and should cover the script's lookback and important branches—then run:
+`check` validates syntax, types, compilation, and imports. `fmt --check` reports whether the source is canonically formatted without touching it; `navi fmt` rewrites it in place.
+
+Both commands take any number of paths, and each one can be a file, a directory, or a glob pattern, so a whole project is validated in a single command:
 
 ```bash
-navi run sma.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
+navi check "**/*.nv"
+navi fmt .
 ```
 
-The required CSV columns are `time,open,high,low,close`; `volume` and `turnover` are optional, and `time` is Unix milliseconds. Use `navi run --help` for the current schema and available options.
-
-When real candles are useful, an installed and authenticated Longbridge CLI can fetch them as JSON:
-
-```bash
-longbridge kline history AAPL.US \
-  --start 2024-01-01 \
-  --end 2024-12-31 \
-  --format json
-```
-
-Convert the returned OHLCV fields to the CSV schema above. In an AI environment with Longbridge MCP, the agent can instead request historical candlesticks from its market-data tools. If neither is available, use a reputable public market-data source and check its licensing, adjustment, timezone, ordering, and missing-bar conventions.
+The standalone CLI carries no market data and does not execute scripts. To see an indicator run against candles, use the Longbridge CLI below, or open it in the [Playground](/playground).
 
 ## Run with Longbridge
 
@@ -78,30 +71,13 @@ plot(slow, "Slow EMA");
 ```
 
 ```bash
-navi lint ma_cross.nv
-navi run ma_cross.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
+navi check ma_cross.nv
+navi fmt --check ma_cross.nv
 ```
 
-Running the example over 500 AAPL daily bars prints:
+## PineScript Compatibility <Badge type="warning" text="experimental" />
 
-```text
-ran 500 bars; plots: 2; trades: 0 ; net profit: 0
-```
-
-## Running PineScript Files <Badge type="warning" text="experimental" />
-
-The `navi` CLI is compatible with PineScript v6 syntax. Save the script with a `.pine` extension and pass the global `--pine` option to compile or run it directly:
-
-```bash
-navi check my_indicator.pine --pine
-navi run my_indicator.pine \
-  --data bars.csv \
-  --symbol NASDAQ:AAPL \
-  --timeframe 1D \
-  --pine
-```
-
-The `--pine` option is required for `.pine` entry files. Without it, the local CLI accepts Navi `.nv` files.
+Navi is compatible with PineScript v6 syntax, so an existing `.pine` script can run on the Longbridge platform without being rewritten first. The standalone `navi` CLI is Navi-only and accepts `.nv` files.
 
 ### Converting to Navi
 

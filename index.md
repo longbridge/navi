@@ -25,5 +25,5 @@ features:
   - title: High Performance
     details: Scripts compile to optimized bytecode and run in a tight bar-by-bar loop. JIT compilation available for hot paths.
   - title: Local CLI Workflow
-    details: Install the navi CLI, lint every script before use, and run indicators or strategies against local OHLCV data.
+    details: Install the navi CLI, then check and format every script before use — one file, a directory, or a whole project at a time.
 ---

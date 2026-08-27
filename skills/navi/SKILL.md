@@ -58,7 +58,7 @@ Follow these Navi naming conventions consistently:
 
 Validate every complete `.nv` file you create or modify with the `navi` CLI. Use `navi --help` or `navi <command> --help` for detailed, current behavior; `-h` only prints a summary.
 
-The standalone `navi` CLI is intentionally a basic compiler and local runner. It does not include or download market data. Its role in AI authoring workflows is to prove that a script compiles and, with caller-provided data, executes successfully.
+The standalone `navi` CLI is intentionally a compiler and formatter. It does not execute scripts and does not include or download market data. Its role in AI authoring workflows is to prove that a script compiles and is canonically formatted.
 
 1. Check whether the CLI is installed with `command -v navi` (`Get-Command navi` on Windows).
 2. If it is missing, install it with the appropriate command when local tool installation is in scope; otherwise give the command to the user:
@@ -75,17 +75,21 @@ The standalone `navi` CLI is intentionally a basic compiler and local runner. It
    irm https://navi-lang.org/install.ps1 | iex
    ```
 
-3. Run `navi lint path/to/script.nv`. This is the default completion gate: it checks syntax, types, compilation, imports, and canonical formatting.
-4. When lint reports only a formatting difference, run `navi fmt path/to/script.nv`, then rerun lint.
-5. When runtime behavior matters, provide data explicitly with `--data`:
-   - By default, construct a small synthetic OHLCV CSV that exercises the script's warmup and important branches. Required columns are `time,open,high,low,close`; `volume` and `turnover` are optional. Use Unix milliseconds, chronological rows, internally consistent prices (`low <= open/close <= high`), and enough bars for the longest lookback.
-   - If the `longbridge` CLI is installed and authenticated, either fetch real candles with `longbridge kline history SYMBOL --start YYYY-MM-DD --end YYYY-MM-DD --format json` and convert them to the CSV schema, or run the script directly on Longbridge historical data with `longbridge quant run`.
-   - If a Longbridge MCP server is available, request historical candlesticks through its market-data tools and convert the returned OHLCV values to the CSV schema.
-   - If neither Longbridge option is available, a reputable public market-data source is acceptable. Account for its licensing, price adjustment, timezone, ordering, and missing-bar conventions.
-6. Run `navi run path/to/script.nv --data path/to/bars.csv --symbol NASDAQ:AAPL --timeframe 1D`. Inspect `navi run --help` for the current CSV schema and timeframe syntax.
-7. Treat every non-zero exit status as a failed validation. Fix the script and repeat until the required commands exit successfully; report the commands run, the data source (synthetic or real), and any validation that could not be completed.
+3. Run `navi check path/to/script.nv`. This is the default completion gate: it checks syntax, types, compilation, and imports.
+4. Run `navi fmt path/to/script.nv` to apply canonical formatting, or `navi fmt --check path/to/script.nv` to report differences without writing. Formatting is independent of compilation, so run both.
+5. When several files changed, validate them together instead of one call per file. Both commands accept any number of paths, and each can be a file, a directory, or a glob pattern:
 
-Use `navi check path/to/script.nv` (also available as `navi compile`) when compilation is required but formatting is intentionally out of scope. Do not claim that a code fragment was CLI-validated unless it was placed in a complete `.nv` script and the command succeeded.
+   ```bash
+   navi check "src/**/*.nv"
+   navi fmt src
+   ```
+
+   Quote glob patterns so `navi` expands them itself. Matching no files is an error, so a mistyped pattern fails rather than silently passing.
+6. Treat every non-zero exit status as a failed validation. Fix the script and repeat until both commands exit successfully; report the commands run and any validation that could not be completed.
+
+The CLI cannot confirm runtime behavior — it does not execute scripts. When a task turns on what a script actually produces, run it with `longbridge quant run`, request candles from a Longbridge MCP server, or open the script in the Playground, and say plainly that the CLI checked compilation only.
+
+Do not claim that a code fragment was CLI-validated unless it was placed in a complete `.nv` script and the command succeeded.
 
 ## Playground Preview Links
 

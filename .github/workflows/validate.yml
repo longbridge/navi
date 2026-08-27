@@ -42,4 +42,4 @@ jobs:
         run: navi --version
 
       - name: Check examples
-        run: find example -type f -name '*.nv' -print0 | sort -z | xargs -0 -n 1 navi check
+        run: navi check "example/**/*.nv"

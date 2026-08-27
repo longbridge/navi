@@ -87,34 +87,30 @@ CLI 不包含行情数据。下方验证流程会通过 `--data` 使用调用方
 3. 要求 AI 使用独立的 `navi` CLI 验证文件：
 
    ```bash
-   navi lint path/to/script.nv
+   navi check path/to/script.nv
    ```
 
-4. 如果只存在格式问题，先运行 `navi fmt`，然后重新 lint。
-5. 需要验证运行行为时，先构造一份较小的模拟 OHLCV CSV，数据量应覆盖脚本最长回看周期，然后实际执行脚本：
+4. 让 AI 用 `navi fmt path/to/script.nv` 应用规范格式，或用 `navi fmt --check` 验证而不改动文件。
+5. 涉及多个文件时一起校验——两个命令都接受文件、目录和 glob 模式：
 
    ```bash
-   navi run path/to/script.nv \
-     --data bars.csv \
-     --symbol NASDAQ:AAPL \
-     --timeframe 1D
+   navi check "src/**/*.nv"
+   navi fmt src
    ```
 
 6. 将验证后的脚本用于 Longbridge CLI、App 或桌面端。独立的 `navi` CLI 主要用于开发和调试。
 
 只有 AI 成功运行 CLI 才能称为“已验证”；仅返回代码块不代表完成验证。
 
-### 运行数据
+### 运行行为
 
-独立的 `navi` CLI 仅提供基础编译和本地运行能力，不包含也不会下载行情数据，因此 `navi run` 必须通过 `--data` 接收调用方提供的数据。AI 验证默认应使用模拟数据：时间戳按 Unix 毫秒递增，OHLC 价格关系合理，并根据脚本需要覆盖预热、上涨、下跌、横盘和触发信号等场景。
+独立的 `navi` CLI 只验证编译和格式，不执行脚本，也不包含行情数据，因此无法单独确认运行行为。需要确认脚本实际产出时，按以下顺序选择：
 
-需要真实数据时，按可用环境优先选择：
+- 已安装并登录的 Longbridge CLI：`longbridge quant run` 可直接基于 Longbridge 历史数据运行脚本。
+- AI 环境中的 Longbridge MCP：通过其行情工具请求历史 K 线。
+- [Playground](/playground)：在浏览器中基于示例 K 线运行脚本。
 
-- 已安装并登录的 Longbridge CLI：运行 `longbridge kline history SYMBOL --start YYYY-MM-DD --end YYYY-MM-DD --format json`，再将返回的 K 线转换为 `navi run` 所需的 CSV；也可以使用 `longbridge quant run` 直接基于 Longbridge 历史数据运行脚本。
-- AI 环境中的 Longbridge MCP：通过其行情工具请求历史 K 线，再将返回的 OHLCV 转换为 CSV。
-- 两者均不可用时，可使用可靠的公开数据源，但要核对授权、复权方式、时区、数据顺序及缺失 K 线处理方式。
-
-真实数据是对模拟场景的补充，不能代替专门构造、用于触发关键分支的数据。
+审阅只能通过编译检查的脚本时，需要显式推敲预热、上涨、下跌、横盘和触发信号等路径。
 
 ### 在线预览
 
@@ -130,13 +126,13 @@ https://navi-lang.org/playground?code=<base64url-source>
 
 ```text
 检查 momentum_strategy.nv 是否存在重绘或 series 状态错误。
-修复文件并保持原有行为，完成后运行 navi lint。
+修复文件并保持原有行为，完成后运行 navi check。
 ```
 
 ```text
 创建一个 Navi 库，导出 EMA 和交叉判断辅助函数。
 遵循 Navi 命名规范，保存为 moving_average_helpers.nv，
-并返回实际的 navi lint 结果。
+并返回实际的 navi check 结果。
 ```
 
 Skill 将 [navi-lang.org](/zh-CN/docs/) 及其标准库文档作为当前 API 的权威来源。

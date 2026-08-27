@@ -50,7 +50,7 @@ Verify the installation:
 navi --version
 ```
 
-The standalone CLI contains no market data; it provides basic compile, lint, format, and run capabilities so developers and AI agents can verify script correctness. `navi run` therefore requires a caller-provided OHLCV CSV through `--data`. The Quick Start shows how to build synthetic validation data and where to obtain real candles when needed.
+The standalone CLI contains no market data and does not execute scripts; it provides compilation and formatting checks so developers and AI agents can verify script correctness. `navi check` and `navi fmt` accept files, directories, and glob patterns, so a whole project can be validated in one command. Run `navi update` to upgrade the binary in place.
 
 ## VS Code Extension
 

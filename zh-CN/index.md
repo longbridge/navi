@@ -25,5 +25,5 @@ features:
   - title: 高性能
     details: 脚本编译为优化字节码，在高效的逐 K 线循环中执行。关键路径支持 JIT 编译加速。
   - title: 本地 CLI 工作流
-    details: 安装 navi CLI，在使用前检查每个脚本，并使用本地 OHLCV 数据运行指标或策略。
+    details: 安装 navi CLI，在使用前检查并格式化每个脚本——可以是单个文件、一个目录，也可以是整个项目。
 ---

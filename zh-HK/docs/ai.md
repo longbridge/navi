@@ -87,34 +87,30 @@ CLI 不包含行情數據。下方驗證流程會透過 `--data` 使用調用方
 3. 要求 AI 使用獨立的 `navi` CLI 驗證文件：
 
    ```bash
-   navi lint path/to/script.nv
+   navi check path/to/script.nv
    ```
 
-4. 如果只有格式問題，先執行 `navi fmt`，然後重新 lint。
-5. 需要驗證執行行為時，先構造一份較小的模擬 OHLCV CSV，數據量應覆蓋腳本最長回看週期，然後實際執行腳本：
+4. 讓 AI 用 `navi fmt path/to/script.nv` 套用規範格式，或用 `navi fmt --check` 驗證而不改動檔案。
+5. 涉及多個檔案時一起校驗——兩個命令都接受檔案、目錄和 glob 模式：
 
    ```bash
-   navi run path/to/script.nv \
-     --data bars.csv \
-     --symbol NASDAQ:AAPL \
-     --timeframe 1D
+   navi check "src/**/*.nv"
+   navi fmt src
    ```
 
-6. 將驗證後的腳本用於 Longbridge CLI、App 或桌面端。獨立的 `navi` CLI 主要用於開發和調試。
+6. 將驗證後的腳本用於 Longbridge CLI、App 或桌面端。獨立的 `navi` CLI 主要用於開發和除錯。
 
-只有 AI 成功執行 CLI 才能稱為「已驗證」；僅返回代碼區塊不代表完成驗證。
+只有 AI 成功執行 CLI 才能稱為「已驗證」；僅返回程式碼區塊不代表完成驗證。
 
-### 執行數據
+### 執行行為
 
-獨立的 `navi` CLI 僅提供基礎編譯和本機執行能力，不包含也不會下載行情數據，因此 `navi run` 必須透過 `--data` 接收調用方提供的數據。AI 驗證預設應使用模擬數據：時間戳按 Unix 毫秒遞增，OHLC 價格關係合理，並根據腳本需要覆蓋預熱、上漲、下跌、橫盤和觸發訊號等場景。
+獨立的 `navi` CLI 只驗證編譯和格式，不執行腳本，也不包含行情數據，因此無法單獨確認執行行為。需要確認腳本實際產出時，按以下順序選擇：
 
-需要真實數據時，按可用環境優先選擇：
+- 已安裝並登入的 Longbridge CLI：`longbridge quant run` 可直接基於 Longbridge 歷史數據執行腳本。
+- AI 環境中的 Longbridge MCP：透過其行情工具請求歷史 K 線。
+- [Playground](/playground)：在瀏覽器中基於範例 K 線執行腳本。
 
-- 已安裝並登入的 Longbridge CLI：執行 `longbridge kline history SYMBOL --start YYYY-MM-DD --end YYYY-MM-DD --format json`，再將返回的 K 線轉換為 `navi run` 所需的 CSV；也可以使用 `longbridge quant run` 直接基於 Longbridge 歷史數據執行腳本。
-- AI 環境中的 Longbridge MCP：透過其行情工具請求歷史 K 線，再將返回的 OHLCV 轉換為 CSV。
-- 兩者均不可用時，可使用可靠的公開數據源，但要核對授權、復權方式、時區、數據順序及缺失 K 線處理方式。
-
-真實數據是對模擬場景的補充，不能代替專門構造、用於觸發關鍵分支的數據。
+審閱只能通過編譯檢查的腳本時，需要明確推敲預熱、上漲、下跌、橫盤和觸發訊號等路徑。
 
 ### 線上預覽
 
@@ -130,13 +126,13 @@ https://navi-lang.org/playground?code=<base64url-source>
 
 ```text
 檢查 momentum_strategy.nv 是否存在重繪或 series 狀態錯誤。
-修復文件並保持原有行為，完成後執行 navi lint。
+修復文件並保持原有行為，完成後執行 navi check。
 ```
 
 ```text
 建立一個 Navi 庫，匯出 EMA 和交叉判斷輔助函數。
 遵循 Navi 命名規範，儲存為 moving_average_helpers.nv，
-並返回實際的 navi lint 結果。
+並返回實際的 navi check 結果。
 ```
 
 Skill 將 [navi-lang.org](/zh-HK/docs/) 及其標準庫文件作為目前 API 的權威來源。

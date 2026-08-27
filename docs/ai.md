@@ -87,34 +87,30 @@ For better results, include:
 3. Require the agent to validate the file with the standalone `navi` CLI:
 
    ```bash
-   navi lint path/to/script.nv
+   navi check path/to/script.nv
    ```
 
-4. If formatting fails, run `navi fmt`, then lint again.
-5. When runtime behavior matters, create a small synthetic OHLCV CSV with enough bars for the script's longest lookback, then execute it:
+4. Have the agent apply canonical formatting with `navi fmt path/to/script.nv`, or verify it with `navi fmt --check`.
+5. When several files changed, validate them together — both commands accept files, directories, and glob patterns:
 
    ```bash
-   navi run path/to/script.nv \
-     --data bars.csv \
-     --symbol NASDAQ:AAPL \
-     --timeframe 1D
+   navi check "src/**/*.nv"
+   navi fmt src
    ```
 
 6. Use the validated script with the Longbridge CLI, App, or desktop client. The standalone `navi` CLI is primarily a development and debugging tool.
 
 Do not accept a claim that a script was validated unless the agent ran the CLI successfully. A code block alone is not validation.
 
-### Runtime data
+### Runtime behavior
 
-The standalone `navi` CLI only provides basic compilation and local execution. It does not bundle or download market data, so `navi run` requires caller-provided data through `--data`. Synthetic data is the dependable default for AI validation: use chronological Unix-millisecond timestamps, internally consistent OHLC prices, and scenarios that exercise warmup, rising, falling, flat, and signal-producing paths as relevant.
+The standalone `navi` CLI validates compilation and formatting; it does not execute scripts and bundles no market data, so it cannot confirm runtime behavior on its own. To check what a script actually produces, prefer these in order:
 
-For real data, prefer these sources when available:
+- An installed and authenticated Longbridge CLI: `longbridge quant run` executes a script directly against Longbridge historical data.
+- A Longbridge MCP server in the AI environment: request historical candlesticks with its market-data tools.
+- The [Playground](/playground), which runs the script in the browser against sample candles.
 
-- An installed and authenticated Longbridge CLI: use `longbridge kline history SYMBOL --start YYYY-MM-DD --end YYYY-MM-DD --format json`, then convert the returned candles to the CSV columns required by `navi run`. You can also use `longbridge quant run` to execute a script directly against Longbridge historical data.
-- A Longbridge MCP server in the AI environment: request historical candlesticks with its market-data tools and convert the returned OHLCV values to CSV.
-- Otherwise, use a reputable public data source and verify its licensing, adjustment, timezone, row ordering, and missing-bar behavior.
-
-Real data complements synthetic cases; it does not replace targeted data that deliberately reaches important branches.
+Reason explicitly about warmup, rising, falling, flat, and signal-producing paths when reviewing a script the CLI can only compile.
 
 ### Online preview
 
@@ -130,13 +126,13 @@ Opening the link loads the script as an unsaved file and adds it to the chart. B
 
 ```text
 Review momentum_strategy.nv for repainting and series-state errors.
-Fix the file, preserve its behavior, and run navi lint when finished.
+Fix the file, preserve its behavior, and run navi check when finished.
 ```
 
 ```text
 Create a Navi library that exports EMA and crossover helpers.
 Use Navi naming conventions, save it as moving_average_helpers.nv,
-and return the exact navi lint result.
+and return the exact navi check result.
 ```
 
 The skill treats [navi-lang.org](/docs/) and its standard-library reference as the source of truth for current APIs.

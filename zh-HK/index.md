@@ -25,5 +25,5 @@ features:
   - title: 高性能
     details: 腳本編譯為優化字節碼，在高效的逐 K 線循環中執行。關鍵路徑支援 JIT 編譯加速。
   - title: 本機 CLI 工作流程
-    details: 安裝 navi CLI，在使用前檢查每個腳本，並使用本機 OHLCV 數據執行指標或策略。
+    details: 安裝 navi CLI，在使用前檢查並格式化每個腳本——可以是單個檔案、一個目錄，也可以是整個專案。
 ---

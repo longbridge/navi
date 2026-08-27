@@ -50,7 +50,7 @@ irm https://navi-lang.org/install.ps1 | iex
 navi --version
 ```
 
-独立 CLI 不包含行情数据，只提供基础的编译、lint、格式化和运行能力，方便开发者及 AI 验证脚本正确性。因此 `navi run` 必须通过 `--data` 接收调用方提供的 OHLCV CSV。快速开始会介绍如何构造模拟验证数据，以及需要时如何获取真实 K 线。
+独立 CLI 不包含行情数据，也不执行脚本，只提供编译和格式化检查，方便开发者及 AI 验证脚本正确性。`navi check` 和 `navi fmt` 都接受文件、目录和 glob 模式，一条命令即可校验整个项目。运行 `navi update` 可原地升级二进制。
 
 ## VS Code 扩展
 

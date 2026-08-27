@@ -15,34 +15,27 @@ plot(ta.sma(close, len), "SMA", color: Color.BLUE);
 
 <QuickStartSmaChart />
 
-藍色線是該指標基於 AAPL 日 K 線計算出的 14 週期簡單移動平均線。該腳本已使用 `navi run` 和同一份 OHLCV 數據實際執行。
+藍色線是該指標基於 AAPL 日 K 線計算出的 14 週期簡單移動平均線。
 
 ## 本機檢查（可選）
 
 如果已安裝用於開發的獨立 `navi` CLI，可以在執行腳本前進行驗證：
 
 ```bash
-navi lint sma.nv
+navi check sma.nv
+navi fmt --check sma.nv
 ```
 
-`lint` 會檢查語法、類型、編譯、導入和規範格式。獨立 CLI 不包含行情數據。要驗證執行行為，請準備 OHLCV CSV；模擬 K 線即可，但應覆蓋腳本的回看週期和關鍵分支。然後執行：
+`check` 檢查語法、型別、編譯和匯入。`fmt --check` 只報告原始碼是否符合規範格式而不改動檔案；`navi fmt` 則直接原地重寫。
+
+兩個命令都接受任意多個路徑，每個路徑可以是檔案、目錄或 glob 模式，因此一條命令即可校驗整個專案：
 
 ```bash
-navi run sma.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
+navi check "**/*.nv"
+navi fmt .
 ```
 
-CSV 必須包含 `time,open,high,low,close`，可選包含 `volume` 和 `turnover`；`time` 使用 Unix 毫秒。執行 `navi run --help` 可查看目前 CSV 格式和所有選項。
-
-需要真實 K 線時，已安裝並登入的 Longbridge CLI 可以輸出 JSON：
-
-```bash
-longbridge kline history AAPL.US \
-  --start 2024-01-01 \
-  --end 2024-12-31 \
-  --format json
-```
-
-將返回的 OHLCV 欄位轉換為上述 CSV 格式即可。AI 環境若提供 Longbridge MCP，也可以透過其行情工具請求歷史 K 線。兩者均不可用時，可使用可靠的公開數據源，並核對授權、復權方式、時區、排序及缺失 K 線處理方式。
+獨立 CLI 不包含行情數據，也不執行腳本。想看指標在真實 K 線上的表現，請使用下方的 Longbridge CLI，或在 [Playground](/playground) 中開啟。
 
 ## 使用 Longbridge 執行
 
@@ -78,8 +71,8 @@ plot(slow, "Slow EMA");
 ```
 
 ```bash
-navi lint ma_cross.nv
-navi run ma_cross.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
+navi check ma_cross.nv
+navi fmt --check ma_cross.nv
 ```
 
 使用 500 根 AAPL 日 K 線執行該示例，CLI 輸出為：
@@ -88,20 +81,9 @@ navi run ma_cross.nv --data bars.csv --symbol NASDAQ:AAPL --timeframe 1D
 ran 500 bars; plots: 2; trades: 0 ; net profit: 0
 ```
 
-## 執行 PineScript 文件 <Badge type="warning" text="experimental" />
+## PineScript 相容性 <Badge type="warning" text="experimental" />
 
-`navi` CLI 兼容 PineScript v6 語法。將腳本儲存為 `.pine` 文件並傳入全域 `--pine` 參數，即可直接編譯或執行：
-
-```bash
-navi check my_indicator.pine --pine
-navi run my_indicator.pine \
-  --data bars.csv \
-  --symbol NASDAQ:AAPL \
-  --timeframe 1D \
-  --pine
-```
-
-`.pine` 入口文件必須使用 `--pine` 參數；未傳入該參數時，本機 CLI 接受 Navi `.nv` 文件。
+Navi 相容 PineScript v6 語法，因此已有的 `.pine` 腳本無需先行改寫即可在 Longbridge 平台上執行。獨立的 `navi` CLI 只處理 Navi，僅接受 `.nv` 檔案。
 
 ### 轉換為 Navi
 
