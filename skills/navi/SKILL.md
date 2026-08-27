@@ -33,6 +33,7 @@ Load only the reference needed for the task:
 | [references/execution-model.md](references/execution-model.md) | Reason about bar-by-bar execution, series values, qualifiers, `var`/`varip`, rollback, `na`, history references, and repainting. |
 | [references/stdlib.md](references/stdlib.md) | Learn the stdlib naming rules and how to look up exact API names, signatures, and enum variants on navi-lang.org. |
 | [references/patterns.md](references/patterns.md) | Start from complete indicator/strategy/library templates or reuse idioms for warmup guards, crosses, state, arrays, MTF data, divergence, debugging, and output polish. |
+| [references/cli.md](references/cli.md) | Install the `navi` CLI, or run a script to see what it computes: `navi check`/`fmt`/`run`, the stdin NDJSON protocol, and driver patterns. |
 
 ## Authoring Workflow
 
@@ -56,62 +57,28 @@ Follow these Navi naming conventions consistently:
 
 ## CLI Validation
 
-Validate every complete `.nv` file you create or modify with the `navi` CLI. Use `navi --help` or `navi <command> --help` for detailed, current behavior; `-h` only prints a summary.
+Validate every complete `.nv` file you create or modify with the `navi` CLI. Read
+[references/cli.md](references/cli.md) before the first CLI call in a session — installation,
+every flag, and the `navi run` wire protocol are there.
 
-The standalone `navi` CLI is a compiler, a formatter, and a runner. It contains no market data and downloads none, but `navi run` does execute scripts against data you supply on stdin as NDJSON. Its role in AI authoring workflows is to prove that a script compiles, is canonically formatted, and computes what you expect.
+1. `navi check path/to/script.nv` — the completion gate: syntax, types, compilation, imports.
+2. `navi fmt path/to/script.nv` — canonical formatting. Independent of compilation, so run both.
+3. `navi run path/to/script.nv --bars all`, with market data on stdin, when the task turns on
+   what the script computes rather than whether it compiles.
+4. Treat every non-zero exit status as a failed validation. Fix the script and repeat until
+   every command exits successfully; report the commands run and any validation that could not
+   be completed.
 
-1. Check whether the CLI is installed with `command -v navi` (`Get-Command navi` on Windows).
-2. If it is missing, install it with the appropriate command when local tool installation is in scope; otherwise give the command to the user:
+Pass several paths in one call rather than one call per file — `check` and `fmt` both accept
+files, directories, and quoted glob patterns.
 
-   macOS or Linux:
+`navi run` executes the script against data you provide; the CLI bundles none and downloads
+none. Its stdout is pure NDJSON (plot values, alerts, and the script's own `log.*()`) and its
+stderr is human-readable diagnostics — capture them separately, **never `2>&1`**, or the JSON
+stream is corrupted.
 
-   ```bash
-   curl -fsSL https://navi-lang.org/install.sh | sh
-   ```
-
-   Windows PowerShell:
-
-   ```powershell
-   irm https://navi-lang.org/install.ps1 | iex
-   ```
-
-3. Run `navi check path/to/script.nv`. This is the default completion gate: it checks syntax, types, compilation, and imports.
-4. Run `navi fmt path/to/script.nv` to apply canonical formatting, or `navi fmt --check path/to/script.nv` to report differences without writing. Formatting is independent of compilation, so run both.
-5. When several files changed, validate them together instead of one call per file. Both commands accept any number of paths, and each can be a file, a directory, or a glob pattern:
-
-   ```bash
-   navi check "src/**/*.nv"
-   navi fmt src
-   ```
-
-   Quote glob patterns so `navi` expands them itself. Matching no files is an error, so a mistyped pattern fails rather than silently passing.
-6. Run the script when the task turns on what it computes, not just whether it compiles — see below.
-7. Treat every non-zero exit status as a failed validation. Fix the script and repeat until every command exits successfully; report the commands run and any validation that could not be completed.
-
-### Checking what a script computes
-
-`navi run` executes the script against market data you provide on stdin as NDJSON, and writes each bar's `plot()` values and any alerts to stdout as NDJSON. It is the first choice for confirming behavior. Reach for `longbridge quant run`, a Longbridge MCP server, or the Playground only when the task needs real market data rather than data you can supply.
-
-There are two ways to drive it:
-
-- **Without a driver** — send one line carrying the whole dataset and read the output directly. Enough for "run this over these bars and show me the values", and for an alert-only check with `--bars none`:
-
-  ```bash
-  echo '{"type":"bar","data":[{"time":1700006400000,"close":103},{"time":1700092800000,"close":107}]}' \
-    | navi run script.nv --bars all
-  ```
-
-- **With a driver** — write a small program that reads stdout, answers each `request` line by its `id`, and reports only what you need. Required for any script using `request.security`, `request.dividends`, `request.data`, and for continuous monitoring.
-
-Three things to get right, none of them guessable:
-
-- **stdout is the script's output, stderr is navi's.** Plot values, alerts and the script's own `log.*()` calls all arrive on stdout, every line parsing as JSON. Compile diagnostics, protocol errors and timeouts go to stderr as plain text. Read them separately — **do not merge them with `2>&1`**, or the JSON stream is corrupted.
-- **Close stdin when you have no more data.** Past the history boundary the run stays open for live data, so it will not finish on its own. Ctrl+C also shuts down cleanly, writing a final `done` line marked `"interrupted": true` and exiting 130.
-- **A stream nobody answers is an error, not an empty result.** To say a symbol genuinely has no dividends, answer with an empty array rather than staying silent.
-
-Run `navi run --help` for the full wire protocol: every line type with a literal example, the routing rules, and a complete request/response transcript.
-
-Do not claim that a code fragment was CLI-validated unless it was placed in a complete `.nv` script and the command succeeded.
+Do not claim that a code fragment was CLI-validated unless it was placed in a complete `.nv`
+script and the command succeeded.
 
 ## Playground Preview Links
 
