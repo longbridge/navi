@@ -50,7 +50,7 @@ Verify the installation:
 navi --version
 ```
 
-The standalone CLI contains no market data and does not execute scripts; it provides compilation and formatting checks so developers and AI agents can verify script correctness. `navi check` and `navi fmt` accept files, directories, and glob patterns, so a whole project can be validated in one command. Run `navi update` to upgrade the binary in place.
+The standalone CLI contains no market data, but it does run scripts: `navi check` and `navi fmt` verify compilation and formatting, and `navi run` executes a script against data you supply on stdin as NDJSON, writing each bar's plot values and any alerts to stdout. `navi check` and `navi fmt` accept files, directories, and glob patterns, so a whole project can be validated in one command. Run `navi update` to upgrade the binary in place.
 
 ## VS Code Extension
 

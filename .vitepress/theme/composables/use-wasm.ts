@@ -193,6 +193,11 @@ function withMarketColors(theme: any): any {
     ...theme,
     bull: MARKET_UP_COLOR,
     bear: MARKET_DOWN_COLOR,
+    bullText: MARKET_UP_COLOR,
+    bearText: MARKET_DOWN_COLOR,
+    // `Theme` gained `rename_all = "camelCase"`; the snake_case keys keep the
+    // override working against a `wasm-pkg` build from before that change.
+    // `Theme` ignores unknown fields, so both spellings are safe to send.
     bull_text: MARKET_UP_COLOR,
     bear_text: MARKET_DOWN_COLOR,
   }

@@ -61,7 +61,7 @@ Update the installed skill when Navi documentation or APIs change:
 npx skills update navi
 ```
 
-The CLI contains no market data. The validation workflow below uses `--data` with caller-provided synthetic or real OHLCV data.
+The CLI contains no market data. The validation workflow below feeds `navi run` synthetic or real OHLCV data on stdin as NDJSON.
 
 ## Usage
 
@@ -98,19 +98,77 @@ For better results, include:
    navi fmt src
    ```
 
-6. Use the validated script with the Longbridge CLI, App, or desktop client. The standalone `navi` CLI is primarily a development and debugging tool.
+6. Have the agent run the script when the task turns on what it computes, not just whether it compiles:
+
+   ```bash
+   echo '{"type":"bar","data":[{"time":1700006400000,"close":103},{"time":1700092800000,"close":107}]}' \
+     | navi run path/to/script.nv --bars all
+   ```
+
+7. Use the validated script with the Longbridge CLI, App, or desktop client. The standalone `navi` CLI is primarily a development and debugging tool.
 
 Do not accept a claim that a script was validated unless the agent ran the CLI successfully. A code block alone is not validation.
 
 ### Runtime behavior
 
-The standalone `navi` CLI validates compilation and formatting; it does not execute scripts and bundles no market data, so it cannot confirm runtime behavior on its own. To check what a script actually produces, prefer these in order:
+`navi run` executes a script against data you supply, so runtime behavior can be checked without any market-data service. It bundles no data of its own — you provide it on stdin as NDJSON, one JSON object per line, and each bar's `plot()` values and any alerts come back on stdout the same way. Prefer these in order:
 
+- `navi run`, feeding synthetic or previously captured OHLCV data. No account or network needed, and the numbers are reproducible.
 - An installed and authenticated Longbridge CLI: `longbridge quant run` executes a script directly against Longbridge historical data.
 - A Longbridge MCP server in the AI environment: request historical candlesticks with its market-data tools.
 - The [Playground](/playground), which runs the script in the browser against sample candles.
 
-Reason explicitly about warmup, rising, falling, flat, and signal-producing paths when reviewing a script the CLI can only compile.
+Three things about `navi run` are worth knowing before writing a driver for it:
+
+- **stdout is the script's output, stderr is navi's.** Plot values, alerts and the script's own `log.*()` calls all arrive on stdout, every line parsing as JSON. Compile diagnostics, protocol errors and timeouts go to stderr as plain text. Read them separately — merging them with `2>&1` corrupts the JSON stream.
+- **Close stdin when you are done sending.** Past the history boundary the run stays open waiting for live data, so it will not finish on its own. Ctrl+C also shuts down cleanly, writing a final `done` line marked `"interrupted": true` and exiting 130.
+- **A stream nobody answers is an error, not an empty result.** To say a symbol genuinely has no dividends, answer with an empty array instead of staying silent.
+
+For a script that uses `request.security`, `request.dividends`, or `request.data`, navi asks for each stream with a `request` line and the driver answers by `id`:
+
+```python
+import json, subprocess
+
+BARS = [{"time": 1700006400000 + i * 86400000, "close": 100 + i} for i in range(3)]
+
+p = subprocess.Popen(["navi", "run", "script.nv", "--bars", "all"],
+                     stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+
+def send(obj):
+    p.stdin.write(json.dumps(obj) + "\n")
+    p.stdin.flush()
+
+rows, alerts = [], []
+while True:
+    # An explicit readline loop: `for line in p.stdout` reads ahead and can
+    # block against a process that is waiting for your answer.
+    line = p.stdout.readline()
+    if not line:
+        break
+    msg = json.loads(line)
+    kind = msg["type"]
+    if kind == "request":
+        method = msg["method"]
+        data = BARS if method == "bar" else []      # [] means "genuinely none"
+        send({"type": method, "id": msg["id"], "data": data})
+    elif kind == "historyEnd":
+        p.stdin.close()                             # nothing more to send
+    elif kind == "bar":
+        rows.append(msg["values"])
+    elif kind == "alert":
+        alerts.append(msg["message"])
+    elif kind == "log":
+        print(msg["level"], msg["message"])         # the script's own output
+    elif kind == "error":
+        raise SystemExit(msg["message"])
+    elif kind == "done":
+        break
+
+p.wait()
+print(rows[-5:], alerts)                            # report a summary, not 5000 lines
+```
+
+Run `navi run --help` for the full wire protocol: every line type with a literal example, the routing rules, and a complete request/response transcript.
 
 ### Online preview
 
@@ -127,6 +185,11 @@ Opening the link loads the script as an unsaved file and adds it to the chart. B
 ```text
 Review momentum_strategy.nv for repainting and series-state errors.
 Fix the file, preserve its behavior, and run navi check when finished.
+```
+
+```text
+Write a Navi RSI indicator, then run it with navi run over 30 synthetic daily
+bars and show me the RSI value on each bar.
 ```
 
 ```text

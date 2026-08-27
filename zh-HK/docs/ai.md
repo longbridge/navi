@@ -61,7 +61,7 @@ Navi 文件或 API 更新後，可更新已安裝的 skill：
 npx skills update navi
 ```
 
-CLI 不包含行情數據。下方驗證流程會透過 `--data` 使用調用方提供的模擬或真實 OHLCV 數據。
+CLI 不包含行情數據。下方驗證流程會把模擬或真實 OHLCV 數據以 NDJSON 從 stdin 餵給 `navi run`。
 
 ## 使用
 
@@ -104,13 +104,20 @@ CLI 不包含行情數據。下方驗證流程會透過 `--data` 使用調用方
 
 ### 執行行為
 
-獨立的 `navi` CLI 只驗證編譯和格式，不執行腳本，也不包含行情數據，因此無法單獨確認執行行為。需要確認腳本實際產出時，按以下順序選擇：
+`navi run` 會用你提供的數據執行腳本，因此不依賴任何行情服務也能確認執行行為。它本身不含數據——由你以 NDJSON 從 stdin 提供，每行一個 JSON 物件；每根 K 線的 `plot()` 數值和告警以同樣的形式回到 stdout。按以下順序選擇：
 
+- `navi run`，餵入模擬或此前擷取的 OHLCV 數據。不需要帳號和網路，數值可重現。
 - 已安裝並登入的 Longbridge CLI：`longbridge quant run` 可直接基於 Longbridge 歷史數據執行腳本。
 - AI 環境中的 Longbridge MCP：透過其行情工具請求歷史 K 線。
 - [Playground](/playground)：在瀏覽器中基於範例 K 線執行腳本。
 
-審閱只能通過編譯檢查的腳本時，需要明確推敲預熱、上漲、下跌、橫盤和觸發訊號等路徑。
+給 `navi run` 寫驅動程式前，有三點是猜不出來的：
+
+- **stdout 是腳本的輸出，stderr 是 navi 自己的話。** plot 數值、告警、以及腳本自己的 `log.*()` 都走 stdout，每一行都是合法 JSON；編譯診斷、協議錯誤、逾時走 stderr 的純文字。分開讀——用 `2>&1` 合併會破壞 JSON 流。
+- **發完數據要關閉 stdin。** 歷史邊界之後執行會繼續等待即時數據，不會自行結束。
+- **沒人應答的流是錯誤，不是空結果。** 要表示某個標的確實沒有股息，應答一個空陣列，而不是保持沉默。
+
+腳本用到 `request.security` / `request.dividends` / `request.data` 時，navi 會為每條流寫一行 `request`，驅動程式按 `id` 應答。完整線協議見 `navi run --help`：每種行類型都有字面量例子、路由規則，以及一份完整的請求/應答記錄。
 
 ### 線上預覽
 

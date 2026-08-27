@@ -58,7 +58,7 @@ Follow these Navi naming conventions consistently:
 
 Validate every complete `.nv` file you create or modify with the `navi` CLI. Use `navi --help` or `navi <command> --help` for detailed, current behavior; `-h` only prints a summary.
 
-The standalone `navi` CLI is intentionally a compiler and formatter. It does not execute scripts and does not include or download market data. Its role in AI authoring workflows is to prove that a script compiles and is canonically formatted.
+The standalone `navi` CLI is a compiler, a formatter, and a runner. It contains no market data and downloads none, but `navi run` does execute scripts against data you supply on stdin as NDJSON. Its role in AI authoring workflows is to prove that a script compiles, is canonically formatted, and computes what you expect.
 
 1. Check whether the CLI is installed with `command -v navi` (`Get-Command navi` on Windows).
 2. If it is missing, install it with the appropriate command when local tool installation is in scope; otherwise give the command to the user:
@@ -85,9 +85,31 @@ The standalone `navi` CLI is intentionally a compiler and formatter. It does not
    ```
 
    Quote glob patterns so `navi` expands them itself. Matching no files is an error, so a mistyped pattern fails rather than silently passing.
-6. Treat every non-zero exit status as a failed validation. Fix the script and repeat until both commands exit successfully; report the commands run and any validation that could not be completed.
+6. Run the script when the task turns on what it computes, not just whether it compiles — see below.
+7. Treat every non-zero exit status as a failed validation. Fix the script and repeat until every command exits successfully; report the commands run and any validation that could not be completed.
 
-The CLI cannot confirm runtime behavior — it does not execute scripts. When a task turns on what a script actually produces, run it with `longbridge quant run`, request candles from a Longbridge MCP server, or open the script in the Playground, and say plainly that the CLI checked compilation only.
+### Checking what a script computes
+
+`navi run` executes the script against market data you provide on stdin as NDJSON, and writes each bar's `plot()` values and any alerts to stdout as NDJSON. It is the first choice for confirming behavior. Reach for `longbridge quant run`, a Longbridge MCP server, or the Playground only when the task needs real market data rather than data you can supply.
+
+There are two ways to drive it:
+
+- **Without a driver** — send one line carrying the whole dataset and read the output directly. Enough for "run this over these bars and show me the values", and for an alert-only check with `--bars none`:
+
+  ```bash
+  echo '{"type":"bar","data":[{"time":1700006400000,"close":103},{"time":1700092800000,"close":107}]}' \
+    | navi run script.nv --bars all
+  ```
+
+- **With a driver** — write a small program that reads stdout, answers each `request` line by its `id`, and reports only what you need. Required for any script using `request.security`, `request.dividends`, `request.data`, and for continuous monitoring.
+
+Three things to get right, none of them guessable:
+
+- **stdout is the script's output, stderr is navi's.** Plot values, alerts and the script's own `log.*()` calls all arrive on stdout, every line parsing as JSON. Compile diagnostics, protocol errors and timeouts go to stderr as plain text. Read them separately — **do not merge them with `2>&1`**, or the JSON stream is corrupted.
+- **Close stdin when you have no more data.** Past the history boundary the run stays open for live data, so it will not finish on its own. Ctrl+C also shuts down cleanly, writing a final `done` line marked `"interrupted": true` and exiting 130.
+- **A stream nobody answers is an error, not an empty result.** To say a symbol genuinely has no dividends, answer with an empty array rather than staying silent.
+
+Run `navi run --help` for the full wire protocol: every line type with a literal example, the routing rules, and a complete request/response transcript.
 
 Do not claim that a code fragment was CLI-validated unless it was placed in a complete `.nv` script and the command succeeded.
 

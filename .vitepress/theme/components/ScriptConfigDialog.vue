@@ -152,7 +152,7 @@ async function syncToChart() {
   fetchVisualConfigs()
 }
 
-/** Build input_values for ScriptConfig from localInputValues. */
+/** Build inputValues for ScriptConfig from localInputValues. */
 function buildInputValues(): Map<number, unknown> {
   const result = new Map<number, unknown>()
   if (!props.data) return result

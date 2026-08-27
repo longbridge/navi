@@ -50,7 +50,7 @@ irm https://navi-lang.org/install.ps1 | iex
 navi --version
 ```
 
-獨立 CLI 不包含行情數據，也不執行腳本，只提供編譯和格式化檢查，方便開發者及 AI 驗證腳本正確性。`navi check` 和 `navi fmt` 都接受檔案、目錄和 glob 模式，一條命令即可校驗整個專案。執行 `navi update` 可原地升級二進位檔。
+獨立 CLI 不包含行情數據，但可以執行腳本：`navi check` 和 `navi fmt` 提供編譯和格式化檢查，`navi run` 則用你從 stdin 以 NDJSON 提供的數據執行腳本，把每根 K 線的 plot 數值和告警寫到 stdout。`navi check` 和 `navi fmt` 都接受檔案、目錄和 glob 模式，一條命令即可校驗整個專案。執行 `navi update` 可原地升級二進位檔。
 
 ## VS Code 擴充功能
 
