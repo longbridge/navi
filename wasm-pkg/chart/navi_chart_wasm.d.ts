@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
+/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -12,11 +17,6 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
-/**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -77,12 +77,12 @@ export interface Tick {
 /**
  * Item yielded by `DataProvider.ticks()`.
  *
- * Follows the same stream protocol as {@link CandlestickItem}: historical
- * ticks precede `"historyEnd"`, realtime ticks follow it.
+ * Follows the same stream protocol as {@link CandlestickItem}: historical ticks
+ * precede the boundary marker, realtime ticks follow it.
  */
 export type TickItem =
-  | { tick: Tick }
-  | "historyEnd";
+  | ({ type: "tick" } & Tick)
+  | { type: "historyEnd" };
 
 
 
@@ -99,12 +99,12 @@ export type AuxValue = number | boolean | string | null;
  * Item yielded by auxiliary data streams (currency rates, financials,
  * earnings, dividends, economic data, splits, custom data).
  *
- * Follows the same `"historyEnd"` stream protocol as
+ * Follows the same boundary-marker stream protocol as
  * {@link CandlestickItem}.
  */
 export type AuxDataItem =
-  | { data: { /** Epoch milliseconds. */ time: number; value: AuxValue } }
-  | "historyEnd";
+  | { type: "data"; /** Epoch milliseconds. */ time: number; value: AuxValue }
+  | { type: "historyEnd" };
 
 
 
@@ -241,37 +241,38 @@ export interface BacktraceFrame {
  * Error thrown by `Chart.addScript()` when a script fails to compile or
  * execute.
  *
- * Discriminate on the variant key:
+ * Discriminate on `type`. A variant that wraps a struct flattens that struct's
+ * fields onto the object, so `compile` carries `diagnostics` directly.
  *
  * ```ts
  * try {
  *   await chart.addScript(source, "my-ind");
  * } catch (e: unknown) {
  *   const err = e as ScriptError;
- *   if ("compile" in err) {
- *     showDiagnostics(err.compile.diagnostics);
- *   } else if ("exception" in err) {
- *     showRuntimeError(err.exception);
- *   } else if (err === "missingScriptType") {
+ *   if (err.type === "compile") {
+ *     showDiagnostics(err.diagnostics);
+ *   } else if (err.type === "exception") {
+ *     showRuntimeError(err);
+ *   } else if (err.type === "missingScriptType") {
  *     console.error("missing script type");
  *   }
  * }
  * ```
  */
 export type ScriptError =
-  | { compile:                  { diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> } }
-  | { exception:                { message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> } }
-  | "missingScriptType"
-  | { inputValueNotFound:       { id: number } }
-  | { setInputValue:            { id: number; error: string } }
-  | { unsupportedTimeFrame:     { timeFrame: TimeFrame } }
-  | { sessionNotAllowed:        { session: TradeSession } }
-  | "invalidSymbol"
-  | "unknownMarket"
-  | "libraryScriptNotExecutable"
-  | { dataProvider:             { message: string } }
-  | "confirmedBarUpdate"
-  | { jitCompilation:           { message: string } };
+  | { type: "compile";                    diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> }
+  | { type: "exception";                  message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> }
+  | { type: "missingScriptType" }
+  | { type: "inputValueNotFound";         id: number }
+  | { type: "setInputValue";              id: number; error: string }
+  | { type: "unsupportedTimeFrame";       timeFrame: TimeFrame }
+  | { type: "sessionNotAllowed";          session: TradeSession }
+  | { type: "invalidSymbol" }
+  | { type: "unknownMarket" }
+  | { type: "libraryScriptNotExecutable" }
+  | { type: "dataProvider";               message: string }
+  | { type: "confirmedBarUpdate" }
+  | { type: "jitCompilation";             message: string };
 
 
 
@@ -330,62 +331,66 @@ export interface EnumOption { displayName: string }
 /**
  * Type metadata for a property — determines which UI widget renders it.
  *
- * Unit variants are plain strings; struct variants use the variant name as key.
+ * Every variant is an object tagged by `type`, unit variants included; a
+ * struct variant's fields sit alongside the tag.
  */
 export type PropertyKindMeta =
-  | "fill"
-  | "textAlign"
-  | "bool"
-  | "text"
-  | "alpha"
-  | { textVAlign: { options: EnumOption[] } }
-  | { enum:       { options: EnumOption[] } }
-  | { flags:      { options: EnumOption[] } }
-  | { stroke:     { flags: { color: boolean; width: boolean; style: boolean } } }
-  | { textStyle:  { flags: { color: boolean; size: boolean; bold: boolean; italic: boolean } } }
-  | { group:      { hasNumber: boolean; items: PropertyDescriptor[] } }
-  | { [key: string]: unknown };
+  | { type: "fill" }
+  | { type: "textAlign" }
+  | { type: "bool" }
+  | { type: "text" }
+  | { type: "alpha" }
+  | { type: "textVAlign"; options: EnumOption[] }
+  | { type: "enum";       options: EnumOption[] }
+  | { type: "flags";      options: EnumOption[] }
+  | { type: "stroke";     flags: { color: boolean; width: boolean; style: boolean } }
+  | { type: "textStyle";  flags: { color: boolean; size: boolean; bold: boolean; italic: boolean } }
+  | { type: "group";      hasNumber: boolean; inline: boolean; items: PropertyDescriptor[] }
+  | { type: string; [key: string]: unknown };
 
 /**
  * A typed annotation property value.
  *
- * Discriminate on the variant key, e.g. `"color" in v`, `"stroke" in v`.
+ * Discriminate on `type`. The payload is `value` for most variants; `enum`
+ * carries `index` and `groupItems` carries `items`.
  */
 export type PropertyValue =
-  | { color:      number }
-  | { float:      number }
-  | { bool:       boolean }
-  | { lineStyle:  number }
-  | { textAlign:  string }
-  | { enum:       number }
-  | { text:       string }
-  | { int:        number }
-  | { stroke:     { color: number; width: number; style: number } }
-  | { textStyle:  { color?: number; fontSize?: number; bold: boolean; italic: boolean } }
-  | { enableable: { enabled: boolean; value: PropertyValue } }
-  | { [key: string]: unknown };
+  | { type: "color";      value: number }
+  | { type: "float";      value: number }
+  | { type: "bool";       value: boolean }
+  | { type: "lineStyle";  value: number }
+  | { type: "textAlign";  value: string }
+  | { type: "enum";       index: number }
+  | { type: "text";       value: string }
+  | { type: "int";        value: number }
+  | { type: "stroke";     value: { color: number; width: number; style: number } }
+  | { type: "textStyle";  value: { color?: number; fontSize?: number; bold: boolean; italic: boolean } }
+  | { type: "enableable"; value: { enabled: boolean; value: PropertyValue } }
+  | { type: string; [key: string]: unknown };
 
 /**
  * Result of `getAnnotationProperty()`.
  *
- * - `{ value }` — a single concrete value.
- * - `"none"` — the property has no value (e.g. not applicable to this variant).
- * - `"mixed"` — the selection contains annotations with different values.
+ * - `{ type: "value", value }` — a single concrete value.
+ * - `{ type: "none" }` — the property has no value (e.g. not applicable to
+ *   this variant).
+ * - `{ type: "mixed" }` — the selection contains annotations with different
+ *   values.
  */
 export type PropertyValueResult =
-  | { value: PropertyValue }
-  | "none"
-  | "mixed";
+  | { type: "value"; value: PropertyValue }
+  | { type: "none" }
+  | { type: "mixed" };
 
 /**
  * A single item in a context menu returned by a `contextMenuRequested` event.
  *
- * - `{ action }` — a clickable menu item.
- * - `"separator"` — a visual divider.
+ * - `{ type: "action", ... }` — a clickable menu item.
+ * - `{ type: "separator" }` — a visual divider.
  */
 export type ContextMenuItem =
-  | { action: { /** Stable id to pass back to `dispatchContextMenuAction()`. */ actionId: string; /** When `false`, render greyed-out but still visible. */ enabled: boolean } }
-  | "separator";
+  | { type: "action"; /** Stable id to pass back to `dispatchContextMenuAction()`. */ actionId: string; /** When `false`, render greyed-out but still visible. */ enabled: boolean }
+  | { type: "separator" };
 
 
 
@@ -404,24 +409,25 @@ export type DrawingToolId = string;
 /**
  * A chart element that can be selected or double-clicked.
  *
- * Discriminate on the variant key: `"series" in el`, `"annotation" in el`, `"bar" in el`.
+ * Discriminate on `type`.
  */
 export type ChartElement =
-  | { series:     { scriptId: ScriptId; graphId: SeriesGraphId } }
-  | { annotation: AnnotationId }
-  | { bar:        number };
+  | { type: "series";     scriptId: ScriptId; graphId: SeriesGraphId }
+  | { type: "annotation"; annotationId: AnnotationId }
+  | { type: "bar" };
 
 /**
  * Result of `hitTest()` — describes what is under the pointer.
  *
- * - `"chart"` — inside the chart drawing area.
- * - `{ divider }` — over a pane-resize handle (`index` is zero-based from top).
- * - `"none"` — outside all interactive regions.
+ * - `{ type: "chart" }` — inside the chart drawing area.
+ * - `{ type: "divider", index }` — over a pane-resize handle (`index` is
+ *   zero-based from top).
+ * - `{ type: "none" }` — outside all interactive regions.
  */
 export type HitTarget =
-  | "chart"
-  | { divider: { index: number } }
-  | "none";
+  | { type: "chart" }
+  | { type: "divider"; index: number }
+  | { type: "none" };
 
 /** Snap-to-OHLC magnet configuration. */
 export interface MagnetConfig {
@@ -434,46 +440,45 @@ export interface MagnetConfig {
 /**
  * Event emitted by the chart and drained via `pollEvent()`.
  *
- * Discriminate on the variant key:
+ * Discriminate on `type`:
  *
  * ```ts
  * let ev: ChartEvent | null;
  * while ((ev = chart.pollEvent()) !== null) {
- *   if ("contextMenuRequested" in ev) {
- *     const { x, y, items } = ev.contextMenuRequested;
- *     showMenu(x, y, items);
+ *   if (ev.type === "contextMenuRequested") {
+ *     showMenu(ev.x, ev.y, ev.items);
  *   }
  * }
  * ```
  */
 export type ChartEvent =
   /** User clicked the "edit" button on a script label. */
-  | { editScript:          ScriptId }
+  | { type: "editScript";          scriptId: ScriptId }
   /** User clicked the "remove" button on a script label. */
-  | { removeScript:        ScriptId }
+  | { type: "removeScript";        scriptId: ScriptId }
   /** User clicked the error icon on a script label. */
-  | { showError:           ScriptId }
+  | { type: "showError";           scriptId: ScriptId }
   /** User clicked the "configure" button on a script label. */
-  | { configureScript:     ScriptId }
+  | { type: "configureScript";     scriptId: ScriptId }
   /** User double-clicked a series graph or candlestick bar. */
-  | { doubleClick:         ChartElement }
-  /** The chart selection changed; value is `null` when cleared. */
-  | { selectionChanged:    ChartElement | null }
+  | { type: "doubleClick";         element: ChartElement }
+  /** The chart selection changed; `selection` is `null` when cleared. */
+  | { type: "selectionChanged";    selection: ChartElement | null }
   /** The active drawing tool changed. */
-  | { toolChanged:         { name: string } }
+  | { type: "toolChanged";         name: string }
   /** The magnet configuration was modified by the user. */
-  | "magnetChanged"
+  | { type: "magnetChanged" }
   /** A new annotation was added (programmatically or by the user). */
-  | { annotationCreated:   AnnotationId }
+  | { type: "annotationCreated";   annotationId: AnnotationId }
   /** An existing annotation's spec was replaced. */
-  | { annotationUpdated:   AnnotationId }
+  | { type: "annotationUpdated";   annotationId: AnnotationId }
   /** An annotation was removed. */
-  | { annotationDeleted:   AnnotationId }
+  | { type: "annotationDeleted";   annotationId: AnnotationId }
   /**
    * User right-clicked an annotation — display a context menu at `(x, y)`.
    * Echo the chosen item back with `dispatchContextMenuAction(actionId)`.
    */
-  | { contextMenuRequested: { x: number; y: number; items: ContextMenuItem[] } };
+  | { type: "contextMenuRequested"; x: number; y: number; items: ContextMenuItem[] };
 
 
 
@@ -492,34 +497,34 @@ export interface InputInfo {
 /**
  * The typed kind of an input, with its current value and constraints.
  *
- * Discriminate on the variant key, e.g. `"int" in k`, `"bool" in k`.
+ * Discriminate on `type`, e.g. `k.type === "int"`.
  */
 export type InputKind =
-  | { int:       { value: number; min: number | null; max: number | null; step: number | null; options: number[] } }
-  | { float:     { value: number; min: number | null; max: number | null; step: number | null; options: number[] } }
-  | { bool:      { value: boolean } }
-  | { color:     { value: number } }
-  | { str:       { value: string; options: string[] } }
-  | { source:    { value: string } }
-  | { enum:      { value: number; options: [number, string][] } }
-  | { symbol:    { value: string } }
-  | { timeFrame: { value: string; options: string[] } }
-  | { session:   { value: string; options: string[] } }
-  | { time:      { value: string } }  // "YYYY-MM-DD HH:mm:ss" exchange local time
-  | { textArea:  { value: string } }
-  | { [key: string]: unknown };
+  | { type: "int";       value: number; min: number | null; max: number | null; step: number | null; options: number[] }
+  | { type: "float";     value: number; min: number | null; max: number | null; step: number | null; options: number[] }
+  | { type: "bool";      value: boolean }
+  | { type: "color";     value: number }
+  | { type: "str";       value: string; options: string[] }
+  | { type: "source";    value: string }
+  | { type: "enum";      value: number; options: [number, string][] }
+  | { type: "symbol";    value: string }
+  | { type: "timeFrame"; value: string; options: string[] }
+  | { type: "session";   value: string; options: string[] }
+  | { type: "time";      value: string }  // "YYYY-MM-DD HH:mm:ss" exchange local time
+  | { type: "textArea";  value: string }
+  | { type: string; [key: string]: unknown };
 
 /** Visual configuration for a single series graph (plot, plotshape, …). */
 export type SeriesGraphConfig =
-  | { plot:            { title: string; colors: number[]; lineWidth: number; style: number; lineStyle: number } }
-  | { plotChar:        { title: string; colors: number[]; charValue: string; location: string; size: string } }
-  | { plotShape:       { title: string; colors: number[]; style: string; location: string; size: string } }
-  | { plotArrow:       { title: string; upColors: number[]; downColors: number[] } }
-  | { plotCandle:      { title: string; colors: number[]; wickColors: number[]; borderColors: number[] } }
-  | { plotBar:         { title: string; colors: number[] } }
-  | { backgroundColor: { title: string; colors: number[] } }
-  | { fill:            { title: string; colors: number[] } }
-  | { [key: string]: unknown };
+  | { type: "plot";            title: string; colors: number[]; lineWidth: number; style: number; lineStyle: number }
+  | { type: "plotChar";        title: string; colors: number[]; charValue: string; location: string; size: string }
+  | { type: "plotShape";       title: string; colors: number[]; style: string; location: string; size: string }
+  | { type: "plotArrow";       title: string; upColors: number[]; downColors: number[] }
+  | { type: "plotCandle";      title: string; colors: number[]; wickColors: number[]; borderColors: number[] }
+  | { type: "plotBar";         title: string; colors: number[] }
+  | { type: "backgroundColor"; title: string; colors: number[] }
+  | { type: "fill";            title: string; colors: number[] }
+  | { type: string; [key: string]: unknown };
 
 /** User-applied visual overrides for a single series graph. */
 export interface SeriesGraphOverride {
@@ -552,16 +557,18 @@ export interface StrategyReport {
 /**
  * A per-script event payload inside a {@link TaggedScriptEvent}.
  *
- * - `{ sessionInfo }` — script metadata, emitted once before the first bar.
- * - `{ draw }` — a rendering instruction (plots, shapes, labels, …).
- * - `{ strategy }` — a strategy order or fill event.
- * - `{ error }` — per-script compile or runtime error.
+ * - `{ type: "sessionInfo", … }` — script metadata, emitted once before the
+ *   first bar.
+ * - `{ type: "draw", event }` — a rendering instruction (plots, shapes,
+ *   labels, …).
+ * - `{ type: "strategy", event }` — a strategy order or fill event.
+ * - `{ type: "error", error }` — per-script compile or runtime error.
  */
 export type ScriptEventPayload =
-  | { sessionInfo: { scriptInfo: unknown; symbolInfo: unknown } }
-  | { draw:        unknown }
-  | { strategy:    unknown }
-  | { error:       ScriptError };
+  | { type: "sessionInfo"; scriptInfo: unknown; symbolInfo: unknown }
+  | { type: "draw";        event: unknown }
+  | { type: "strategy";    event: unknown }
+  | { type: "error";       error: ScriptError };
 
 /** A script event tagged with its position index in the scripts list. */
 export interface TaggedScriptEvent {
@@ -573,16 +580,20 @@ export interface TaggedScriptEvent {
 /**
  * An item yielded by {@link ChartProvider.chartStream}.
  *
- * - `{ bar }` — a candlestick bar (historical before `"historyEnd"`, realtime after).
- * - `"historyEnd"` — global boundary between historical and realtime data.
- * - `{ script }` — an event produced by a specific script.
- * - `{ error }` — session-level unrecoverable error; the stream terminates.
+ * - `{ type: "bar", … }` — a candlestick bar (historical before the boundary,
+ *   realtime after). The candlestick's own fields sit alongside `type`.
+ * - `{ type: "historyEnd" }` — global boundary between historical and realtime
+ *   data.
+ * - `{ type: "script", … }` — an event produced by a specific script.
+ * - `{ type: "error", error }` — session-level unrecoverable error; the stream
+ *   terminates.
  */
 export type ChartStreamEvent =
-  | { bar:    Candlestick }
-  | "historyEnd"
-  | { script: TaggedScriptEvent }
-  | { error:  ScriptError };
+  | ({ type: "bar" } & Candlestick)
+  | { type: "historyEnd" }
+  | ({ type: "script" } & TaggedScriptEvent)
+  | { type: "error"; error: ScriptError }
+  | { type: "scriptReady"; scriptId: number };
 
 /** A script descriptor inside {@link ChartStreamRequest}. */
 export interface ScriptDescriptor {
@@ -607,8 +618,8 @@ export interface ChartStreamRequest {
  * Supplies candlestick and auxiliary data to a {@link Chart}.
  *
  * Implement this interface and pass an instance to `new Chart(…)`.
- * All stream methods support infinite (live) streams — yield historical
- * data followed by `"historyEnd"`, then keep yielding realtime updates.
+ * All stream methods support infinite (live) streams — yield historical data
+ * followed by `{ type: "historyEnd" }`, then keep yielding realtime updates.
  * When the chart no longer needs data it cancels the generator via
  * `iterator.return()`.
  *
@@ -622,7 +633,7 @@ export interface ChartStreamRequest {
  *   async *candlesticks(symbol, tf, fromTime) {
  *     const bars = await fetchHistory(symbol, tf, fromTime);
  *     yield* bars;
- *     yield "historyEnd";
+ *     yield { type: "historyEnd" };
  *     // keep yielding realtime bars...
  *   },
  * };
@@ -754,14 +765,15 @@ export interface Candlestick {
 /**
  * Item yielded by `DataProvider.candlesticks()`.
  *
- * - `{ bar }` — a confirmed historical bar (before `"historyEnd"`) or the
- *   current forming realtime bar (after `"historyEnd"`).
- * - `"historyEnd"` — boundary marker emitted once, after all historical bars
- *   and before the first realtime bar.
+ * - `{ type: "bar", ... }` — a confirmed historical bar (before the boundary)
+ *   or the current forming realtime bar (after it). The candlestick's own
+ *   fields sit alongside `type`.
+ * - `{ type: "historyEnd" }` — boundary marker emitted once, after all
+ *   historical bars and before the first realtime bar.
  */
 export type CandlestickItem =
-  | { bar: Candlestick }
-  | "historyEnd";
+  | ({ type: "bar" } & Candlestick)
+  | { type: "historyEnd" };
 
 
 /**
@@ -901,8 +913,8 @@ export class Chart {
    * `onload`) and drop them with `registry.remove(id)`; neither repaints —
    * the change is picked up on the next render. Add the annotations
    * themselves with [`Self::addSystemAnnotation`], passing an
-   * `AnnotationSpec` whose `kind` is `{ image: { imageId, anchor,
-   * intrinsicSize, scale, opacity } }`.
+   * `AnnotationSpec` whose `kind` is `{ type: "image", imageId, anchor,
+   * intrinsicSize, scale, opacity }`.
    */
   imageRegistry(): ImageRegistry;
   /**
@@ -1553,6 +1565,14 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any) => number;
+  readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1685,17 +1705,9 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly start: () => void;
   readonly __wbg_imageregistry_free: (a: number, b: number) => void;
   readonly imageregistry_add: (a: number, b: number, c: any) => void;
   readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any) => number;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;
