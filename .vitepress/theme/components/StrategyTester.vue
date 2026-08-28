@@ -2,7 +2,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVirtualizer } from '@tanstack/vue-virtual'
-import type { StrategyReport, PerformanceMetrics } from '../types/strategy-report'
+import type { StrategyReport, PerformanceMetrics, ClosedTradeReport, OpenTradeReport } from '../types/strategy-report'
 
 const { t } = useI18n()
 
@@ -663,6 +663,18 @@ const allTradeItems = computed(() => [
   ...props.report.openTrades.map(t => ({ kind: 'open' as const, trade: t })),
 ])
 
+/** The closed trade at `i`, or null when that row is an open trade. */
+function closedTradeAt(i: number): ClosedTradeReport | null {
+  const item = allTradeItems.value[i]
+  return item?.kind === 'closed' ? item.trade : null
+}
+
+/** The open trade at `i`, or null when that row is a closed trade. */
+function openTradeAt(i: number): OpenTradeReport | null {
+  const item = allTradeItems.value[i]
+  return item?.kind === 'open' ? item.trade : null
+}
+
 // Row heights: 11px font * ~1.6 line-height ≈ 18px + 6px padding + 1px border ≈ 25px per row
 const CLOSED_ROW_H = 50 // entry row (25px) + exit row (25px)
 const OPEN_ROW_H = 25
@@ -927,55 +939,55 @@ function exportCsv() {
             <template v-for="vItem in virtualTradeItems" :key="vItem.key">
               <!-- Closed trade: entry row + exit row -->
               <template v-if="vItem.index < allTradeItems.length && allTradeItems[vItem.index].kind === 'closed'">
-                <tr :class="['st-entry-row', allTradeItems[vItem.index].trade.tradeNum % 2 === 0 ? 'st-group-even' : 'st-group-odd', vItem.index === highlightedTradeIdx ? 'st-highlighted' : '']">
-                  <td class="st-center" rowspan="2">{{ allTradeItems[vItem.index].trade.tradeNum + 1 }}</td>
+                <tr :class="['st-entry-row', closedTradeAt(vItem.index)!.tradeNum % 2 === 0 ? 'st-group-even' : 'st-group-odd', vItem.index === highlightedTradeIdx ? 'st-highlighted' : '']">
+                  <td class="st-center" rowspan="2">{{ closedTradeAt(vItem.index)!.tradeNum + 1 }}</td>
                   <td class="st-left">
-                    {{ allTradeItems[vItem.index].trade.entrySide === 'long' ? t('strategy.trade.longEntry') : t('strategy.trade.shortEntry') }}
+                    {{ closedTradeAt(vItem.index)!.entrySide === 'long' ? t('strategy.trade.longEntry') : t('strategy.trade.shortEntry') }}
                   </td>
                   <td class="st-left">
-                    <a class="st-signal-link" @click="emit('scrollToBar', allTradeItems[vItem.index].trade.entryBar)">{{ allTradeItems[vItem.index].trade.entryId }}</a>
+                    <a class="st-signal-link" @click="emit('scrollToBar', closedTradeAt(vItem.index)!.entryBar)">{{ closedTradeAt(vItem.index)!.entryId }}</a>
                   </td>
-                  <td>{{ fmtDate(allTradeItems[vItem.index].trade.entryTime) }}</td>
-                  <td>{{ allTradeItems[vItem.index].trade.entryPrice.toFixed(2) }}</td>
-                  <td>{{ allTradeItems[vItem.index].trade.quantity.toFixed(2) }}</td>
-                  <td rowspan="2" :class="plClass(allTradeItems[vItem.index].trade.profit)" class="st-span-cell">{{ fmtCurrency(allTradeItems[vItem.index].trade.profit) }}</td>
-                  <td rowspan="2" :class="plClass(allTradeItems[vItem.index].trade.profitPercent)" class="st-span-cell">{{ fmtPct(allTradeItems[vItem.index].trade.profitPercent) }}</td>
-                  <td rowspan="2" :class="plClass(allTradeItems[vItem.index].trade.cumulativeProfit)" class="st-span-cell">{{ fmtCurrency(allTradeItems[vItem.index].trade.cumulativeProfit) }}</td>
-                  <td rowspan="2" class="st-span-cell">{{ fmtCurrency(allTradeItems[vItem.index].trade.maxRunup) }}</td>
-                  <td rowspan="2" class="st-span-cell">{{ fmtCurrency(allTradeItems[vItem.index].trade.maxDrawdown) }}</td>
+                  <td>{{ fmtDate(closedTradeAt(vItem.index)!.entryTime) }}</td>
+                  <td>{{ closedTradeAt(vItem.index)!.entryPrice.toFixed(2) }}</td>
+                  <td>{{ closedTradeAt(vItem.index)!.quantity.toFixed(2) }}</td>
+                  <td rowspan="2" :class="plClass(closedTradeAt(vItem.index)!.profit)" class="st-span-cell">{{ fmtCurrency(closedTradeAt(vItem.index)!.profit) }}</td>
+                  <td rowspan="2" :class="plClass(closedTradeAt(vItem.index)!.profitPercent)" class="st-span-cell">{{ fmtPct(closedTradeAt(vItem.index)!.profitPercent) }}</td>
+                  <td rowspan="2" :class="plClass(closedTradeAt(vItem.index)!.cumulativeProfit)" class="st-span-cell">{{ fmtCurrency(closedTradeAt(vItem.index)!.cumulativeProfit) }}</td>
+                  <td rowspan="2" class="st-span-cell">{{ fmtCurrency(closedTradeAt(vItem.index)!.maxRunup) }}</td>
+                  <td rowspan="2" class="st-span-cell">{{ fmtCurrency(closedTradeAt(vItem.index)!.maxDrawdown) }}</td>
                   <td rowspan="2" class="st-span-cell"></td>
                 </tr>
-                <tr :class="['st-exit-row', allTradeItems[vItem.index].trade.tradeNum % 2 === 0 ? 'st-group-even' : 'st-group-odd', vItem.index === highlightedTradeIdx ? 'st-highlighted' : '']">
+                <tr :class="['st-exit-row', closedTradeAt(vItem.index)!.tradeNum % 2 === 0 ? 'st-group-even' : 'st-group-odd', vItem.index === highlightedTradeIdx ? 'st-highlighted' : '']">
                   <td class="st-left">
-                    {{ allTradeItems[vItem.index].trade.entrySide === 'long' ? t('strategy.trade.longExit') : t('strategy.trade.shortExit') }}
+                    {{ closedTradeAt(vItem.index)!.entrySide === 'long' ? t('strategy.trade.longExit') : t('strategy.trade.shortExit') }}
                   </td>
                   <td class="st-left">
-                    <a class="st-signal-link" @click="emit('scrollToBar', allTradeItems[vItem.index].trade.exitBar)">{{ allTradeItems[vItem.index].trade.exitId }}</a>
+                    <a class="st-signal-link" @click="emit('scrollToBar', closedTradeAt(vItem.index)!.exitBar)">{{ closedTradeAt(vItem.index)!.exitId }}</a>
                   </td>
-                  <td>{{ fmtDate(allTradeItems[vItem.index].trade.exitTime) }}</td>
-                  <td>{{ allTradeItems[vItem.index].trade.exitPrice.toFixed(2) }}</td>
-                  <td>{{ allTradeItems[vItem.index].trade.quantity.toFixed(2) }}</td>
+                  <td>{{ fmtDate(closedTradeAt(vItem.index)!.exitTime) }}</td>
+                  <td>{{ closedTradeAt(vItem.index)!.exitPrice.toFixed(2) }}</td>
+                  <td>{{ closedTradeAt(vItem.index)!.quantity.toFixed(2) }}</td>
                 </tr>
               </template>
 
               <!-- Open trade: entry row only -->
               <template v-else-if="vItem.index < allTradeItems.length && allTradeItems[vItem.index].kind === 'open'">
                 <tr class="st-entry-row st-open-row">
-                  <td class="st-center">{{ allTradeItems[vItem.index].trade.tradeNum + 1 }}</td>
+                  <td class="st-center">{{ openTradeAt(vItem.index)!.tradeNum + 1 }}</td>
                   <td class="st-left">
-                    {{ allTradeItems[vItem.index].trade.entrySide === 'long' ? t('strategy.trade.longEntry') : t('strategy.trade.shortEntry') }}
+                    {{ openTradeAt(vItem.index)!.entrySide === 'long' ? t('strategy.trade.longEntry') : t('strategy.trade.shortEntry') }}
                   </td>
                   <td class="st-left">
-                    <a class="st-signal-link" @click="emit('scrollToBar', allTradeItems[vItem.index].trade.entryBar)">{{ allTradeItems[vItem.index].trade.entryId }}</a>
+                    <a class="st-signal-link" @click="emit('scrollToBar', openTradeAt(vItem.index)!.entryBar)">{{ openTradeAt(vItem.index)!.entryId }}</a>
                   </td>
-                  <td>{{ fmtDate(allTradeItems[vItem.index].trade.entryTime) }}</td>
-                  <td>{{ allTradeItems[vItem.index].trade.entryPrice.toFixed(2) }}</td>
-                  <td>{{ allTradeItems[vItem.index].trade.quantity.toFixed(2) }}</td>
-                  <td :class="plClass(allTradeItems[vItem.index].trade.profit)" class="st-dim">{{ fmtCurrency(allTradeItems[vItem.index].trade.profit) }}</td>
-                  <td :class="plClass(allTradeItems[vItem.index].trade.profitPercent)" class="st-dim">{{ fmtPct(allTradeItems[vItem.index].trade.profitPercent) }}</td>
+                  <td>{{ fmtDate(openTradeAt(vItem.index)!.entryTime) }}</td>
+                  <td>{{ openTradeAt(vItem.index)!.entryPrice.toFixed(2) }}</td>
+                  <td>{{ openTradeAt(vItem.index)!.quantity.toFixed(2) }}</td>
+                  <td :class="plClass(openTradeAt(vItem.index)!.profit)" class="st-dim">{{ fmtCurrency(openTradeAt(vItem.index)!.profit) }}</td>
+                  <td :class="plClass(openTradeAt(vItem.index)!.profitPercent)" class="st-dim">{{ fmtPct(openTradeAt(vItem.index)!.profitPercent) }}</td>
                   <td class="st-dim">&mdash;</td>
-                  <td class="st-dim">{{ fmtCurrency(allTradeItems[vItem.index].trade.maxRunup) }}</td>
-                  <td class="st-dim">{{ fmtCurrency(allTradeItems[vItem.index].trade.maxDrawdown) }}</td>
+                  <td class="st-dim">{{ fmtCurrency(openTradeAt(vItem.index)!.maxRunup) }}</td>
+                  <td class="st-dim">{{ fmtCurrency(openTradeAt(vItem.index)!.maxDrawdown) }}</td>
                   <td></td>
                 </tr>
               </template>

@@ -70,7 +70,7 @@ export interface ConfigureScriptEvent {
 
 const props = defineProps<{
   data: ConfigureScriptEvent | null
-  engine: { chart: { scriptOverrides(tag: string): any; graphConfigs(tag: string): any; setScriptConfig(tag: string, config: unknown): Promise<void> } } | null
+  engine: { chart: { scriptOverrides(tag: string): any; graphConfigs(tag: string): any; setScriptConfig(tag: any, config: any): void } } | null
 }>()
 
 const emit = defineEmits<{

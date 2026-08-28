@@ -13,6 +13,7 @@
  */
 
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onClickOutside } from '@vueuse/core'
 import ToolIcon from './ToolIcon.vue'
@@ -298,8 +299,10 @@ const sidebarRef = ref<HTMLDivElement | null>(null)
  */
 const flyoutEls = ref<Record<string, HTMLDivElement | null>>({})
 function registerFlyoutEl(id: string) {
-  return (el: Element | null) => {
-    flyoutEls.value[id] = (el as HTMLDivElement | null) ?? null
+  // Vue types a template ref callback as `VNodeRef`, whose element parameter is
+  // widened to cover component instances as well as DOM nodes.
+  return (el: Element | ComponentPublicInstance | null) => {
+    flyoutEls.value[id] = el instanceof HTMLDivElement ? el : null
   }
 }
 

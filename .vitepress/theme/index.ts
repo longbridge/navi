@@ -12,6 +12,14 @@ import en from "../i18n/en";
 import zhCN from "../i18n/zh-CN";
 import zhHK from "../i18n/zh-HK";
 
+/** The locales `messages` below defines; anything else falls back to English. */
+const SUPPORTED_LOCALES = ["en", "zh-CN", "zh-HK"] as const;
+type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
+function isSupportedLocale(lang: string): lang is SupportedLocale {
+  return (SUPPORTED_LOCALES as readonly string[]).includes(lang);
+}
+
 const i18n = createI18n({
   legacy: false,
   locale: "en",
@@ -39,8 +47,8 @@ export default {
     if (typeof window !== "undefined") {
       // Sync vue-i18n locale with VitePress lang on route change.
       router.onAfterRouteChanged = () => {
-        const lang = document.documentElement.lang || "en";
-        i18n.global.locale.value = lang;
+        const lang = document.documentElement.lang;
+        i18n.global.locale.value = isSupportedLocale(lang) ? lang : "en";
       };
     }
   },

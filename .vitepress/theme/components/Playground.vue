@@ -458,7 +458,7 @@ function onAnnPropsPointChange(idx: number, barIndex: number, price: number) {
   points[idx] = { time: timeMs, price }
   chart.updateAnnotation(id, { ...ann.spec, points })
   const updated = chart.getAnnotation(id) as { spec: { points: { time: number; price: number }[] } } | null
-  annPropsPoints.value = updated ? pointsToUi(chart, updated.spec.points) : []
+  annPropsPoints.value = updated ? pointsToUi(chart, id, updated.spec.points) : []
 }
 
 function onAnnPropsResetToDefault() {
@@ -669,6 +669,18 @@ function onShowStdlibDocs(info: { module: string; name: string; overloadIndex?: 
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
+/** A diagnostic in the editor's flat form, as `setRuntimeDiagnostic` takes it. */
+interface RuntimeDiagnostic {
+  severity: string
+  message: string
+  startLine: number
+  startCharacter: number
+  endLine: number
+  endCharacter: number
+  fileId?: number
+  filePath?: string
+}
+
 interface Diagnostic {
   severity: string
   message: string
@@ -760,7 +772,7 @@ async function doRun(tag?: string): Promise<boolean> {
   if (scriptErr.type === 'exception') {
     const { message, backtrace } = scriptErr
     // Show runtime error in editor gutter and return the runtime diagnostic.
-    const runtimeDiag: Diagnostic | null = backtrace.length > 0
+    const runtimeDiag: RuntimeDiagnostic | null = backtrace.length > 0
       ? {
           severity: 'error',
           message,
@@ -1339,8 +1351,8 @@ function syncImePosition() {
   const chart = engine.value?.chart
   const input = imeBridge.value
   if (!chart || !input) return
-  const pos = chart.caretPixel() as [number, number] | null
-  if (pos) {
+  const pos = chart.caretPixel() as ArrayLike<number> | null
+  if (pos && pos.length >= 2) {
     input.style.left = `${pos[0]}px`
     input.style.top = `${pos[1]}px`
   } else {
@@ -1388,6 +1400,7 @@ function scrollToBar(barIndex: number) {
   const duration = 400 // ms
   const startTime = performance.now()
 
+  const scrolling = chart
   function tick(now: number) {
     const elapsed = now - startTime
     const t = Math.min(elapsed / duration, 1)
@@ -1395,7 +1408,7 @@ function scrollToBar(barIndex: number) {
     const ease = 1 - (1 - t) * (1 - t) * (1 - t)
     const current = startOffset + distance * ease
 
-    chart.setScrollOffset(current)
+    scrolling.setScrollOffset(current)
 
     if (t < 1) {
       scrollAnimRaf = requestAnimationFrame(tick)
@@ -1504,7 +1517,7 @@ function handleChartEvent(event: unknown) {
   if (ev.type === 'configureScript') {
     const tag = tagForId(ev.scriptId)
     if (!tag) return
-    const inputs = chart?.scriptInputsEffective(tag) as unknown[] | null
+    const inputs = chart?.scriptInputsEffective(tag) as ConfigureScriptEvent['inputs'] | null
     configDialogData.value = {
       tag,
       id: tag,
@@ -1548,7 +1561,7 @@ function handleChartEvent(event: unknown) {
     } else if (el?.type === 'series') {
       const tag = tagForId(el.scriptId)
       if (tag) {
-        const inputs = chart?.scriptInputsEffective(tag) as unknown[] | null
+        const inputs = chart?.scriptInputsEffective(tag) as ConfigureScriptEvent['inputs'] | null
         configDialogData.value = { tag, id: tag, inputs: inputs ?? [] }
       }
     }

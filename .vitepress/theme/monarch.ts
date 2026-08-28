@@ -137,7 +137,6 @@ export function registerNaviLanguage(monaco: typeof import('monaco-editor')) {
   monaco.editor.defineTheme(NAVI_DARK_THEME, {
     base: 'vs-dark',
     inherit: true,
-    semanticHighlighting: true,
     rules: [
       { token: '', foreground: 'DFDFD6', background: '13182A' },
       { token: 'identifier', foreground: 'DFDFD6' },
@@ -183,7 +182,6 @@ export function registerNaviLanguage(monaco: typeof import('monaco-editor')) {
   monaco.editor.defineTheme(NAVI_LIGHT_THEME, {
     base: 'vs',
     inherit: true,
-    semanticHighlighting: true,
     rules: [
       { token: '', foreground: '000000', background: 'FFFFFF' },
       { token: 'identifier', foreground: '000000' },

@@ -31,7 +31,7 @@ export interface ParamDoc {
   name: string
   type: TypeRef
   description?: string
-  is_variadic?: boolean
+  isVariadic?: boolean
   defaultValue?: unknown
   defaultExpr?: string
 }

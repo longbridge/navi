@@ -10,16 +10,19 @@
     "check:monarch": "node scripts/check-monarch.mjs",
     "prebuild": "npm run check:skill-links && npm run check:playground-url && npm run check:monarch && npm run package-skill",
     "build": "VITE_EXTRA_EXTENSIONS=vsix vitepress build",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vitepress preview"
   },
   "devDependencies": {
+    "@types/node": "^26.4.0",
     "autoprefixer": "^10.4.24",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.3",
     "vitepress": "^1.6.3",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.10"
   },
   "dependencies": {
     "@tanstack/vue-virtual": "^3.13.23",
