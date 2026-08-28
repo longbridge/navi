@@ -43,8 +43,8 @@ export class StaticDataProvider {
  * Implements the JsDataProvider interface expected by the WASM Chart
  * constructor, backed by StaticDataProvider.
  *
- * `candlesticks` yields CandlestickItem values (serde external-tagged,
- * camelCase): `{ bar: { ... } }` for each bar, then `'historyEnd'`.
+ * `candlesticks` yields CandlestickItem values (serde internally tagged,
+ * camelCase): `{ type: 'bar', ... }` for each bar, then `{ type: 'historyEnd' }`.
  *
  * `historyBarsBefore` returns a plain array of Candlestick objects with
  * `time < beforeTime`, newest-of-old last, for incremental history extension.
@@ -57,15 +57,14 @@ export class StaticCandlestickAdapter {
     const bars = count != null && count > 0 ? allBars.slice(-count) : allBars
     for (const b of bars) {
       yield {
-        bar: {
-          tradeSession: 'regular',
-          ask: NaN,
-          bid: NaN,
-          ...b,
-        },
+        type: 'bar',
+        tradeSession: 'regular',
+        ask: NaN,
+        bid: NaN,
+        ...b,
       }
     }
-    yield 'historyEnd'
+    yield { type: 'historyEnd' }
   }
 
   async historyBarsBefore(

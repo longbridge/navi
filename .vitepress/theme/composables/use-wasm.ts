@@ -46,10 +46,11 @@ export interface SnapshotRestoreResult {
 // PropertyValue, PropertyValueResult}`. All field names are camelCase via the
 // Rust-side `#[serde(rename_all = "camelCase")]` annotation.
 //
-// Serde tagging convention (external tagging):
-//   - PropertyValue:       { color: number } | { stroke: StrokeBundle } | …
-//   - PropertyValueResult: PropertyValue | 'none' | 'mixed'
-//   - PropertyKind:        unit variants → plain string; struct variants → { stroke: {…} }
+// Serde tagging convention (internal tagging, `#[serde(tag = "type")]`):
+//   - PropertyValue:       { type: 'color', value: number } | { type: 'stroke', value: StrokeBundle } | …
+//   - PropertyValueResult: { type: 'value', value: PropertyValue } | { type: 'none' } | { type: 'mixed' }
+//   - PropertyKind:        { type: 'bool' } | { type: 'stroke', flags: {…} }
+// Every variant — unit ones included — is an object carrying its `type`.
 
 /** One localised option inside a `PropertyKind::Enum`. */
 export interface EnumOption {
@@ -113,58 +114,62 @@ export interface GroupItemValue {
 
 /**
  * Property type — drives which UI widget renders for this descriptor.
- * Unit variants are plain strings; struct variants are `{ variantName: payload }`.
+ *
+ * `percentWithStroke` / `enableablePercentWithStroke` have no counterpart in
+ * the chart crate today; their branches are kept so the widget code stays
+ * intact if they come back.
  */
 export type PropertyKind =
-  | 'fill'
-  | 'textAlign'
-  | 'bool'
-  | 'text'
-  | 'alpha'
-  | { textVAlign: { options: EnumOption[] } }
-  | { enum: { options: EnumOption[] } }
-  | { flags: { options: EnumOption[] } }
-  | { stroke: { flags: StrokeFlags; lineWidthOptions?: number[] } }
-  | { textStyle: { flags: TextStyleFlags } }
-  | { number: { min?: number; max?: number; step?: number } }
-  | { group: { hasNumber: boolean; inline: boolean; items: PropertyDescriptor[] } }
-  | { percentWithStroke: { lineWidthOptions?: number[] } }
-  | { enableablePercentWithStroke: { lineWidthOptions?: number[] } }
+  | { type: 'fill' }
+  | { type: 'textAlign' }
+  | { type: 'bool' }
+  | { type: 'text' }
+  | { type: 'alpha' }
+  | { type: 'textVAlign'; options: EnumOption[] }
+  | { type: 'enum'; options: EnumOption[] }
+  | { type: 'flags'; options: EnumOption[] }
+  | { type: 'stroke'; flags: StrokeFlags; lineWidthOptions?: number[] }
+  | { type: 'textStyle'; flags: TextStyleFlags }
+  | { type: 'number'; min?: number; max?: number; step?: number }
+  | { type: 'group'; hasNumber: boolean; inline: boolean; items: PropertyDescriptor[] }
+  | { type: 'percentWithStroke'; lineWidthOptions?: number[] }
+  | { type: 'enableablePercentWithStroke'; lineWidthOptions?: number[] }
 
 /**
- * Property value at the WASM boundary. External-tagged: each variant is an
- * object with a single key equal to the lowercase variant name.
+ * Property value at the WASM boundary. Internally tagged: `type` names the
+ * variant and the payload sits alongside it, under `value` for most variants
+ * (`index` for `enum`, `items` for `groupItems`).
  *
  * Color values are u32 RGBA (0xRRGGBBAA). LineStyle / TextAlign use lowercase
  * variant names (`solid`, `dashed`, …; `left`, `center`, `right`).
  */
 export type PropertyValue =
-  | { color: number }
-  | { float: number }
-  | { bool: boolean }
-  | { lineStyle: 'solid' | 'dashed' | 'dotted' }
-  | { textAlign: 'left' | 'center' | 'right' }
-  | { enum: number }
-  | { text: string }
-  | { int: number }
-  | { stroke: StrokeBundle }
-  | { textStyle: TextStyleBundle }
-  | { enableable: EnableableBundle }
-  | { groupItems: GroupItemValue[] }
-  | { groupItem: GroupItemValue }
-  | { percentWithStroke: PercentWithStrokeBundle }
-  | { enableablePercentWithStroke: EnableablePercentWithStrokeBundle }
+  | { type: 'color'; value: number }
+  | { type: 'float'; value: number }
+  | { type: 'bool'; value: boolean }
+  | { type: 'lineStyle'; value: 'solid' | 'dashed' | 'dotted' }
+  | { type: 'textAlign'; value: 'left' | 'center' | 'right' }
+  | { type: 'enum'; index: number }
+  | { type: 'text'; value: string }
+  | { type: 'int'; value: number }
+  | { type: 'stroke'; value: StrokeBundle }
+  | { type: 'textStyle'; value: TextStyleBundle }
+  | { type: 'enableable'; value: EnableableBundle }
+  | { type: 'groupItems'; items: GroupItemValue[] }
+  | { type: 'groupItem'; value: GroupItemValue }
+  | { type: 'percentWithStroke'; value: PercentWithStrokeBundle }
+  | { type: 'enableablePercentWithStroke'; value: EnableablePercentWithStrokeBundle }
 
 /**
- * Outcome of reading a single property. External-tagged:
- *   - a definite value → `{ value: PropertyValue }`
- *   - no property with that name → `'none'`
- *   - fields disagree → `'mixed'`
+ * Outcome of reading a single property. Internally tagged:
+ *   - a definite value → `{ type: 'value', value: PropertyValue }`
+ *   - no property with that name → `{ type: 'none' }`
+ *   - fields disagree → `{ type: 'mixed' }`
  */
 export type PropertyValueResult =
-  | { value: PropertyValue }
-  | 'none'
-  | 'mixed'
+  | { type: 'value'; value: PropertyValue }
+  | { type: 'none' }
+  | { type: 'mixed' }
 
 /**
  * One editable property of an annotation. The WASM resolver fills in

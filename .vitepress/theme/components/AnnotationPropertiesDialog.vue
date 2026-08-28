@@ -79,16 +79,15 @@ watch(
 )
 
 const hasInputsTab = computed(() => props.descriptors.some((d) => d.category === 'inputs'))
-const hasTextTab = computed(() => props.descriptors.some((d) => d.kind === 'text' || (typeof d.kind === 'object' && 'text' in d.kind)))
+const hasTextTab = computed(() => props.descriptors.some((d) => d.kind.type === 'text'))
 
 /** A descriptor belongs to the Text tab only when there IS a text tab (i.e.
  *  the annotation has at least one `text` descriptor). Without a text tab,
  *  textAlign / textVAlign descriptors show as regular rows in the style tab. */
 function isTextDesc(d: PropertyDescriptor): boolean {
   if (!hasTextTab.value) return false
-  const k = d.kind
-  if (typeof k === 'string') return k === 'text' || k === 'textStyle' || k === 'textAlign' || k === 'textVAlign'
-  return 'text' in k || 'textStyle' in k || 'textAlign' in k || 'textVAlign' in k
+  const k = d.kind.type
+  return k === 'text' || k === 'textStyle' || k === 'textAlign' || k === 'textVAlign'
 }
 const hasCoordinatesTab = computed(() => props.points.length > 0)
 const hasAnySecondaryTab = computed(() => hasInputsTab.value || hasTextTab.value || hasCoordinatesTab.value)
@@ -97,16 +96,16 @@ const hasAnySecondaryTab = computed(() => hasInputsTab.value || hasTextTab.value
 
 /** Single bundle descriptor that carries colour + font size + bold + italic. */
 const textStyleDesc = computed(() =>
-  props.descriptors.find((d) => d.kind === 'textStyle' || (typeof d.kind === 'object' && 'textStyle' in d.kind)),
+  props.descriptors.find((d) => d.kind.type === 'textStyle'),
 )
 const textDesc = computed(() =>
-  props.descriptors.find((d) => d.kind === 'text' || (typeof d.kind === 'object' && 'text' in d.kind)),
+  props.descriptors.find((d) => d.kind.type === 'text'),
 )
 const textAlignDesc = computed(() =>
-  props.descriptors.find((d) => d.kind === 'textAlign' || (typeof d.kind === 'object' && 'textAlign' in d.kind)),
+  props.descriptors.find((d) => d.kind.type === 'textAlign'),
 )
 const textVAlignDesc = computed(() =>
-  props.descriptors.find((d) => typeof d.kind === 'object' && 'textVAlign' in d.kind),
+  props.descriptors.find((d) => d.kind.type === 'textVAlign'),
 )
 const fontSizeOptions = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
@@ -115,8 +114,8 @@ function readTextStyle(): TextStyleBundle | null {
   const d = textStyleDesc.value
   if (!d) return null
   const r = props.values[d.name]
-  if (!r || typeof r === 'string' || !('textStyle' in r.value)) return null
-  return r.value.textStyle
+  if (r?.type !== 'value' || r.value.type !== 'textStyle') return null
+  return r.value.value
 }
 
 /** Patch one field of the textStyle bundle and emit the write. */
@@ -128,7 +127,7 @@ function writeTextStyleField(
   if (!d) return
   const base = readTextStyle() ?? { color: 0x000000ff, fontSize: 12, bold: false, italic: false }
   const next = { ...base, [field]: raw }
-  emit('propertyChange', d.name, { textStyle: next })
+  emit('propertyChange', d.name, { type: 'textStyle', value: next })
 }
 
 // (Stroke, TextStyle, Group, value-reader helpers are in PropertyRows.vue)
@@ -185,8 +184,8 @@ watch(() => props.open, (open) => {
 // ── Helpers for group item stroke sub-value reading (text tab format bar) ───
 
 function groupItemStroke(item: GroupItemValue): StrokeBundle {
-  return 'stroke' in item.value
-    ? item.value.stroke
+  return item.value.type === 'stroke'
+    ? item.value.value
     : { color: 0x808080ff, width: 1, style: 'solid' }
 }
 
@@ -202,7 +201,7 @@ watch(() => props.open, (open) => {
   touchedTextFields.clear()
   const next: Record<string, string> = {}
   for (const [name, r] of Object.entries(props.values)) {
-    if (typeof r !== 'string' && 'value' in r && 'text' in r.value) next[name] = r.value.text
+    if (r?.type === 'value' && r.value.type === 'text') next[name] = r.value.value
   }
   textDrafts.value = next
 }, { immediate: false })
@@ -211,32 +210,32 @@ watch(() => props.values, (vals) => {
   if (!props.open) return
   for (const [name, r] of Object.entries(vals)) {
     if (touchedTextFields.has(name)) continue
-    if (typeof r !== 'string' && 'value' in r && 'text' in r.value) textDrafts.value[name] = r.value.text
+    if (r?.type === 'value' && r.value.type === 'text') textDrafts.value[name] = r.value.value
   }
 }, { deep: true })
 
 function onTextInput(name: string, value: string) {
   touchedTextFields.add(name)
   textDrafts.value[name] = value
-  write(name, { text: value })
+  write(name, { type: 'text', value })
 }
 
 function textOf(name: string): string {
   const r = props.values[name]
-  if (!r || typeof r === 'string' || !('value' in r) || !('text' in r.value)) return ''
-  return r.value.text
+  if (r?.type !== 'value' || r.value.type !== 'text') return ''
+  return r.value.value
 }
 
 function textAlignOf(name: string): 'left' | 'center' | 'right' {
   const r = props.values[name]
-  if (!r || typeof r === 'string' || !('value' in r) || !('textAlign' in r.value)) return 'left'
-  return r.value.textAlign
+  if (r?.type !== 'value' || r.value.type !== 'textAlign') return 'left'
+  return r.value.value
 }
 
 function enumIndexOf(name: string): number {
   const r = props.values[name]
-  if (!r || typeof r === 'string' || !('value' in r) || !('enum' in r.value)) return 0
-  return r.value.enum
+  if (r?.type !== 'value' || r.value.type !== 'enum') return 0
+  return r.value.index
 }
 
 const TEXT_ALIGNS: Array<'left' | 'center' | 'right'> = ['left', 'center', 'right']
@@ -361,13 +360,13 @@ const TEXT_ALIGNS: Array<'left' | 'center' | 'right'> = ['left', 'center', 'righ
               class="ann-props__seg-btn"
               :class="{ 'ann-props__seg-btn--active': textAlignOf(textAlignDesc.name) === a }"
               :title="textAlignDesc.displayName + ': ' + a"
-              @click="write(textAlignDesc.name, { textAlign: a })"
+              @click="write(textAlignDesc.name, { type: 'textAlign', value: a })"
             >{{ a === 'left' ? '⇤' : a === 'center' ? '↔' : '⇥' }}</button>
           </div>
           <SelectRoot
-            v-if="textVAlignDesc && typeof textVAlignDesc.kind === 'object' && 'textVAlign' in textVAlignDesc.kind"
+            v-if="textVAlignDesc && textVAlignDesc.kind.type === 'textVAlign'"
             :model-value="String(enumIndexOf(textVAlignDesc.name))"
-            @update:model-value="(v) => write(textVAlignDesc!.name, { enum: Number(v) })"
+            @update:model-value="(v) => write(textVAlignDesc!.name, { type: 'enum', index: Number(v) })"
           >
             <SelectTrigger class="h-8 text-xs bg-muted/50 border-border hover:bg-muted w-auto min-w-[80px]">
               <SelectValue />

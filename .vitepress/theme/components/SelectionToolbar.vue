@@ -81,28 +81,28 @@ const grouped = computed(() => {
 
   for (const d of props.descriptors) {
     const k = d.kind
-    if (k === 'fill') {
+    if (k.type === 'fill') {
       fillColors.push(d)
-    } else if (typeof k === 'object') {
-      if ('stroke' in k) {
+    } else {
+      if (k.type === 'stroke') {
         // Stroke bundle: color + width + style sub-widgets read/write through
         // the same descriptor but pick different fields of the bundle value.
         strokeColors.push(d)
         lineWidths.push(d)
         lineStyles.push(d)
-      } else if ('percentWithStroke' in k || 'enableablePercentWithStroke' in k) {
+      } else if (k.type === 'percentWithStroke' || k.type === 'enableablePercentWithStroke') {
         strokeColors.push(d)
         lineWidths.push(d)
         lineStyles.push(d)
-      } else if ('group' in k) {
+      } else if (k.type === 'group') {
         // Group with stroke items: expose color/width/style controls that
         // apply to ALL items in the group at once.
-        if (k.group.items.length > 0 && typeof k.group.items[0].kind === 'object' && 'stroke' in k.group.items[0].kind) {
+        if (k.items.length > 0 && k.items[0].kind.type === 'stroke') {
           strokeColors.push(d)
           lineWidths.push(d)
           lineStyles.push(d)
         }
-      } else if ('textStyle' in k) {
+      } else if (k.type === 'textStyle') {
         // Text-style bundle: text colour + font size + bold + italic.
         textColors.push(d)
         fontSizes.push(d)
@@ -128,35 +128,35 @@ function readStrokeField(
   field: StrokeField,
 ): number | 'solid' | 'dashed' | 'dotted' | null {
   const r = props.values[d.name]
-  if (!r || typeof r === 'string') return null
+  if (r?.type !== 'value') return null
   const v = r.value
-  if (typeof d.kind === 'object' && 'stroke' in d.kind && 'stroke' in v) {
-    if (field === 'color') return v.stroke.color
-    if (field === 'width') return v.stroke.width
-    return v.stroke.style
+  if (d.kind.type === 'stroke' && v.type === 'stroke') {
+    if (field === 'color') return v.value.color
+    if (field === 'width') return v.value.width
+    return v.value.style
   }
-  if (typeof d.kind === 'object' && 'percentWithStroke' in d.kind && 'percentWithStroke' in v) {
-    if (field === 'color') return v.percentWithStroke.stroke.color
-    if (field === 'width') return v.percentWithStroke.stroke.width
-    return v.percentWithStroke.stroke.style
+  if (d.kind.type === 'percentWithStroke' && v.type === 'percentWithStroke') {
+    if (field === 'color') return v.value.stroke.color
+    if (field === 'width') return v.value.stroke.width
+    return v.value.stroke.style
   }
-  if (typeof d.kind === 'object' && 'enableablePercentWithStroke' in d.kind && 'enableablePercentWithStroke' in v) {
-    if (field === 'color') return v.enableablePercentWithStroke.value.stroke.color
-    if (field === 'width') return v.enableablePercentWithStroke.value.stroke.width
-    return v.enableablePercentWithStroke.value.stroke.style
+  if (d.kind.type === 'enableablePercentWithStroke' && v.type === 'enableablePercentWithStroke') {
+    if (field === 'color') return v.value.value.stroke.color
+    if (field === 'width') return v.value.value.stroke.width
+    return v.value.value.stroke.style
   }
-  if (typeof d.kind === 'object' && 'group' in d.kind && 'groupItems' in v) {
+  if (d.kind.type === 'group' && v.type === 'groupItems') {
     // Read from the first enabled item that carries a stroke value.
-    const item = v.groupItems.find((it) => it.enabled !== false && 'stroke' in it.value)
-    if (!item || !('stroke' in item.value)) return null
-    if (field === 'color') return item.value.stroke.color
-    if (field === 'width') return item.value.stroke.width
-    return item.value.stroke.style
+    const item = v.items.find((it) => it.enabled !== false && it.value.type === 'stroke')
+    if (item?.value.type !== 'stroke') return null
+    if (field === 'color') return item.value.value.color
+    if (field === 'width') return item.value.value.width
+    return item.value.value.style
   }
   // Scalar fallback.
-  if (field === 'color' && 'color' in v) return v.color
-  if (field === 'width' && 'float' in v) return v.float
-  if (field === 'style' && 'lineStyle' in v) return v.lineStyle
+  if (field === 'color' && v.type === 'color') return v.value
+  if (field === 'width' && v.type === 'float') return v.value
+  if (field === 'style' && v.type === 'lineStyle') return v.value
   return null
 }
 
@@ -165,13 +165,13 @@ function readTextStyleField(
   field: TextStyleField,
 ): number | boolean | null {
   const r = props.values[d.name]
-  if (!r || typeof r === 'string') return null
+  if (r?.type !== 'value') return null
   const v = r.value
-  if (typeof d.kind === 'object' && 'textStyle' in d.kind && 'textStyle' in v) {
-    if (field === 'color') return v.textStyle.color
-    if (field === 'fontSize') return v.textStyle.fontSize
-    if (field === 'bold') return v.textStyle.bold
-    return v.textStyle.italic
+  if (d.kind.type === 'textStyle' && v.type === 'textStyle') {
+    if (field === 'color') return v.value.color
+    if (field === 'fontSize') return v.value.fontSize
+    if (field === 'bold') return v.value.bold
+    return v.value.italic
   }
   return null
 }
@@ -180,38 +180,38 @@ const DEFAULT_STROKE = { color: 0x000000ff, width: 1, style: 'solid' as const }
 const DEFAULT_PERCENT_WITH_STROKE: PercentWithStrokeBundle = { percent: 0, stroke: { ...DEFAULT_STROKE } }
 
 function writeStrokeField(d: PropertyDescriptor, field: StrokeField, raw: unknown) {
-  if (typeof d.kind === 'object' && 'stroke' in d.kind) {
+  if (d.kind.type === 'stroke') {
     // Bundle write: read current value, mutate one field, send back.
     const r = props.values[d.name]
     const base =
-      r && typeof r !== 'string' && 'stroke' in r.value
-        ? r.value.stroke
+      r?.type === 'value' && r.value.type === 'stroke'
+        ? r.value.value
         : { ...DEFAULT_STROKE }
     const next = { ...base }
     if (field === 'color') next.color = raw as number
     else if (field === 'width') next.width = raw as number
     else next.style = raw as 'solid' | 'dashed' | 'dotted'
-    emit('propertyChange', d.name, { stroke: next })
+    emit('propertyChange', d.name, { type: 'stroke', value: next })
     return
   }
-  if (typeof d.kind === 'object' && 'percentWithStroke' in d.kind) {
+  if (d.kind.type === 'percentWithStroke') {
     const r = props.values[d.name]
     const base: PercentWithStrokeBundle =
-      r && typeof r !== 'string' && 'percentWithStroke' in r.value
-        ? r.value.percentWithStroke
+      r?.type === 'value' && r.value.type === 'percentWithStroke'
+        ? r.value.value
         : { ...DEFAULT_PERCENT_WITH_STROKE }
     const next: PercentWithStrokeBundle = { ...base, stroke: { ...base.stroke } }
     if (field === 'color') next.stroke.color = raw as number
     else if (field === 'width') next.stroke.width = raw as number
     else next.stroke.style = raw as 'solid' | 'dashed' | 'dotted'
-    emit('propertyChange', d.name, { percentWithStroke: next })
+    emit('propertyChange', d.name, { type: 'percentWithStroke', value: next })
     return
   }
-  if (typeof d.kind === 'object' && 'enableablePercentWithStroke' in d.kind) {
+  if (d.kind.type === 'enableablePercentWithStroke') {
     const r = props.values[d.name]
     const base: EnableablePercentWithStrokeBundle =
-      r && typeof r !== 'string' && 'enableablePercentWithStroke' in r.value
-        ? r.value.enableablePercentWithStroke
+      r?.type === 'value' && r.value.type === 'enableablePercentWithStroke'
+        ? r.value.value
         : { enabled: true, value: { ...DEFAULT_PERCENT_WITH_STROKE } }
     const next: EnableablePercentWithStrokeBundle = {
       ...base,
@@ -220,47 +220,48 @@ function writeStrokeField(d: PropertyDescriptor, field: StrokeField, raw: unknow
     if (field === 'color') next.value.stroke.color = raw as number
     else if (field === 'width') next.value.stroke.width = raw as number
     else next.value.stroke.style = raw as 'solid' | 'dashed' | 'dotted'
-    emit('propertyChange', d.name, { enableablePercentWithStroke: next })
+    emit('propertyChange', d.name, { type: 'enableablePercentWithStroke', value: next })
     return
   }
-  if (typeof d.kind === 'object' && 'group' in d.kind) {
+  if (d.kind.type === 'group') {
     // Apply color/width/style to every stroke item in the group.
     const r = props.values[d.name]
     const items: GroupItemValue[] =
-      r && typeof r !== 'string' && 'groupItems' in r.value ? r.value.groupItems : []
+      r?.type === 'value' && r.value.type === 'groupItems' ? r.value.items : []
     const updated = items.map((item) => {
-      if (!('stroke' in item.value)) return item
-      const stroke = { ...item.value.stroke }
+      if (item.value.type !== 'stroke') return item
+      const stroke = { ...item.value.value }
       if (field === 'color') stroke.color = raw as number
       else if (field === 'width') stroke.width = raw as number
       else stroke.style = raw as 'solid' | 'dashed' | 'dotted'
-      return { ...item, value: { stroke } }
+      return { ...item, value: { type: 'stroke' as const, value: stroke } }
     })
-    emit('propertyChange', d.name, { groupItems: updated })
+    emit('propertyChange', d.name, { type: 'groupItems', items: updated })
     return
   }
   // Scalar dispatch.
-  if (field === 'color') emit('propertyChange', d.name, { color: raw as number })
-  else if (field === 'width') emit('propertyChange', d.name, { float: raw as number })
+  if (field === 'color') emit('propertyChange', d.name, { type: 'color', value: raw as number })
+  else if (field === 'width') emit('propertyChange', d.name, { type: 'float', value: raw as number })
   else
     emit('propertyChange', d.name, {
-      lineStyle: raw as 'solid' | 'dashed' | 'dotted',
+      type: 'lineStyle',
+      value: raw as 'solid' | 'dashed' | 'dotted',
     })
 }
 
 function writeTextStyleField(d: PropertyDescriptor, field: TextStyleField, raw: unknown) {
-  if (typeof d.kind !== 'object' || !('textStyle' in d.kind)) return
+  if (d.kind.type !== 'textStyle') return
   const r = props.values[d.name]
   const base =
-    r && typeof r !== 'string' && 'textStyle' in r.value
-      ? r.value.textStyle
+    r?.type === 'value' && r.value.type === 'textStyle'
+      ? r.value.value
       : { color: 0x000000ff, fontSize: 12, bold: false, italic: false }
   const next = { ...base }
   if (field === 'color') next.color = raw as number
   else if (field === 'fontSize') next.fontSize = raw as number
   else if (field === 'bold') next.bold = raw as boolean
   else next.italic = raw as boolean
-  emit('propertyChange', d.name, { textStyle: next })
+  emit('propertyChange', d.name, { type: 'textStyle', value: next })
 }
 
 // ── Value extraction + mixed-state helpers ─────────────────────────────────
@@ -269,14 +270,14 @@ function readGroupColor(group: PropertyDescriptor[]): { value: number; mixed: bo
   if (group.length === 0) return null
   const first = group[0]
   const initial =
-    typeof first.kind === 'object' && 'textStyle' in first.kind
+    first.kind.type === 'textStyle'
       ? (readTextStyleField(first, 'color') as number | null)
       : (readStrokeField(first, 'color') as number | null)
   if (initial == null) return null
   for (let i = 1; i < group.length; i++) {
     const d = group[i]
     const v =
-      typeof d.kind === 'object' && 'textStyle' in d.kind
+      d.kind.type === 'textStyle'
         ? (readTextStyleField(d, 'color') as number | null)
         : (readStrokeField(d, 'color') as number | null)
     if (v == null || v !== initial) return { value: 0x808080ff, mixed: true }
@@ -312,7 +313,7 @@ function readGroupLineStyle(
 
 function writeGroupColor(group: PropertyDescriptor[], rgba: number) {
   for (const d of group) {
-    if (typeof d.kind === 'object' && 'textStyle' in d.kind) writeTextStyleField(d, 'color', rgba)
+    if (d.kind.type === 'textStyle') writeTextStyleField(d, 'color', rgba)
     else writeStrokeField(d, 'color', rgba)
   }
 }
@@ -328,9 +329,9 @@ const lineWidthOptions = computed<number[]>(() => {
   const d = grouped.value.lineWidths[0]
   if (!d) return [1, 2, 3, 4]
   if (typeof d.kind === 'object') {
-    if ('stroke' in d.kind) return d.kind.stroke.lineWidthOptions ?? [1, 2, 3, 4]
-    if ('percentWithStroke' in d.kind) return d.kind.percentWithStroke.lineWidthOptions ?? [1, 2, 3, 4]
-    if ('enableablePercentWithStroke' in d.kind) return d.kind.enableablePercentWithStroke.lineWidthOptions ?? [1, 2, 3, 4]
+    if (d.kind.type === 'stroke') return d.kind.lineWidthOptions ?? [1, 2, 3, 4]
+    if (d.kind.type === 'percentWithStroke') return d.kind.lineWidthOptions ?? [1, 2, 3, 4]
+    if (d.kind.type === 'enableablePercentWithStroke') return d.kind.lineWidthOptions ?? [1, 2, 3, 4]
   }
   return [1, 2, 3, 4]
 })

@@ -21,21 +21,21 @@ import LineStylePopover from './LineStylePopover.vue'
 import ColorPickerPopover from './ColorPickerPopover.vue'
 
 // ── Types mirroring Rust SeriesGraphConfig / SeriesGraphOverride / InputInfo ──
-// SeriesGraphConfig uses external tagging (default serde), so each variant is
-// an object with a single key matching the variant name (camelCase).
-// e.g. { "plot": { title, colors, ... } }
+// SeriesGraphConfig is internally tagged, so every variant is one flat object
+// whose `type` names the variant (camelCase) and whose remaining fields are the
+// payload. e.g. { type: "plot", title, colors, lineWidth, style, lineStyle }
 
-type SeriesGraphPayload =
-  | { title: string | null; colors: (string | null)[]; lineWidth: number; style: string; lineStyle: string }  // plot
-  | { title: string | null; colors: (string | null)[]; charValue: string; location: string; size: string }    // plotChar
-  | { title: string | null; colors: (string | null)[]; style: string; location: string; size: string }        // plotShape
-  | { title: string | null; upColors: (string | null)[]; downColors: (string | null)[] }                      // plotArrow
-  | { title: string | null; colors: (string | null)[]; wickColors: (string | null)[]; borderColors: (string | null)[] } // plotCandle
+type ColorList = (string | null)[]
 
-type SeriesGraphConfig = Record<string, SeriesGraphPayload>
-  | { type: 'plotBar'; title: string | null; colors: (string | null)[] }
-  | { type: 'backgroundColor'; title: string | null; colors: (string | null)[] }
-  | { type: 'fill'; title: string | null; colors: (string | null)[] }
+type SeriesGraphConfig =
+  | { type: 'plot'; title: string | null; colors: ColorList; lineWidth: number; style: string; lineStyle: string }
+  | { type: 'plotChar'; title: string | null; colors: ColorList; charValue: string; location: string; size: string }
+  | { type: 'plotShape'; title: string | null; colors: ColorList; style: string; location: string; size: string }
+  | { type: 'plotArrow'; title: string | null; upColors: ColorList; downColors: ColorList }
+  | { type: 'plotCandle'; title: string | null; colors: ColorList; wickColors: ColorList; borderColors: ColorList }
+  | { type: 'plotBar'; title: string | null; colors: ColorList }
+  | { type: 'backgroundColor'; title: string | null; colors: ColorList }
+  | { type: 'fill'; title: string | null; colors: ColorList }
 
 interface SeriesGraphOverride {
   colorOverrides: (string | null)[]
@@ -165,13 +165,14 @@ function buildInputValues(): Map<number, unknown> {
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function getConfigVariant(cfg: SeriesGraphConfig): string {
-  // External tagging: the variant name is the single key of the object.
-  return Object.keys(cfg)[0] ?? ''
+  // Internal tagging: the variant name is the `type` field.
+  return (cfg as Record<string, any>)?.type ?? ''
 }
 
 function getConfigPayload(cfg: SeriesGraphConfig): any {
-  // External tagging: the payload is the value under the variant key.
-  return Object.values(cfg)[0] ?? {}
+  // Internal tagging: the variant's fields sit alongside `type`, so the object
+  // is its own payload.
+  return cfg ?? {}
 }
 
 const VARIANT_DEFAULT_TITLE_KEY: Record<string, string> = {
@@ -488,12 +489,14 @@ function sourceDisplayValue(val: unknown): string {
 }
 
 function getInputVariant(kind: Record<string, any>): string {
-  return Object.keys(kind)[0] ?? ''
+  // Internal tagging: the variant name is the `type` field.
+  return kind?.type ?? ''
 }
 
 function getInputPayload(kind: Record<string, any>): any {
-  const key = Object.keys(kind)[0]
-  return key ? kind[key] : null
+  // Internal tagging: the variant's fields sit alongside `type`, so the object
+  // is its own payload.
+  return kind ?? null
 }
 
 /**

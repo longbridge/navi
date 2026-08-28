@@ -60,13 +60,13 @@ type SectionRow =
 const rows = computed<SectionRow[]>(() => {
   const out: SectionRow[] = []
   for (const d of props.descriptors) {
-    if (typeof d.kind === 'object' && 'stroke' in d.kind) {
+    if (d.kind.type === 'stroke') {
       out.push({ kind: 'strokeBundle', descriptor: d })
-    } else if (typeof d.kind === 'object' && 'textStyle' in d.kind) {
+    } else if (d.kind.type === 'textStyle') {
       out.push({ kind: 'textStyleBundle', descriptor: d })
-    } else if (typeof d.kind === 'object' && 'group' in d.kind && d.kind.group.inline) {
+    } else if (d.kind.type === 'group' && d.kind.inline) {
       out.push({ kind: 'inlineGroupBundle', descriptor: d })
-    } else if (typeof d.kind === 'object' && 'group' in d.kind) {
+    } else if (d.kind.type === 'group') {
       out.push({ kind: 'groupBundle', descriptor: d })
     } else {
       out.push({ kind: 'single', descriptor: d })
@@ -79,67 +79,68 @@ const rows = computed<SectionRow[]>(() => {
 
 function valueOf(name: string): PropertyValue | null {
   const r = props.values[name]
-  if (!r || typeof r === 'string') return null
+  if (r?.type !== 'value') return null
   return r.value
 }
 function colorOf(name: string): number {
   const v = valueOf(name)
-  return v && 'color' in v ? v.color : 0x808080ff
+  return v?.type === 'color' ? v.value : 0x808080ff
 }
 function floatOf(name: string, fallback = 1): number {
   const v = valueOf(name)
-  return v && 'float' in v ? v.float : fallback
+  return v?.type === 'float' ? v.value : fallback
 }
 function boolOf(name: string): boolean {
   const v = valueOf(name)
-  return v && 'bool' in v ? v.bool : false
+  return v?.type === 'bool' ? v.value : false
 }
 function enumIndexOf(name: string): number {
   const v = valueOf(name)
-  return v && 'enum' in v ? v.enum : 0
+  return v?.type === 'enum' ? v.index : 0
 }
 function intOf(name: string): number {
   const v = valueOf(name)
-  return v && 'int' in v ? v.int : 0
+  return v?.type === 'int' ? v.value : 0
 }
 function textAlignOf(name: string): 'left' | 'center' | 'right' {
   const v = valueOf(name)
-  return v && 'textAlign' in v ? v.textAlign : 'left'
+  return v?.type === 'textAlign' ? v.value : 'left'
 }
 function textOf(name: string): string {
   const v = valueOf(name)
-  return v && 'text' in v ? v.text : ''
+  return v?.type === 'text' ? v.value : ''
 }
 
 // ── Fill helpers (supports enableable) ──────────────────────────────────────
 
 function readFillColor(desc: PropertyDescriptor): number {
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string') return 0x808080ff
+  if (r?.type !== 'value') return 0x808080ff
   if (desc.enableable) {
-    if (!('enableable' in r.value)) return 0x808080ff
-    const inner = (r.value.enableable as EnableableBundle).value
-    return 'color' in inner ? inner.color : 0x808080ff
+    if (r.value.type !== 'enableable') return 0x808080ff
+    const inner = r.value.value.value
+    return inner?.type === 'color' ? inner.value : 0x808080ff
   }
-  return 'color' in r.value ? r.value.color : 0x808080ff
+  return r.value.type === 'color' ? r.value.value : 0x808080ff
 }
 
 function readFillEnabled(desc: PropertyDescriptor): boolean {
   if (!desc.enableable) return true
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string' || !('enableable' in r.value)) return true
-  return (r.value.enableable as EnableableBundle).enabled
+  if (r?.type !== 'value' || r.value.type !== 'enableable') return true
+  return r.value.value.enabled
 }
 
 function writeFillColor(desc: PropertyDescriptor, color: number) {
   emit('propertyChange', desc.name, desc.enableable
-    ? { enableable: { enabled: readFillEnabled(desc), value: { color } } }
-    : { color })
+    ? { type: 'enableable', value: { enabled: readFillEnabled(desc), value: { type: 'color', value: color } } }
+    : { type: 'color', value: color })
 }
 
 function writeFillEnabled(desc: PropertyDescriptor, enabled: boolean) {
   emit('propertyChange', desc.name, {
-    enableable: { enabled, value: { color: readFillColor(desc) } },
+    type: 'enableable',
+    value: { enabled, value: { type: 'color', value: readFillColor(desc) } },
   })
 }
 
@@ -147,34 +148,34 @@ function writeFillEnabled(desc: PropertyDescriptor, enabled: boolean) {
 
 function readEnableableEnabled(name: string): boolean {
   const r = props.values[name]
-  if (!r || typeof r === 'string' || !('enableable' in r.value)) return true
-  return (r.value.enableable as EnableableBundle).enabled
+  if (r?.type !== 'value' || r.value.type !== 'enableable') return true
+  return r.value.value.enabled
 }
 
 function readEnableableFloat(name: string, fallback = 0): number {
   const r = props.values[name]
-  if (!r || typeof r === 'string') return fallback
-  if ('enableable' in r.value) {
-    const inner = (r.value.enableable as EnableableBundle).value
-    return 'float' in inner ? (inner as any).float : fallback
+  if (r?.type !== 'value') return fallback
+  if (r.value.type === 'enableable') {
+    const inner = r.value.value.value
+    return inner?.type === 'float' ? inner.value : fallback
   }
-  return 'float' in r.value ? (r.value as any).float : fallback
+  return r.value.type === 'float' ? r.value.value : fallback
 }
 
 function writeEnableableEnabled(name: string, enabled: boolean) {
   const r = props.values[name]
-  const inner = r && typeof r !== 'string' && 'enableable' in r.value
-    ? (r.value.enableable as EnableableBundle).value
-    : { float: 0 }
-  emit('propertyChange', name, { enableable: { enabled, value: inner } })
+  const inner: PropertyValue = r?.type === 'value' && r.value.type === 'enableable'
+    ? r.value.value.value
+    : { type: 'float', value: 0 }
+  emit('propertyChange', name, { type: 'enableable', value: { enabled, value: inner } })
 }
 
 function writeEnableableFloat(name: string, val: number) {
   const r = props.values[name]
-  const enabled = r && typeof r !== 'string' && 'enableable' in r.value
-    ? (r.value.enableable as EnableableBundle).enabled
+  const enabled = r?.type === 'value' && r.value.type === 'enableable'
+    ? r.value.value.enabled
     : true
-  emit('propertyChange', name, { enableable: { enabled, value: { float: val } } })
+  emit('propertyChange', name, { type: 'enableable', value: { enabled, value: { type: 'float', value: val } } })
 }
 
 // ── Stroke bundle helpers ────────────────────────────────────────────────────
@@ -183,33 +184,33 @@ const DEFAULT_STROKE: StrokeBundle = { color: 0x000000ff, width: 1, style: 'soli
 
 function readStrokeValue(desc: PropertyDescriptor): StrokeBundle {
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string') return DEFAULT_STROKE
+  if (r?.type !== 'value') return DEFAULT_STROKE
   if (desc.enableable) {
-    if (!('enableable' in r.value)) return DEFAULT_STROKE
-    const inner = (r.value.enableable as EnableableBundle).value
-    return 'stroke' in inner ? inner.stroke : DEFAULT_STROKE
+    if (r.value.type !== 'enableable') return DEFAULT_STROKE
+    const inner = r.value.value.value
+    return inner?.type === 'stroke' ? inner.value : DEFAULT_STROKE
   }
-  return 'stroke' in r.value ? r.value.stroke : DEFAULT_STROKE
+  return r.value.type === 'stroke' ? r.value.value : DEFAULT_STROKE
 }
 
 function readStrokeEnabled(desc: PropertyDescriptor): boolean {
   if (!desc.enableable) return true
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string' || !('enableable' in r.value)) return true
-  return (r.value.enableable as EnableableBundle).enabled
+  if (r?.type !== 'value' || r.value.type !== 'enableable') return true
+  return r.value.value.enabled
 }
 
 function writeStrokeField(desc: PropertyDescriptor, field: 'color' | 'width' | 'style', raw: unknown) {
   const next: StrokeBundle = { ...readStrokeValue(desc), [field]: raw } as StrokeBundle
-  const sv: PropertyValue = { stroke: next }
+  const sv: PropertyValue = { type: 'stroke', value: next }
   emit('propertyChange', desc.name, desc.enableable
-    ? { enableable: { enabled: readStrokeEnabled(desc), value: sv } }
+    ? { type: 'enableable', value: { enabled: readStrokeEnabled(desc), value: sv } }
     : sv)
 }
 
 function writeStrokeEnabled(desc: PropertyDescriptor, enabled: boolean) {
   emit('propertyChange', desc.name, {
-    enableable: { enabled, value: { stroke: readStrokeValue(desc) } },
+    type: 'enableable', value: { enabled, value: { type: 'stroke', value: readStrokeValue(desc) } },
   })
 }
 
@@ -219,51 +220,52 @@ const DEFAULT_TEXT_STYLE: TextStyleBundle = { color: 0x000000ff, fontSize: 12, b
 
 function readTextStyleValue(desc: PropertyDescriptor): TextStyleBundle {
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string') return DEFAULT_TEXT_STYLE
+  if (r?.type !== 'value') return DEFAULT_TEXT_STYLE
   if (desc.enableable) {
-    if (!('enableable' in r.value)) return DEFAULT_TEXT_STYLE
-    const inner = (r.value.enableable as EnableableBundle).value
-    return 'textStyle' in inner ? inner.textStyle : DEFAULT_TEXT_STYLE
+    if (r.value.type !== 'enableable') return DEFAULT_TEXT_STYLE
+    const inner = r.value.value.value
+    return inner?.type === 'textStyle' ? inner.value : DEFAULT_TEXT_STYLE
   }
-  return 'textStyle' in r.value ? r.value.textStyle : DEFAULT_TEXT_STYLE
+  return r.value.type === 'textStyle' ? r.value.value : DEFAULT_TEXT_STYLE
 }
 
 function readTextStyleEnabled(desc: PropertyDescriptor): boolean {
   if (!desc.enableable) return true
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string' || !('enableable' in r.value)) return true
-  return (r.value.enableable as EnableableBundle).enabled
+  if (r?.type !== 'value' || r.value.type !== 'enableable') return true
+  return r.value.value.enabled
 }
 
 function writeTextStyleField(desc: PropertyDescriptor, field: 'color' | 'fontSize' | 'bold' | 'italic', raw: unknown) {
   const next: TextStyleBundle = { ...readTextStyleValue(desc), [field]: raw } as TextStyleBundle
-  const sv: PropertyValue = { textStyle: next }
+  const sv: PropertyValue = { type: 'textStyle', value: next }
   emit('propertyChange', desc.name, desc.enableable
-    ? { enableable: { enabled: readTextStyleEnabled(desc), value: sv } }
+    ? { type: 'enableable', value: { enabled: readTextStyleEnabled(desc), value: sv } }
     : sv)
 }
 
 function writeTextStyleEnabled(desc: PropertyDescriptor, enabled: boolean) {
   emit('propertyChange', desc.name, {
-    enableable: { enabled, value: { textStyle: readTextStyleValue(desc) } },
+    type: 'enableable', value: { enabled, value: { type: 'textStyle', value: readTextStyleValue(desc) } },
   })
 }
 
 // ── Group bundle helpers ─────────────────────────────────────────────────────
 
+const DEFAULT_GROUP_ITEM_STROKE: StrokeBundle = { color: 0x808080ff, width: 1, style: 'solid' }
 const DEFAULT_GROUP_ITEM: GroupItemValue = {
   enabled: true, number: 0,
-  value: { stroke: { color: 0x808080ff, width: 1, style: 'solid' } },
+  value: { type: 'stroke', value: DEFAULT_GROUP_ITEM_STROKE },
 }
 
 function readGroupItems(desc: PropertyDescriptor): GroupItemValue[] {
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string' || !('groupItems' in r.value)) return []
-  return r.value.groupItems
+  if (r?.type !== 'value' || r.value.type !== 'groupItems') return []
+  return r.value.items
 }
 
 function groupItemStroke(item: GroupItemValue): StrokeBundle {
-  return 'stroke' in item.value ? item.value.stroke : DEFAULT_GROUP_ITEM.value.stroke as StrokeBundle
+  return item.value.type === 'stroke' ? item.value.value : DEFAULT_GROUP_ITEM_STROKE
 }
 
 function writeGroupItemField(
@@ -278,31 +280,31 @@ function writeGroupItemField(
   } else if (field === 'number') {
     next = { ...cur, number: raw as number }
   } else {
-    const sv = 'stroke' in cur.value ? cur.value.stroke : { color: 0x808080ff, width: 1, style: 'solid' as const }
-    next = { ...cur, value: { stroke: { ...sv, [field]: raw } } }
+    const sv = cur.value.type === 'stroke' ? cur.value.value : { color: 0x808080ff, width: 1, style: 'solid' as const }
+    next = { ...cur, value: { type: 'stroke', value: { ...sv, [field]: raw } } }
   }
   const newItems = [...items]
   newItems[idx] = next
-  emit('propertyChange', desc.name, { groupItems: newItems })
+  emit('propertyChange', desc.name, { type: 'groupItems', items: newItems })
 }
 
 // ── Inline group helpers (colour pairs: ↑ up / ↓ down) ──────────────────────
 
 function inlineGroupColor(desc: PropertyDescriptor, idx: number): number {
   const r = props.values[desc.name]
-  if (!r || typeof r === 'string' || !('value' in r) || !('groupItems' in r.value)) {
+  if (r?.type !== 'value' || r.value.type !== 'groupItems') {
     return 0x808080ff
   }
-  const item = r.value.groupItems[idx]
+  const item = r.value.items[idx]
   if (!item) return 0x808080ff
-  return (item.value as any)?.color ?? 0x808080ff
+  return item.value.type === 'color' ? item.value.value : 0x808080ff
 }
 
 function writeInlineGroupItem(desc: PropertyDescriptor, idx: number, color: number) {
   const cur: GroupItemValue[] = readGroupItems(desc)
   const newItems: GroupItemValue[] = [...cur]
-  newItems[idx] = { ...(newItems[idx] ?? { enabled: true, number: 0 }), value: { color } }
-  emit('propertyChange', desc.name, { groupItems: newItems })
+  newItems[idx] = { ...(newItems[idx] ?? { enabled: true, number: 0 }), value: { type: 'color', value: color } }
+  emit('propertyChange', desc.name, { type: 'groupItems', items: newItems })
 }
 
 // ── Flags helpers ────────────────────────────────────────────────────────────
@@ -316,7 +318,7 @@ function flagsSummary(name: string, options: { displayName: string }[]): string 
 
 function writeFlags(name: string, bit: number, on: boolean) {
   const cur = intOf(name)
-  emit('propertyChange', name, { int: on ? (cur | (1 << bit)) : (cur & ~(1 << bit)) })
+  emit('propertyChange', name, { type: 'int', value: on ? (cur | (1 << bit)) : (cur & ~(1 << bit)) })
 }
 
 // ── Text (textarea) helpers ──────────────────────────────────────────────────
@@ -329,7 +331,7 @@ watch(() => props.descriptors, () => {
   touchedTextFields.clear()
   const next: Record<string, string> = {}
   for (const [name, r] of Object.entries(props.values)) {
-    if (typeof r !== 'string' && 'text' in r.value) next[name] = r.value.text
+    if (r?.type === 'value' && r.value.type === 'text') next[name] = r.value.value
   }
   textDrafts.value = next
 })
@@ -337,14 +339,14 @@ watch(() => props.descriptors, () => {
 watch(() => props.values, (vals) => {
   for (const [name, r] of Object.entries(vals)) {
     if (touchedTextFields.has(name)) continue
-    if (typeof r !== 'string' && 'text' in r.value) textDrafts.value[name] = r.value.text
+    if (r?.type === 'value' && r.value.type === 'text') textDrafts.value[name] = r.value.value
   }
 }, { deep: true })
 
 function onTextInput(name: string, value: string) {
   touchedTextFields.add(name)
   textDrafts.value[name] = value
-  emit('propertyChange', name, { text: value })
+  emit('propertyChange', name, { type: 'text', value })
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -380,10 +382,10 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
         <div class="ann-props__control"
           :class="{ 'ann-props__text-format-bar--disabled': row.descriptor.enableable && !readStrokeEnabled(row.descriptor) }">
           <!-- All three flags → 3-in-1 LineStylePopover -->
-          <template v-if="typeof row.descriptor.kind === 'object' && 'stroke' in row.descriptor.kind
-            && row.descriptor.kind.stroke.flags.color
-            && row.descriptor.kind.stroke.flags.width
-            && row.descriptor.kind.stroke.flags.style">
+          <template v-if="row.descriptor.kind.type === 'stroke'
+            && row.descriptor.kind.flags.color
+            && row.descriptor.kind.flags.width
+            && row.descriptor.kind.flags.style">
             <LineStylePopover
               :color="readStrokeValue(row.descriptor).color"
               :line-style="readStrokeValue(row.descriptor).style"
@@ -396,15 +398,15 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
             />
           </template>
           <!-- Partial flags → individual controls -->
-          <template v-else-if="typeof row.descriptor.kind === 'object' && 'stroke' in row.descriptor.kind">
+          <template v-else-if="row.descriptor.kind.type === 'stroke'">
             <ColorPickerPopover
-              v-if="row.descriptor.kind.stroke.flags.color"
+              v-if="row.descriptor.kind.flags.color"
               :model-value="readStrokeValue(row.descriptor).color"
               @update:model-value="(c: number) => writeStrokeField(row.descriptor, 'color', c)"
             />
             <!-- Width + style (no color) → single LineStylePopover without color -->
             <LineStylePopover
-              v-if="row.descriptor.kind.stroke.flags.width && row.descriptor.kind.stroke.flags.style && !row.descriptor.kind.stroke.flags.color"
+              v-if="row.descriptor.kind.flags.width && row.descriptor.kind.flags.style && !row.descriptor.kind.flags.color"
               :color="readStrokeValue(row.descriptor).color"
               :line-width="readStrokeValue(row.descriptor).width"
               :line-style="readStrokeValue(row.descriptor).style"
@@ -418,7 +420,7 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
             />
             <!-- Width without style → width-only popover -->
             <LineStylePopover
-              v-else-if="row.descriptor.kind.stroke.flags.width && !row.descriptor.kind.stroke.flags.style"
+              v-else-if="row.descriptor.kind.flags.width && !row.descriptor.kind.flags.style"
               :color="readStrokeValue(row.descriptor).color"
               :line-width="readStrokeValue(row.descriptor).width"
               :line-style="readStrokeValue(row.descriptor).style"
@@ -430,14 +432,14 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
               @update:line-width="(w: number) => writeStrokeField(row.descriptor, 'width', w)"
             />
             <Input
-              v-else-if="row.descriptor.kind.stroke.flags.width"
+              v-else-if="row.descriptor.kind.flags.width"
               type="number" :min="0" :step="0.5"
               :model-value="String(readStrokeValue(row.descriptor).width)"
               class="ann-props__num"
               @update:model-value="(v: any) => writeStrokeField(row.descriptor, 'width', Number(v) || 1)"
             />
             <!-- Style segment buttons only when not already handled by the combined popover above -->
-            <div v-if="row.descriptor.kind.stroke.flags.style && !(row.descriptor.kind.stroke.flags.width && !row.descriptor.kind.stroke.flags.color)" class="ann-props__seg">
+            <div v-if="row.descriptor.kind.flags.style && !(row.descriptor.kind.flags.width && !row.descriptor.kind.flags.color)" class="ann-props__seg">
               <button v-for="s in LINE_STYLES" :key="s" type="button" class="ann-props__seg-btn"
                 :class="{ 'ann-props__seg-btn--active': readStrokeValue(row.descriptor).style === s }"
                 :title="s" @click="writeStrokeField(row.descriptor, 'style', s)">
@@ -472,15 +474,15 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
         <div class="ann-props__control ann-props__text-format-bar"
           :class="{ 'ann-props__text-format-bar--disabled': row.descriptor.enableable && !readTextStyleEnabled(row.descriptor) }">
-          <template v-if="typeof row.descriptor.kind === 'object' && 'textStyle' in row.descriptor.kind">
+          <template v-if="row.descriptor.kind.type === 'textStyle'">
             <ColorPickerPopover
-              v-if="row.descriptor.kind.textStyle.flags.color"
+              v-if="row.descriptor.kind.flags.color"
               :model-value="readTextStyleValue(row.descriptor).color"
               :disabled="row.descriptor.enableable && !readTextStyleEnabled(row.descriptor)"
               @update:model-value="(c: number) => writeTextStyleField(row.descriptor, 'color', c)"
             />
             <SelectRoot
-              v-if="row.descriptor.kind.textStyle.flags.size"
+              v-if="row.descriptor.kind.flags.size"
               :model-value="String(readTextStyleValue(row.descriptor).fontSize)"
               :disabled="row.descriptor.enableable && !readTextStyleEnabled(row.descriptor)"
               @update:model-value="(v) => writeTextStyleField(row.descriptor, 'fontSize', Number(v))"
@@ -493,14 +495,14 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
               </SelectContent>
             </SelectRoot>
             <button
-              v-if="row.descriptor.kind.textStyle.flags.bold"
+              v-if="row.descriptor.kind.flags.bold"
               type="button" class="ann-props__fmt-btn"
               :class="{ 'ann-props__fmt-btn--active': readTextStyleValue(row.descriptor).bold }"
               :disabled="row.descriptor.enableable && !readTextStyleEnabled(row.descriptor)"
               @click="writeTextStyleField(row.descriptor, 'bold', !readTextStyleValue(row.descriptor).bold)"
             ><b>B</b></button>
             <button
-              v-if="row.descriptor.kind.textStyle.flags.italic"
+              v-if="row.descriptor.kind.flags.italic"
               type="button" class="ann-props__fmt-btn"
               :class="{ 'ann-props__fmt-btn--active': readTextStyleValue(row.descriptor).italic }"
               :disabled="row.descriptor.enableable && !readTextStyleEnabled(row.descriptor)"
@@ -512,18 +514,18 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
       <!-- ── Inline group bundle (colour pair: [Label] [↑] [↓]) ─────────────── -->
       <div
-        v-else-if="row.kind === 'inlineGroupBundle' && typeof row.descriptor.kind === 'object' && 'group' in row.descriptor.kind"
+        v-else-if="row.kind === 'inlineGroupBundle' && row.descriptor.kind.type === 'group'"
         class="ann-props__row"
       >
         <span class="ann-props__col-cb" />
         <label class="ann-props__label">{{ row.descriptor.displayName }}</label>
         <div class="ann-props__control">
           <template
-            v-for="(item, idx) in row.descriptor.kind.group.items"
+            v-for="(item, idx) in row.descriptor.kind.items"
             :key="idx"
           >
             <ColorPickerPopover
-              v-if="item.kind === 'fill'"
+              v-if="item.kind.type === 'fill'"
               :model-value="inlineGroupColor(row.descriptor, idx)"
               @update:model-value="(c: number) => writeInlineGroupItem(row.descriptor, idx, c)"
             />
@@ -533,12 +535,12 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
       <!-- ── Group bundle ──────────────────────────────────────────────────── -->
       <div
-        v-else-if="row.kind === 'groupBundle' && typeof row.descriptor.kind === 'object' && 'group' in row.descriptor.kind"
+        v-else-if="row.kind === 'groupBundle' && row.descriptor.kind.type === 'group'"
         class="ann-props__group"
-        :class="{ 'ann-props__group--two-col': row.descriptor.kind.group.items.length > 5 }"
+        :class="{ 'ann-props__group--two-col': row.descriptor.kind.items.length > 5 }"
       >
         <div class="ann-props__group-title">{{ row.descriptor.displayName }}</div>
-        <div v-for="(item, itemIdx) in row.descriptor.kind.group.items" :key="item.name" class="ann-props__group-item">
+        <div v-for="(item, itemIdx) in row.descriptor.kind.items" :key="item.name" class="ann-props__group-item">
           <button
             v-if="item.enableable" type="button" class="ann-props__pws-check" role="checkbox"
             :aria-checked="(readGroupItems(row.descriptor))[itemIdx]?.enabled ?? true"
@@ -551,14 +553,14 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
             </span>
           </button>
           <Input
-            v-if="typeof row.descriptor.kind === 'object' && 'group' in row.descriptor.kind && row.descriptor.kind.group.hasNumber"
+            v-if="row.descriptor.kind.type === 'group' && row.descriptor.kind.hasNumber"
             type="number" :model-value="String((readGroupItems(row.descriptor))[itemIdx]?.number ?? 0)"
             class="ann-props__percent-input"
             @update:model-value="(v: any) => writeGroupItemField(row.descriptor, itemIdx, 'number', Number(v) || 0)"
           />
-          <template v-if="typeof item.kind === 'object' && 'stroke' in item.kind">
+          <template v-if="item.kind.type === 'stroke'">
             <LineStylePopover
-              v-if="item.kind.stroke.flags.color && item.kind.stroke.flags.width && item.kind.stroke.flags.style"
+              v-if="item.kind.flags.color && item.kind.flags.width && item.kind.flags.style"
               :color="groupItemStroke((readGroupItems(row.descriptor))[itemIdx] ?? DEFAULT_GROUP_ITEM).color"
               :line-style="groupItemStroke((readGroupItems(row.descriptor))[itemIdx] ?? DEFAULT_GROUP_ITEM).style"
               :line-width="groupItemStroke((readGroupItems(row.descriptor))[itemIdx] ?? DEFAULT_GROUP_ITEM).width"
@@ -569,16 +571,16 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
             />
             <template v-else>
               <ColorPickerPopover
-                v-if="item.kind.stroke.flags.color"
+                v-if="item.kind.flags.color"
                 :model-value="groupItemStroke((readGroupItems(row.descriptor))[itemIdx] ?? DEFAULT_GROUP_ITEM).color"
                 @update:model-value="(c: number) => writeGroupItemField(row.descriptor, itemIdx, 'color', c)"
               />
-              <Input v-if="item.kind.stroke.flags.width" type="number" :min="0" :step="0.5"
+              <Input v-if="item.kind.flags.width" type="number" :min="0" :step="0.5"
                 :model-value="String(groupItemStroke((readGroupItems(row.descriptor))[itemIdx] ?? DEFAULT_GROUP_ITEM).width)"
                 class="ann-props__num"
                 @update:model-value="(v: any) => writeGroupItemField(row.descriptor, itemIdx, 'width', Number(v) || 1)"
               />
-              <div v-if="item.kind.stroke.flags.style" class="ann-props__seg">
+              <div v-if="item.kind.flags.style" class="ann-props__seg">
                 <button v-for="s in LINE_STYLES" :key="s" type="button" class="ann-props__seg-btn"
                   :class="{ 'ann-props__seg-btn--active': groupItemStroke((readGroupItems(row.descriptor))[itemIdx] ?? DEFAULT_GROUP_ITEM).style === s }"
                   :title="s" @click="writeGroupItemField(row.descriptor, itemIdx, 'style', s)">
@@ -594,10 +596,10 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
       </div>
 
       <!-- ── Single descriptor row ─────────────────────────────────────────── -->
-      <div v-else class="ann-props__row" :class="{ 'ann-props__row--mixed': values[row.descriptor.name] === 'mixed' }">
+      <div v-else class="ann-props__row" :class="{ 'ann-props__row--mixed': values[row.descriptor.name]?.type === 'mixed' }">
         <!-- checkbox for enableable fill -->
         <button
-          v-if="row.descriptor.kind === 'fill' && row.descriptor.enableable"
+          v-if="row.descriptor.kind.type === 'fill' && row.descriptor.enableable"
           type="button"
           class="apd-check-row ann-props__col-cb-btn"
           role="checkbox"
@@ -628,7 +630,7 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
         <span v-else class="ann-props__col-cb" />
         <label
           class="ann-props__label"
-          :class="{ 'ann-props__label--disabled': row.descriptor.kind === 'fill' && row.descriptor.enableable && !readFillEnabled(row.descriptor) }"
+          :class="{ 'ann-props__label--disabled': row.descriptor.kind.type === 'fill' && row.descriptor.enableable && !readFillEnabled(row.descriptor) }"
           :for="`prop-${row.descriptor.name}`"
         >
           {{ row.descriptor.displayName }}
@@ -649,30 +651,30 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
           <!-- fill → ColorPickerPopover -->
           <ColorPickerPopover
-            v-if="row.descriptor.kind === 'fill'"
+            v-if="row.descriptor.kind.type === 'fill'"
             :model-value="readFillColor(row.descriptor)"
             :disabled="row.descriptor.enableable && !readFillEnabled(row.descriptor)"
             @update:model-value="(c: number) => writeFillColor(row.descriptor, c)"
           />
 
           <!-- textAlign → segment buttons -->
-          <div v-else-if="row.descriptor.kind === 'textAlign'" class="ann-props__seg">
+          <div v-else-if="row.descriptor.kind.type === 'textAlign'" class="ann-props__seg">
             <button v-for="a in TEXT_ALIGNS" :key="a" type="button" class="ann-props__seg-btn"
               :class="{ 'ann-props__seg-btn--active': textAlignOf(row.descriptor.name) === a }"
-              :title="a" @click="$emit('propertyChange', row.descriptor.name, { textAlign: a })">
+              :title="a" @click="$emit('propertyChange', row.descriptor.name, { type: 'textAlign', value: a })">
               {{ a === 'left' ? '⇤' : a === 'center' ? '↔' : '⇥' }}
             </button>
           </div>
 
           <!-- flags → popover checklist -->
           <PopoverRoot
-            v-else-if="typeof row.descriptor.kind === 'object' && 'flags' in row.descriptor.kind"
+            v-else-if="row.descriptor.kind.type === 'flags'"
             :open="!!flagsOpen[row.descriptor.name]"
             @update:open="(o) => { flagsOpen[row.descriptor.name] = o }"
           >
             <PopoverTrigger as-child>
               <button type="button" class="ann-props__flags-trigger">
-                <span class="ann-props__flags-summary">{{ flagsSummary(row.descriptor.name, row.descriptor.kind.flags.options) }}</span>
+                <span class="ann-props__flags-summary">{{ flagsSummary(row.descriptor.name, row.descriptor.kind.options) }}</span>
                 <span class="ann-props__flags-arrow">▾</span>
               </button>
             </PopoverTrigger>
@@ -685,7 +687,7 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
             <PopoverPortal>
               <PopoverContent side="bottom" align="start" :side-offset="4" :collision-padding="8"
                 class="z-[300] min-w-[160px] rounded-lg border bg-popover p-2 text-popover-foreground shadow-lg flex flex-col gap-1.5 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
-                <button v-for="(opt, i) in row.descriptor.kind.flags.options" :key="i"
+                <button v-for="(opt, i) in row.descriptor.kind.options" :key="i"
                   type="button" class="apd-check-row"
                   @click="writeFlags(row.descriptor.name, i, !(intOf(row.descriptor.name) & (1 << i)))">
                   <span class="apd-check" :class="{ 'apd-check--on': !!(intOf(row.descriptor.name) & (1 << i)) }">
@@ -701,13 +703,13 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
           <!-- bool → checkbox -->
           <span
-            v-else-if="row.descriptor.kind === 'bool'"
+            v-else-if="row.descriptor.kind.type === 'bool'"
             :id="`prop-${row.descriptor.name}`"
             class="apd-check" :class="{ 'apd-check--on': boolOf(row.descriptor.name) }"
             role="checkbox" :aria-checked="boolOf(row.descriptor.name)"
             tabindex="0"
-            @click="$emit('propertyChange', row.descriptor.name, { bool: !boolOf(row.descriptor.name) })"
-            @keydown.space.prevent="$emit('propertyChange', row.descriptor.name, { bool: !boolOf(row.descriptor.name) })"
+            @click="$emit('propertyChange', row.descriptor.name, { type: 'bool', value: !boolOf(row.descriptor.name) })"
+            @keydown.space.prevent="$emit('propertyChange', row.descriptor.name, { type: 'bool', value: !boolOf(row.descriptor.name) })"
           >
             <svg class="apd-check__tick" viewBox="0 0 10 8" fill="none">
               <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -716,16 +718,16 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
           <!-- enum / textVAlign → Select -->
           <SelectRoot
-            v-else-if="typeof row.descriptor.kind === 'object' && ('enum' in row.descriptor.kind || 'textVAlign' in row.descriptor.kind)"
+            v-else-if="(row.descriptor.kind.type === 'enum' || row.descriptor.kind.type === 'textVAlign')"
             :model-value="String(enumIndexOf(row.descriptor.name))"
-            @update:model-value="(v) => $emit('propertyChange', row.descriptor.name, { enum: Number(v) })"
+            @update:model-value="(v) => $emit('propertyChange', row.descriptor.name, { type: 'enum', index: Number(v) })"
           >
             <SelectTrigger class="h-7 text-xs bg-muted/50 border-border hover:bg-muted w-auto min-w-[80px] max-w-[160px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem
-                v-for="(opt, idx) in ('enum' in row.descriptor.kind ? row.descriptor.kind.enum.options : row.descriptor.kind.textVAlign.options)"
+                v-for="(opt, idx) in (row.descriptor.kind.type === 'enum' ? row.descriptor.kind.options : row.descriptor.kind.options)"
                 :key="idx"
                 :value="String(idx)"
               >
@@ -736,7 +738,7 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
           <!-- text → textarea -->
           <textarea
-            v-else-if="row.descriptor.kind === 'text'"
+            v-else-if="row.descriptor.kind.type === 'text'"
             :id="`prop-${row.descriptor.name}`"
             :value="textDrafts[row.descriptor.name] ?? textOf(row.descriptor.name)"
             rows="3" class="ann-props__textarea"
@@ -744,11 +746,11 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
           />
 
           <!-- alpha → slider -->
-          <div v-else-if="row.descriptor.kind === 'alpha'" class="ann-props__alpha-row">
+          <div v-else-if="row.descriptor.kind.type === 'alpha'" class="ann-props__alpha-row">
             <div class="ann-props__alpha-track">
               <AlphaSlider
                 :value="Math.round(floatOf(row.descriptor.name, 0) * 255)"
-                @update:value="(v: number) => $emit('propertyChange', row.descriptor.name, { float: v / 255 })"
+                @update:value="(v: number) => $emit('propertyChange', row.descriptor.name, { type: 'float', value: v / 255 })"
               />
             </div>
             <span class="ann-props__alpha-pct">{{ Math.round(floatOf(row.descriptor.name, 0) * 100) }}%</span>
@@ -756,7 +758,7 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
 
           <!-- number → input -->
           <Input
-            v-else-if="typeof row.descriptor.kind === 'object' && 'number' in row.descriptor.kind"
+            v-else-if="row.descriptor.kind.type === 'number'"
             type="number"
             :min="(row.descriptor.kind as any).number.min"
             :max="(row.descriptor.kind as any).number.max"
@@ -767,7 +769,7 @@ const FONT_SIZE_OPTIONS = [8, 10, 12, 14, 16, 18, 20, 24, 28, 32]
               const v = parseFloat((e.target as HTMLInputElement).value) || 0
               row.descriptor.enableable
                 ? writeEnableableFloat(row.descriptor.name, v)
-                : $emit('propertyChange', row.descriptor.name, { float: v })
+                : $emit('propertyChange', row.descriptor.name, { type: 'float', value: v })
             }"
           />
 

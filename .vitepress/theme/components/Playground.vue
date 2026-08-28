@@ -23,6 +23,7 @@ import StdlibDocsDialog from './StdlibDocsDialog.vue'
 import type { ConfigureScriptEvent } from './ScriptConfigDialog.vue'
 import type { StrategyReport } from '../types/strategy-report'
 import type { StdlibDocs } from '../types/stdlib-docs'
+import type { ScriptError } from '../types/script-error'
 import type { CandlestickStyleKey } from '../constants/candlestick-styles'
 import ResizablePanelGroup from './ui/ResizablePanelGroup.vue'
 import ResizablePanel from './ui/ResizablePanel.vue'
@@ -314,7 +315,9 @@ function refreshSelectionToolbar() {
     return
   }
   const sel = chart.selection() as unknown
-  const rawId = sel && typeof sel === 'object' && 'annotation' in sel ? (sel as Record<string, unknown>).annotation : undefined
+  const rawId = sel && typeof sel === 'object' && (sel as Record<string, unknown>).type === 'annotation'
+    ? (sel as Record<string, unknown>).annotationId
+    : undefined
   if (rawId === undefined) {
     selToolbarVisible.value = false
     return
@@ -353,7 +356,9 @@ function onSelToolbarPropertyChange(name: string, value: PropertyValue) {
   const chart = engine.value?.chart
   if (!chart) return
   const sel = chart.selection() as unknown
-  const rawId = sel && typeof sel === 'object' && 'annotation' in sel ? (sel as Record<string, unknown>).annotation : undefined
+  const rawId = sel && typeof sel === 'object' && (sel as Record<string, unknown>).type === 'annotation'
+    ? (sel as Record<string, unknown>).annotationId
+    : undefined
   if (rawId === undefined) return
   const id = toAnnId(rawId)
   // `setAnnotationProperty` triggers an `annotationUpdated` event; the poll
@@ -742,10 +747,7 @@ async function doRun(tag?: string): Promise<boolean> {
     // addScript rejects with a ScriptError on compile failure.
   }
 
-  const scriptErr = eng.chart.scriptError(scriptTag) as {
-    compile?: { diagnostics: { severity: string; message: string; startLine: number; startCharacter: number; filePath?: string }[]; sourceFiles: Record<string, unknown> }
-    exception?: { message: string; spans: unknown[]; backtrace: { funcName: string | null; filePath: string; line: number; column: number; endLine: number; endColumn: number; moduleKind: string }[] }
-  } | null
+  const scriptErr = eng.chart.scriptError(scriptTag) as ScriptError | null
 
   if (!scriptErr) {
     editorComponent.value?.setRuntimeDiagnostic(null)
@@ -755,8 +757,8 @@ async function doRun(tag?: string): Promise<boolean> {
     return true
   }
 
-  if ('exception' in scriptErr && scriptErr.exception) {
-    const { message, backtrace } = scriptErr.exception
+  if (scriptErr.type === 'exception') {
+    const { message, backtrace } = scriptErr
     // Show runtime error in editor gutter and return the runtime diagnostic.
     const runtimeDiag: Diagnostic | null = backtrace.length > 0
       ? {
@@ -1450,25 +1452,22 @@ function handleChartEvent(event: unknown) {
   const tagForId = (id: unknown): string | null =>
     chart?.tagFor(String(id)) as string | null
 
-  if ('editScript' in ev) {
-    const tag = tagForId(ev.editScript)
+  if (ev.type === 'editScript') {
+    const tag = tagForId(ev.scriptId)
     if (tag) void loadScript(tag)
   }
-  if ('removeScript' in ev) {
-    const tag = tagForId(ev.removeScript)
+  if (ev.type === 'removeScript') {
+    const tag = tagForId(ev.scriptId)
     if (tag) removeFromChart(tag)
   }
 
-  if ('showError' in ev) {
-    const tag = tagForId(ev.showError)
+  if (ev.type === 'showError') {
+    const tag = tagForId(ev.scriptId)
     if (!tag) return
-    const err = chart?.scriptError(tag) as {
-      compile?: { diagnostics: { severity: string; message: string; startLine: number; startCharacter: number; endLine: number; endCharacter: number; filePath?: string }[]; sourceFiles: Record<string, { source: string }> }
-      exception?: { message: string; spans: unknown[]; backtrace: { funcName: string | null; filePath: string; line: number; column: number; endLine: number; endColumn: number; moduleKind: string }[] }
-    } | null
-    if (err && 'compile' in err && err.compile) {
-      const diags = err.compile.diagnostics
-      const sources = err.compile.sourceFiles
+    const err = chart?.scriptError(tag) as ScriptError | null
+    if (err?.type === 'compile') {
+      const diags = err.diagnostics
+      const sources = err.sourceFiles
       scriptErrorDetail.value = {
         message: diags[0]?.message ?? 'Compile error',
         scriptTag: tag,
@@ -1483,8 +1482,8 @@ function handleChartEvent(event: unknown) {
         })),
       }
       dialogMode.value = 'scriptError'
-    } else if (err && 'exception' in err && err.exception) {
-      const { message, backtrace } = err.exception
+    } else if (err?.type === 'exception') {
+      const { message, backtrace } = err
       runtimeErrorDetail.value = {
         message,
         scriptTag: tag,
@@ -1502,8 +1501,8 @@ function handleChartEvent(event: unknown) {
     }
   }
 
-  if ('configureScript' in ev) {
-    const tag = tagForId(ev.configureScript)
+  if (ev.type === 'configureScript') {
+    const tag = tagForId(ev.scriptId)
     if (!tag) return
     const inputs = chart?.scriptInputsEffective(tag) as unknown[] | null
     configDialogData.value = {
@@ -1513,21 +1512,21 @@ function handleChartEvent(event: unknown) {
     }
   }
 
-  if ('toolChanged' in ev) {
-    const toolEv = ev.toolChanged as { name: string }
-    activeTool.value = toolEv.name ?? 'pointer'
+  if (ev.type === 'toolChanged') {
+    activeTool.value = (ev.name as string) ?? 'pointer'
     syncImeFocus()
   }
 
-  const isAnnotationLifecycle = 'annotationCreated' in ev || 'annotationUpdated' in ev || 'annotationDeleted' in ev
+  const isAnnotationLifecycle =
+    ev.type === 'annotationCreated' || ev.type === 'annotationUpdated' || ev.type === 'annotationDeleted'
   if (isAnnotationLifecycle) {
     scheduleAnnotationsSave()
     refreshSelectionToolbar()
     if (annPropsDialogOpen.value) refreshAnnotationPropertiesDialog()
   }
 
-  if ('annotationUpdated' in ev && chart) {
-    const id = toAnnId(ev.annotationUpdated)
+  if (ev.type === 'annotationUpdated' && chart) {
+    const id = toAnnId(ev.annotationId)
     const ann = chart.getAnnotation(id) as { spec?: { kind?: Record<string, unknown> } } | null
     const kind = ann?.spec?.kind
     const toolId = kind?.drawToolId
@@ -1540,15 +1539,14 @@ function handleChartEvent(event: unknown) {
     }
   }
 
-  if ('doubleClick' in ev) {
-    const el = ev.doubleClick
-    if (el === 'bar') {
+  if (ev.type === 'doubleClick') {
+    const el = ev.element as Record<string, unknown> | null
+    if (el?.type === 'bar') {
       candlestickPropertiesDialogOpen.value = true
-    } else if (el && typeof el === 'object' && 'annotation' in el) {
-      openAnnotationPropertiesDialog((el as Record<string, unknown>).annotation)
-    } else if (el && typeof el === 'object' && 'series' in el) {
-      const series = (el as Record<string, unknown>).series as Record<string, unknown>
-      const tag = tagForId(series.scriptId)
+    } else if (el?.type === 'annotation') {
+      openAnnotationPropertiesDialog(el.annotationId)
+    } else if (el?.type === 'series') {
+      const tag = tagForId(el.scriptId)
       if (tag) {
         const inputs = chart?.scriptInputsEffective(tag) as unknown[] | null
         configDialogData.value = { tag, id: tag, inputs: inputs ?? [] }
@@ -1556,9 +1554,9 @@ function handleChartEvent(event: unknown) {
     }
   }
 
-  if ('selectionChanged' in ev) {
-    const sel = ev.selectionChanged
-    if (sel && typeof sel === 'object' && 'annotation' in sel) {
+  if (ev.type === 'selectionChanged') {
+    const sel = ev.selection as Record<string, unknown> | null
+    if (sel?.type === 'annotation') {
       refreshSelectionToolbar()
     } else {
       selToolbarVisible.value = false
