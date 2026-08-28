@@ -63,7 +63,7 @@ every flag, and the `navi run` wire protocol are there.
 
 1. `navi check path/to/script.nv` — the completion gate: syntax, types, compilation, imports.
 2. `navi fmt path/to/script.nv` — canonical formatting. Independent of compilation, so run both.
-3. `navi run path/to/script.nv --bars all`, with market data on stdin, when the task turns on
+3. `navi run path/to/script.nv`, with market data on stdin, when the task turns on
    what the script computes rather than whether it compiles.
 4. Treat every non-zero exit status as a failed validation. Fix the script and repeat until
    every command exits successfully; report the commands run and any validation that could not

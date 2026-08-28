@@ -102,7 +102,7 @@ For better results, include:
 
    ```bash
    echo '{"type":"bar","data":[{"time":1700006400000,"close":103},{"time":1700092800000,"close":107}]}' \
-     | navi run path/to/script.nv --bars all
+     | navi run path/to/script.nv
    ```
 
 7. Use the validated script with the Longbridge CLI, App, or desktop client. The standalone `navi` CLI is primarily a development and debugging tool.
@@ -131,7 +131,7 @@ import json, subprocess
 
 BARS = [{"time": 1700006400000 + i * 86400000, "close": 100 + i} for i in range(3)]
 
-p = subprocess.Popen(["navi", "run", "script.nv", "--bars", "all"],
+p = subprocess.Popen(["navi", "run", "script.nv"],
                      stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
 
 def send(obj):
@@ -167,6 +167,10 @@ while True:
 p.wait()
 print(rows[-5:], alerts)                            # report a summary, not 5000 lines
 ```
+
+A `strategy()` script also reports what it traded, one line per event, with the event's own kind as the line type — `orderFilled`, `tradeOpened`, `equitySnapshot`, and so on.
+
+Nothing is filtered. Past the history boundary a bar re-executes on every update it receives, and each pass emits its own lines carrying the `state` it ran in, so narrowing is the reader's job: `jq 'select(.state != "history")'` for live output only, `jq 'select(.type == "orderFilled")'` for fills.
 
 Run `navi run --help` for the full wire protocol: every line type with a literal example, the routing rules, and a complete request/response transcript.
 
