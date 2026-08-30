@@ -44,8 +44,8 @@ Navi has four type qualifiers that describe when a value is known, from most res
 |---|---|
 | `const` | Known at compile time, never changes |
 | `input` | Known at script startup (e.g., user inputs) |
-| `simple` | Known on bar 0, same value on every bar |
-| `series` | Can change on every bar |
+| `simple` | Known on bar 0, not derived from the current bar's data |
+| `series` | Derived from the current bar — a new value on every bar |
 
 ```navi
 let a: const int = 2;
@@ -55,6 +55,15 @@ let d: series float = close;
 ```
 
 The qualifier hierarchy flows: `const` -> `input` -> `simple` -> `series`. A value can be auto-promoted up this hierarchy but not demoted.
+
+Only `const` and `input` hold the same value for a whole run. `simple` says the value does not come from bar data — not that it never changes, since a variable holding one can still be reassigned on each bar:
+
+```navi
+fn takes_simple(x: simple int): int { x; }
+var n = 0;
+n = n + 1;              // `n` is `simple int`, and counts 1, 2, 3, …
+plot(float(takes_simple(n)));
+```
 
 ## `var` — Initialize Once, Persist Across Bars
 
