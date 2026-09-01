@@ -639,6 +639,34 @@ export interface ChartStreamRequest {
  * };
  * ```
  */
+/**
+ * Which bars a stream should load. Exactly one shape applies per request.
+ *
+ * The two time-anchored shapes are inclusive but pull in opposite directions.
+ * `startingAt` is a hard floor: send nothing earlier, because the script has
+ * already run those bars and a repeat double-counts every `var` it touched.
+ * `covering` is an anchor: send everything from `time`, and reach further back
+ * if it helps — that stream is a secondary series warming up, and `required`
+ * says how deep its expression reads. Treat `required` there as a floor rather
+ * than a recipe; a small margin beyond it settles the opening bars.
+ */
+export type HistoryRange =
+  | { type: "startingAt"; time: number }
+  | { type: "covering"; time: number }
+  | { type: "recent"; bars: number }
+  | { type: "latest" };
+
+/**
+ * How far back the script reads before its values are right.
+ *
+ * `exact` means that many bars are enough; `atLeast` is a floor and more is
+ * better (an EMA keeps settling); `unknown` means nothing could be worked out.
+ */
+export type RequiredHistory =
+  | { type: "exact"; bars: number }
+  | { type: "atLeast"; bars: number }
+  | { type: "unknown" };
+
 export interface DataProvider {
   /**
    * Return partial symbol metadata for `symbol`.
@@ -650,14 +678,26 @@ export interface DataProvider {
   symbolInfo?(symbol: string, fields: SyminfoFields): Promise<PartialSymbolInfo>;
 
   /**
-   * Stream candlestick items for `(symbol, tf)` starting at or before
-   * `fromTime` (epoch ms). `count` is an optional cap on historical bars.
+   * Stream candlestick items for `(symbol, tf)`.
+   *
+   * `range` says which bars: `{type:"startingAt",time}` is every bar at or
+   * after that epoch-ms time and **none from before it**;
+   * `{type:"covering",time}` is the same window but earlier bars are welcome
+   * — that stream is a secondary series warming up; `{type:"recent",bars}` is
+   * the last `bars`; `{type:"latest"}` is no cap. `required` says how far back
+   * the script reads before its values are right — advice you may ignore,
+   * though a shorter warm-up leaves indicators `na` or unsettled.
    * If omitted, the chart renders with no data.
    */
-  candlesticks?(symbol: string, tf: TimeFrame, fromTime: number, count?: number): AsyncIterable<CandlestickItem>;
+  candlesticks?(symbol: string, tf: TimeFrame, range: HistoryRange, required: RequiredHistory): AsyncIterable<CandlestickItem>;
 
-  /** Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`). */
-  ticks?(symbol: string, fromTime: number, count?: number): AsyncIterable<TickItem>;
+  /**
+   * Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`).
+   *
+   * `range` and `required` are **counted in ticks, not bars** — one bar of an
+   * `nT` timeframe is exactly `n` ticks, and the engine has already converted.
+   */
+  ticks?(symbol: string, range: HistoryRange, required: RequiredHistory): AsyncIterable<TickItem>;
 
   /** Stream historical exchange rate data for `from → to` currency conversion. */
   currencyRate?(from: Currency, to: Currency, fromTime: number): AsyncIterable<AuxDataItem>;
@@ -777,10 +817,10 @@ export type CandlestickItem =
 
 
 /**
- * Chart widget backed by a [`JsChartProvider`].
+ * Chart widget backed by a `JsChartProvider`.
  *
  * Pass any JS object with a `chartStream()` method as the provider.
- * With the `local` feature, use [`LocalChartProvider`] for in-process VM
+ * With the `local` feature, use `LocalChartProvider` for in-process VM
  * execution — construct it with a `JsDataProvider` and pass it here.
  */
 export class Chart {
@@ -1393,7 +1433,7 @@ export class Chart {
    *
    * Returns a `Promise<void>` that:
    * - **resolves** when the initial event stream finishes.
-   * - **rejects** with a [`ScriptError`](crate::types) on failure.
+   * - **rejects** with a `ScriptError` on failure.
    */
   addScript(script: any, tag: any): Promise<any>;
   /**
@@ -1565,15 +1605,13 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any) => number;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
   readonly chart_addScript: (a: number, b: any, c: any) => any;
@@ -1705,9 +1743,11 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any) => number;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;

@@ -1060,17 +1060,23 @@ Useful for initializing linefill variables that will be assigned later.
 ### max_bars_back {#max_bars_back}
 
 ```navi
-max_bars_back(variable: variableref, num: const int)
+max_bars_back(variable: variableref, num: input int)
 ```
 
-Sets the maximum number of historical bars available for a specific variable or built-in series via the `[]` history-referencing operator. If the actual number of bars exceeds the maximum, only the most recent bars will be available.
+Declares how far back a variable is read, for the cases the compiler cannot work out on its own.
+
+The engine sizes every history buffer to a depth it proves by reading the script, and reports that depth so a caller knows how many bars to fetch. Most scripts need nothing here. When the depth cannot be proved — an index computed from bar data, a length that is not linear in its inputs — the compiler says so, and only the minimum is retained; reads past it are `na`. This is where you say what it could not: a promise from the author, not a patch over a failed guess.
+
+It also caps the variable at `num`, so declaring less than the script reads truncates it. Both effects are bounded by the engine's own limit; a declaration beyond that limit is reported rather than quietly cut.
+
+`indicator(max_bars_back: N)` states the same thing for the whole script. Prefer this one: it names the series that needs the depth.
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `variable` | <code>variableref</code> |  |  |
-| `num` | <code>const&nbsp;int</code> |  | Maximum number of historical bars. |
+| `num` | <code>input&nbsp;int</code> |  | Number of historical bars to keep available. May be derived from inputs (`max_bars_back(src, length + 32)`) — their values are known before the first bar, so the engine can still size to them. |
 
 ---
 

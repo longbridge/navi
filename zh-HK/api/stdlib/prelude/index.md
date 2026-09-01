@@ -1002,7 +1002,7 @@ line_fill(x: LineFill): LineFill
 ### max_bars_back {#max_bars_back}
 
 ```navi
-max_bars_back(variable: variableref, num: const int)
+max_bars_back(variable: variableref, num: input int)
 ```
 
 通過 `[]` 歷史引用運算符設定特定變量或內置系列可用的歷史 bars 的最大數量。如果 bars 的實際數量超過最大值，則只有最新的 bars 可用。
@@ -1012,7 +1012,7 @@ max_bars_back(variable: variableref, num: const int)
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
 | `variable` | <code>variableref</code> |  |  |
-| `num` | <code>const&nbsp;int</code> |  | 歷史 bars 的最大數量。 |
+| `num` | <code>input&nbsp;int</code> |  | 歷史 bars 的最大數量。 |
 
 ---
 

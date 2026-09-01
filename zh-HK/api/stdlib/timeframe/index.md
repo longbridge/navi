@@ -8,7 +8,7 @@ title: "timeframe"
 
 ### is_daily {#is_daily}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是每日分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -16,7 +16,7 @@ title: "timeframe"
 
 ### is_dwm {#is_dwm}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是每日、每週或每月分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -24,7 +24,7 @@ title: "timeframe"
 
 ### is_intraday {#is_intraday}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是日內（分鐘或秒）分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -32,7 +32,7 @@ title: "timeframe"
 
 ### is_minutes {#is_minutes}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是分鐘分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -40,7 +40,7 @@ title: "timeframe"
 
 ### is_monthly {#is_monthly}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是每月分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -48,7 +48,7 @@ title: "timeframe"
 
 ### is_seconds {#is_seconds}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是秒分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -56,7 +56,7 @@ title: "timeframe"
 
 ### is_ticks {#is_ticks}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是刻度分辨率，則傳回 `true`，否則傳回 `false`。
 
@@ -64,7 +64,7 @@ title: "timeframe"
 
 ### is_weekly {#is_weekly}
 
-**類型:** <code>simple&nbsp;bool</code>
+**類型:** <code>input&nbsp;bool</code>
 
 如果當前分辨率是每週分辨率，則傳回 `true`，否則傳回 `false`。
 

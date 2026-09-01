@@ -221,11 +221,6 @@ export function start() {
     wasm.start();
 }
 
-function takeFromExternrefTable0(idx) {
-    const value = wasm.__wbindgen_externrefs.get(idx);
-    wasm.__externref_table_dealloc(idx);
-    return value;
-}
 /**
  * Returns a JS object representing the built-in dark theme.
  *
@@ -246,6 +241,12 @@ export function darkTheme() {
 export function lightTheme() {
     const ret = wasm.lightTheme();
     return ret;
+}
+
+function takeFromExternrefTable0(idx) {
+    const value = wasm.__wbindgen_externrefs.get(idx);
+    wasm.__externref_table_dealloc(idx);
+    return value;
 }
 
 let cachedFloat64ArrayMemory0 = null;
@@ -275,10 +276,10 @@ const ChartFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_chart_free(ptr >>> 0, 1));
 /**
- * Chart widget backed by a [`JsChartProvider`].
+ * Chart widget backed by a `JsChartProvider`.
  *
  * Pass any JS object with a `chartStream()` method as the provider.
- * With the `local` feature, use [`LocalChartProvider`] for in-process VM
+ * With the `local` feature, use `LocalChartProvider` for in-process VM
  * execution — construct it with a `JsDataProvider` and pass it here.
  */
 export class Chart {
@@ -1494,7 +1495,7 @@ export class Chart {
      *
      * Returns a `Promise<void>` that:
      * - **resolves** when the initial event stream finishes.
-     * - **rejects** with a [`ScriptError`](crate::types) on failure.
+     * - **rejects** with a `ScriptError` on failure.
      * @param {any} script
      * @param {any} tag
      * @returns {Promise<any>}
@@ -2114,7 +2115,7 @@ function __wbg_get_imports() {
         const ret = arg0.call(arg1);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_candlesticks_1c86f212e44e1ac8 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
+    imports.wbg.__wbg_candlesticks_47d3462b86feed1e = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
         const ret = arg0.candlesticks(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), arg5, arg6);
         return ret;
     }, arguments) };
@@ -2575,7 +2576,7 @@ function __wbg_get_imports() {
         const ret = arg0.then(arg1, arg2);
         return ret;
     };
-    imports.wbg.__wbg_ticks_250f067ade418934 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
+    imports.wbg.__wbg_ticks_438f948bfa72cc13 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
         const ret = arg0.ticks(getStringFromWasm0(arg1, arg2), arg3, arg4);
         return ret;
     }, arguments) };
@@ -2604,6 +2605,11 @@ function __wbg_get_imports() {
         const ret = getStringFromWasm0(arg0, arg1);
         return ret;
     };
+    imports.wbg.__wbindgen_cast_28c05e06e63da17c = function(arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 2158, function: Function { arguments: [Externref], shim_idx: 2159, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
+        return ret;
+    };
     imports.wbg.__wbindgen_cast_4625c577ab2ec9ee = function(arg0) {
         // Cast intrinsic for `U64 -> Externref`.
         const ret = BigInt.asUintN(64, arg0);
@@ -2617,11 +2623,6 @@ function __wbg_get_imports() {
     imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
         // Cast intrinsic for `F64 -> Externref`.
         const ret = arg0;
-        return ret;
-    };
-    imports.wbg.__wbindgen_cast_fad56b9e889856eb = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 2137, function: Function { arguments: [Externref], shim_idx: 2138, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
         return ret;
     };
     imports.wbg.__wbindgen_init_externref_table = function() {

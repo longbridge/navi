@@ -8,7 +8,7 @@ title: "timeframe"
 
 ### is_daily {#is_daily}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a daily resolution, `false` otherwise.
 
@@ -16,7 +16,7 @@ Returns `true` if current resolution is a daily resolution, `false` otherwise.
 
 ### is_dwm {#is_dwm}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a daily or weekly or monthly resolution, `false` otherwise.
 
@@ -24,7 +24,7 @@ Returns `true` if current resolution is a daily or weekly or monthly resolution,
 
 ### is_intraday {#is_intraday}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is an intraday (minutes or seconds) resolution, `false` otherwise.
 
@@ -32,7 +32,7 @@ Returns `true` if current resolution is an intraday (minutes or seconds) resolut
 
 ### is_minutes {#is_minutes}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a minutes resolution, `false` otherwise.
 
@@ -40,7 +40,7 @@ Returns `true` if current resolution is a minutes resolution, `false` otherwise.
 
 ### is_monthly {#is_monthly}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a monthly resolution, `false` otherwise.
 
@@ -48,7 +48,7 @@ Returns `true` if current resolution is a monthly resolution, `false` otherwise.
 
 ### is_seconds {#is_seconds}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a seconds resolution, `false` otherwise.
 
@@ -56,7 +56,7 @@ Returns `true` if current resolution is a seconds resolution, `false` otherwise.
 
 ### is_ticks {#is_ticks}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a ticks resolution, `false` otherwise.
 
@@ -64,7 +64,7 @@ Returns `true` if current resolution is a ticks resolution, `false` otherwise.
 
 ### is_weekly {#is_weekly}
 
-**Type:** <code>simple&nbsp;bool</code>
+**Type:** <code>input&nbsp;bool</code>
 
 Returns `true` if current resolution is a weekly resolution, `false` otherwise.
 
