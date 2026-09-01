@@ -516,6 +516,10 @@ let depth = input.int(
     minval: 2,
     tooltip: depthTooltip
 );
+// The pivot search reads `source[i]` for `i` up to `2 * depth`, and the index
+// is a runtime value the compiler cannot follow, so the depth is declared here.
+max_bars_back(high, 2 * depth + 1);
+
 let reverse = input(false, @locale { default: "Reverse", "zh-CN": "反转", "zh-HK": "反轉" }, display: PlotDisplay.NONE);
 var extendLeft = input(
     false,

@@ -920,6 +920,10 @@ fn calcRatingAll() {
     indRatings.push(calcRatingMA(ta.ema(close, 50), close));
     indRatings.push(calcRatingMA(ta.ema(close, 100), close));
     indRatings.push(calcRatingMA(ta.ema(close, 200), close));
+    // `ta.hma` spans `floor(sqrt(9))` bars on top of the 9 it averages, and a
+    // square root is past what the compiler can follow. Everything else here is
+    // proved, and reaches deeper than this.
+    max_bars_back(close, 9);
     indRatings.push(calcRatingMA(ta.hma(close, 9), close));
     indRatings.push(calcRatingMA(ta.vwma(close, 20), close));
     indRatings.push(

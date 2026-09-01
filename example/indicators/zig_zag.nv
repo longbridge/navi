@@ -508,6 +508,10 @@ let deviationInput = input.float(
     "0.00001 - 100"
 );
 let depthInput = input.int(10, @locale { default: "Pivot legs", "zh-CN": "枢轴段数", "zh-HK": "樞軸段數" }, 2);
+// The pivot search reads `source[i]` for `i` up to `2 * depth`, and the index
+// is a runtime value the compiler cannot follow, so the depth is declared here.
+max_bars_back(high, 2 * depthInput + 1);
+
 let lineColorInput = input(#2962FF, @locale { default: "Line color", "zh-CN": "线条颜色", "zh-HK": "線條顏色" }, display: PlotDisplay.NONE);
 let extendInput = input(true, @locale { default: "Extend to last bar", "zh-CN": "延伸至最后一根K线", "zh-HK": "延伸至最後一根K線" }, display: PlotDisplay.NONE);
 let showPriceInput = input(

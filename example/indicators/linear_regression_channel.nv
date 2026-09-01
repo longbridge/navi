@@ -61,7 +61,6 @@ let colorLower = input.color(
 );
 
 fn calcSlope(source, length) {
-    max_bars_back(source, 5000);
     if not bar_state.is_last or length <= 1 {
         (float(na), float(na), float(na));
     } else {

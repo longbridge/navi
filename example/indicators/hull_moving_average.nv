@@ -7,6 +7,11 @@ indicator(
 );
 let length = input.int(9, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 2);
 let src = input(close, @locale { default: "Source", "zh-CN": "数据源", "zh-HK": "數據源" });
+// The outer average's own span is `floor(sqrt(length))`, which the compiler
+// cannot carry through an input. It never exceeds the inner `length` those
+// averages already read, so `length` is the whole requirement.
+max_bars_back(close, length);
+
 let hullma = ta.wma(
     2 * ta.wma(src, length / 2) - ta.wma(src, length),
     math.floor(math.sqrt(length))
