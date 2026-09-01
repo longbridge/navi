@@ -41,7 +41,8 @@ export class StaticDataProvider {
 
 /** Which bars a stream should load — mirrors the engine's `HistoryRange`. */
 type HistoryRange =
-  | { type: 'from'; time: number }
+  | { type: 'startingAt'; time: number }
+  | { type: 'covering'; time: number }
   | { type: 'recent'; bars: number }
   | { type: 'latest' }
 
@@ -57,7 +58,9 @@ type RequiredHistory =
  *
  * `candlesticks` yields CandlestickItem values (serde internally tagged,
  * camelCase): `{ type: 'bar', ... }` for each bar, then `{ type: 'historyEnd' }`.
- * It honours `range` exactly — `from` never reaches back past its time.
+ * It honours `range`: `startingAt` never reaches back past its time, while
+ * `covering` may — that stream is a secondary series that needs warm-up, and
+ * this store holds it all anyway.
  *
  * `historyBarsBefore` returns a plain array of Candlestick objects with
  * `time < beforeTime`, newest-of-old last, for incremental history extension.
@@ -70,11 +73,13 @@ export class StaticCandlestickAdapter {
     // static store has nothing extra to offer against.
     const allBars = this.data.barsFor(symbol, tf, 0)
     const bars =
-      range.type === 'from'
+      range.type === 'startingAt'
         ? allBars.filter((b: any) => (b.time ?? 0) >= range.time)
         : range.type === 'recent' && range.bars > 0
           ? allBars.slice(-range.bars)
-          : allBars
+          : // 'covering' and 'latest': everything held. Reaching back is
+            // invited for 'covering', and it costs nothing here.
+            allBars
     for (const b of bars) {
       yield {
         type: 'bar',

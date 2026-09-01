@@ -65,12 +65,38 @@ hline(30);
 
 Use `timeframe.period` to reference the chart's own timeframe.
 
+## Warm-up
+
+The requested expression is a series in its own right: it is evaluated bar by
+bar on the requested timeframe, with its own history. So `ta.rsi(close, 14)` on
+a weekly request needs fourteen *weekly* bars before it means anything — and
+those bars are normally older than the chart's first bar.
+
+The engine asks for them. A weekly stream is requested as "cover the chart's
+first bar onward, and reach further back if it helps", together with how deep
+the expression reads, so a provider that honours it hands back the earlier
+weekly bars and the plot has a settled value from the chart's first bar.
+
+Whether that happens is up to your data source. A provider that sends only bars
+at or after the chart's first bar is still correct — the expression simply warms
+up on its own, and the plot opens `na` for as long as it reads back. On a daily
+chart, a weekly `ta.sma(close, 10)` with no warm-up is about ten weeks of `na`
+before the first value. If you see that, the stream is being trimmed at the
+chart boundary.
+
+The built-in providers, the playground and `navi-chart` all reach back.
+
 ## `calc_bars_count`
 
 Use `calc_bars_count` when a request only needs a short recent window.
 
 - A positive value asks the provider for at most that many recent bars for the requested stream.
-- `na` keeps the stream uncapped.
+- `na` leaves the stream uncapped: it is anchored on the chart and the provider
+  may reach back for warm-up, as above.
+
+`calc_bars_count` is a cap, so it opts out of the warm-up above — the request is
+"the last N bars" and nothing older. Set it low and an indicator inside the
+expression may not have enough bars to settle.
 
 ```navi
 let recent_weekly = request.security(syminfo.tickerid, "W", close, calc_bars_count: 2);

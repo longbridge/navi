@@ -62,12 +62,32 @@ hline(30);
 
 使用 `timeframe.period` 引用图表自身的时间框架。
 
+## 预热
+
+被请求的表达式本身就是一条序列：它在被请求的周期上逐 bar 求值，拥有自己的历史。
+所以周线请求里的 `ta.rsi(close, 14)` 需要十四根**周线**才有意义 —— 而这些 bar
+通常比图表的第一根还要早。
+
+引擎会去要它们。周线流的请求含义是「覆盖图表首根 bar 之后，并且可以往前多取」，
+同时附带该表达式读多深，因此遵守这一点的 provider 会把更早的周线一并返回，
+plot 从图表第一根 bar 起就有稳定的值。
+
+是否真的如此取决于你的数据源。只返回图表首根 bar 之后数据的 provider 依然是正确的
+—— 表达式只是自己慢慢预热，plot 会 `na` 到它读满为止。在日线图上，一个没有预热的
+周线 `ta.sma(close, 10)` 大约要十周才出第一个值。看到这种现象，就说明数据流在图表
+边界处被截断了。
+
+内置 provider、playground 和 `navi-chart` 都会往前多取。
+
 ## `calc_bars_count`
 
 当请求只需要最近一小段历史时，可以使用 `calc_bars_count`。
 
 - 传入正整数后，provider 最多为该请求流加载这么多最近 bar。
-- `na` 表示不设置上限。
+- `na` 表示不设置上限：请求锚定在图表上，provider 可以按上文所述往前多取用于预热。
+
+`calc_bars_count` 是一个上限，因此它会绕开上文的预热 —— 请求含义变成「最近 N 根」，
+不含更早的。设得过小时，表达式里的指标可能没有足够的 bar 来收敛。
 
 ```navi
 let recent_weekly = request.security(syminfo.tickerid, "W", close, calc_bars_count: 2);
