@@ -233,14 +233,6 @@ defineProps<{ name: string }>()
         stroke="none"
       >12</text>
     </template>
-    <text
-      v-else-if="name === 'emoji'"
-      x="8"
-      y="12"
-      text-anchor="middle"
-      font-size="11"
-      stroke="none"
-    >☺</text>
     <!-- Fib retracement: horizontal levels between two anchors -->
     <template v-else-if="name === 'fib-retracement'">
       <line x1="2" y1="3" x2="14" y2="3" />
@@ -456,13 +448,6 @@ defineProps<{ name: string }>()
       <line x1="5" y1="2" x2="5" y2="14" />
       <line x1="11" y1="2" x2="11" y2="14" />
     </template>
-    <!-- Ghost feed: dashed diagonal + anchor dot -->
-    <template v-else-if="name === 'ghost-feed'">
-      <line x1="2" y1="13" x2="14" y2="3" stroke-dasharray="2,2" />
-      <circle cx="2" cy="13" r="1.5" fill="currentColor" stroke="none" />
-    </template>
-    <!-- Sector: pie-slice wedge -->
-    <path v-else-if="name === 'sector'" d="M8,8 L14,8 A6,6,0,0,0,8,2 Z" />
   </svg>
 </template>
 

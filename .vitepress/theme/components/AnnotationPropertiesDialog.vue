@@ -149,7 +149,7 @@ function onPriceChange(idx: number, e: Event) {
 }
 
 // When the dialog opens: pick the starting tab and initialise textDrafts.
-// Annotations whose descriptors are all text-related (Text / Emoji) start on
+// Annotations whose descriptors are all text-related (Text / Note) start on
 // the text tab; others start on the style tab.
 
 // ── Filter (annotation-specific: tab routing) ────────────────────────────────

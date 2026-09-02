@@ -241,8 +241,6 @@ const categories: Category[] = [
         tools: [
           { name: 'position-forecast' },
           { name: 'bar-pattern' },
-          { name: 'ghost-feed' },
-          { name: 'sector' },
         ],
       },
     ],
@@ -258,7 +256,6 @@ const categories: Category[] = [
           { name: 'note' },
           { name: 'callout' },
           { name: 'price-note' },
-          { name: 'emoji' },
         ],
       },
     ],

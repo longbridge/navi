@@ -11,7 +11,6 @@ import EditorToolbar from './EditorToolbar.vue'
 import EditorStatusBar from './EditorStatusBar.vue'
 import ChartToolbar from './ChartToolbar.vue'
 import DrawingToolbar from './DrawingToolbar.vue'
-import EmojiPicker from './EmojiPicker.vue'
 import AnnotationContextMenu from './AnnotationContextMenu.vue'
 import SelectionToolbar from './SelectionToolbar.vue'
 import AnnotationPropertiesDialog from './AnnotationPropertiesDialog.vue'
@@ -96,18 +95,6 @@ function onToolSelect(name: string) {
   if (chart.setTool(name)) {
     activeTool.value = name
   }
-}
-
-// ── Emoji picker ────────────────────────────────────────────────────────
-//
-// Visible whenever the Emoji drawing tool is active. The chosen glyph is
-// stored on the controller (Rust) so each subsequent click places that
-// emoji.  Defaults to "⭐" until the user picks something.
-const emojiGlyph = ref<string>('⭐')
-const emojiPickerOpen = computed(() => activeTool.value === 'emoji')
-function onEmojiSelect(g: string) {
-  emojiGlyph.value = g
-  engine.value?.chart.setDefaultEmojiGlyph(g)
 }
 
 // Magnet snap-to-OHLC mode. Mirrors the WASM `MagnetMode` enum. Persists
@@ -1794,12 +1781,6 @@ watch(strategyReport, (report) => {
                   @magnet="onMagnetMode"
                   @snap-to-indicators="onMagnetSnapToIndicators"
                   @sticky-tool="onStickyTool"
-                />
-                <EmojiPicker
-                  :open="emojiPickerOpen"
-                  :selected="emojiGlyph"
-                  @update:open="(v) => { if (!v && activeTool === 'emoji') onToolSelect('pointer') }"
-                  @select="onEmojiSelect"
                 />
               </div>
               <div
