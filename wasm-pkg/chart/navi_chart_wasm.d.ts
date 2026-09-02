@@ -1,11 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
-/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -17,6 +12,11 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -1116,10 +1116,6 @@ export class Chart {
    */
   compositionUpdate(text: string, cursor: number): void;
   /**
-   * Current default emoji character for the emoji drawing tool.
-   */
-  defaultEmojiGlyph(): string;
-  /**
    * Restore chart state from a snapshot and re-execute all scripts.
    *
    * Returns a `Promise<void>` that resolves once every script has completed
@@ -1179,10 +1175,6 @@ export class Chart {
    * `CandlestickConfig` object; re-renders on success.
    */
   setCandlestickConfig(config: any): void;
-  /**
-   * Set the default emoji character for the emoji drawing tool.
-   */
-  setDefaultEmojiGlyph(glyph: string): void;
   /**
    * Cut the selected annotation: copy to clipboard then delete it.
    */
@@ -1608,7 +1600,6 @@ export interface InitOutput {
   readonly __wbg_imageregistry_free: (a: number, b: number) => void;
   readonly imageregistry_add: (a: number, b: number, c: any) => void;
   readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
   readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
@@ -1640,7 +1631,6 @@ export interface InitOutput {
   readonly chart_cutSelectedAnnotation: (a: number) => void;
   readonly chart_cyqVisible: (a: number) => number;
   readonly chart_cyqWidth: (a: number) => number;
-  readonly chart_defaultEmojiGlyph: (a: number) => [number, number];
   readonly chart_deleteSelectedAnnotation: (a: number) => void;
   readonly chart_dispatchContextMenuAction: (a: number, b: number, c: number) => void;
   readonly chart_finalizePendingDrawing: (a: number) => void;
@@ -1710,7 +1700,6 @@ export interface InitOutput {
   readonly chart_setCandlestickStyle: (a: number, b: any) => void;
   readonly chart_setCyqVisible: (a: number, b: number) => void;
   readonly chart_setCyqWidth: (a: number, b: number) => void;
-  readonly chart_setDefaultEmojiGlyph: (a: number, b: number, c: number) => void;
   readonly chart_setLastPriceLineVisible: (a: number, b: number) => void;
   readonly chart_setLocale: (a: number, b: number, c: number) => void;
   readonly chart_setMagnet: (a: number, b: any) => void;
@@ -1748,6 +1737,7 @@ export interface InitOutput {
   readonly localcharthandle_removeScript: (a: number, b: number) => void;
   readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
   readonly localchartprovider_new: (a: any) => number;
+  readonly start: () => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;

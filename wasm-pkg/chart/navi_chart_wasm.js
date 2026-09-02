@@ -214,14 +214,6 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 /**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start() {
-    wasm.start();
-}
-
-/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -262,6 +254,14 @@ function getArrayF64FromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     return getFloat64ArrayMemory0().subarray(ptr / 8, ptr / 8 + len);
 }
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start() {
+    wasm.start();
+}
+
 function wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2) {
     wasm.wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2);
 }
@@ -854,22 +854,6 @@ export class Chart {
         wasm.chart_compositionUpdate(this.__wbg_ptr, ptr0, len0, cursor);
     }
     /**
-     * Current default emoji character for the emoji drawing tool.
-     * @returns {string}
-     */
-    defaultEmojiGlyph() {
-        let deferred1_0;
-        let deferred1_1;
-        try {
-            const ret = wasm.chart_defaultEmojiGlyph(this.__wbg_ptr);
-            deferred1_0 = ret[0];
-            deferred1_1 = ret[1];
-            return getStringFromWasm0(ret[0], ret[1]);
-        } finally {
-            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
-        }
-    }
-    /**
      * Restore chart state from a snapshot and re-execute all scripts.
      *
      * Returns a `Promise<void>` that resolves once every script has completed
@@ -990,15 +974,6 @@ export class Chart {
      */
     setCandlestickConfig(config) {
         wasm.chart_setCandlestickConfig(this.__wbg_ptr, config);
-    }
-    /**
-     * Set the default emoji character for the emoji drawing tool.
-     * @param {string} glyph
-     */
-    setDefaultEmojiGlyph(glyph) {
-        const ptr0 = passStringToWasm0(glyph, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        const len0 = WASM_VECTOR_LEN;
-        wasm.chart_setDefaultEmojiGlyph(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * Cut the selected annotation: copy to clipboard then delete it.
@@ -2605,11 +2580,6 @@ function __wbg_get_imports() {
         const ret = getStringFromWasm0(arg0, arg1);
         return ret;
     };
-    imports.wbg.__wbindgen_cast_28c05e06e63da17c = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 2158, function: Function { arguments: [Externref], shim_idx: 2159, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
-        return ret;
-    };
     imports.wbg.__wbindgen_cast_4625c577ab2ec9ee = function(arg0) {
         // Cast intrinsic for `U64 -> Externref`.
         const ret = BigInt.asUintN(64, arg0);
@@ -2618,6 +2588,11 @@ function __wbg_get_imports() {
     imports.wbg.__wbindgen_cast_9ae0607507abb057 = function(arg0) {
         // Cast intrinsic for `I64 -> Externref`.
         const ret = arg0;
+        return ret;
+    };
+    imports.wbg.__wbindgen_cast_d238da3315f1a816 = function(arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 2166, function: Function { arguments: [Externref], shim_idx: 2167, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
         return ret;
     };
     imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
