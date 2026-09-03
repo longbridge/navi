@@ -39,18 +39,24 @@ export class StaticDataProvider {
   }
 }
 
-/** Which bars a stream should load — mirrors the engine's `HistoryRange`. */
-type HistoryRange =
-  | { type: 'startingAt'; time: number }
-  | { type: 'covering'; time: number }
-  | { type: 'recent'; bars: number }
-  | { type: 'latest' }
-
 /** How far back the script reads before its values are right. Advice only. */
 type RequiredHistory =
   | { type: 'exact'; bars: number }
   | { type: 'atLeast'; bars: number }
   | { type: 'unknown' }
+
+/**
+ * Which bars a stream should load — mirrors the engine's `HistoryRange`.
+ *
+ * The two shapes that leave room for extra history carry the depth as
+ * `warmup`: `covering`, which may reach back past its anchor, and `latest`,
+ * which sets no cap. The other two are bounds with nothing to spend it on.
+ */
+type HistoryRange =
+  | { type: 'startingAt'; time: number }
+  | { type: 'covering'; time: number; warmup: RequiredHistory }
+  | { type: 'recent'; bars: number }
+  | { type: 'latest'; warmup: RequiredHistory }
 
 /**
  * Implements the JsDataProvider interface expected by the WASM Chart
@@ -68,9 +74,9 @@ type RequiredHistory =
 export class StaticCandlestickAdapter {
   constructor(private readonly data: StaticDataProvider) {}
 
-  async *candlesticks(symbol: string, tf: string, range: HistoryRange, _required: RequiredHistory) {
-    // `range` says which bars; `_required` is advice about warm-up that this
-    // static store has nothing extra to offer against.
+  async *candlesticks(symbol: string, tf: string, range: HistoryRange) {
+    // `range` says which bars; the `warmup` two of its shapes carry is advice
+    // this static store has nothing extra to offer against.
     const allBars = this.data.barsFor(symbol, tf, 0)
     const bars =
       range.type === 'startingAt'

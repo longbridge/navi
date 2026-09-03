@@ -646,15 +646,19 @@ export interface ChartStreamRequest {
  * `startingAt` is a hard floor: send nothing earlier, because the script has
  * already run those bars and a repeat double-counts every `var` it touched.
  * `covering` is an anchor: send everything from `time`, and reach further back
- * if it helps — that stream is a secondary series warming up, and `required`
- * says how deep its expression reads. Treat `required` there as a floor rather
- * than a recipe; a small margin beyond it settles the opening bars.
+ * if it helps — that stream is a secondary series warming up, and its `warmup`
+ * says how deep its expression reads. Treat `warmup` as a floor rather than a
+ * recipe; a small margin beyond it settles the opening bars.
+ *
+ * Only the two shapes that leave room for extra history carry a `warmup`:
+ * `covering`, which may reach back, and `latest`, which sets no cap at all.
+ * `startingAt` and `recent` are bounds with nothing to spend it on.
  */
 export type HistoryRange =
   | { type: "startingAt"; time: number }
-  | { type: "covering"; time: number }
+  | { type: "covering"; time: number; warmup: RequiredHistory }
   | { type: "recent"; bars: number }
-  | { type: "latest" };
+  | { type: "latest"; warmup: RequiredHistory };
 
 /**
  * How far back the script reads before its values are right.
@@ -682,22 +686,24 @@ export interface DataProvider {
    *
    * `range` says which bars: `{type:"startingAt",time}` is every bar at or
    * after that epoch-ms time and **none from before it**;
-   * `{type:"covering",time}` is the same window but earlier bars are welcome
-   * — that stream is a secondary series warming up; `{type:"recent",bars}` is
-   * the last `bars`; `{type:"latest"}` is no cap. `required` says how far back
-   * the script reads before its values are right — advice you may ignore,
-   * though a shorter warm-up leaves indicators `na` or unsettled.
+   * `{type:"covering",time,warmup}` is the same window but earlier bars are
+   * welcome — that stream is a secondary series warming up;
+   * `{type:"recent",bars}` is the last `bars`; `{type:"latest",warmup}` is no
+   * cap. Where a `warmup` is present it says how far back the script reads
+   * before its values are right — advice you may ignore, though a shorter
+   * warm-up leaves indicators `na` or unsettled.
    * If omitted, the chart renders with no data.
    */
-  candlesticks?(symbol: string, tf: TimeFrame, range: HistoryRange, required: RequiredHistory): AsyncIterable<CandlestickItem>;
+  candlesticks?(symbol: string, tf: TimeFrame, range: HistoryRange): AsyncIterable<CandlestickItem>;
 
   /**
    * Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`).
    *
-   * `range` and `required` are **counted in ticks, not bars** — one bar of an
-   * `nT` timeframe is exactly `n` ticks, and the engine has already converted.
+   * `range` is **counted in ticks, not bars** — one bar of an `nT` timeframe
+   * is exactly `n` ticks, and the engine has already converted, `warmup`
+   * included.
    */
-  ticks?(symbol: string, range: HistoryRange, required: RequiredHistory): AsyncIterable<TickItem>;
+  ticks?(symbol: string, range: HistoryRange): AsyncIterable<TickItem>;
 
   /** Stream historical exchange rate data for `from → to` currency conversion. */
   currencyRate?(from: Currency, to: Currency, fromTime: number): AsyncIterable<AuxDataItem>;
@@ -1601,8 +1607,6 @@ export interface InitOutput {
   readonly imageregistry_add: (a: number, b: number, c: any) => void;
   readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
   readonly chart_addScript: (a: number, b: any, c: any) => any;
@@ -1732,6 +1736,8 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
   readonly localcharthandle_extendHistory: (a: number, b: number) => number;
   readonly localcharthandle_removeScript: (a: number, b: number) => void;

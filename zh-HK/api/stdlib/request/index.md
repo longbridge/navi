@@ -200,7 +200,7 @@ security<T>(
 | `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | 請求的值是否可以展望歷史 bars。 |
 | `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | 如果 `true`，則對於未知符號傳回 `na`，而不是引發錯誤。 |
 | `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 用於價格轉換的可選貨幣。 |
-| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | 為請求流加載的最近歷史記錄窗口的可選正限制。 |
+| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | 可選的正整數上限，限制請求最近多少根歷史 K 線。這些 K 線就是 `expression` 能看到的全部資料——它從第一根開始計算——所以上限低於表達式回溯的深度時，開頭若干根的值不會穩定。只在本次呼叫首次執行的那根 K 線上讀取一次，之後修改無效。 |
 
 **返回:** <code>series&nbsp;T</code>
 
@@ -247,7 +247,7 @@ security_lower_tf<T>(
 | `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | 如果 `true`，則對於未知符號傳回 `na`，而不是引發錯誤。 |
 | `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 用於價格轉換的可選貨幣。 |
 | `ignore_invalid_timeframe` | <code>input&nbsp;bool</code> | `false` | 如果為 `true`，則當請求的時間範圍不低於圖表時間範圍時傳回 `na`。 |
-| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | 為請求流加載的最近歷史記錄窗口的可選正限制。 |
+| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | 可選的正整數上限，限制請求最近多少根歷史低週期 K 線。這些 K 線就是 `expression` 能看到的全部資料——它從第一根開始計算。只在本次呼叫首次執行的那根 K 線上讀取一次，之後修改無效。 |
 
 **返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code>
 

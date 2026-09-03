@@ -200,7 +200,7 @@ Evaluates `expression` on another symbol or timeframe and maps the result onto t
 | `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Whether requested values may look ahead on historical bars. |
 | `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
 | `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Optional currency used for price conversion. |
-| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit for the recent history window loaded for the request stream. |
+| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical bars to request. Those bars are all the data `expression` sees — it begins on the first of them — so a limit below what the expression reads back leaves its opening values unsettled. Read once, on the bar this call first runs on; changing it later has no effect. |
 
 **Returns:** <code>series&nbsp;T</code>
 
@@ -247,7 +247,7 @@ Evaluates `expression` on a lower timeframe and returns one array element per lo
 | `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
 | `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Optional currency used for price conversion. |
 | `ignore_invalid_timeframe` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` when the requested timeframe is not lower than the chart timeframe. |
-| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit for the recent history window loaded for the request stream. |
+| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical intrabars to request. Those intrabars are all the data `expression` sees — it begins on the first of them. Read once, on the bar this call first runs on; changing it later has no effect. |
 
 **Returns:** <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code>
 
