@@ -59,6 +59,23 @@ type HistoryRange =
   | { type: 'latest'; warmup: RequiredHistory }
 
 /**
+ * Which series a request belongs to.
+ *
+ * Not inferable from anything else: a chart asked for five hundred bars and an
+ * author's `calc_bars_count` of five hundred both arrive as `recent`.
+ */
+type SeriesRole = 'main' | 'secondary'
+
+/** What the engine wants from `candlesticks`. */
+type CandlestickRequest = {
+  symbol: string
+  timeframe: string
+  modifier: unknown
+  range: HistoryRange
+  role: SeriesRole
+}
+
+/**
  * Implements the JsDataProvider interface expected by the WASM Chart
  * constructor, backed by StaticDataProvider.
  *
@@ -74,10 +91,12 @@ type HistoryRange =
 export class StaticCandlestickAdapter {
   constructor(private readonly data: StaticDataProvider) {}
 
-  async *candlesticks(symbol: string, tf: string, range: HistoryRange) {
+  async *candlesticks({ symbol, timeframe, range }: CandlestickRequest) {
     // `range` says which bars; the `warmup` two of its shapes carry is advice
-    // this static store has nothing extra to offer against.
-    const allBars = this.data.barsFor(symbol, tf, 0)
+    // this static store has nothing extra to offer against. `role` says which
+    // series, which this store has no reason to treat differently — it holds
+    // everything either way.
+    const allBars = this.data.barsFor(symbol, timeframe, 0)
     const bars =
       range.type === 'startingAt'
         ? allBars.filter((b: any) => (b.time ?? 0) >= range.time)
