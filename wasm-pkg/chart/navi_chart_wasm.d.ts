@@ -271,8 +271,7 @@ export type ScriptError =
   | { type: "unknownMarket" }
   | { type: "libraryScriptNotExecutable" }
   | { type: "dataProvider";               message: string }
-  | { type: "confirmedBarUpdate" }
-  | { type: "jitCompilation";             message: string };
+  | { type: "confirmedBarUpdate" };
 
 
 
@@ -630,8 +629,8 @@ export interface ChartStreamRequest {
  * @example
  * ```ts
  * const provider: DataProvider = {
- *   async *candlesticks(symbol, tf, fromTime) {
- *     const bars = await fetchHistory(symbol, tf, fromTime);
+ *   async *candlesticks({ symbol, timeframe, range, role }) {
+ *     const bars = await fetchHistory(symbol, timeframe, range);
  *     yield* bars;
  *     yield { type: "historyEnd" };
  *     // keep yielding realtime bars...
@@ -671,6 +670,47 @@ export type RequiredHistory =
   | { type: "atLeast"; bars: number }
   | { type: "unknown" };
 
+/**
+ * Which series a request belongs to.
+ *
+ * `"main"` is the series the script runs on — its bars drive the bar loop.
+ * `"secondary"` is one a `request.security` asked for.
+ *
+ * Nothing else in a request says which: an author's `calc_bars_count` and a
+ * caller asking for a bar count both arrive as `recent`, and a secondary may
+ * name the same symbol and timeframe the script itself runs on. A policy meant
+ * for the main series, applied to a secondary one, drops the anchor and warm-up
+ * the engine worked out for it, and the secondary opens `na`.
+ */
+export type SeriesRole = "main" | "secondary";
+
+/**
+ * Adjustments to apply to the returned bars — dividend and split handling,
+ * session filtering. Opaque here; pass it to whatever fetches the data.
+ */
+export type DataModifier = Record<string, unknown>;
+
+/** What the engine wants from `candlesticks`. */
+export interface CandlestickRequest {
+  symbol: string;
+  timeframe: TimeFrame;
+  modifier: DataModifier;
+  range: HistoryRange;
+  role: SeriesRole;
+}
+
+/**
+ * What the engine wants from `ticks`.
+ *
+ * `range` is **counted in ticks, not bars** — one bar of an `nT` timeframe is
+ * exactly `n` ticks, and the engine has already converted, `warmup` included.
+ */
+export interface TickRequest {
+  symbol: string;
+  range: HistoryRange;
+  role: SeriesRole;
+}
+
 export interface DataProvider {
   /**
    * Return partial symbol metadata for `symbol`.
@@ -694,7 +734,7 @@ export interface DataProvider {
    * warm-up leaves indicators `na` or unsettled.
    * If omitted, the chart renders with no data.
    */
-  candlesticks?(symbol: string, tf: TimeFrame, range: HistoryRange): AsyncIterable<CandlestickItem>;
+  candlesticks?(request: CandlestickRequest): AsyncIterable<CandlestickItem>;
 
   /**
    * Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`).
@@ -703,28 +743,28 @@ export interface DataProvider {
    * is exactly `n` ticks, and the engine has already converted, `warmup`
    * included.
    */
-  ticks?(symbol: string, range: HistoryRange): AsyncIterable<TickItem>;
+  ticks?(request: TickRequest): AsyncIterable<TickItem>;
 
   /** Stream historical exchange rate data for `from → to` currency conversion. */
-  currencyRate?(from: Currency, to: Currency, fromTime: number): AsyncIterable<AuxDataItem>;
+  currencyRate?(from: Currency, to: Currency, asOf: number): AsyncIterable<AuxDataItem>;
 
   /** Stream financial report data points (revenue, EPS, …). */
-  financial?(symbol: string, financialId: string, period: string, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
+  financial?(symbol: string, financialId: string, period: string, currency: Currency | null, asOf: number): AsyncIterable<AuxDataItem>;
 
   /** Stream earnings data points. */
-  earnings?(symbol: string, field: EarningsField, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
+  earnings?(symbol: string, field: EarningsField, currency: Currency | null, asOf: number): AsyncIterable<AuxDataItem>;
 
   /** Stream dividend data points. */
-  dividends?(symbol: string, field: DividendsField, currency: Currency | null, fromTime: number): AsyncIterable<AuxDataItem>;
+  dividends?(symbol: string, field: DividendsField, currency: Currency | null, asOf: number): AsyncIterable<AuxDataItem>;
 
   /** Stream macroeconomic data points for `countryCode`. */
-  economic?(countryCode: string, field: string, fromTime: number): AsyncIterable<AuxDataItem>;
+  economic?(countryCode: string, field: string, asOf: number): AsyncIterable<AuxDataItem>;
 
   /** Stream stock split data points. */
-  splits?(symbol: string, field: SplitsField, fromTime: number): AsyncIterable<AuxDataItem>;
+  splits?(symbol: string, field: SplitsField, asOf: number): AsyncIterable<AuxDataItem>;
 
   /** Stream custom data identified by `fn` and `args`. */
-  data?(fn: string, args: DataArgs, fromTime: number): AsyncIterable<AuxDataItem>;
+  data?(fn: string, args: DataArgs, asOf: number): AsyncIterable<AuxDataItem>;
 }
 
 /**
@@ -1603,9 +1643,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1736,6 +1773,10 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly start: () => void;
   readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
   readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
@@ -1743,7 +1784,6 @@ export interface InitOutput {
   readonly localcharthandle_removeScript: (a: number, b: number) => void;
   readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
   readonly localchartprovider_new: (a: any) => number;
-  readonly start: () => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;
