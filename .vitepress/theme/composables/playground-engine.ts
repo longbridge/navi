@@ -59,21 +59,10 @@ type HistoryRange =
   | { type: 'latest'; warmup: RequiredHistory }
 
 /**
- * Which series a request belongs to.
- *
- * Not inferable from anything else: a chart asked for five hundred bars and an
- * author's `calc_bars_count` of five hundred both arrive as `recent`.
+ * Which series a request was opened for — informational, and this store has no
+ * reason to treat the two differently.
  */
 type SeriesRole = 'main' | 'secondary'
-
-/** What the engine wants from `candlesticks`. */
-type CandlestickRequest = {
-  symbol: string
-  timeframe: string
-  modifier: unknown
-  range: HistoryRange
-  role: SeriesRole
-}
 
 /**
  * Implements the JsDataProvider interface expected by the WASM Chart
@@ -91,17 +80,23 @@ type CandlestickRequest = {
 export class StaticCandlestickAdapter {
   constructor(private readonly data: StaticDataProvider) {}
 
-  async *candlesticks({ symbol, timeframe, range }: CandlestickRequest) {
-    // `range` says which bars; the `warmup` two of its shapes carry is advice
-    // this static store has nothing extra to offer against. `role` says which
-    // series, which this store has no reason to treat differently — it holds
-    // everything either way.
+  async *candlesticks(
+    symbol: string,
+    timeframe: string,
+    _modifier: unknown,
+    range: HistoryRange,
+    _role: SeriesRole,
+  ) {
+    // The `warmup` two of the shapes carry is advice this static store has
+    // nothing extra to offer against — it holds everything either way.
     const allBars = this.data.barsFor(symbol, timeframe, 0)
     const bars =
       range.type === 'startingAt'
         ? allBars.filter((b: any) => (b.time ?? 0) >= range.time)
-        : range.type === 'recent' && range.bars > 0
-          ? allBars.slice(-range.bars)
+        : range.type === 'recent'
+          ? // `Math.max` rather than a negative slice index: a cap wider than
+            // what is held keeps everything, and a cap of zero keeps none.
+            allBars.slice(Math.max(0, allBars.length - range.bars))
           : // 'covering' and 'latest': everything held. Reaching back is
             // invited for 'covering', and it costs nothing here.
             allBars

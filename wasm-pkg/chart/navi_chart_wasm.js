@@ -30,6 +30,22 @@ function getStringFromWasm0(ptr, len) {
     return decodeText(ptr, len);
 }
 
+function logError(f, args) {
+    try {
+        return f.apply(this, args);
+    } catch (e) {
+        let error = (function () {
+            try {
+                return e instanceof Error ? `${e.message}\n\nStack:\n${e.stack}` : e.toString();
+            } catch(_) {
+                return "<failed to stringify thrown value>";
+            }
+        }());
+        console.error("wasm-bindgen: imported JS function that was not marked as `catch` threw an error:", error);
+        throw e;
+    }
+}
+
 let WASM_VECTOR_LEN = 0;
 
 const cachedTextEncoder = new TextEncoder();
@@ -46,6 +62,8 @@ if (!('encodeInto' in cachedTextEncoder)) {
 }
 
 function passStringToWasm0(arg, malloc, realloc) {
+
+    if (typeof(arg) !== 'string') throw new Error(`expected a string argument, found ${typeof(arg)}`);
 
     if (realloc === undefined) {
         const buf = cachedTextEncoder.encode(arg);
@@ -75,7 +93,7 @@ function passStringToWasm0(arg, malloc, realloc) {
         ptr = realloc(ptr, len, len = offset + arg.length * 3, 1) >>> 0;
         const view = getUint8ArrayMemory0().subarray(ptr + offset, ptr + len);
         const ret = cachedTextEncoder.encodeInto(arg, view);
-
+        if (ret.read !== arg.length) throw new Error('failed to pass whole string');
         offset += ret.written;
         ptr = realloc(ptr, len, offset, 1) >>> 0;
     }
@@ -95,6 +113,16 @@ function getDataViewMemory0() {
 
 function isLikeNone(x) {
     return x === undefined || x === null;
+}
+
+function _assertBigInt(n) {
+    if (typeof(n) !== 'bigint') throw new Error(`expected a bigint argument, found ${typeof(n)}`);
+}
+
+function _assertBoolean(n) {
+    if (typeof(n) !== 'boolean') {
+        throw new Error(`expected a boolean argument, found ${typeof(n)}`);
+    }
 }
 
 function debugString(val) {
@@ -162,6 +190,10 @@ function debugString(val) {
     return className;
 }
 
+function _assertNum(n) {
+    if (typeof(n) !== 'number') throw new Error(`expected a number argument, found ${typeof(n)}`);
+}
+
 function addToExternrefTable0(obj) {
     const idx = wasm.__externref_table_alloc();
     wasm.__wbindgen_externrefs.set(idx, obj);
@@ -213,6 +245,20 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     CLOSURE_DTORS.register(real, state, state);
     return real;
 }
+
+function takeFromExternrefTable0(idx) {
+    const value = wasm.__wbindgen_externrefs.get(idx);
+    wasm.__externref_table_dealloc(idx);
+    return value;
+}
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start() {
+    wasm.start();
+}
+
 /**
  * Returns a JS object representing the built-in dark theme.
  *
@@ -248,26 +294,23 @@ function getArrayF64FromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     return getFloat64ArrayMemory0().subarray(ptr / 8, ptr / 8 + len);
 }
-
-function takeFromExternrefTable0(idx) {
-    const value = wasm.__wbindgen_externrefs.get(idx);
-    wasm.__externref_table_dealloc(idx);
-    return value;
-}
-/**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start() {
-    wasm.start();
+function wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___wasm_bindgen_eefaec7423895f1a___JsValue_____(arg0, arg1, arg2) {
+    _assertNum(arg0);
+    _assertNum(arg1);
+    wasm.wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___wasm_bindgen_eefaec7423895f1a___JsValue_____(arg0, arg1, arg2);
 }
 
-function wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2) {
-    wasm.wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2);
+function wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___bool_(arg0, arg1) {
+    _assertNum(arg0);
+    _assertNum(arg1);
+    const ret = wasm.wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___bool_(arg0, arg1);
+    return ret !== 0;
 }
 
-function wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2, arg3) {
-    wasm.wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2, arg3);
+function wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___js_sys_bc21cbaec00f7bf7___Function__js_sys_bc21cbaec00f7bf7___Function_____(arg0, arg1, arg2, arg3) {
+    _assertNum(arg0);
+    _assertNum(arg1);
+    wasm.wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___js_sys_bc21cbaec00f7bf7___Function__js_sys_bc21cbaec00f7bf7___Function_____(arg0, arg1, arg2, arg3);
 }
 
 const __wbindgen_enum_ReadableStreamType = ["bytes"];
@@ -303,6 +346,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_activeTool(this.__wbg_ptr);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -317,6 +362,8 @@ export class Chart {
      * @returns {Float64Array | undefined}
      */
     caretPixel() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_caretPixel(this.__wbg_ptr);
         let v1;
         if (ret[0] !== 0) {
@@ -330,6 +377,8 @@ export class Chart {
      * @returns {boolean}
      */
     cyqVisible() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_cyqVisible(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -341,6 +390,8 @@ export class Chart {
      * @returns {any}
      */
     paneRatios() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_paneRatios(this.__wbg_ptr);
         return ret;
     }
@@ -355,6 +406,8 @@ export class Chart {
      * @returns {Promise<any>}
      */
     setScripts(scripts) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_setScripts(this.__wbg_ptr, scripts);
         return ret;
     }
@@ -363,6 +416,8 @@ export class Chart {
      * @returns {number}
      */
     uiFontSize() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_uiFontSize(this.__wbg_ptr);
         return ret;
     }
@@ -374,6 +429,8 @@ export class Chart {
      * @param {number} y
      */
     onPointerUp(id, x, y) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onPointerUp(this.__wbg_ptr, id, x, y);
     }
     /**
@@ -383,6 +440,8 @@ export class Chart {
      * @returns {any}
      */
     scriptError(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scriptError(this.__wbg_ptr, tag);
         return ret;
     }
@@ -391,6 +450,9 @@ export class Chart {
      * @param {number} idx
      */
     scrollToBar(idx) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(idx);
         wasm.chart_scrollToBar(this.__wbg_ptr, idx);
     }
     /**
@@ -398,6 +460,8 @@ export class Chart {
      * @param {number} width
      */
     setCyqWidth(width) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setCyqWidth(this.__wbg_ptr, width);
     }
     /**
@@ -406,6 +470,10 @@ export class Chart {
      * @param {number} end
      */
     setViewport(start, end) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(start);
+        _assertNum(end);
         wasm.chart_setViewport(this.__wbg_ptr, start, end);
     }
     /**
@@ -415,6 +483,8 @@ export class Chart {
      * @returns {any}
      */
     graphConfigs(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_graphConfigs(this.__wbg_ptr, tag);
         return ret;
     }
@@ -424,6 +494,8 @@ export class Chart {
      * @returns {boolean}
      */
     hasScriptTag(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_hasScriptTag(this.__wbg_ptr, tag);
         return ret !== 0;
     }
@@ -432,6 +504,8 @@ export class Chart {
      * @returns {boolean}
      */
     isStickyTool() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_isStickyTool(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -440,6 +514,8 @@ export class Chart {
      * @param {any} json
      */
     loadSnapshot(json) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_loadSnapshot(this.__wbg_ptr, json);
     }
     /**
@@ -447,6 +523,8 @@ export class Chart {
      * @param {any} tag
      */
     removeScript(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_removeScript(this.__wbg_ptr, tag);
     }
     /**
@@ -454,6 +532,8 @@ export class Chart {
      * @returns {any}
      */
     saveSnapshot() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_saveSnapshot(this.__wbg_ptr);
         return ret;
     }
@@ -463,6 +543,8 @@ export class Chart {
      * @returns {any}
      */
     scriptConfig(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scriptConfig(this.__wbg_ptr, tag);
         return ret;
     }
@@ -473,6 +555,8 @@ export class Chart {
      * @returns {any}
      */
     scriptInputs(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scriptInputs(this.__wbg_ptr, tag);
         return ret;
     }
@@ -481,6 +565,8 @@ export class Chart {
      * @returns {number}
      */
     scrollOffset() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scrollOffset(this.__wbg_ptr);
         return ret;
     }
@@ -489,6 +575,8 @@ export class Chart {
      * @param {string} tf
      */
     setTimeframe(tf) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(tf, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_setTimeframe(this.__wbg_ptr, ptr0, len0);
@@ -501,6 +589,9 @@ export class Chart {
      * @param {number} mode
      */
     setYAxisMode(mode) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(mode);
         wasm.chart_setYAxisMode(this.__wbg_ptr, mode);
     }
     /**
@@ -515,6 +606,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_addAnnotation(this.__wbg_ptr, spec);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -527,6 +620,8 @@ export class Chart {
      * Cancel the drawing currently in progress and discard it.
      */
     cancelDrawing() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_cancelDrawing(this.__wbg_ptr);
     }
     /**
@@ -535,6 +630,8 @@ export class Chart {
      * @returns {any}
      */
     getAnnotation(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_getAnnotation(this.__wbg_ptr, ptr0, len0);
@@ -553,6 +650,8 @@ export class Chart {
      * @returns {ImageRegistry}
      */
     imageRegistry() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_imageRegistry(this.__wbg_ptr);
         return ImageRegistry.__wrap(ret);
     }
@@ -572,6 +671,11 @@ export class Chart {
      * @returns {boolean}
      */
     onPointerDown(id, kind, button, x, y, mods) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(kind);
+        _assertNum(button);
+        _assertNum(mods);
         const ret = wasm.chart_onPointerDown(this.__wbg_ptr, id, kind, button, x, y, mods);
         return ret !== 0;
     }
@@ -583,6 +687,9 @@ export class Chart {
      * @param {number} mods
      */
     onPointerMove(id, x, y, mods) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(mods);
         wasm.chart_onPointerMove(this.__wbg_ptr, id, x, y, mods);
     }
     /**
@@ -590,6 +697,9 @@ export class Chart {
      * @param {boolean} visible
      */
     setCyqVisible(visible) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertBoolean(visible);
         wasm.chart_setCyqVisible(this.__wbg_ptr, visible);
     }
     /**
@@ -600,6 +710,8 @@ export class Chart {
      * @param {any} ratios
      */
     setPaneRatios(ratios) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setPaneRatios(this.__wbg_ptr, ratios);
     }
     /**
@@ -608,6 +720,9 @@ export class Chart {
      * @param {boolean} sticky
      */
     setStickyTool(sticky) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertBoolean(sticky);
         wasm.chart_setStickyTool(this.__wbg_ptr, sticky);
     }
     /**
@@ -616,6 +731,8 @@ export class Chart {
      * @param {number} size
      */
     setUiFontSize(size) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setUiFontSize(this.__wbg_ptr, size);
     }
     /**
@@ -623,6 +740,8 @@ export class Chart {
      * @returns {string | undefined}
      */
     textEditorCut() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_textEditorCut(this.__wbg_ptr);
         let v1;
         if (ret[0] !== 0) {
@@ -638,6 +757,9 @@ export class Chart {
      * @returns {any}
      */
     barIndexToTime(idx) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(idx);
         const ret = wasm.chart_barIndexToTime(this.__wbg_ptr, idx);
         return ret;
     }
@@ -646,6 +768,8 @@ export class Chart {
      * @param {string} text
      */
     compositionEnd(text) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_compositionEnd(this.__wbg_ptr, ptr0, len0);
@@ -655,6 +779,8 @@ export class Chart {
      * @returns {any}
      */
     getAnnotations() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_getAnnotations(this.__wbg_ptr);
         return ret;
     }
@@ -662,12 +788,16 @@ export class Chart {
      * Handle the pointer entering the canvas.
      */
     onPointerEnter() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onPointerEnter(this.__wbg_ptr);
     }
     /**
      * Handle the pointer (mouse) leaving the canvas — hides the crosshair.
      */
     onPointerLeave() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onPointerLeave(this.__wbg_ptr);
     }
     /**
@@ -676,6 +806,8 @@ export class Chart {
      * @returns {any}
      */
     scriptIdForTag(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scriptIdForTag(this.__wbg_ptr, tag);
         return ret;
     }
@@ -686,6 +818,8 @@ export class Chart {
      * @returns {any}
      */
     strategyReport(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_strategyReport(this.__wbg_ptr, tag);
         return ret;
     }
@@ -696,6 +830,8 @@ export class Chart {
      * @returns {any}
      */
     timeToBarIndex(time_ms) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_timeToBarIndex(this.__wbg_ptr, time_ms);
         return ret;
     }
@@ -704,12 +840,16 @@ export class Chart {
      * @param {number} id
      */
     onPointerCancel(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onPointerCancel(this.__wbg_ptr, id);
     }
     /**
      * Paste the annotation from the internal clipboard.
      */
     pasteAnnotation() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_pasteAnnotation(this.__wbg_ptr);
     }
     /**
@@ -722,6 +862,8 @@ export class Chart {
      * @returns {boolean}
      */
     requestTextEdit(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_requestTextEdit(this.__wbg_ptr, ptr0, len0);
@@ -734,6 +876,8 @@ export class Chart {
      * @returns {any}
      */
     scriptOverrides(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scriptOverrides(this.__wbg_ptr, tag);
         return ret;
     }
@@ -744,6 +888,8 @@ export class Chart {
      * @param {any} json
      */
     setScriptConfig(tag, json) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setScriptConfig(this.__wbg_ptr, tag, json);
     }
     /**
@@ -751,6 +897,8 @@ export class Chart {
      * @param {number} offset
      */
     setScrollOffset(offset) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setScrollOffset(this.__wbg_ptr, offset);
     }
     /**
@@ -758,6 +906,8 @@ export class Chart {
      * @returns {boolean}
      */
     animationEnabled() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_animationEnabled(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -766,6 +916,8 @@ export class Chart {
      * @returns {any}
      */
     candlestickStyle() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_candlestickStyle(this.__wbg_ptr);
         return ret;
     }
@@ -778,6 +930,8 @@ export class Chart {
      * @returns {boolean}
      */
     capturesKeyboard() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_capturesKeyboard(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -785,12 +939,16 @@ export class Chart {
      * Remove all annotations from the chart.
      */
     clearAnnotations() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_clearAnnotations(this.__wbg_ptr);
     }
     /**
      * Forward `compositionstart` (IME session begins).
      */
     compositionStart() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_compositionStart(this.__wbg_ptr);
     }
     /**
@@ -806,6 +964,8 @@ export class Chart {
      * @returns {any}
      */
     contextMenuItems(x, y) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_contextMenuItems(this.__wbg_ptr, x, y);
         return ret;
     }
@@ -813,6 +973,8 @@ export class Chart {
      * Remove all active scripts and clear their visual outputs.
      */
     removeAllScripts() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_removeAllScripts(this.__wbg_ptr);
     }
     /**
@@ -820,6 +982,8 @@ export class Chart {
      * @param {string} id
      */
     removeAnnotation(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_removeAnnotation(this.__wbg_ptr, ptr0, len0);
@@ -830,6 +994,8 @@ export class Chart {
      * @param {any} spec
      */
     updateAnnotation(id, spec) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_updateAnnotation(this.__wbg_ptr, ptr0, len0, spec);
@@ -839,6 +1005,8 @@ export class Chart {
      * @returns {number}
      */
     animationDuration() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_animationDuration(this.__wbg_ptr);
         return ret;
     }
@@ -849,8 +1017,11 @@ export class Chart {
      * @param {number} cursor
      */
     compositionUpdate(text, cursor) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
+        _assertNum(cursor);
         wasm.chart_compositionUpdate(this.__wbg_ptr, ptr0, len0, cursor);
     }
     /**
@@ -862,6 +1033,8 @@ export class Chart {
      * @returns {Promise<any>}
      */
     loadSnapshotAsync(json) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_loadSnapshotAsync(this.__wbg_ptr, json);
         return ret;
     }
@@ -877,6 +1050,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_addSystemAnnotation(this.__wbg_ptr, spec);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -892,6 +1067,9 @@ export class Chart {
      * @param {boolean} enabled
      */
     setAnimationEnabled(enabled) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertBoolean(enabled);
         wasm.chart_setAnimationEnabled(this.__wbg_ptr, enabled);
     }
     /**
@@ -900,6 +1078,8 @@ export class Chart {
      * @param {any} style
      */
     setCandlestickStyle(style) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setCandlestickStyle(this.__wbg_ptr, style);
     }
     /**
@@ -907,6 +1087,8 @@ export class Chart {
      * @returns {string | undefined}
      */
     textEditorSelection() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_textEditorSelection(this.__wbg_ptr);
         let v1;
         if (ret[0] !== 0) {
@@ -922,6 +1104,8 @@ export class Chart {
      * @returns {any}
      */
     annotationProperties(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_annotationProperties(this.__wbg_ptr, ptr0, len0);
@@ -932,6 +1116,8 @@ export class Chart {
      * @returns {any}
      */
     getCandlestickConfig() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_getCandlestickConfig(this.__wbg_ptr);
         return ret;
     }
@@ -940,6 +1126,8 @@ export class Chart {
      * @returns {boolean}
      */
     lastPriceLineVisible() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_lastPriceLineVisible(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -949,6 +1137,8 @@ export class Chart {
      * @param {number} ms
      */
     setAnimationDuration(ms) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setAnimationDuration(this.__wbg_ptr, ms);
     }
     /**
@@ -962,6 +1152,8 @@ export class Chart {
      * @returns {boolean}
      */
     setAnnotationDefault(tool_id, json) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(tool_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_setAnnotationDefault(this.__wbg_ptr, ptr0, len0, json);
@@ -973,12 +1165,16 @@ export class Chart {
      * @param {any} config
      */
     setCandlestickConfig(config) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setCandlestickConfig(this.__wbg_ptr, config);
     }
     /**
      * Cut the selected annotation: copy to clipboard then delete it.
      */
     cutSelectedAnnotation() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_cutSelectedAnnotation(this.__wbg_ptr);
     }
     /**
@@ -989,6 +1185,8 @@ export class Chart {
      * @returns {any}
      */
     getAnnotationProperty(id, name) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ptr1 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -1003,6 +1201,8 @@ export class Chart {
      * @returns {any}
      */
     scriptInputsEffective(tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scriptInputsEffective(this.__wbg_ptr, tag);
         return ret;
     }
@@ -1017,6 +1217,8 @@ export class Chart {
      * @returns {boolean}
      */
     setAnnotationProperty(id, name, value) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ptr1 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -1028,12 +1230,16 @@ export class Chart {
      * Remove all system annotations.
      */
     clearSystemAnnotations() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_clearSystemAnnotations(this.__wbg_ptr);
     }
     /**
      * Copy the selected annotation to the internal clipboard.
      */
     copySelectedAnnotation() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_copySelectedAnnotation(this.__wbg_ptr);
     }
     /**
@@ -1041,6 +1247,8 @@ export class Chart {
      * all vertices).
      */
     finalizePendingDrawing() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_finalizePendingDrawing(this.__wbg_ptr);
     }
     /**
@@ -1049,6 +1257,8 @@ export class Chart {
      * @returns {any}
      */
     getCandlestickProperty(name) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_getCandlestickProperty(this.__wbg_ptr, ptr0, len0);
@@ -1059,6 +1269,8 @@ export class Chart {
      * @returns {boolean}
      */
     hasClipboardAnnotation() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_hasClipboardAnnotation(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -1068,6 +1280,8 @@ export class Chart {
      * @returns {boolean}
      */
     removeSystemAnnotation(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_removeSystemAnnotation(this.__wbg_ptr, ptr0, len0);
@@ -1078,6 +1292,8 @@ export class Chart {
      * style.
      */
     resetCandlestickConfig() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_resetCandlestickConfig(this.__wbg_ptr);
     }
     /**
@@ -1088,6 +1304,8 @@ export class Chart {
      * @returns {boolean}
      */
     setCandlestickProperty(name, value) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_setCandlestickProperty(this.__wbg_ptr, ptr0, len0, value);
@@ -1100,6 +1318,8 @@ export class Chart {
      * @returns {boolean}
      */
     updateSystemAnnotation(id, spec) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_updateSystemAnnotation(this.__wbg_ptr, ptr0, len0, spec);
@@ -1111,12 +1331,17 @@ export class Chart {
      * @param {boolean} visible
      */
     setLastPriceLineVisible(visible) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertBoolean(visible);
         wasm.chart_setLastPriceLineVisible(this.__wbg_ptr, visible);
     }
     /**
      * Delete the currently selected annotation.
      */
     deleteSelectedAnnotation() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_deleteSelectedAnnotation(this.__wbg_ptr);
     }
     /**
@@ -1124,6 +1349,8 @@ export class Chart {
      * @returns {any}
      */
     getCandlestickProperties() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_getCandlestickProperties(this.__wbg_ptr);
         return ret;
     }
@@ -1135,6 +1362,8 @@ export class Chart {
      * @returns {boolean}
      */
     resetAnnotationToDefault(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_resetAnnotationToDefault(this.__wbg_ptr, ptr0, len0);
@@ -1146,6 +1375,8 @@ export class Chart {
      * @returns {any}
      */
     selectedAnnotationBounds() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_selectedAnnotationBounds(this.__wbg_ptr);
         return ret;
     }
@@ -1157,6 +1388,8 @@ export class Chart {
      * @param {string} action_id
      */
     dispatchContextMenuAction(action_id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(action_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_dispatchContextMenuAction(this.__wbg_ptr, ptr0, len0);
@@ -1168,6 +1401,8 @@ export class Chart {
      * @returns {any}
      */
     annotationControlPointFlags(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_annotationControlPointFlags(this.__wbg_ptr, ptr0, len0);
@@ -1177,6 +1412,8 @@ export class Chart {
      * Move the selected annotation to the bottom of the Z-order.
      */
     sendSelectedAnnotationToBack() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_sendSelectedAnnotationToBack(this.__wbg_ptr);
     }
     /**
@@ -1185,12 +1422,16 @@ export class Chart {
      * Locked annotations cannot be moved or resized by the user.
      */
     toggleSelectedAnnotationLock() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_toggleSelectedAnnotationLock(this.__wbg_ptr);
     }
     /**
      * Move the selected annotation to the top of the Z-order.
      */
     bringSelectedAnnotationToFront() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_bringSelectedAnnotationToFront(this.__wbg_ptr);
     }
     /**
@@ -1198,6 +1439,8 @@ export class Chart {
      * @returns {boolean}
      */
     selectedAnnotationIsHighlighter() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_selectedAnnotationIsHighlighter(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -1231,6 +1474,8 @@ export class Chart {
      * @returns {boolean}
      */
     redo() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_redo(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -1239,6 +1484,8 @@ export class Chart {
      * @returns {boolean}
      */
     undo() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_undo(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -1250,6 +1497,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_locale(this.__wbg_ptr);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -1265,6 +1514,8 @@ export class Chart {
      * nothing at rest.
      */
     onTick() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onTick(this.__wbg_ptr);
     }
     /**
@@ -1273,6 +1524,8 @@ export class Chart {
      * @param {any} element
      */
     select(element) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_select(this.__wbg_ptr, element);
     }
     /**
@@ -1283,6 +1536,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_symbol(this.__wbg_ptr);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -1297,6 +1552,8 @@ export class Chart {
      * @returns {any}
      */
     tagFor(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_tagFor(this.__wbg_ptr, ptr0, len0);
@@ -1307,6 +1564,8 @@ export class Chart {
      * @returns {boolean}
      */
     canRedo() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_canRedo(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -1315,6 +1574,8 @@ export class Chart {
      * @returns {boolean}
      */
     canUndo() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_canUndo(this.__wbg_ptr);
         return ret !== 0;
     }
@@ -1328,6 +1589,8 @@ export class Chart {
      * @returns {any}
      */
     hitTest(x, y) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_hitTest(this.__wbg_ptr, x, y);
         return ret;
     }
@@ -1342,8 +1605,11 @@ export class Chart {
      * @returns {boolean}
      */
     keyDown(key, mods) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
+        _assertNum(mods);
         const ret = wasm.chart_keyDown(this.__wbg_ptr, ptr0, len0, mods);
         return ret !== 0;
     }
@@ -1355,6 +1621,8 @@ export class Chart {
      * @param {number} cy
      */
     onPinch(scale, cx, cy) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onPinch(this.__wbg_ptr, scale, cx, cy);
     }
     /**
@@ -1367,6 +1635,8 @@ export class Chart {
      * @param {number} anchor_x
      */
     onWheel(delta, anchor_x) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onWheel(this.__wbg_ptr, delta, anchor_x);
     }
     /**
@@ -1374,6 +1644,8 @@ export class Chart {
      * @returns {any}
      */
     scripts() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_scripts(this.__wbg_ptr);
         return ret;
     }
@@ -1387,6 +1659,8 @@ export class Chart {
      * @returns {boolean}
      */
     setTool(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.chart_setTool(this.__wbg_ptr, ptr0, len0);
@@ -1397,6 +1671,8 @@ export class Chart {
      * @returns {number}
      */
     barCount() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_barCount(this.__wbg_ptr);
         return ret;
     }
@@ -1412,6 +1688,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_cursorAt(this.__wbg_ptr, x, y);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -1425,6 +1703,8 @@ export class Chart {
      * @returns {number}
      */
     cyqWidth() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_cyqWidth(this.__wbg_ptr);
         return ret;
     }
@@ -1438,6 +1718,8 @@ export class Chart {
      * @param {number} h
      */
     onResize(w, h) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onResize(this.__wbg_ptr, w, h);
     }
     /**
@@ -1447,6 +1729,8 @@ export class Chart {
      * @param {number} dy
      */
     onScroll(dx, dy) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_onScroll(this.__wbg_ptr, dx, dy);
     }
     /**
@@ -1456,6 +1740,8 @@ export class Chart {
      * @param {any} theme
      */
     setTheme(theme) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setTheme(this.__wbg_ptr, theme);
     }
     /**
@@ -1476,6 +1762,8 @@ export class Chart {
      * @returns {Promise<any>}
      */
     addScript(script, tag) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_addScript(this.__wbg_ptr, script, tag);
         return ret;
     }
@@ -1485,6 +1773,8 @@ export class Chart {
      * Commits any in-progress IME composition and exits text-editing mode.
      */
     focusLost() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_focusLost(this.__wbg_ptr);
     }
     /**
@@ -1493,6 +1783,8 @@ export class Chart {
      * @returns {any}
      */
     getMagnet() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_getMagnet(this.__wbg_ptr);
         return ret;
     }
@@ -1509,6 +1801,8 @@ export class Chart {
      * @returns {any}
      */
     pollEvent() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_pollEvent(this.__wbg_ptr);
         return ret;
     }
@@ -1517,6 +1811,8 @@ export class Chart {
      * @returns {any}
      */
     selection() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_selection(this.__wbg_ptr);
         return ret;
     }
@@ -1527,6 +1823,8 @@ export class Chart {
      * @param {string} locale
      */
     setLocale(locale) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(locale, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_setLocale(this.__wbg_ptr, ptr0, len0);
@@ -1536,6 +1834,8 @@ export class Chart {
      * @param {any} json
      */
     setMagnet(json) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.chart_setMagnet(this.__wbg_ptr, json);
     }
     /**
@@ -1543,6 +1843,8 @@ export class Chart {
      * @param {string} symbol
      */
     setSymbol(symbol) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(symbol, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_setSymbol(this.__wbg_ptr, ptr0, len0);
@@ -1554,6 +1856,8 @@ export class Chart {
      * @param {string} text
      */
     textInput(text) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.chart_textInput(this.__wbg_ptr, ptr0, len0);
@@ -1566,6 +1870,8 @@ export class Chart {
         let deferred1_0;
         let deferred1_1;
         try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            _assertNum(this.__wbg_ptr);
             const ret = wasm.chart_timeframe(this.__wbg_ptr);
             deferred1_0 = ret[0];
             deferred1_1 = ret[1];
@@ -1579,6 +1885,8 @@ export class Chart {
      * @returns {number}
      */
     totalBars() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_totalBars(this.__wbg_ptr);
         return ret >>> 0;
     }
@@ -1587,6 +1895,8 @@ export class Chart {
      * @returns {number}
      */
     yAxisMode() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.chart_yAxisMode(this.__wbg_ptr);
         return ret;
     }
@@ -1607,6 +1917,10 @@ const ImageRegistryFinalization = (typeof FinalizationRegistry === 'undefined')
  * repaint — the new state is picked up on the next render.
  */
 export class ImageRegistry {
+
+    constructor() {
+        throw new Error('cannot invoke `new` directly');
+    }
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
@@ -1633,6 +1947,9 @@ export class ImageRegistry {
      * @param {HTMLImageElement} img
      */
     add(id, img) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(id);
         wasm.imageregistry_add(this.__wbg_ptr, id, img);
     }
     /**
@@ -1641,6 +1958,9 @@ export class ImageRegistry {
      * @param {number} id
      */
     remove(id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(id);
         wasm.imageregistry_remove(this.__wbg_ptr, id);
     }
 }
@@ -1651,6 +1971,10 @@ const IntoUnderlyingByteSourceFinalization = (typeof FinalizationRegistry === 'u
     : new FinalizationRegistry(ptr => wasm.__wbg_intounderlyingbytesource_free(ptr >>> 0, 1));
 
 export class IntoUnderlyingByteSource {
+
+    constructor() {
+        throw new Error('cannot invoke `new` directly');
+    }
 
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
@@ -1667,6 +1991,8 @@ export class IntoUnderlyingByteSource {
      * @returns {number}
      */
     get autoAllocateChunkSize() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.intounderlyingbytesource_autoAllocateChunkSize(this.__wbg_ptr);
         return ret >>> 0;
     }
@@ -1675,6 +2001,8 @@ export class IntoUnderlyingByteSource {
      * @returns {Promise<any>}
      */
     pull(controller) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.intounderlyingbytesource_pull(this.__wbg_ptr, controller);
         return ret;
     }
@@ -1682,17 +2010,23 @@ export class IntoUnderlyingByteSource {
      * @param {ReadableByteStreamController} controller
      */
     start(controller) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.intounderlyingbytesource_start(this.__wbg_ptr, controller);
     }
     /**
      * @returns {ReadableStreamType}
      */
     get type() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.intounderlyingbytesource_type(this.__wbg_ptr);
         return __wbindgen_enum_ReadableStreamType[ret];
     }
     cancel() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         const ptr = this.__destroy_into_raw();
+        _assertNum(ptr);
         wasm.intounderlyingbytesource_cancel(ptr);
     }
 }
@@ -1703,6 +2037,10 @@ const IntoUnderlyingSinkFinalization = (typeof FinalizationRegistry === 'undefin
     : new FinalizationRegistry(ptr => wasm.__wbg_intounderlyingsink_free(ptr >>> 0, 1));
 
 export class IntoUnderlyingSink {
+
+    constructor() {
+        throw new Error('cannot invoke `new` directly');
+    }
 
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
@@ -1720,7 +2058,9 @@ export class IntoUnderlyingSink {
      * @returns {Promise<any>}
      */
     abort(reason) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         const ptr = this.__destroy_into_raw();
+        _assertNum(ptr);
         const ret = wasm.intounderlyingsink_abort(ptr, reason);
         return ret;
     }
@@ -1728,7 +2068,9 @@ export class IntoUnderlyingSink {
      * @returns {Promise<any>}
      */
     close() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         const ptr = this.__destroy_into_raw();
+        _assertNum(ptr);
         const ret = wasm.intounderlyingsink_close(ptr);
         return ret;
     }
@@ -1737,6 +2079,8 @@ export class IntoUnderlyingSink {
      * @returns {Promise<any>}
      */
     write(chunk) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.intounderlyingsink_write(this.__wbg_ptr, chunk);
         return ret;
     }
@@ -1748,6 +2092,10 @@ const IntoUnderlyingSourceFinalization = (typeof FinalizationRegistry === 'undef
     : new FinalizationRegistry(ptr => wasm.__wbg_intounderlyingsource_free(ptr >>> 0, 1));
 
 export class IntoUnderlyingSource {
+
+    constructor() {
+        throw new Error('cannot invoke `new` directly');
+    }
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
@@ -1773,11 +2121,15 @@ export class IntoUnderlyingSource {
      * @returns {Promise<any>}
      */
     pull(controller) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.intounderlyingsource_pull(this.__wbg_ptr, controller);
         return ret;
     }
     cancel() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         const ptr = this.__destroy_into_raw();
+        _assertNum(ptr);
         wasm.intounderlyingsource_cancel(ptr);
     }
 }
@@ -1793,6 +2145,10 @@ const LocalChartHandleFinalization = (typeof FinalizationRegistry === 'undefined
  * Call its methods to extend history or dynamically add/remove scripts.
  */
 export class LocalChartHandle {
+
+    constructor() {
+        throw new Error('cannot invoke `new` directly');
+    }
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
@@ -1823,6 +2179,8 @@ export class LocalChartHandle {
      * @returns {number}
      */
     addScript(descriptor) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ret = wasm.localcharthandle_addScript(this.__wbg_ptr, descriptor);
         if (ret[2]) {
             throw takeFromExternrefTable0(ret[1]);
@@ -1834,6 +2192,8 @@ export class LocalChartHandle {
      * @param {number} script_id
      */
     removeScript(script_id) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         wasm.localcharthandle_removeScript(this.__wbg_ptr, script_id);
     }
     /**
@@ -1845,6 +2205,9 @@ export class LocalChartHandle {
      * @returns {boolean}
      */
     extendHistory(bars_back) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        _assertNum(bars_back);
         const ret = wasm.localcharthandle_extendHistory(this.__wbg_ptr, bars_back);
         return ret !== 0;
     }
@@ -1888,6 +2251,8 @@ export class LocalChartProvider {
      * @returns {any}
      */
     chartStream(symbol, tf, request) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
         const ptr0 = passStringToWasm0(symbol, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         const ptr1 = passStringToWasm0(tf, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -1949,30 +2314,36 @@ async function __wbg_load(module, imports) {
 function __wbg_get_imports() {
     const imports = {};
     imports.wbg = {};
-    imports.wbg.__wbg_Error_e83987f665cf5504 = function(arg0, arg1) {
+    imports.wbg.__wbg_Error_e83987f665cf5504 = function() { return logError(function (arg0, arg1) {
         const ret = Error(getStringFromWasm0(arg0, arg1));
         return ret;
-    };
-    imports.wbg.__wbg_Number_bb48ca12f395cd08 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_Number_bb48ca12f395cd08 = function() { return logError(function (arg0) {
         const ret = Number(arg0);
         return ret;
-    };
-    imports.wbg.__wbg_String_8f0eb39a4a4c2f66 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_String_8f0eb39a4a4c2f66 = function() { return logError(function (arg0, arg1) {
         const ret = String(arg1);
         const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len1 = WASM_VECTOR_LEN;
         getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
-    };
+    }, arguments) };
     imports.wbg.__wbg___wbindgen_bigint_get_as_i64_f3ebc5a755000afd = function(arg0, arg1) {
         const v = arg1;
         const ret = typeof(v) === 'bigint' ? v : undefined;
+        if (!isLikeNone(ret)) {
+            _assertBigInt(ret);
+        }
         getDataViewMemory0().setBigInt64(arg0 + 8 * 1, isLikeNone(ret) ? BigInt(0) : ret, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, !isLikeNone(ret), true);
     };
     imports.wbg.__wbg___wbindgen_boolean_get_6d5a1ee65bab5f68 = function(arg0) {
         const v = arg0;
         const ret = typeof(v) === 'boolean' ? v : undefined;
+        if (!isLikeNone(ret)) {
+            _assertBoolean(ret);
+        }
         return isLikeNone(ret) ? 0xFFFFFF : ret ? 1 : 0;
     };
     imports.wbg.__wbg___wbindgen_debug_string_df47ffb5e35e6763 = function(arg0, arg1) {
@@ -1984,48 +2355,61 @@ function __wbg_get_imports() {
     };
     imports.wbg.__wbg___wbindgen_in_bb933bd9e1b3bc0f = function(arg0, arg1) {
         const ret = arg0 in arg1;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_bigint_cb320707dcd35f0b = function(arg0) {
         const ret = typeof(arg0) === 'bigint';
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_falsy_46b8d2f2aba49112 = function(arg0) {
         const ret = !arg0;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_function_ee8a6c5833c90377 = function(arg0) {
         const ret = typeof(arg0) === 'function';
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_null_5e69f72e906cc57c = function(arg0) {
         const ret = arg0 === null;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_object_c818261d21f283a4 = function(arg0) {
         const val = arg0;
         const ret = typeof(val) === 'object' && val !== null;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_string_fbb76cb2940daafd = function(arg0) {
         const ret = typeof(arg0) === 'string';
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_is_undefined_2d472862bd29a478 = function(arg0) {
         const ret = arg0 === undefined;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_jsval_eq_6b13ab83478b1c50 = function(arg0, arg1) {
         const ret = arg0 === arg1;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_jsval_loose_eq_b664b38a2f582147 = function(arg0, arg1) {
         const ret = arg0 == arg1;
+        _assertBoolean(ret);
         return ret;
     };
     imports.wbg.__wbg___wbindgen_number_get_a20bf9b85341449d = function(arg0, arg1) {
         const obj = arg1;
         const ret = typeof(obj) === 'number' ? obj : undefined;
+        if (!isLikeNone(ret)) {
+            _assertNum(ret);
+        }
         getDataViewMemory0().setFloat64(arg0 + 8 * 1, isLikeNone(ret) ? 0 : ret, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, !isLikeNone(ret), true);
     };
@@ -2040,9 +2424,9 @@ function __wbg_get_imports() {
     imports.wbg.__wbg___wbindgen_throw_b855445ff6a94295 = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbg__wbg_cb_unref_2454a539ea5790d9 = function(arg0) {
+    imports.wbg.__wbg__wbg_cb_unref_2454a539ea5790d9 = function() { return logError(function (arg0) {
         arg0._wbg_cb_unref();
-    };
+    }, arguments) };
     imports.wbg.__wbg_addColorStop_01bc91dc3b784328 = function() { return handleError(function (arg0, arg1, arg2, arg3) {
         arg0.addColorStop(arg1, getStringFromWasm0(arg2, arg3));
     }, arguments) };
@@ -2052,36 +2436,38 @@ function __wbg_get_imports() {
     imports.wbg.__wbg_arc_118b8c012e3e1f2c = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
         arg0.arc(arg1, arg2, arg3, arg4, arg5, arg6 !== 0);
     }, arguments) };
-    imports.wbg.__wbg_asyncIterator_9f821a9caebfa811 = function() {
+    imports.wbg.__wbg_asyncIterator_9f821a9caebfa811 = function() { return logError(function () {
         const ret = Symbol.asyncIterator;
         return ret;
-    };
-    imports.wbg.__wbg_beginPath_ae4169e263573dcd = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_beginPath_ae4169e263573dcd = function() { return logError(function (arg0) {
         arg0.beginPath();
-    };
-    imports.wbg.__wbg_bezierCurveTo_3ad512ab3d4a1424 = function(arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
+    }, arguments) };
+    imports.wbg.__wbg_bezierCurveTo_3ad512ab3d4a1424 = function() { return logError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
         arg0.bezierCurveTo(arg1, arg2, arg3, arg4, arg5, arg6);
-    };
-    imports.wbg.__wbg_bind_cbccb5ef8521a9ce = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_bind_cbccb5ef8521a9ce = function() { return logError(function (arg0, arg1) {
         const ret = arg0.bind(arg1);
         return ret;
-    };
-    imports.wbg.__wbg_buffer_ccc4520b36d3ccf4 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_buffer_ccc4520b36d3ccf4 = function() { return logError(function (arg0) {
         const ret = arg0.buffer;
         return ret;
-    };
-    imports.wbg.__wbg_byobRequest_2344e6975f27456e = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_byobRequest_2344e6975f27456e = function() { return logError(function (arg0) {
         const ret = arg0.byobRequest;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
-    imports.wbg.__wbg_byteLength_bcd42e4025299788 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_byteLength_bcd42e4025299788 = function() { return logError(function (arg0) {
         const ret = arg0.byteLength;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_byteOffset_ca3a6cf7944b364b = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_byteOffset_ca3a6cf7944b364b = function() { return logError(function (arg0) {
         const ret = arg0.byteOffset;
+        _assertNum(ret);
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_call_525440f72fbfc0ea = function() { return handleError(function (arg0, arg1, arg2) {
         const ret = arg0.call(arg1, arg2);
         return ret;
@@ -2090,53 +2476,59 @@ function __wbg_get_imports() {
         const ret = arg0.call(arg1);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_candlesticks_50534c5ba1ef86d8 = function() { return handleError(function (arg0, arg1) {
-        const ret = arg0.candlesticks(arg1);
+    imports.wbg.__wbg_candlesticks_4e3aac72f23ebb90 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
+        const ret = arg0.candlesticks(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), arg5, arg6, arg7);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_canvas_2e1c9769eb5260f2 = function(arg0) {
+    imports.wbg.__wbg_canvas_2e1c9769eb5260f2 = function() { return logError(function (arg0) {
         const ret = arg0.canvas;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
+    }, arguments) };
     imports.wbg.__wbg_chartStream_18f70458e226a4be = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5) {
         const ret = arg0.chartStream(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), arg5);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_clearRect_155b2e12f737565e = function(arg0, arg1, arg2, arg3, arg4) {
+    imports.wbg.__wbg_clearRect_155b2e12f737565e = function() { return logError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.clearRect(arg1, arg2, arg3, arg4);
-    };
-    imports.wbg.__wbg_clientHeight_03b616d39b2ab49d = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_clientHeight_03b616d39b2ab49d = function() { return logError(function (arg0) {
         const ret = arg0.clientHeight;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_clientWidth_8379f04ef4ca9040 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_clientWidth_8379f04ef4ca9040 = function() { return logError(function (arg0) {
         const ret = arg0.clientWidth;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_clip_7858b458fb895725 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_clip_7858b458fb895725 = function() { return logError(function (arg0) {
         arg0.clip();
-    };
-    imports.wbg.__wbg_clipboard_83c63b95503bfec1 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_clipboard_83c63b95503bfec1 = function() { return logError(function (arg0) {
         const ret = arg0.clipboard;
         return ret;
-    };
-    imports.wbg.__wbg_closePath_bc64fd4702f5fc60 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_closePath_bc64fd4702f5fc60 = function() { return logError(function (arg0) {
         arg0.closePath();
-    };
+    }, arguments) };
     imports.wbg.__wbg_close_5a6caed3231b68cd = function() { return handleError(function (arg0) {
         arg0.close();
     }, arguments) };
     imports.wbg.__wbg_close_6956df845478561a = function() { return handleError(function (arg0) {
         arg0.close();
     }, arguments) };
-    imports.wbg.__wbg_codePointAt_01a186303396f7ad = function(arg0, arg1) {
+    imports.wbg.__wbg_codePointAt_01a186303396f7ad = function() { return logError(function (arg0, arg1) {
         const ret = arg0.codePointAt(arg1 >>> 0);
         return ret;
-    };
-    imports.wbg.__wbg_createLinearGradient_65f1563949a5922e = function(arg0, arg1, arg2, arg3, arg4) {
+    }, arguments) };
+    imports.wbg.__wbg_createLinearGradient_65f1563949a5922e = function() { return logError(function (arg0, arg1, arg2, arg3, arg4) {
         const ret = arg0.createLinearGradient(arg1, arg2, arg3, arg4);
         return ret;
-    };
+    }, arguments) };
+    imports.wbg.__wbg_createTask_9ac11a42c24ef284 = function() { return handleError(function (arg0, arg1) {
+        const ret = console.createTask(getStringFromWasm0(arg0, arg1));
+        return ret;
+    }, arguments) };
     imports.wbg.__wbg_currencyRate_0f146deda65752fd = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5) {
         const ret = arg0.currencyRate(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), arg5);
         return ret;
@@ -2145,18 +2537,19 @@ function __wbg_get_imports() {
         const ret = arg0.data(getStringFromWasm0(arg1, arg2), arg3, arg4);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_devicePixelRatio_495c092455fdf6b1 = function(arg0) {
+    imports.wbg.__wbg_devicePixelRatio_495c092455fdf6b1 = function() { return logError(function (arg0) {
         const ret = arg0.devicePixelRatio;
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_dividends_aa9e22a999397534 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5) {
         const ret = arg0.dividends(getStringFromWasm0(arg1, arg2), arg3, arg4, arg5);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_done_2042aa2670fb1db1 = function(arg0) {
+    imports.wbg.__wbg_done_2042aa2670fb1db1 = function() { return logError(function (arg0) {
         const ret = arg0.done;
+        _assertBoolean(ret);
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_drawImage_fd72d17e2c1a11b2 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5) {
         arg0.drawImage(arg1, arg2, arg3, arg4, arg5);
     }, arguments) };
@@ -2171,11 +2564,11 @@ function __wbg_get_imports() {
     imports.wbg.__wbg_enqueue_7b18a650aec77898 = function() { return handleError(function (arg0, arg1) {
         arg0.enqueue(arg1);
     }, arguments) };
-    imports.wbg.__wbg_entries_e171b586f8f6bdbf = function(arg0) {
+    imports.wbg.__wbg_entries_e171b586f8f6bdbf = function() { return logError(function (arg0) {
         const ret = Object.entries(arg0);
         return ret;
-    };
-    imports.wbg.__wbg_error_7534b8e9a36f1ab4 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_error_7534b8e9a36f1ab4 = function() { return logError(function (arg0, arg1) {
         let deferred0_0;
         let deferred0_1;
         try {
@@ -2185,28 +2578,28 @@ function __wbg_get_imports() {
         } finally {
             wasm.__wbindgen_free(deferred0_0, deferred0_1, 1);
         }
-    };
-    imports.wbg.__wbg_fillRect_726041755e54e83d = function(arg0, arg1, arg2, arg3, arg4) {
+    }, arguments) };
+    imports.wbg.__wbg_fillRect_726041755e54e83d = function() { return logError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.fillRect(arg1, arg2, arg3, arg4);
-    };
+    }, arguments) };
     imports.wbg.__wbg_fillText_c2ae7e4487ec82dd = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.fillText(getStringFromWasm0(arg1, arg2), arg3, arg4);
     }, arguments) };
-    imports.wbg.__wbg_fill_c1b94332a3f5eecc = function(arg0) {
+    imports.wbg.__wbg_fill_c1b94332a3f5eecc = function() { return logError(function (arg0) {
         arg0.fill();
-    };
+    }, arguments) };
     imports.wbg.__wbg_financial_9aa3e8b5a72834c4 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) {
         const ret = arg0.financial(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), getStringFromWasm0(arg5, arg6), arg7, arg8);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_fontBoundingBoxAscent_7c61ff1e65fe9106 = function(arg0) {
+    imports.wbg.__wbg_fontBoundingBoxAscent_7c61ff1e65fe9106 = function() { return logError(function (arg0) {
         const ret = arg0.fontBoundingBoxAscent;
         return ret;
-    };
-    imports.wbg.__wbg_fontBoundingBoxDescent_c88cfa4848b49a1e = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_fontBoundingBoxDescent_c88cfa4848b49a1e = function() { return logError(function (arg0) {
         const ret = arg0.fontBoundingBoxDescent;
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_fromCodePoint_a1c5bb992dc05846 = function() { return handleError(function (arg0) {
         const ret = String.fromCodePoint(arg0 >>> 0);
         return ret;
@@ -2215,31 +2608,32 @@ function __wbg_get_imports() {
         const ret = arg0.getContext(getStringFromWasm0(arg1, arg2));
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
     }, arguments) };
-    imports.wbg.__wbg_getTime_14776bfb48a1bff9 = function(arg0) {
+    imports.wbg.__wbg_getTime_14776bfb48a1bff9 = function() { return logError(function (arg0) {
         const ret = arg0.getTime();
         return ret;
-    };
-    imports.wbg.__wbg_get_7bed016f185add81 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_get_7bed016f185add81 = function() { return logError(function (arg0, arg1) {
         const ret = arg0[arg1 >>> 0];
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_get_efcb449f58ec27c2 = function() { return handleError(function (arg0, arg1) {
         const ret = Reflect.get(arg0, arg1);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_get_with_ref_key_1dc361bd10053bfe = function(arg0, arg1) {
+    imports.wbg.__wbg_get_with_ref_key_1dc361bd10053bfe = function() { return logError(function (arg0, arg1) {
         const ret = arg0[arg1];
         return ret;
-    };
-    imports.wbg.__wbg_height_119077665279308c = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_height_119077665279308c = function() { return logError(function (arg0) {
         const ret = arg0.height;
+        _assertNum(ret);
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_historyBarsBefore_1db44eb7117fd155 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
         const ret = arg0.historyBarsBefore(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4), arg5, arg6);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_instanceof_ArrayBuffer_70beb1189ca63b38 = function(arg0) {
+    imports.wbg.__wbg_instanceof_ArrayBuffer_70beb1189ca63b38 = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof ArrayBuffer;
@@ -2247,9 +2641,10 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_instanceof_CanvasRenderingContext2d_c0728747cf1e699c = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_instanceof_CanvasRenderingContext2d_c0728747cf1e699c = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof CanvasRenderingContext2D;
@@ -2257,9 +2652,10 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_instanceof_Map_8579b5e2ab5437c7 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_instanceof_Map_8579b5e2ab5437c7 = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof Map;
@@ -2267,9 +2663,10 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_instanceof_Uint8Array_20c8e73002f7af98 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_instanceof_Uint8Array_20c8e73002f7af98 = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof Uint8Array;
@@ -2277,9 +2674,10 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_instanceof_Window_4846dbb3de56c84c = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_instanceof_Window_4846dbb3de56c84c = function() { return logError(function (arg0) {
         let result;
         try {
             result = arg0 instanceof Window;
@@ -2287,66 +2685,72 @@ function __wbg_get_imports() {
             result = false;
         }
         const ret = result;
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_isArray_96e0af9891d0945d = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_isArray_96e0af9891d0945d = function() { return logError(function (arg0) {
         const ret = Array.isArray(arg0);
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_isSafeInteger_d216eda7911dde36 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_isSafeInteger_d216eda7911dde36 = function() { return logError(function (arg0) {
         const ret = Number.isSafeInteger(arg0);
+        _assertBoolean(ret);
         return ret;
-    };
-    imports.wbg.__wbg_iterator_e5822695327a3c39 = function() {
+    }, arguments) };
+    imports.wbg.__wbg_iterator_e5822695327a3c39 = function() { return logError(function () {
         const ret = Symbol.iterator;
         return ret;
-    };
-    imports.wbg.__wbg_length_69bca3cb64fc8748 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_length_69bca3cb64fc8748 = function() { return logError(function (arg0) {
         const ret = arg0.length;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_length_a95b69f903b746c4 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_length_a95b69f903b746c4 = function() { return logError(function (arg0) {
         const ret = arg0.length;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_length_cdd215e10d9dd507 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_length_cdd215e10d9dd507 = function() { return logError(function (arg0) {
         const ret = arg0.length;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_lineTo_1e83b5f2f38f15f9 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_lineTo_1e83b5f2f38f15f9 = function() { return logError(function (arg0, arg1, arg2) {
         arg0.lineTo(arg1, arg2);
-    };
-    imports.wbg.__wbg_localcharthandle_new = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_localcharthandle_new = function() { return logError(function (arg0) {
         const ret = LocalChartHandle.__wrap(arg0);
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_measureText_d63127eb84829830 = function() { return handleError(function (arg0, arg1, arg2) {
         const ret = arg0.measureText(getStringFromWasm0(arg1, arg2));
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_moveTo_8064f6a508217dcd = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_moveTo_8064f6a508217dcd = function() { return logError(function (arg0, arg1, arg2) {
         arg0.moveTo(arg1, arg2);
-    };
-    imports.wbg.__wbg_navigator_971384882e8ea23a = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_navigator_971384882e8ea23a = function() { return logError(function (arg0) {
         const ret = arg0.navigator;
         return ret;
-    };
-    imports.wbg.__wbg_new_0_f9740686d739025c = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_0_f9740686d739025c = function() { return logError(function () {
         const ret = new Date();
         return ret;
-    };
-    imports.wbg.__wbg_new_1acc0b6eea89d040 = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_1acc0b6eea89d040 = function() { return logError(function () {
         const ret = new Object();
         return ret;
-    };
-    imports.wbg.__wbg_new_3c3d849046688a66 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_new_3c3d849046688a66 = function() { return logError(function (arg0, arg1) {
         try {
             var state0 = {a: arg0, b: arg1};
             var cb0 = (arg0, arg1) => {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____(a, state0.b, arg0, arg1);
+                    return wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___js_sys_bc21cbaec00f7bf7___Function__js_sys_bc21cbaec00f7bf7___Function_____(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -2356,250 +2760,272 @@ function __wbg_get_imports() {
         } finally {
             state0.a = state0.b = 0;
         }
-    };
-    imports.wbg.__wbg_new_5a79be3ab53b8aa5 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_new_5a79be3ab53b8aa5 = function() { return logError(function (arg0) {
         const ret = new Uint8Array(arg0);
         return ret;
-    };
-    imports.wbg.__wbg_new_68651c719dcda04e = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_68651c719dcda04e = function() { return logError(function () {
         const ret = new Map();
         return ret;
-    };
-    imports.wbg.__wbg_new_8a6f238a6ece86ea = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_8a6f238a6ece86ea = function() { return logError(function () {
         const ret = new Error();
         return ret;
-    };
-    imports.wbg.__wbg_new_a7442b4b19c1a356 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_new_a7442b4b19c1a356 = function() { return logError(function (arg0, arg1) {
         const ret = new Error(getStringFromWasm0(arg0, arg1));
         return ret;
-    };
-    imports.wbg.__wbg_new_e17d9f43105b08be = function() {
+    }, arguments) };
+    imports.wbg.__wbg_new_e17d9f43105b08be = function() { return logError(function () {
         const ret = new Array();
         return ret;
-    };
-    imports.wbg.__wbg_new_no_args_ee98eee5275000a4 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_new_no_args_ee98eee5275000a4 = function() { return logError(function (arg0, arg1) {
         const ret = new Function(getStringFromWasm0(arg0, arg1));
         return ret;
-    };
-    imports.wbg.__wbg_new_with_byte_offset_and_length_46e3e6a5e9f9e89b = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_new_with_byte_offset_and_length_46e3e6a5e9f9e89b = function() { return logError(function (arg0, arg1, arg2) {
         const ret = new Uint8Array(arg0, arg1 >>> 0, arg2 >>> 0);
         return ret;
-    };
-    imports.wbg.__wbg_new_with_into_underlying_source_b47f6a6a596a7f24 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_new_with_into_underlying_source_b47f6a6a596a7f24 = function() { return logError(function (arg0, arg1) {
         const ret = new ReadableStream(IntoUnderlyingSource.__wrap(arg0), arg1);
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_next_020810e0ae8ebcb0 = function() { return handleError(function (arg0) {
         const ret = arg0.next();
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_next_2c826fe5dfec6b6a = function(arg0) {
+    imports.wbg.__wbg_next_2c826fe5dfec6b6a = function() { return logError(function (arg0) {
         const ret = arg0.next;
         return ret;
-    };
-    imports.wbg.__wbg_now_793306c526e2e3b6 = function() {
+    }, arguments) };
+    imports.wbg.__wbg_now_793306c526e2e3b6 = function() { return logError(function () {
         const ret = Date.now();
         return ret;
-    };
-    imports.wbg.__wbg_prototypesetcall_2a6620b6922694b2 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_prototypesetcall_2a6620b6922694b2 = function() { return logError(function (arg0, arg1, arg2) {
         Uint8Array.prototype.set.call(getArrayU8FromWasm0(arg0, arg1), arg2);
-    };
-    imports.wbg.__wbg_push_df81a39d04db858c = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_push_df81a39d04db858c = function() { return logError(function (arg0, arg1) {
         const ret = arg0.push(arg1);
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_quadraticCurveTo_fc736a90d9e7a806 = function(arg0, arg1, arg2, arg3, arg4) {
+    }, arguments) };
+    imports.wbg.__wbg_quadraticCurveTo_fc736a90d9e7a806 = function() { return logError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.quadraticCurveTo(arg1, arg2, arg3, arg4);
-    };
-    imports.wbg.__wbg_queueMicrotask_34d692c25c47d05b = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_queueMicrotask_34d692c25c47d05b = function() { return logError(function (arg0) {
         const ret = arg0.queueMicrotask;
         return ret;
-    };
-    imports.wbg.__wbg_queueMicrotask_9d76cacb20c84d58 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_queueMicrotask_9d76cacb20c84d58 = function() { return logError(function (arg0) {
         queueMicrotask(arg0);
-    };
-    imports.wbg.__wbg_readText_9f2fda3ca7a307d8 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_readText_9f2fda3ca7a307d8 = function() { return logError(function (arg0) {
         const ret = arg0.readText();
         return ret;
-    };
-    imports.wbg.__wbg_rect_d2677b1857072f26 = function(arg0, arg1, arg2, arg3, arg4) {
+    }, arguments) };
+    imports.wbg.__wbg_rect_d2677b1857072f26 = function() { return logError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.rect(arg1, arg2, arg3, arg4);
-    };
-    imports.wbg.__wbg_resolve_caf97c30b83f7053 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_resolve_caf97c30b83f7053 = function() { return logError(function (arg0) {
         const ret = Promise.resolve(arg0);
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbg_respond_0f4dbf5386f5c73e = function() { return handleError(function (arg0, arg1) {
         arg0.respond(arg1 >>> 0);
     }, arguments) };
-    imports.wbg.__wbg_restore_9e6a0f2c35799ecd = function(arg0) {
+    imports.wbg.__wbg_restore_9e6a0f2c35799ecd = function() { return logError(function (arg0) {
         arg0.restore();
-    };
-    imports.wbg.__wbg_save_62f4925fcc246f6c = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_run_e5e1ecccf06974b2 = function() { return logError(function (arg0, arg1, arg2) {
+        try {
+            var state0 = {a: arg1, b: arg2};
+            var cb0 = () => {
+                const a = state0.a;
+                state0.a = 0;
+                try {
+                    return wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___bool_(a, state0.b, );
+                } finally {
+                    state0.a = a;
+                }
+            };
+            const ret = arg0.run(cb0);
+            _assertBoolean(ret);
+            return ret;
+        } finally {
+            state0.a = state0.b = 0;
+        }
+    }, arguments) };
+    imports.wbg.__wbg_save_62f4925fcc246f6c = function() { return logError(function (arg0) {
         arg0.save();
-    };
+    }, arguments) };
     imports.wbg.__wbg_setLineDash_6e29ac9fc9f5947f = function() { return handleError(function (arg0, arg1) {
         arg0.setLineDash(arg1);
     }, arguments) };
     imports.wbg.__wbg_setTransform_e4c30e2f7ea8856b = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
         arg0.setTransform(arg1, arg2, arg3, arg4, arg5, arg6);
     }, arguments) };
-    imports.wbg.__wbg_set_3f1d0b984ed272ed = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_set_3f1d0b984ed272ed = function() { return logError(function (arg0, arg1, arg2) {
         arg0[arg1] = arg2;
-    };
-    imports.wbg.__wbg_set_907fb406c34a251d = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_907fb406c34a251d = function() { return logError(function (arg0, arg1, arg2) {
         const ret = arg0.set(arg1, arg2);
         return ret;
-    };
-    imports.wbg.__wbg_set_9e6516df7b7d0f19 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_9e6516df7b7d0f19 = function() { return logError(function (arg0, arg1, arg2) {
         arg0.set(getArrayU8FromWasm0(arg1, arg2));
-    };
-    imports.wbg.__wbg_set_c213c871859d6500 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_c213c871859d6500 = function() { return logError(function (arg0, arg1, arg2) {
         arg0[arg1 >>> 0] = arg2;
-    };
+    }, arguments) };
     imports.wbg.__wbg_set_c2abbebe8b9ebee1 = function() { return handleError(function (arg0, arg1, arg2) {
         const ret = Reflect.set(arg0, arg1, arg2);
+        _assertBoolean(ret);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_set_fillStyle_09ee3f808766cffd = function(arg0, arg1) {
+    imports.wbg.__wbg_set_fillStyle_09ee3f808766cffd = function() { return logError(function (arg0, arg1) {
         arg0.fillStyle = arg1;
-    };
-    imports.wbg.__wbg_set_fillStyle_c41ec913f9f22a0c = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_fillStyle_c41ec913f9f22a0c = function() { return logError(function (arg0, arg1, arg2) {
         arg0.fillStyle = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_font_bd9a29cab7b9db0c = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_font_bd9a29cab7b9db0c = function() { return logError(function (arg0, arg1, arg2) {
         arg0.font = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_globalAlpha_35c4e27c8e566368 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_set_globalAlpha_35c4e27c8e566368 = function() { return logError(function (arg0, arg1) {
         arg0.globalAlpha = arg1;
-    };
-    imports.wbg.__wbg_set_height_89110f48f7fd0817 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_set_height_89110f48f7fd0817 = function() { return logError(function (arg0, arg1) {
         arg0.height = arg1 >>> 0;
-    };
-    imports.wbg.__wbg_set_high_water_mark_5142ac1d2fb46365 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_set_high_water_mark_5142ac1d2fb46365 = function() { return logError(function (arg0, arg1) {
         arg0.highWaterMark = arg1;
-    };
-    imports.wbg.__wbg_set_lineCap_db733800cda798fc = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_lineCap_db733800cda798fc = function() { return logError(function (arg0, arg1, arg2) {
         arg0.lineCap = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_lineJoin_ea17f429b111ef34 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_lineJoin_ea17f429b111ef34 = function() { return logError(function (arg0, arg1, arg2) {
         arg0.lineJoin = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_lineWidth_4059ac6bb1d807f8 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_set_lineWidth_4059ac6bb1d807f8 = function() { return logError(function (arg0, arg1) {
         arg0.lineWidth = arg1;
-    };
-    imports.wbg.__wbg_set_strokeStyle_2c57fc5e26224a64 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_set_strokeStyle_2c57fc5e26224a64 = function() { return logError(function (arg0, arg1) {
         arg0.strokeStyle = arg1;
-    };
-    imports.wbg.__wbg_set_strokeStyle_475a0c2a522e1c7e = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_strokeStyle_475a0c2a522e1c7e = function() { return logError(function (arg0, arg1, arg2) {
         arg0.strokeStyle = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_textAlign_e2202d9a7471d2d0 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_textAlign_e2202d9a7471d2d0 = function() { return logError(function (arg0, arg1, arg2) {
         arg0.textAlign = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_textBaseline_73dbeaf15e2bb1bf = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_set_textBaseline_73dbeaf15e2bb1bf = function() { return logError(function (arg0, arg1, arg2) {
         arg0.textBaseline = getStringFromWasm0(arg1, arg2);
-    };
-    imports.wbg.__wbg_set_width_dcc02c61dd01cff6 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbg_set_width_dcc02c61dd01cff6 = function() { return logError(function (arg0, arg1) {
         arg0.width = arg1 >>> 0;
-    };
+    }, arguments) };
     imports.wbg.__wbg_splits_60929f645a2738c3 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
         const ret = arg0.splits(getStringFromWasm0(arg1, arg2), arg3, arg4);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_stack_0ed75d68575b0f3c = function(arg0, arg1) {
+    imports.wbg.__wbg_stack_0ed75d68575b0f3c = function() { return logError(function (arg0, arg1) {
         const ret = arg1.stack;
         const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len1 = WASM_VECTOR_LEN;
         getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
-    };
-    imports.wbg.__wbg_static_accessor_GLOBAL_89e1d9ac6a1b250e = function() {
+    }, arguments) };
+    imports.wbg.__wbg_static_accessor_GLOBAL_89e1d9ac6a1b250e = function() { return logError(function () {
         const ret = typeof global === 'undefined' ? null : global;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
-    imports.wbg.__wbg_static_accessor_GLOBAL_THIS_8b530f326a9e48ac = function() {
+    }, arguments) };
+    imports.wbg.__wbg_static_accessor_GLOBAL_THIS_8b530f326a9e48ac = function() { return logError(function () {
         const ret = typeof globalThis === 'undefined' ? null : globalThis;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
-    imports.wbg.__wbg_static_accessor_SELF_6fdf4b64710cc91b = function() {
+    }, arguments) };
+    imports.wbg.__wbg_static_accessor_SELF_6fdf4b64710cc91b = function() { return logError(function () {
         const ret = typeof self === 'undefined' ? null : self;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
-    imports.wbg.__wbg_static_accessor_WINDOW_b45bfc5a37f6cfa2 = function() {
+    }, arguments) };
+    imports.wbg.__wbg_static_accessor_WINDOW_b45bfc5a37f6cfa2 = function() { return logError(function () {
         const ret = typeof window === 'undefined' ? null : window;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
-    imports.wbg.__wbg_strokeRect_788876bb2e67b691 = function(arg0, arg1, arg2, arg3, arg4) {
+    }, arguments) };
+    imports.wbg.__wbg_strokeRect_788876bb2e67b691 = function() { return logError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.strokeRect(arg1, arg2, arg3, arg4);
-    };
+    }, arguments) };
     imports.wbg.__wbg_strokeText_2f74b69043479d71 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
         arg0.strokeText(getStringFromWasm0(arg1, arg2), arg3, arg4);
     }, arguments) };
-    imports.wbg.__wbg_stroke_2d2420886d092225 = function(arg0) {
+    imports.wbg.__wbg_stroke_2d2420886d092225 = function() { return logError(function (arg0) {
         arg0.stroke();
-    };
+    }, arguments) };
     imports.wbg.__wbg_symbolInfo_88e787a6eccec3f2 = function() { return handleError(function (arg0, arg1, arg2, arg3) {
         const ret = arg0.symbolInfo(getStringFromWasm0(arg1, arg2), arg3);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_then_4f46f6544e6b4a28 = function(arg0, arg1) {
+    imports.wbg.__wbg_then_4f46f6544e6b4a28 = function() { return logError(function (arg0, arg1) {
         const ret = arg0.then(arg1);
         return ret;
-    };
-    imports.wbg.__wbg_then_70d05cf780a18d77 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_then_70d05cf780a18d77 = function() { return logError(function (arg0, arg1, arg2) {
         const ret = arg0.then(arg1, arg2);
         return ret;
-    };
-    imports.wbg.__wbg_ticks_c72f760a0e091a93 = function() { return handleError(function (arg0, arg1) {
-        const ret = arg0.ticks(arg1);
+    }, arguments) };
+    imports.wbg.__wbg_ticks_fc14562b1033ed4d = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
+        const ret = arg0.ticks(getStringFromWasm0(arg1, arg2), arg3, arg4);
         return ret;
     }, arguments) };
-    imports.wbg.__wbg_value_692627309814bb8c = function(arg0) {
+    imports.wbg.__wbg_value_692627309814bb8c = function() { return logError(function (arg0) {
         const ret = arg0.value;
         return ret;
-    };
-    imports.wbg.__wbg_view_f6c15ac9fed63bbd = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_view_f6c15ac9fed63bbd = function() { return logError(function (arg0) {
         const ret = arg0.view;
         return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
-    };
-    imports.wbg.__wbg_width_619a651232e6844f = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_width_619a651232e6844f = function() { return logError(function (arg0) {
         const ret = arg0.width;
         return ret;
-    };
-    imports.wbg.__wbg_width_9ea2df52b5d2c909 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbg_width_9ea2df52b5d2c909 = function() { return logError(function (arg0) {
         const ret = arg0.width;
+        _assertNum(ret);
         return ret;
-    };
-    imports.wbg.__wbg_writeText_0337219b13348e84 = function(arg0, arg1, arg2) {
+    }, arguments) };
+    imports.wbg.__wbg_writeText_0337219b13348e84 = function() { return logError(function (arg0, arg1, arg2) {
         const ret = arg0.writeText(getStringFromWasm0(arg1, arg2));
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_2241b6af4c4b2941 = function(arg0, arg1) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_2241b6af4c4b2941 = function() { return logError(function (arg0, arg1) {
         // Cast intrinsic for `Ref(String) -> Externref`.
         const ret = getStringFromWasm0(arg0, arg1);
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_2308e3328828268e = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 2198, function: Function { arguments: [Externref], shim_idx: 2199, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
-        return ret;
-    };
-    imports.wbg.__wbindgen_cast_4625c577ab2ec9ee = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_4625c577ab2ec9ee = function() { return logError(function (arg0) {
         // Cast intrinsic for `U64 -> Externref`.
         const ret = BigInt.asUintN(64, arg0);
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_9ae0607507abb057 = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_6c636b5edef76637 = function() { return logError(function (arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 2532, function: Function { arguments: [Externref], shim_idx: 2533, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_eefaec7423895f1a___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_eefaec7423895f1a___JsValue____Output_______, wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___wasm_bindgen_eefaec7423895f1a___JsValue_____);
+        return ret;
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_9ae0607507abb057 = function() { return logError(function (arg0) {
         // Cast intrinsic for `I64 -> Externref`.
         const ret = arg0;
         return ret;
-    };
-    imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
+    }, arguments) };
+    imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function() { return logError(function (arg0) {
         // Cast intrinsic for `F64 -> Externref`.
         const ret = arg0;
         return ret;
-    };
+    }, arguments) };
     imports.wbg.__wbindgen_init_externref_table = function() {
         const table = wasm.__wbindgen_externrefs;
         const offset = table.grow(4);

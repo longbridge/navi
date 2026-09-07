@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
+/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -12,11 +17,6 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
-/**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -629,7 +629,7 @@ export interface ChartStreamRequest {
  * @example
  * ```ts
  * const provider: DataProvider = {
- *   async *candlesticks({ symbol, timeframe, range, role }) {
+ *   async *candlesticks(symbol, timeframe, modifier, range, role) {
  *     const bars = await fetchHistory(symbol, timeframe, range);
  *     yield* bars;
  *     yield { type: "historyEnd" };
@@ -671,16 +671,17 @@ export type RequiredHistory =
   | { type: "unknown" };
 
 /**
- * Which series a request belongs to.
+ * Which series a request was opened for.
  *
- * `"main"` is the series the script runs on — its bars drive the bar loop.
- * `"secondary"` is one a `request.security` asked for.
+ * Informational: it says nothing about how to answer, because the `range`
+ * beside it is already the right one for its stream. It is here for a provider
+ * that fetches the two differently — a cache tier, a rate limit, a priority: a
+ * chart's own feed is what someone is watching, while a `"secondary"` is a
+ * batch of history a script asked for along the way.
  *
- * Nothing else in a request says which: an author's `calc_bars_count` and a
- * caller asking for a bar count both arrive as `recent`, and a secondary may
- * name the same symbol and timeframe the script itself runs on. A policy meant
- * for the main series, applied to a secondary one, drops the anchor and warm-up
- * the engine worked out for it, and the secondary opens `na`.
+ * Nothing else in a request says which: a `request.security` carrying a
+ * `calc_bars_count` asks for a bar count exactly as a chart naming a window
+ * does, and it may name the very symbol and timeframe the script runs on.
  */
 export type SeriesRole = "main" | "secondary";
 
@@ -689,27 +690,6 @@ export type SeriesRole = "main" | "secondary";
  * session filtering. Opaque here; pass it to whatever fetches the data.
  */
 export type DataModifier = Record<string, unknown>;
-
-/** What the engine wants from `candlesticks`. */
-export interface CandlestickRequest {
-  symbol: string;
-  timeframe: TimeFrame;
-  modifier: DataModifier;
-  range: HistoryRange;
-  role: SeriesRole;
-}
-
-/**
- * What the engine wants from `ticks`.
- *
- * `range` is **counted in ticks, not bars** — one bar of an `nT` timeframe is
- * exactly `n` ticks, and the engine has already converted, `warmup` included.
- */
-export interface TickRequest {
-  symbol: string;
-  range: HistoryRange;
-  role: SeriesRole;
-}
 
 export interface DataProvider {
   /**
@@ -734,7 +714,13 @@ export interface DataProvider {
    * warm-up leaves indicators `na` or unsettled.
    * If omitted, the chart renders with no data.
    */
-  candlesticks?(request: CandlestickRequest): AsyncIterable<CandlestickItem>;
+  candlesticks?(
+    symbol: string,
+    timeframe: TimeFrame,
+    modifier: DataModifier,
+    range: HistoryRange,
+    role: SeriesRole,
+  ): AsyncIterable<CandlestickItem>;
 
   /**
    * Stream tick items. Only called for tick-based timeframes (`"1T"`, `"nT"`).
@@ -743,7 +729,11 @@ export interface DataProvider {
    * is exactly `n` ticks, and the engine has already converted, `warmup`
    * included.
    */
-  ticks?(request: TickRequest): AsyncIterable<TickItem>;
+  ticks?(
+    symbol: string,
+    range: HistoryRange,
+    role: SeriesRole,
+  ): AsyncIterable<TickItem>;
 
   /** Stream historical exchange rate data for `from → to` currency conversion. */
   currencyRate?(from: Currency, to: Currency, asOf: number): AsyncIterable<AuxDataItem>;
@@ -1643,6 +1633,17 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any) => number;
+  readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1773,33 +1774,23 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly start: () => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any) => number;
-  readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
-  readonly intounderlyingsink_abort: (a: number, b: any) => any;
-  readonly intounderlyingsink_close: (a: number) => any;
-  readonly intounderlyingsink_write: (a: number, b: any) => any;
+  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
+  readonly intounderlyingsource_cancel: (a: number) => void;
+  readonly intounderlyingsource_pull: (a: number, b: any) => any;
   readonly __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
+  readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingbytesource_autoAllocateChunkSize: (a: number) => number;
   readonly intounderlyingbytesource_cancel: (a: number) => void;
   readonly intounderlyingbytesource_pull: (a: number, b: any) => any;
   readonly intounderlyingbytesource_start: (a: number, b: any) => void;
   readonly intounderlyingbytesource_type: (a: number) => number;
-  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
-  readonly intounderlyingsource_cancel: (a: number) => void;
-  readonly intounderlyingsource_pull: (a: number, b: any) => any;
-  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any) => void;
-  readonly wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______: (a: number, b: number) => void;
-  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any, d: any) => void;
+  readonly intounderlyingsink_abort: (a: number, b: any) => any;
+  readonly intounderlyingsink_close: (a: number) => any;
+  readonly intounderlyingsink_write: (a: number, b: any) => any;
+  readonly wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___wasm_bindgen_eefaec7423895f1a___JsValue_____: (a: number, b: number, c: any) => void;
+  readonly wasm_bindgen_eefaec7423895f1a___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_eefaec7423895f1a___JsValue____Output_______: (a: number, b: number) => void;
+  readonly wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___bool_: (a: number, b: number) => number;
+  readonly wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___js_sys_bc21cbaec00f7bf7___Function__js_sys_bc21cbaec00f7bf7___Function_____: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
