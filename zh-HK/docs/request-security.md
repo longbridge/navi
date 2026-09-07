@@ -251,4 +251,4 @@ plot(tech);
 ## 限制
 
 - **嵌套深度**：預設情況下，`request.security` 表達式內部最多可嵌套呼叫 `request.security` 3 層（可透過 `ExecutionLimits::max_security_depth` 配置）。
-- **呼叫次數**：每個唯一的 `(symbol, timeframe)` 組合計入 `ExecutionLimits::max_security_calls`（預設 40）。
+- **呼叫次數**：每個 `request.*` 呼叫點計入 `ExecutionLimits::max_security_calls`（預設 40）。指名同一 `(symbol, timeframe)` 的呼叫點共用取得的資料，但不共用計數 —— 同一標的的四個欄位算四次。

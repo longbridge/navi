@@ -280,5 +280,7 @@ Each symbol in the expression is subject to the same `max_security_calls` limit 
 - **Nesting depth**: by default, an expression inside `request.security` may
   itself call `request.security` up to 3 levels deep (configurable via
   `ExecutionLimits::max_security_depth`).
-- **Call site limit**: each unique `(symbol, timeframe)` pair counts toward
-  `ExecutionLimits::max_security_calls` (default 40).
+- **Call site limit**: each `request.*` call site counts toward
+  `ExecutionLimits::max_security_calls` (default 40). Call sites naming the
+  same `(symbol, timeframe)` share the data that is fetched but not the
+  count, so four fields of one symbol are four.

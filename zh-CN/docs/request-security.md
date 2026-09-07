@@ -251,4 +251,4 @@ plot(tech);
 ## 限制
 
 - **嵌套深度**：默认情况下，`request.security` 表达式内部最多可嵌套调用 `request.security` 3 层（可通过 `ExecutionLimits::max_security_depth` 配置）。
-- **调用次数**：每个唯一的 `(symbol, timeframe)` 组合计入 `ExecutionLimits::max_security_calls`（默认 40）。
+- **调用次数**：每个 `request.*` 调用点计入 `ExecutionLimits::max_security_calls`（默认 40）。命名同一 `(symbol, timeframe)` 的调用点共享取到的数据，但不共享计数 —— 同一标的的四个字段算四次。
