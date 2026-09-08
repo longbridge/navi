@@ -17,17 +17,17 @@ export interface StockDef {
 
 /** Available stocks in the playground. */
 export const STOCKS: StockDef[] = [
-  { symbol: 'NASDAQ:AAPL', ticker: 'AAPL', name: 'Apple Inc.' },
-  { symbol: 'NASDAQ:MSFT', ticker: 'MSFT', name: 'Microsoft Corporation' },
-  { symbol: 'NASDAQ:GOOGL', ticker: 'GOOGL', name: 'Alphabet Inc.' },
-  { symbol: 'NASDAQ:AMZN', ticker: 'AMZN', name: 'Amazon.com Inc.' },
-  { symbol: 'NASDAQ:TSLA', ticker: 'TSLA', name: 'Tesla Inc.' },
-  { symbol: 'NASDAQ:META', ticker: 'META', name: 'Meta Platforms Inc.' },
-  { symbol: 'NASDAQ:NVDA', ticker: 'NVDA', name: 'NVIDIA Corporation' },
-  { symbol: 'NYSE:JPM', ticker: 'JPM', name: 'JPMorgan Chase & Co.' },
-  { symbol: 'NYSE:V', ticker: 'V', name: 'Visa Inc.' },
-  { symbol: 'NYSE:WMT', ticker: 'WMT', name: 'Walmart Inc.' },
-  { symbol: 'NASDAQ:NFLX', ticker: 'NFLX', name: 'Netflix Inc.' },
+  { symbol: 'AAPL.US', ticker: 'AAPL', name: 'Apple Inc.' },
+  { symbol: 'MSFT.US', ticker: 'MSFT', name: 'Microsoft Corporation' },
+  { symbol: 'GOOGL.US', ticker: 'GOOGL', name: 'Alphabet Inc.' },
+  { symbol: 'AMZN.US', ticker: 'AMZN', name: 'Amazon.com Inc.' },
+  { symbol: 'TSLA.US', ticker: 'TSLA', name: 'Tesla Inc.' },
+  { symbol: 'META.US', ticker: 'META', name: 'Meta Platforms Inc.' },
+  { symbol: 'NVDA.US', ticker: 'NVDA', name: 'NVIDIA Corporation' },
+  { symbol: 'JPM.US', ticker: 'JPM', name: 'JPMorgan Chase & Co.' },
+  { symbol: 'V.US', ticker: 'V', name: 'Visa Inc.' },
+  { symbol: 'WMT.US', ticker: 'WMT', name: 'Walmart Inc.' },
+  { symbol: 'NFLX.US', ticker: 'NFLX', name: 'Netflix Inc.' },
 ]
 
 /** All supported timeframes for the playground. */

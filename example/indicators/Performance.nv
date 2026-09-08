@@ -262,7 +262,7 @@ let TT_HG: String = @locale {
 
 let includeCurrentSymbolInput: bool = input.bool(true, @locale { default: "Include chart symbol", "zh-CN": "包含图表标的", "zh-HK": "包含圖表標的" });
 let symbolListInput: String = input.text_area(
-    "AAPL, NASDAQ:AMZN, EURUSD, ES1!, BTCUSD",
+    "AAPL, AMZN.US, EURUSD, ES1!, BTCUSD",
     @locale { default: "Symbol list", "zh-CN": "标的列表", "zh-HK": "標的列表" },
     TT_SL
 );
@@ -330,10 +330,20 @@ let tableHeightInput: float = input.float(
     display: PlotDisplay.NONE
 );
 
+// A market suffix is the two characters after a final dot, as in `AAPL.US`.
+// Anything else is a bare ticker that inherits the chart's own market.
+fn hasMarketSuffix(sym: String): bool {
+    let n = sym.length();
+    n > 3 and sym.substring(n - 3, n - 2) == ".";
+}
+
 fn getTickers() {
     let symbols = getArrayFromString(symbolListInput.upper());
     for (i, sym) in symbols {
-        symbols.set(i, sym.contains(":") ? sym : String.format("{0}:{1}", symbol_info.prefix, sym));
+        symbols.set(
+            i,
+            hasMarketSuffix(sym) ? sym : String.format("{0}.{1}", sym, symbol_info.market)
+        );
     }
     if includeCurrentSymbolInput and not symbols.includes(symbol_info.ticker) {
         symbols.insert(0, symbol_info.tickerid);

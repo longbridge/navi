@@ -245,6 +245,22 @@ let weekly_close = request.security(symbol_info.tickerid, "W", close);
 plot(weekly_close, "Weekly Close");
 ```
 
+A symbol is written `TICKER.MARKET` — `AAPL.US`, `0700.HK`, `600519.SH`. The market
+suffix is one of `US`, `HK`, `SH`, `SZ`, `SG`, and it is what `mintick`, `timezone`,
+`currency` and session handling are derived from. Read the parts back with
+`symbol_info.ticker` and `symbol_info.market`, and the whole with
+`symbol_info.tickerid`.
+
+Instruments outside those markets — crypto and forex pairs, for instance — are written
+bare (`BTCUSDT`, `EURUSD`), and the data provider resolves them.
+
+```navi
+let spy_close = request.security("SPY.US", "D", close);
+
+// Build one from parts rather than concatenating strings.
+let other = request.security(ticker.new(symbol_info.market, "MSFT"), "D", close);
+```
+
 Guidelines:
 
 - Use `gaps: BarmergeGaps.On` only when you want `na` between confirmed higher-timeframe bars.

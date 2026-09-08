@@ -13,7 +13,7 @@ request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_
 
 | Parameter | Type | Description |
 |---|---|---|
-| `symbol` | `String` | Symbol identifier, e.g. `"NASDAQ:AAPL"` or `syminfo.tickerid` |
+| `symbol` | `String` | Symbol identifier, e.g. `"AAPL.US"` or `syminfo.tickerid` |
 | `timeframe` | `String` | Timeframe string, e.g. `"D"`, `"W"`, `"60"` |
 | `expression` | any series | Expression evaluated on the requested symbol/timeframe |
 | `gaps` | `BarmergeGaps` | `BarmergeGaps.Off` (default): carry last value forward; `BarmergeGaps.On`: emit `na` between confirmations |
@@ -38,7 +38,7 @@ plot(weekly_close, "Weekly Close", color: color.BLUE);
 ```navi
 indicator("SPY on AAPL chart", overlay: false);
 
-let spy_close = request.security("AMEX:SPY", "D", close);
+let spy_close = request.security("SPY.US", "D", close);
 plot(spy_close);
 ```
 
@@ -181,7 +181,7 @@ plot_candle(w_open, w_high, w_low, w_close);
 Use this flag when the symbol might not exist in the data provider:
 
 ```navi
-let price = request.security("SOME:SYMBOL", "D", close, ignore_invalid_symbol: true);
+let price = request.security("SOME.US", "D", close, ignore_invalid_symbol: true);
 // price is na if the symbol is not recognised; no runtime error is raised
 ```
 
@@ -226,7 +226,7 @@ the expression per bar, and returns the result as a single series.
 | `+` | `"AAPL+MSFT"` | sum of two symbols |
 | `-` | `"AAPL-MSFT"` | difference of two symbols |
 
-Operands can be symbol strings (`"EXCHANGE:TICKER"`) or numeric literals.
+Operands can be symbol strings (`"TICKER.MARKET"`) or numeric literals.
 Standard operator precedence applies; use parentheses if needed.
 
 ### Examples
@@ -234,14 +234,14 @@ Standard operator precedence applies; use parentheses if needed.
 **Weighted blend (50/50 portfolio)**
 
 ```navi
-let blend = request.security("NASDAQ:AAPL*0.5+AMEX:SPY*0.5", "D", close);
+let blend = request.security("AAPL.US*0.5+SPY.US*0.5", "D", close);
 ```
 
 **Relative performance (ratio)**
 
 ```navi
 // AAPL price relative to SPY — how many SPY shares does one AAPL buy?
-let ratio = request.security("NASDAQ:AAPL/AMEX:SPY", "D", close);
+let ratio = request.security("AAPL.US/SPY.US", "D", close);
 plot(ratio);
 ```
 
@@ -249,7 +249,7 @@ plot(ratio);
 
 ```navi
 // Gold/Silver spread
-let spread = request.security("COMEX:GC1!/COMEX:SI1!", "D", close);
+let spread = request.security("GC1!.US/SI1!.US", "D", close);
 plot(spread);
 ```
 
@@ -258,7 +258,7 @@ plot(spread);
 ```navi
 // Equal-weight average of four tech stocks
 let tech = request.security(
-    "NASDAQ:AAPL*0.25+NASDAQ:MSFT*0.25+NASDAQ:GOOGL*0.25+NASDAQ:AMZN*0.25",
+    "AAPL.US*0.25+MSFT.US*0.25+GOOGL.US*0.25+AMZN.US*0.25",
     "D",
     close
 );

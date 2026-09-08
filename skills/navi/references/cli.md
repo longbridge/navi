@@ -175,10 +175,10 @@ about: `jq 'select(.type == "orderFilled")'`.
 
 | Flag | Effect |
 | --- | --- |
-| `--symbol <TICKER>` | Symbol the script sees as `syminfo.tickerid`. Defaults to `NASDAQ:AAPL`. Include a market prefix so `mintick`/`timezone`/`currency` resolve. |
+| `--symbol <SYMBOL>` | Symbol the script sees as `symbol_info.tickerid`, written `TICKER.MARKET`. Defaults to `AAPL.US`. Include a market suffix (`.US`, `.HK`, `.SH`, `.SZ`, `.SG`) so `mintick`/`timezone`/`currency` resolve; without one the run needs a `symbolInfo` reply carrying `market`. |
 | `--timeframe <TF>` | Bar timeframe: bare numbers are minutes, plus `S`/`D`/`W`/`M`/`T`. Defaults to `D`. A `T` timeframe reads ticks, so requests ask for `tick`. |
 | `--input <ID=JSON>` | Override an `input.*()` default by declaration order from 0. Values are JSON, so quote strings: `--input 1='"close"'`. |
-| `--sessions <LIST>` | Declares which sessions the bars cover. **Not a filter** — an unlisted `tradeSession` aborts the run, and it changes `session.*`/`syminfo.session` semantics. Pre/post-market data needs `--sessions regular,extended`. |
+| `--sessions <LIST>` | Declares which sessions the bars cover. **Not a filter** — an unlisted `tradeSession` aborts the run, and it changes `session.*`/`symbol_info.session` semantics. Pre/post-market data needs `--sessions regular,extended`. |
 | `--request-timeout <MS>` | Idle timeout for an unanswered `request.*`, armed only until that stream's history boundary. Defaults to 30000; `0` waits forever. |
 | `--max-bars-back <N>` | Lookback cap, default 1000. A script's own `max_bars_back()` is clamped to it; `run` warns on stderr when the clamp bites. |
 

@@ -118,7 +118,7 @@ modify(
 
 ```navi
 new(
-    prefix: series String,
+    market: series String,
     ticker: series String,
     session: series Session = Session.Regular,
     adjustment: series Adjustment = Adjustment.None,
@@ -127,13 +127,13 @@ new(
   ): series String
 ```
 
-根據前綴和代碼名稱及指定的數據修飾符（時段、復權等）建構代碼識別符，未指定的修飾符使用預設值。
+根據市場和代碼名稱以及指定的數據修飾符（時段、複權等）構建代碼標識符，未指定的修飾符使用默認值。
 
 **參數**
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `prefix` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | Exchange prefix (e.g. `symbol_info.prefix`). |
+| `market` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | Market of the symbol (e.g. `symbol_info.market`). |
 | `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | Ticker name (e.g. `symbol_info.ticker`). |
 | `session` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Session">Session</a></code> | `Session.Regular` | Session type. Optional. |
 | `adjustment` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Adjustment">Adjustment</a></code> | `Adjustment.None` | Price adjustment. Optional. |

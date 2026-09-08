@@ -11,17 +11,17 @@ from pathlib import Path
 import yfinance as yf
 
 TICKERS = {
-    "AAPL": "NASDAQ:AAPL",
-    "MSFT": "NASDAQ:MSFT",
-    "GOOGL": "NASDAQ:GOOGL",
-    "AMZN": "NASDAQ:AMZN",
-    "TSLA": "NASDAQ:TSLA",
-    "META": "NASDAQ:META",
-    "NVDA": "NASDAQ:NVDA",
-    "JPM":  "NYSE:JPM",
-    "V":    "NYSE:V",
-    "WMT":  "NYSE:WMT",
-    "NFLX": "NASDAQ:NFLX",
+    "AAPL": "AAPL.US",
+    "MSFT": "MSFT.US",
+    "GOOGL": "GOOGL.US",
+    "AMZN": "AMZN.US",
+    "TSLA": "TSLA.US",
+    "META": "META.US",
+    "NVDA": "NVDA.US",
+    "JPM":  "JPM.US",
+    "V":    "V.US",
+    "WMT":  "WMT.US",
+    "NFLX": "NFLX.US",
 }
 
 # (pine_tf, yahoo_interval, yahoo_period)

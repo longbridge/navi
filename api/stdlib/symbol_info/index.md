@@ -90,6 +90,14 @@ This value keeps referring to the outer chart symbol even while code is executin
 
 ---
 
+### market {#prop-market}
+
+**Type:** <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
+
+Returns the market of the symbol, e.g. `US` for `AAPL.US`.
+
+---
+
 ### min_contract {#min_contract}
 
 **Type:** <code>simple&nbsp;float</code>
@@ -119,14 +127,6 @@ Returns the minimum price fluctuation (tick value) for the symbol.
 **Type:** <code>simple&nbsp;float</code>
 
 Returns the point value for the symbol.
-
----
-
-### prefix {#prop-prefix}
-
-**Type:** <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
-
-Returns the prefix of the symbol's ticker identifier.
 
 ---
 
@@ -294,7 +294,7 @@ Returns the median yearly price target for the symbol predicted by analysts.
 
 **Type:** <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
-Returns the symbol name without exchange prefix,
+Returns the symbol name without its market.
 
 ---
 
@@ -334,19 +334,19 @@ The values are `base`, `quote`, `tick`.
 
 ## Functions
 
-### prefix {#fn-prefix}
+### market {#fn-market}
 
 ```navi
-prefix(symbol: String): String
+market(ticker_id: String): String
 ```
 
-Returns the prefix of the symbol.
+Returns the market of the given symbol.
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `symbol` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The symbol ticker String to get the prefix from. |
+| `ticker_id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The symbol to get the market from. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>
 
@@ -355,15 +355,15 @@ Returns the prefix of the symbol.
 ### ticker {#fn-ticker}
 
 ```navi
-ticker(symbol: String): String
+ticker(ticker_id: String): String
 ```
 
-Returns symbol name without exchange prefix.
+Returns the symbol name without its market.
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `symbol` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The symbol ticker String to get the name from. |
+| `ticker_id` | <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The symbol to get the name from. |
 
 **Returns:** <code><a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code>

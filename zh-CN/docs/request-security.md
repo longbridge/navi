@@ -10,7 +10,7 @@ request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_
 
 | 参数 | 类型 | 说明 |
 |---|---|---|
-| `symbol` | `string` | 标的标识符，如 `"NASDAQ:AAPL"` 或 `syminfo.tickerid` |
+| `symbol` | `string` | 标的标识符，如 `"AAPL.US"` 或 `syminfo.tickerid` |
 | `timeframe` | `string` | 时间框架字符串，如 `"D"`、`"W"`、`"60"` |
 | `expression` | 任意 series | 在请求的标的/时间框架上求值的表达式 |
 | `gaps` | `BarmergeGaps` | `BarmergeGaps.Off`（默认）：延续最后值；`BarmergeGaps.On`：无新值时发出 `na` |
@@ -35,7 +35,7 @@ plot(weekly_close, "周线收盘", color: color.BLUE);
 ```navi
 indicator("AAPL 图上的 SPY", overlay: false);
 
-let spy_close = request.security("AMEX:SPY", "D", close);
+let spy_close = request.security("SPY.US", "D", close);
 plot(spy_close);
 ```
 
@@ -161,7 +161,7 @@ plot_candle(w_open, w_high, w_low, w_close);
 当标的可能不存在于数据提供者中时使用此参数：
 
 ```navi
-let price = request.security("SOME:SYMBOL", "D", close, ignore_invalid_symbol: true);
+let price = request.security("SOME.US", "D", close, ignore_invalid_symbol: true);
 // 标的未识别时 price 为 na，不会触发运行时错误
 ```
 
@@ -200,21 +200,21 @@ Ticker 表达式是一个将多个标的通过算术运算符组合的字符串�
 | `+` | `"AAPL+MSFT"` | 两个标的之和 |
 | `-` | `"AAPL-MSFT"` | 两个标的之差 |
 
-操作数可以是标的字符串（`"EXCHANGE:TICKER"`）或数字字面量。运算符优先级与标准数学一致，必要时可使用括号。
+操作数可以是标的字符串（`"TICKER.MARKET"`）或数字字面量。运算符优先级与标准数学一致，必要时可使用括号。
 
 ### 示例
 
 **加权组合（50/50 投资组合）**
 
 ```navi
-let blend = request.security("NASDAQ:AAPL*0.5+AMEX:SPY*0.5", "D", close);
+let blend = request.security("AAPL.US*0.5+SPY.US*0.5", "D", close);
 ```
 
 **相对表现（比值）**
 
 ```navi
 // AAPL 相对于 SPY 的价格——买一股 AAPL 需要多少股 SPY？
-let ratio = request.security("NASDAQ:AAPL/AMEX:SPY", "D", close);
+let ratio = request.security("AAPL.US/SPY.US", "D", close);
 plot(ratio);
 ```
 
@@ -222,7 +222,7 @@ plot(ratio);
 
 ```navi
 // 黄金/白银价差
-let spread = request.security("COMEX:GC1!/COMEX:SI1!", "D", close);
+let spread = request.security("GC1!.US/SI1!.US", "D", close);
 plot(spread);
 ```
 
@@ -231,7 +231,7 @@ plot(spread);
 ```navi
 // 四只科技股等权平均
 let tech = request.security(
-    "NASDAQ:AAPL*0.25+NASDAQ:MSFT*0.25+NASDAQ:GOOGL*0.25+NASDAQ:AMZN*0.25",
+    "AAPL.US*0.25+MSFT.US*0.25+GOOGL.US*0.25+AMZN.US*0.25",
     "D",
     close
 );

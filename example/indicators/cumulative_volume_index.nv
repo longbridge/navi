@@ -1,18 +1,7 @@
 indicator(@locale { default: "Cumulative Volume Index", "zh-CN": "累计成交量指标", "zh-HK": "累計成交量指標" }, "CVI", format: Format.Volume);
-let NYSE = "NYSE";
-let NASDAQ = "NASDAQ";
-let AMEX = "AMEX";
-let ARCX = "ARCX";
-let US = "US Total";
-let DJ = "DJ";
-let exch = input.string(
-    NYSE,
-    title: @locale { default: "Exchange", "zh-CN": "交易所", "zh-HK": "交易所" },
-    options: [NYSE, NASDAQ, AMEX, ARCX, US, DJ]
-);
-let adv_ticker = exch == DJ ? "UPVOL.DJ" : exch == US ? "UPVOL.US" : exch == ARCX ? "UPVOL.AX" : exch == AMEX ? "UPVOL.AM" : exch == NASDAQ ? "UPVOL.NQ" : "UPVOL.NY";
-let dec_ticker = exch == DJ ? "DNVOL.DJ" : exch == US ? "DNVOL.US" : exch == ARCX ? "DNVOL.AX" : exch == AMEX ? "DNVOL.AM" : exch == NASDAQ ? "DNVOL.NQ" : "DNVOL.NY";
-let adv = request.security(adv_ticker, timeframe.period, close);
-let dec = request.security(dec_ticker, timeframe.period, close);
+// Advancing minus declining volume, accumulated. Both feeds are US market
+// breadth, so they carry the `.US` suffix like any other US symbol.
+let adv = request.security("UPVOL.US", timeframe.period, close);
+let dec = request.security("DNVOL.US", timeframe.period, close);
 let cvi = ta.cum(adv - dec);
 plot(cvi, "CVI");

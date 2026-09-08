@@ -11,4 +11,4 @@ fn ratio(t1, t2, source) {
         source
     );
 }
-plot(ratio("USI:ADVN.NY", "USI:DECL.NY", close));
+plot(ratio("ADVN.US", "DECL.US", close));

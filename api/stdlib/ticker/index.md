@@ -118,7 +118,7 @@ Overrides data modifiers on an existing ticker id, keeping the rest.
 
 ```navi
 new(
-    prefix: series String,
+    market: series String,
     ticker: series String,
     session: series Session = Session.Regular,
     adjustment: series Adjustment = Adjustment.None,
@@ -127,13 +127,13 @@ new(
   ): series String
 ```
 
-Constructs a ticker id from a prefix and ticker with the given data modifiers (session, adjustment, etc.). Omitted modifiers use their defaults.
+Constructs a ticker id from a market and ticker with the given data modifiers (session, adjustment, etc.). Omitted modifiers use their defaults.
 
 **Parameters**
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `prefix` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Exchange prefix (e.g. `symbol_info.prefix`). |
+| `market` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Market of the symbol (e.g. `symbol_info.market`). |
 | `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Ticker name (e.g. `symbol_info.ticker`). |
 | `session` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Session">Session</a></code> | `Session.Regular` | Session type. Optional. |
 | `adjustment` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Adjustment">Adjustment</a></code> | `Adjustment.None` | Price adjustment. Optional. |

@@ -86,6 +86,14 @@ title: "symbol_info"
 
 ---
 
+### market {#prop-market}
+
+**类型:** <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
+
+返回交易品种的市场，例如 `AAPL.US` 返回 `US`。
+
+---
+
 ### min_contract {#min_contract}
 
 **类型:** <code>simple&nbsp;float</code>
@@ -115,14 +123,6 @@ title: "symbol_info"
 **类型:** <code>simple&nbsp;float</code>
 
 返回符号的点值。
-
----
-
-### prefix {#prop-prefix}
-
-**类型:** <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
-
-返回交易品种的股票标识符的前缀。
 
 ---
 
@@ -290,7 +290,7 @@ title: "symbol_info"
 
 **类型:** <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
 
-返回不带交换前缀的交易品种名称，
+返回不带市场后缀的交易品种名称。
 
 ---
 
@@ -326,19 +326,19 @@ title: "symbol_info"
 
 ## 函数
 
-### prefix {#fn-prefix}
+### market {#fn-market}
 
 ```navi
-prefix(symbol: String): String
+market(ticker_id: String): String
 ```
 
-返回符号的前缀。
+返回给定交易品种的市场。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `symbol` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 从中获取前缀的交易品种代码字符串。 |
+| `ticker_id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要从中获取市场的交易品种。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
 
@@ -347,15 +347,15 @@ prefix(symbol: String): String
 ### ticker {#fn-ticker}
 
 ```navi
-ticker(symbol: String): String
+ticker(ticker_id: String): String
 ```
 
-返回不带交换前缀的交易品种名称。
+返回不带市场后缀的交易品种名称。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `symbol` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 从中获取名称的交易品种股票字符串。 |
+| `ticker_id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要从中获取名称的交易品种。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code>
