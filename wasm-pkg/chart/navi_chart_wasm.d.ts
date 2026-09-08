@@ -1,11 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
-/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -17,6 +12,11 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -117,17 +117,17 @@ export type SymbolType = string;
 /** How volume is reported: `"base"` or `"quote"`. */
 export type VolumeType = string;
 
-/** Exchange / market identifier, e.g. `"NYSE"`, `"NASDAQ"`. */
+/** Market identifier: `"US"`, `"HK"`, `"SH"`, `"SZ"` or `"SG"`. */
 export type Market = string;
 
 /**
  * Partial symbol metadata returned by `DataProvider.symbolInfo()`.
  *
  * All fields are optional. Any field omitted (or set to `undefined`) falls
- * back to a default derived from the symbol's exchange prefix.
+ * back to a default derived from the symbol's market suffix.
  */
 export interface PartialSymbolInfo {
-  /** Exchange that the symbol belongs to. */
+  /** Market the symbol belongs to. */
   market?: Market;
   /** Human-readable description, e.g. `"Apple Inc."`. */
   description?: string;
@@ -602,13 +602,35 @@ export interface ScriptDescriptor {
   inputValues: Array<{ key: number; value: unknown }>;
 }
 
-/** Request object passed to {@link ChartProvider.chartStream}. */
+/**
+ * Request object passed to {@link ChartProvider.chartStream}.
+ *
+ * The symbol and timeframe are arguments of that call rather than fields here.
+ * Every field below is required.
+ */
 export interface ChartStreamRequest {
   scripts: ScriptDescriptor[];
   /** BCP-47 locale string for diagnostics (e.g. `"en"`, `"zh-CN"`). */
   locale: string;
-  /** Bitfield of accepted trading sessions (see `InputSessions`). */
-  inputSessions: number;
+  /**
+   * Which trading sessions to accept as input bars, as `"|"`-separated flag
+   * names — `"REGULAR"`, `"REGULAR | EXTENDED"`, `"REGULAR | EXTENDED |
+   * OVERNIGHT"`. A number is not accepted, whatever the flags are worth
+   * internally.
+   */
+  inputSessions: string;
+  /**
+   * How many recent historical bars to load.
+   *
+   * The window to *have*, not the window to show: ask for more than fits on
+   * screen so scrolling has somewhere to go. More still may be loaded on top,
+   * because a script reads some distance behind the leftmost of these before
+   * its values are right.
+   *
+   * `0` asks for everything available. To grow the window later, call
+   * `handle.extendHistory()` with the new *total* rather than the increment.
+   */
+  barsToLoad: number;
 }
 
 
@@ -773,7 +795,7 @@ export interface DataProvider {
  *     // yield bars and script events...
  *   },
  * };
- * const chart = new Chart(provider, canvas, "NASDAQ:AAPL", "D", "en", false);
+ * const chart = new Chart(provider, canvas, "AAPL.US", "D", "en", false);
  * ```
  */
 export interface ChartProvider {
@@ -1361,7 +1383,7 @@ export class Chart {
    */
   select(element: any): void;
   /**
-   * Current symbol string, e.g. `"NASDAQ:AAPL"`.
+   * Current symbol string, e.g. `"AAPL.US"`.
    */
   symbol(): string;
   /**
@@ -1601,7 +1623,7 @@ export class LocalChartHandle {
    * Returns `true` if the extension was accepted (cached programs
    * available), `false` if a full restart is needed.
    */
-  extendHistory(bars_back: number): boolean;
+  extendHistory(bars_to_load: number): boolean;
 }
 /**
  * In-process chart provider backed by the Navi VM.
@@ -1633,17 +1655,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any) => number;
-  readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1774,23 +1785,33 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
-  readonly intounderlyingsource_cancel: (a: number) => void;
-  readonly intounderlyingsource_pull: (a: number, b: any) => any;
-  readonly __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any) => number;
+  readonly start: () => void;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
+  readonly intounderlyingsink_abort: (a: number, b: any) => any;
+  readonly intounderlyingsink_close: (a: number) => any;
+  readonly intounderlyingsink_write: (a: number, b: any) => any;
+  readonly __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
   readonly intounderlyingbytesource_autoAllocateChunkSize: (a: number) => number;
   readonly intounderlyingbytesource_cancel: (a: number) => void;
   readonly intounderlyingbytesource_pull: (a: number, b: any) => any;
   readonly intounderlyingbytesource_start: (a: number, b: any) => void;
   readonly intounderlyingbytesource_type: (a: number) => number;
-  readonly intounderlyingsink_abort: (a: number, b: any) => any;
-  readonly intounderlyingsink_close: (a: number) => any;
-  readonly intounderlyingsink_write: (a: number, b: any) => any;
-  readonly wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___wasm_bindgen_eefaec7423895f1a___JsValue_____: (a: number, b: number, c: any) => void;
-  readonly wasm_bindgen_eefaec7423895f1a___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_eefaec7423895f1a___JsValue____Output_______: (a: number, b: number) => void;
-  readonly wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___bool_: (a: number, b: number) => number;
-  readonly wasm_bindgen_eefaec7423895f1a___convert__closures_____invoke___js_sys_bc21cbaec00f7bf7___Function__js_sys_bc21cbaec00f7bf7___Function_____: (a: number, b: number, c: any, d: any) => void;
+  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
+  readonly intounderlyingsource_cancel: (a: number) => void;
+  readonly intounderlyingsource_pull: (a: number, b: any) => any;
+  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any) => void;
+  readonly wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______: (a: number, b: number) => void;
+  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
