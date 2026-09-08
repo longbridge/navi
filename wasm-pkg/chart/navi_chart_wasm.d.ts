@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
+/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -13,98 +18,81 @@ export function darkTheme(): any;
  */
 export function lightTheme(): any;
 /**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
-/**
  * The `ReadableStreamType` enum.
  *
  * *This API requires the following crate features to be activated: `ReadableStreamType`*
  */
 type ReadableStreamType = "bytes";
 
-/** A position within a source file. */
-export interface Position {
-  /** Zero-based file identifier — look up the path in `sourceFiles[fileId]`. */
-  fileId: number;
-  /** One-based line number. */
-  line: number;
-  /** Zero-based column offset in characters. */
-  column: number;
-  /** Byte offset from the start of the source text. */
-  byteOffset: number;
-}
-
-/** A half-open `[start, end)` span in source code. */
-export interface Span {
-  start: Position;
-  end: Position;
-}
-
-/** A rectangular region in CSS pixel coordinates. */
-export interface Rect {
-  origin: { x: number; y: number };
-  size: { width: number; height: number };
+/** A source file referenced by error spans. */
+export interface SourceFile {
+  /** File path (or a synthetic name like `"<main>"`). */
+  path: string;
+  /** Full source text. */
+  source: string;
 }
 
 /**
- * Keyboard modifier bitfield forwarded to interaction methods.
+ * Which module a backtrace frame belongs to.
  *
- * | Bit | Key   |
- * |-----|-------|
- * | 1   | Ctrl  |
- * | 2   | Shift |
- * | 4   | Alt   |
- * | 8   | Meta  |
+ * - `"main"` — the user's script.
+ * - `"prelude"` — auto-imported built-in functions.
+ * - `"stdlib"` — standard library (e.g. `ta`, `math`).
+ * - `"import"` — an explicitly imported library.
  */
-export type Modifiers = number;
+export type ModuleKind = "main" | "prelude" | "stdlib" | "import";
 
+/** A single compilation diagnostic (always an error). */
+export interface CompileDiagnostic {
+  message: string;
+  /** Source spans associated with this diagnostic. */
+  spans: Span[];
+}
 
-
-/** A single market tick (one trade event). */
-export interface Tick {
-  /** Tick timestamp as epoch milliseconds. */
-  time: number;
-  /** Last traded price. */
-  price: number;
-  /** Volume traded in this tick. */
-  volume: number;
-  /** Aggressor side: `"buy"`, `"sell"`, or `null` when unknown. */
-  side: string | null;
+/** One frame in a runtime call-stack backtrace. */
+export interface BacktraceFrame {
+  /** Qualified function name, e.g. `"ta.sma"`, or `null` for top-level code. */
+  funcName: string | null;
+  /** Call-site location. */
+  span: Span;
+  moduleKind: ModuleKind;
 }
 
 /**
- * Item yielded by `DataProvider.ticks()`.
+ * Error thrown by `Chart.addScript()` when a script fails to compile or
+ * execute.
  *
- * Follows the same stream protocol as {@link CandlestickItem}: historical ticks
- * precede the boundary marker, realtime ticks follow it.
- */
-export type TickItem =
-  | ({ type: "tick" } & Tick)
-  | { type: "historyEnd" };
-
-
-
-/**
- * Value carried by an auxiliary data point.
+ * Discriminate on `type`. A variant that wraps a struct flattens that struct's
+ * fields onto the object, so `compile` carries `diagnostics` directly.
  *
- * A bare `number` is a float, a bare `string`/`boolean` map to their types, and
- * `null` means `na`. An `int`-typed `request.data<int>` result is produced by
- * converting the float, so no separate integer form is needed.
+ * ```ts
+ * try {
+ *   await chart.addScript(source, "my-ind");
+ * } catch (e: unknown) {
+ *   const err = e as ScriptError;
+ *   if (err.type === "compile") {
+ *     showDiagnostics(err.diagnostics);
+ *   } else if (err.type === "exception") {
+ *     showRuntimeError(err);
+ *   } else if (err.type === "missingScriptType") {
+ *     console.error("missing script type");
+ *   }
+ * }
+ * ```
  */
-export type AuxValue = number | boolean | string | null;
-
-/**
- * Item yielded by auxiliary data streams (currency rates, financials,
- * earnings, dividends, economic data, splits, custom data).
- *
- * Follows the same boundary-marker stream protocol as
- * {@link CandlestickItem}.
- */
-export type AuxDataItem =
-  | { type: "data"; /** Epoch milliseconds. */ time: number; value: AuxValue }
-  | { type: "historyEnd" };
+export type ScriptError =
+  | { type: "compile";                    diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> }
+  | { type: "exception";                  message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> }
+  | { type: "missingScriptType" }
+  | { type: "inputValueNotFound";         id: number }
+  | { type: "setInputValue";              id: number; error: string }
+  | { type: "unsupportedTimeFrame";       timeFrame: TimeFrame }
+  | { type: "sessionNotAllowed";          session: TradeSession }
+  | { type: "invalidSymbol" }
+  | { type: "unknownMarket" }
+  | { type: "libraryScriptNotExecutable" }
+  | { type: "dataProvider";               message: string }
+  | { type: "confirmedBarUpdate" };
 
 
 
@@ -203,75 +191,110 @@ export type DataArgs = Record<string, DataArg>;
 
 
 
-/** A source file referenced by error spans. */
-export interface SourceFile {
-  /** File path (or a synthetic name like `"<main>"`). */
-  path: string;
-  /** Full source text. */
-  source: string;
+/** A position within a source file. */
+export interface Position {
+  /** Zero-based file identifier — look up the path in `sourceFiles[fileId]`. */
+  fileId: number;
+  /** One-based line number. */
+  line: number;
+  /** Zero-based column offset in characters. */
+  column: number;
+  /** Byte offset from the start of the source text. */
+  byteOffset: number;
+}
+
+/** A half-open `[start, end)` span in source code. */
+export interface Span {
+  start: Position;
+  end: Position;
+}
+
+/** A rectangular region in CSS pixel coordinates. */
+export interface Rect {
+  origin: { x: number; y: number };
+  size: { width: number; height: number };
 }
 
 /**
- * Which module a backtrace frame belongs to.
+ * Keyboard modifier bitfield forwarded to interaction methods.
  *
- * - `"main"` — the user's script.
- * - `"prelude"` — auto-imported built-in functions.
- * - `"stdlib"` — standard library (e.g. `ta`, `math`).
- * - `"import"` — an explicitly imported library.
+ * | Bit | Key   |
+ * |-----|-------|
+ * | 1   | Ctrl  |
+ * | 2   | Shift |
+ * | 4   | Alt   |
+ * | 8   | Meta  |
  */
-export type ModuleKind = "main" | "prelude" | "stdlib" | "import";
+export type Modifiers = number;
 
-/** A single compilation diagnostic (always an error). */
-export interface CompileDiagnostic {
-  message: string;
-  /** Source spans associated with this diagnostic. */
-  spans: Span[];
-}
 
-/** One frame in a runtime call-stack backtrace. */
-export interface BacktraceFrame {
-  /** Qualified function name, e.g. `"ta.sma"`, or `null` for top-level code. */
-  funcName: string | null;
-  /** Call-site location. */
-  span: Span;
-  moduleKind: ModuleKind;
+
+/** Trading session that a candlestick belongs to. */
+export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
+
+/**
+ * Timeframe string identifying a bar interval.
+ *
+ * Common values: `"1"`, `"5"`, `"15"`, `"60"` (minutes), `"D"` (daily),
+ * `"W"` (weekly), `"M"` (monthly).
+ */
+export type TimeFrame = string;
+
+/** A single OHLCV candlestick bar. */
+export interface Candlestick {
+  /** Bar open time as epoch milliseconds. */
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  /** Trade volume. */
+  volume: number;
+  /** Turnover (volume × price). */
+  turnover: number;
+  /** Turnover rate (fraction of float traded). `NaN` when unavailable. */
+  turnoverRate: number;
+  tradeSession: TradeSession;
+  /** Best ask price at bar close (`NaN` when unavailable). */
+  ask: number;
+  /** Best bid price at bar close (`NaN` when unavailable). */
+  bid: number;
 }
 
 /**
- * Error thrown by `Chart.addScript()` when a script fails to compile or
- * execute.
+ * Item yielded by `DataProvider.candlesticks()`.
  *
- * Discriminate on `type`. A variant that wraps a struct flattens that struct's
- * fields onto the object, so `compile` carries `diagnostics` directly.
- *
- * ```ts
- * try {
- *   await chart.addScript(source, "my-ind");
- * } catch (e: unknown) {
- *   const err = e as ScriptError;
- *   if (err.type === "compile") {
- *     showDiagnostics(err.diagnostics);
- *   } else if (err.type === "exception") {
- *     showRuntimeError(err);
- *   } else if (err.type === "missingScriptType") {
- *     console.error("missing script type");
- *   }
- * }
- * ```
+ * - `{ type: "bar", ... }` — a confirmed historical bar (before the boundary)
+ *   or the current forming realtime bar (after it). The candlestick's own
+ *   fields sit alongside `type`.
+ * - `{ type: "historyEnd" }` — boundary marker emitted once, after all
+ *   historical bars and before the first realtime bar.
  */
-export type ScriptError =
-  | { type: "compile";                    diagnostics: CompileDiagnostic[]; sourceFiles: Record<string, SourceFile> }
-  | { type: "exception";                  message: string; spans: Span[]; backtrace: BacktraceFrame[]; sourceFiles: Record<string, SourceFile> }
-  | { type: "missingScriptType" }
-  | { type: "inputValueNotFound";         id: number }
-  | { type: "setInputValue";              id: number; error: string }
-  | { type: "unsupportedTimeFrame";       timeFrame: TimeFrame }
-  | { type: "sessionNotAllowed";          session: TradeSession }
-  | { type: "invalidSymbol" }
-  | { type: "unknownMarket" }
-  | { type: "libraryScriptNotExecutable" }
-  | { type: "dataProvider";               message: string }
-  | { type: "confirmedBarUpdate" };
+export type CandlestickItem =
+  | ({ type: "bar" } & Candlestick)
+  | { type: "historyEnd" };
+
+
+
+/**
+ * Value carried by an auxiliary data point.
+ *
+ * A bare `number` is a float, a bare `string`/`boolean` map to their types, and
+ * `null` means `na`. An `int`-typed `request.data<int>` result is produced by
+ * converting the float, so no separate integer form is needed.
+ */
+export type AuxValue = number | boolean | string | null;
+
+/**
+ * Item yielded by auxiliary data streams (currency rates, financials,
+ * earnings, dividends, economic data, splits, custom data).
+ *
+ * Follows the same boundary-marker stream protocol as
+ * {@link CandlestickItem}.
+ */
+export type AuxDataItem =
+  | { type: "data"; /** Epoch milliseconds. */ time: number; value: AuxValue }
+  | { type: "historyEnd" };
 
 
 
@@ -390,94 +413,6 @@ export type PropertyValueResult =
 export type ContextMenuItem =
   | { type: "action"; /** Stable id to pass back to `dispatchContextMenuAction()`. */ actionId: string; /** When `false`, render greyed-out but still visible. */ enabled: boolean }
   | { type: "separator" };
-
-
-
-/** Opaque string identifier for a running script slot. */
-export type ScriptId = string;
-
-/** Identifier for an individual series graph within a script. */
-export type SeriesGraphId = number;
-
-/**
- * Kebab-case identifier of a drawing tool, e.g. `"pointer"`,
- * `"trendline"`, `"fib-retracement"`.
- */
-export type DrawingToolId = string;
-
-/**
- * A chart element that can be selected or double-clicked.
- *
- * Discriminate on `type`.
- */
-export type ChartElement =
-  | { type: "series";     scriptId: ScriptId; graphId: SeriesGraphId }
-  | { type: "annotation"; annotationId: AnnotationId }
-  | { type: "bar" };
-
-/**
- * Result of `hitTest()` — describes what is under the pointer.
- *
- * - `{ type: "chart" }` — inside the chart drawing area.
- * - `{ type: "divider", index }` — over a pane-resize handle (`index` is
- *   zero-based from top).
- * - `{ type: "none" }` — outside all interactive regions.
- */
-export type HitTarget =
-  | { type: "chart" }
-  | { type: "divider"; index: number }
-  | { type: "none" };
-
-/** Snap-to-OHLC magnet configuration. */
-export interface MagnetConfig {
-  /** `"off"` disables snapping, `"weak"` snaps near OHLC levels, `"strong"` always snaps. */
-  mode: "off" | "weak" | "strong";
-  /** When `true`, also snap to indicator series values. */
-  snapToIndicators: boolean;
-}
-
-/**
- * Event emitted by the chart and drained via `pollEvent()`.
- *
- * Discriminate on `type`:
- *
- * ```ts
- * let ev: ChartEvent | null;
- * while ((ev = chart.pollEvent()) !== null) {
- *   if (ev.type === "contextMenuRequested") {
- *     showMenu(ev.x, ev.y, ev.items);
- *   }
- * }
- * ```
- */
-export type ChartEvent =
-  /** User clicked the "edit" button on a script label. */
-  | { type: "editScript";          scriptId: ScriptId }
-  /** User clicked the "remove" button on a script label. */
-  | { type: "removeScript";        scriptId: ScriptId }
-  /** User clicked the error icon on a script label. */
-  | { type: "showError";           scriptId: ScriptId }
-  /** User clicked the "configure" button on a script label. */
-  | { type: "configureScript";     scriptId: ScriptId }
-  /** User double-clicked a series graph or candlestick bar. */
-  | { type: "doubleClick";         element: ChartElement }
-  /** The chart selection changed; `selection` is `null` when cleared. */
-  | { type: "selectionChanged";    selection: ChartElement | null }
-  /** The active drawing tool changed. */
-  | { type: "toolChanged";         name: string }
-  /** The magnet configuration was modified by the user. */
-  | { type: "magnetChanged" }
-  /** A new annotation was added (programmatically or by the user). */
-  | { type: "annotationCreated";   annotationId: AnnotationId }
-  /** An existing annotation's spec was replaced. */
-  | { type: "annotationUpdated";   annotationId: AnnotationId }
-  /** An annotation was removed. */
-  | { type: "annotationDeleted";   annotationId: AnnotationId }
-  /**
-   * User right-clicked an annotation — display a context menu at `(x, y)`.
-   * Echo the chosen item back with `dispatchContextMenuAction(actionId)`.
-   */
-  | { type: "contextMenuRequested"; x: number; y: number; items: ContextMenuItem[] };
 
 
 
@@ -606,10 +541,20 @@ export interface ScriptDescriptor {
  * Request object passed to {@link ChartProvider.chartStream}.
  *
  * The symbol and timeframe are arguments of that call rather than fields here.
- * Every field below is required.
+ * Every field below is required except `currency`.
  */
 export interface ChartStreamRequest {
   scripts: ScriptDescriptor[];
+  /**
+   * Quote the chart in this currency instead of the symbol's own; omit to
+   * leave it as quoted.
+   *
+   * One stream feeds every script on the chart, so the chart has one currency
+   * and this is where it is named. Your `DataProvider.candlesticks` is asked
+   * for it and must serve the converted bars or throw — nothing converts them
+   * for you. `syminfo.currency` inside each script reports what was asked for.
+   */
+  currency?: Currency;
   /** BCP-47 locale string for diagnostics (e.g. `"en"`, `"zh-CN"`). */
   locale: string;
   /**
@@ -632,6 +577,94 @@ export interface ChartStreamRequest {
    */
   barsToLoad: number;
 }
+
+
+
+/** Opaque string identifier for a running script slot. */
+export type ScriptId = string;
+
+/** Identifier for an individual series graph within a script. */
+export type SeriesGraphId = number;
+
+/**
+ * Kebab-case identifier of a drawing tool, e.g. `"pointer"`,
+ * `"trendline"`, `"fib-retracement"`.
+ */
+export type DrawingToolId = string;
+
+/**
+ * A chart element that can be selected or double-clicked.
+ *
+ * Discriminate on `type`.
+ */
+export type ChartElement =
+  | { type: "series";     scriptId: ScriptId; graphId: SeriesGraphId }
+  | { type: "annotation"; annotationId: AnnotationId }
+  | { type: "bar" };
+
+/**
+ * Result of `hitTest()` — describes what is under the pointer.
+ *
+ * - `{ type: "chart" }` — inside the chart drawing area.
+ * - `{ type: "divider", index }` — over a pane-resize handle (`index` is
+ *   zero-based from top).
+ * - `{ type: "none" }` — outside all interactive regions.
+ */
+export type HitTarget =
+  | { type: "chart" }
+  | { type: "divider"; index: number }
+  | { type: "none" };
+
+/** Snap-to-OHLC magnet configuration. */
+export interface MagnetConfig {
+  /** `"off"` disables snapping, `"weak"` snaps near OHLC levels, `"strong"` always snaps. */
+  mode: "off" | "weak" | "strong";
+  /** When `true`, also snap to indicator series values. */
+  snapToIndicators: boolean;
+}
+
+/**
+ * Event emitted by the chart and drained via `pollEvent()`.
+ *
+ * Discriminate on `type`:
+ *
+ * ```ts
+ * let ev: ChartEvent | null;
+ * while ((ev = chart.pollEvent()) !== null) {
+ *   if (ev.type === "contextMenuRequested") {
+ *     showMenu(ev.x, ev.y, ev.items);
+ *   }
+ * }
+ * ```
+ */
+export type ChartEvent =
+  /** User clicked the "edit" button on a script label. */
+  | { type: "editScript";          scriptId: ScriptId }
+  /** User clicked the "remove" button on a script label. */
+  | { type: "removeScript";        scriptId: ScriptId }
+  /** User clicked the error icon on a script label. */
+  | { type: "showError";           scriptId: ScriptId }
+  /** User clicked the "configure" button on a script label. */
+  | { type: "configureScript";     scriptId: ScriptId }
+  /** User double-clicked a series graph or candlestick bar. */
+  | { type: "doubleClick";         element: ChartElement }
+  /** The chart selection changed; `selection` is `null` when cleared. */
+  | { type: "selectionChanged";    selection: ChartElement | null }
+  /** The active drawing tool changed. */
+  | { type: "toolChanged";         name: string }
+  /** The magnet configuration was modified by the user. */
+  | { type: "magnetChanged" }
+  /** A new annotation was added (programmatically or by the user). */
+  | { type: "annotationCreated";   annotationId: AnnotationId }
+  /** An existing annotation's spec was replaced. */
+  | { type: "annotationUpdated";   annotationId: AnnotationId }
+  /** An annotation was removed. */
+  | { type: "annotationDeleted";   annotationId: AnnotationId }
+  /**
+   * User right-clicked an annotation — display a context menu at `(x, y)`.
+   * Echo the chosen item back with `dispatchContextMenuAction(actionId)`.
+   */
+  | { type: "contextMenuRequested"; x: number; y: number; items: ContextMenuItem[] };
 
 
 
@@ -734,12 +767,18 @@ export interface DataProvider {
    * cap. Where a `warmup` is present it says how far back the script reads
    * before its values are right — advice you may ignore, though a shorter
    * warm-up leaves indicators `na` or unsettled.
+   *
+   * `currency` is non-null only when a `request.*` call site asked for one;
+   * the chart's own series is always null. Quote the bars in it or throw —
+   * never return unconverted bars, which are wrong by a factor nothing
+   * downstream can detect. The engine does no conversion of its own.
    * If omitted, the chart renders with no data.
    */
   candlesticks?(
     symbol: string,
     timeframe: TimeFrame,
     modifier: DataModifier,
+    currency: Currency | null,
     range: HistoryRange,
     role: SeriesRole,
   ): AsyncIterable<CandlestickItem>;
@@ -750,9 +789,12 @@ export interface DataProvider {
    * `range` is **counted in ticks, not bars** — one bar of an `nT` timeframe
    * is exactly `n` ticks, and the engine has already converted, `warmup`
    * included.
+   *
+   * `currency` behaves as in `candlesticks`: quote the ticks in it, or throw.
    */
   ticks?(
     symbol: string,
+    currency: Currency | null,
     range: HistoryRange,
     role: SeriesRole,
   ): AsyncIterable<TickItem>;
@@ -828,49 +870,26 @@ export interface LibraryLoader {
 
 
 
-/** Trading session that a candlestick belongs to. */
-export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
-
-/**
- * Timeframe string identifying a bar interval.
- *
- * Common values: `"1"`, `"5"`, `"15"`, `"60"` (minutes), `"D"` (daily),
- * `"W"` (weekly), `"M"` (monthly).
- */
-export type TimeFrame = string;
-
-/** A single OHLCV candlestick bar. */
-export interface Candlestick {
-  /** Bar open time as epoch milliseconds. */
+/** A single market tick (one trade event). */
+export interface Tick {
+  /** Tick timestamp as epoch milliseconds. */
   time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  /** Trade volume. */
+  /** Last traded price. */
+  price: number;
+  /** Volume traded in this tick. */
   volume: number;
-  /** Turnover (volume × price). */
-  turnover: number;
-  /** Turnover rate (fraction of float traded). `NaN` when unavailable. */
-  turnoverRate: number;
-  tradeSession: TradeSession;
-  /** Best ask price at bar close (`NaN` when unavailable). */
-  ask: number;
-  /** Best bid price at bar close (`NaN` when unavailable). */
-  bid: number;
+  /** Aggressor side: `"buy"`, `"sell"`, or `null` when unknown. */
+  side: string | null;
 }
 
 /**
- * Item yielded by `DataProvider.candlesticks()`.
+ * Item yielded by `DataProvider.ticks()`.
  *
- * - `{ type: "bar", ... }` — a confirmed historical bar (before the boundary)
- *   or the current forming realtime bar (after it). The candlestick's own
- *   fields sit alongside `type`.
- * - `{ type: "historyEnd" }` — boundary marker emitted once, after all
- *   historical bars and before the first realtime bar.
+ * Follows the same stream protocol as {@link CandlestickItem}: historical ticks
+ * precede the boundary marker, realtime ticks follow it.
  */
-export type CandlestickItem =
-  | ({ type: "bar" } & Candlestick)
+export type TickItem =
+  | ({ type: "tick" } & Tick)
   | { type: "historyEnd" };
 
 
@@ -1655,6 +1674,17 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any) => number;
+  readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1785,17 +1815,9 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any) => number;
-  readonly start: () => void;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
+  readonly intounderlyingsource_cancel: (a: number) => void;
+  readonly intounderlyingsource_pull: (a: number, b: any) => any;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;
@@ -1806,12 +1828,9 @@ export interface InitOutput {
   readonly intounderlyingbytesource_pull: (a: number, b: any) => any;
   readonly intounderlyingbytesource_start: (a: number, b: any) => void;
   readonly intounderlyingbytesource_type: (a: number) => number;
-  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
-  readonly intounderlyingsource_cancel: (a: number) => void;
-  readonly intounderlyingsource_pull: (a: number, b: any) => any;
-  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any) => void;
-  readonly wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______: (a: number, b: number) => void;
-  readonly wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____: (a: number, b: number, c: any, d: any) => void;
+  readonly wasm_bindgen__convert__closures_____invoke__h1c3b971bf5230278: (a: number, b: number, c: any) => void;
+  readonly wasm_bindgen__closure__destroy__h19febeda49f66582: (a: number, b: number) => void;
+  readonly wasm_bindgen__convert__closures_____invoke__h09e1f75621400211: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
