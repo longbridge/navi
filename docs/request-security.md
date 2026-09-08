@@ -19,7 +19,7 @@ request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_
 | `gaps` | `BarmergeGaps` | `BarmergeGaps.Off` (default): carry last value forward; `BarmergeGaps.On`: emit `na` between confirmations |
 | `lookahead` | `BarmergeLookahead` | `BarmergeLookahead.Off` (default) or `BarmergeLookahead.On` |
 | `ignore_invalid_symbol` | `bool` | If `true`, return `na` instead of error for unknown symbols |
-| `currency` | `String` | Currency for price conversion |
+| `currency` | `String` | Quote the requested series in this currency instead of the symbol's own. Served by the data provider; `syminfo.currency` inside `expression` reports it |
 | `calc_bars_count` | `int` | Optional positive limit for how much recent request history is loaded |
 
 ## Simple Examples

@@ -84,9 +84,20 @@ export class StaticCandlestickAdapter {
     symbol: string,
     timeframe: string,
     _modifier: unknown,
+    currency: string | null,
     range: HistoryRange,
     _role: SeriesRole,
   ) {
+    // Each symbol is held in one currency — whatever the recorded JSON was
+    // quoted in — so a request for another one cannot be served. Refusing is
+    // the contract rather than a shortcut: bars in the wrong currency are
+    // wrong by a factor nothing downstream can detect, and the script goes on
+    // to compare them against the chart's own.
+    if (currency != null) {
+      throw new Error(
+        `no data for ${symbol} in ${currency}: this store holds each symbol in its own currency only`,
+      )
+    }
     // The `warmup` two of the shapes carry is advice this static store has
     // nothing extra to offer against — it holds everything either way.
     const allBars = this.data.barsFor(symbol, timeframe, 0)
