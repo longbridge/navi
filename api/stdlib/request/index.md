@@ -199,7 +199,7 @@ Evaluates `expression` on another symbol or timeframe and maps the result onto t
 | `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | How missing requested bars are mapped back onto the current chart. |
 | `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Whether requested values may look ahead on historical bars. |
 | `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Optional currency used for price conversion. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Quote the requested series in this currency instead of the symbol's own. The data provider serves the converted bars, so `syminfo.currency` inside `expression` reports this one. |
 | `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical bars to request. Those bars are all the data `expression` sees — it begins on the first of them — so a limit below what the expression reads back leaves its opening values unsettled. Read once, on the bar this call first runs on; changing it later has no effect. |
 
 **Returns:** <code>series&nbsp;T</code>
@@ -245,7 +245,7 @@ Evaluates `expression` on a lower timeframe and returns one array element per lo
 | `timeframe` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Lower or equal timeframe String, such as `"1"` or `"5"`. |
 | `expression` | <code>instructions&lt;T&gt;</code> |  | Expression to evaluate for each lower-timeframe bar. |
 | `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Optional currency used for price conversion. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Quote the requested intrabars in this currency instead of the symbol's own. The data provider serves the converted bars. |
 | `ignore_invalid_timeframe` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` when the requested timeframe is not lower than the chart timeframe. |
 | `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical intrabars to request. Those intrabars are all the data `expression` sees — it begins on the first of them. Read once, on the bar this call first runs on; changing it later has no effect. |
 

@@ -731,12 +731,12 @@ indicator(
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 腳本的標題。當不使用 `shorttitle` 參數時，它會顯示在圖表上，並在發佈腳本時成為出版物的默認標題。 |
 | `short_title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 腳本在圖表上的顯示名稱。如果指定，它將替換大多數圖表相關窗口中的 `title` 參數。 |
 | `overlay` | <code>const&nbsp;bool</code> | `false` | 如果為 `true`，則如果用户將腳本直接添加到圖表，則腳本的視覺效果將顯示在主圖表窗格上；如果用户將腳本應用到該腳本，則腳本的視覺效果將顯示在另一個腳本的窗格中。如果為 `false`，則腳本的視覺效果將顯示在單獨的窗格中。 |
-| `format` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | 指定腳本顯示值的格式。可能的值：<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Inherit</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Price</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Percent</a>。選修的。 |
-| `precision` | <code>const&nbsp;int</code> | `na` | 指定腳本顯示值的浮點後的位數。必須是不大於 16 的非負整數。如果 `format` 設定為 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Inherit</a> 並指定 `precision`，則格式將設定為 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Price</a>。當函數的 `format` 參數使用 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a> 時，`precision` 參數不會影響結果，因為 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a> 定義的小數精度規則會取代其他精度設定。選修的。默認值繼承自圖表符號的精度。 |
-| `scale` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/ScaleType">ScaleType</a></code> | `na` | 使用的價格等級。可能的值：<code>scale.right</code>、<code>scale.left</code>、<code>scale.none</code>。 <code>scale.none</code> 值只能與 `overlay = true` 結合使用。選修的。默認情況下，腳本使用與圖表相同的比例。使用 <code>scale_type</code> 類型。 |
+| `format` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | 指定腳本顯示值的格式。可能的值：<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Inherit</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Price</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Percent</a>。可選。 |
+| `precision` | <code>const&nbsp;int</code> | `na` | 指定腳本顯示值的浮點後的位數。必須是不大於 16 的非負整數。如果 `format` 設定為 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Inherit</a> 並指定 `precision`，則格式將設定為 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Price</a>。當函數的 `format` 參數使用 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a> 時，`precision` 參數不會影響結果，因為 <a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a> 定義的小數精度規則會取代其他精度設定。可選。默認值繼承自圖表符號的精度。 |
+| `scale` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/ScaleType">ScaleType</a></code> | `na` | 使用的價格等級。可能的值：<code>scale.right</code>、<code>scale.left</code>、<code>scale.none</code>。 <code>scale.none</code> 值只能與 `overlay = true` 結合使用。可選。默認情況下，腳本使用與圖表相同的比例。使用 <code>scale_type</code> 類型。 |
 | `max_bars_back` | <code>const&nbsp;int</code> | `na` | 腳本為每個變量和函數保留的歷史緩衝區的長度，它確定可以使用 `[]` 歷史引用運算符引用多少個過去的值。 |
 | `timeframe` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 向簡單腳本添加多時間範圍功能。 |
-| `timeframe_gaps` | <code>const&nbsp;bool</code> | `true` | 指定當時間範圍高於圖表的時間範圍時指標值如何在圖表 bars 上顯示。如果是 `true`，則僅當較高的 `timeframe` 值可用時，值才會出現在圖表 bar 上，否則傳回 `na` （因此會出現“間隙”）。使用 `false` 時，原本存在的間隙將被傳回的最新已知值填充，從而避免使用 `na` 值。選修的。默認為 `true`。 |
+| `timeframe_gaps` | <code>const&nbsp;bool</code> | `true` | 指定當時間範圍高於圖表的時間範圍時指標值如何在圖表 bars 上顯示。如果是 `true`，則僅當較高的 `timeframe` 值可用時，值才會出現在圖表 bar 上，否則傳回 `na` （因此會出現“間隙”）。使用 `false` 時，原本存在的間隙將被傳回的最新已知值填充，從而避免使用 `na` 值。可選。默認為 `true`。 |
 | `explicit_plot_zorder` | <code>const&nbsp;bool</code> | `false` | 指定腳本的繪圖、填充和線條的渲染順序。如果是 `true`，則按照腳本代碼中出現的順序繪製繪圖，每個較新的繪圖都繪製在之前的繪圖上方。這僅適用於 `plot*()` 函數、<a class="stdlib-ref" data-key="prelude::fill" href="/zh-HK/api/stdlib/prelude/Matrix#fill">fill</a> 和 <a class="stdlib-ref" data-key="prelude::hline" href="/zh-HK/api/stdlib/prelude/#hline">hline</a>。 |
 | `max_lines_count` | <code>const&nbsp;int</code> | `50` | 最後顯示的 <code>line</code> 繪圖的數量。可能的值：1-500。計數為近似值；可能會顯示多於指定數量的繪圖。 |
 | `max_labels_count` | <code>const&nbsp;int</code> | `50` | 最後顯示的 <code>label</code> 繪圖的數量。可能的值：1-500。計數為近似值；可能會顯示多於指定數量的繪圖。 |
@@ -958,8 +958,8 @@ library(
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 圖書館的標題及其標識符。它不能包含空格、特殊字符或以數字開頭。它用作出版物的默認標題，並在另一個腳本使用它時在 `import` 語句中唯一標識該庫。它也用作圖表上的腳本名稱。 |
-| `overlay` | <code>const&nbsp;bool</code> | `false` | 如果為 `true`，則庫導出函數生成的任何視覺效果都將繪製在主圖表窗格上。如果是 `false`，它們將出現在單獨的窗格中。選修的。默認為 `false`。 |
-| `dynamic_requests` | <code>const&nbsp;bool</code> | `true` | 指定庫的導出函數是否可以包含動態 `request.*()` 調用 - 即放置在條件結構或循環內的調用，或者接受通常需要更簡單限定符的參數的“系列”參數的調用。選修的。默認為 `true`。 |
+| `overlay` | <code>const&nbsp;bool</code> | `false` | 如果為 `true`，則庫導出函數生成的任何視覺效果都將繪製在主圖表窗格上。如果是 `false`，它們將出現在單獨的窗格中。可選。默認為 `false`。 |
+| `dynamic_requests` | <code>const&nbsp;bool</code> | `true` | 指定庫的導出函數是否可以包含動態 `request.*()` 調用 - 即放置在條件結構或循環內的調用，或者接受通常需要更簡單限定符的參數的“系列”參數的調用。可選。默認為 `true`。 |
 
 ---
 
@@ -1520,38 +1520,38 @@ strategy(
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 腳本的標題。未設定 `shorttitle` 時顯示在圖表上，併成為發佈時的默認標題。 |
-| `short_title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 圖表和大多數圖表相關窗口中顯示的腳本的縮寫顯示名稱。選修的。 |
-| `overlay` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，則策略的視覺效果將繪製在主圖表窗格上。如果是 `false`，它們將出現在單獨的窗格中。選修的。默認為 `false`。 |
-| `format` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | 指定策略顯示值的格式。可能的值：<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Inherit</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Price</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Percent</a>。選修的。 |
-| `precision` | <code>const&nbsp;int</code> | `na` | 策略顯示值的小數位數。必須是不大於16的非負整數。當使用<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a>時，此設定無效。選修的。默認值繼承自圖表符號的精度。 |
-| `scale` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/ScaleType">ScaleType</a></code> | `na` | 使用的價格範圍。可能的值：<code>scale.right</code>、<code>scale.left</code>、<code>scale.none</code>。僅當 `overlay = true` 時才允許 <code>scale.none</code>。選修的。 |
-| `pyramiding` | <code>const&nbsp;int</code> | `0` | 同一時間允許在同一方向上進入的最大數量。選修的。默認值為 `0`，表示每個方向僅允許一個條目。 |
-| `calc_on_order_fills` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，則只要在 bar 期間執行訂單，策略就會重新計算其邏輯，而不僅僅是在 bar 收盤時。選修的。默認為 `false`。 |
-| `calc_on_every_tick` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，策略會在每次傳入的實時價格更新（變動點）時重新計算。如果是 `false`，則計算僅在 bar 關閉時發生。選修的。默認為 `false`。 |
-| `max_bars_back` | <code>const&nbsp;int</code> | `na` | 為所有變量和函數保留的歷史緩衝區的深度，控制可以使用 `[]` 運算符讀取多少個過去的值。選修的。 |
-| `backtest_fill_limits_assumption` | <code>const&nbsp;int</code> | `0` | 在假設執行限價單之前，市場必須移動超出限價的價格變動數。選修的。默認為 `0`。 |
-| `default_qty_type` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/DefaultQtyType">DefaultQtyType</a></code> | `DefaultQtyType.Fixed` | 確定如何解釋 `default_qty_value`。可能的值：<code>strategy.fixed</code>、<code>strategy.percent_of_equity</code>、<code>strategy.cash</code>。選修的。默認值為 <code>strategy.fixed</code>。 |
-| `default_qty_value` | <code>const&nbsp;float</code> | `1` | 在入場調用中未指定數量時使用的默認訂單大小。它的含義取決於`default_qty_type`。選修的。默認為 `1.0`。 |
-| `initial_capital` | <code>const&nbsp;float</code> | `1000000` | 回測開始時策略可用的啓動資金，以 `currency` 表示。選修的。默認為 `1000000.0`。 |
-| `currency` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | 策略跟蹤資本、利潤和損失所用的基礎貨幣。選修的。默認為圖表符號的貨幣。 |
-| `slippage` | <code>const&nbsp;int</code> | `0` | 添加到每個訂單執行價格以模擬執行滑點的價格變動數量。選修的。默認為 `0`。 |
-| `commission_type` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/CommissionType">CommissionType</a></code> | `CommissionType.Percent` | 指定如何計算交易佣金。可能的值：`strategy.commission.percent`、`strategy.commission.cash_per_contract`、`strategy.commission.cash_per_order`。選修的。默認為 `strategy.commission.percent`。 |
-| `commission_value` | <code>const&nbsp;float</code> | `0` | 佣金金額，根據 `commission_type` 解釋。選修的。默認為 `0.0`。 |
-| `process_orders_on_close` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，則在 bar 期間生成的訂單將按該 bar 的收盤價處理，而不是在下一個 bar 的開盤價處理。選修的。默認為 `false`。 |
-| `close_entries_rule` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `"FIFO"` | 關閉多個打開的條目時應用的排序規則。 `\"FIFO` 首先關閉最舊的條目； `ANY` 允許關閉調用通過 ID 定位特定條目。選修的。默認為 `FIFO\"`。 |
-| `margin_long` | <code>const&nbsp;float</code> | `100` | 多頭頭寸的保證金要求，以頭寸價值的百分比表示。值 `100` 表示沒有槓桿。選修的。默認為 `100.0`。 |
-| `margin_short` | <code>const&nbsp;float</code> | `100` | 空頭頭寸的保證金要求，以頭寸價值的百分比表示。值 `100` 表示沒有槓桿。選修的。默認為 `100.0`。 |
-| `explicit_plot_zorder` | <code>const&nbsp;bool</code> | `false` | 如果 `true`，繪圖、填充和線條將按照它們在腳本代碼中出現的順序呈現，後面的聲明繪製在前面的聲明之上。選修的。默認為 `false`。 |
-| `max_lines_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `line` 繪圖的最大數量。可能的值：1–500。選修的。默認為 `50`。 |
-| `max_labels_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `label` 繪圖的最大數量。可能的值：1–500。選修的。默認為 `50`。 |
-| `max_boxes_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `box` 繪圖的最大數量。可能的值：1–500。選修的。默認為 `50`。 |
-| `calc_bars_count` | <code>const&nbsp;int</code> | `na` | 將回測限制為指定的最新 bars 數量。當 `na` 時，策略在所有可用歷史記錄上運行。選修的。默認為 `na`。 |
-| `risk_free_rate` | <code>const&nbsp;float</code> | `2` | 計算夏普比率和索爾蒂諾比率時使用的年度無風險利率（百分比）。選修的。默認為 `2.0`。 |
-| `use_bar_magnifier` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，引擎會使用更高分辨率的柱內資料來確定每個 bar 內更準確的訂單執行價格。選修的。默認為 `false`。 |
-| `fill_orders_on_standard_ohlc` | <code>const&nbsp;bool</code> | `false` | 如果 `true`，限價單和止損單將根據 bar 的標準 OHLC 價格執行，忽略任何柱內價格路徑。選修的。默認為 `false`。 |
-| `max_polylines_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `polyline` 繪圖的最大數量。可能的值：1–100。選修的。默認為 `50`。 |
-| `dynamic_requests` | <code>const&nbsp;bool</code> | `true` | 指定策略是否可以在條件結構或循環內包含動態 `request.*()` 調用，或者接受通常為非系列參數的“系列”參數的調用。選修的。默認為 `true`。 |
-| `behind_chart` | <code>const&nbsp;bool</code> | `true` | 如果是 `true`，則所有圖表和繪圖都將呈現在圖表的燭台或 bars 後面。僅當 `overlay = true` 時生效。選修的。默認為 `true`。 |
+| `short_title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `na` | 圖表和大多數圖表相關窗口中顯示的腳本的縮寫顯示名稱。可選。 |
+| `overlay` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，則策略的視覺效果將繪製在主圖表窗格上。如果是 `false`，它們將出現在單獨的窗格中。可選。默認為 `false`。 |
+| `format` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Format">Format</a></code> | `Format.Inherit` | 指定策略顯示值的格式。可能的值：<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Inherit</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Price</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a>、<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Percent</a>。可選。 |
+| `precision` | <code>const&nbsp;int</code> | `na` | 策略顯示值的小數位數。必須是不大於16的非負整數。當使用<a class="stdlib-ref" data-key="prelude::Format" href="/zh-HK/api/stdlib/prelude/Format">Format.Volume</a>時，此設定無效。可選。默認值繼承自圖表符號的精度。 |
+| `scale` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/ScaleType">ScaleType</a></code> | `na` | 使用的價格範圍。可能的值：<code>scale.right</code>、<code>scale.left</code>、<code>scale.none</code>。僅當 `overlay = true` 時才允許 <code>scale.none</code>。可選。 |
+| `pyramiding` | <code>const&nbsp;int</code> | `0` | 同一時間允許在同一方向上進入的最大數量。可選。默認值為 `0`，表示每個方向僅允許一個條目。 |
+| `calc_on_order_fills` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，則只要在 bar 期間執行訂單，策略就會重新計算其邏輯，而不僅僅是在 bar 收盤時。可選。默認為 `false`。 |
+| `calc_on_every_tick` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，策略可以在任何傳入的實時價格更新（變動點）上下單，因此在 bar 內滿足的條件會在下一個變動點生效。如果是 `false`，下單被限制在使 bar 關閉的那個變動點上——歷史 bar 只有這一個變動點——因此策略實盤交易的方式與回測一致。無論取何值，腳本本身都會在每次更新時運行，因此繪圖和繪製對象會跟隨正在形成的 bar。可選。默認為 `false`。 |
+| `max_bars_back` | <code>const&nbsp;int</code> | `na` | 為所有變量和函數保留的歷史緩衝區的深度，控制可以使用 `[]` 運算符讀取多少個過去的值。可選。 |
+| `backtest_fill_limits_assumption` | <code>const&nbsp;int</code> | `0` | 在假設執行限價單之前，市場必須移動超出限價的價格變動數。可選。默認為 `0`。 |
+| `default_qty_type` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/DefaultQtyType">DefaultQtyType</a></code> | `DefaultQtyType.Fixed` | 確定如何解釋 `default_qty_value`。可能的值：<code>strategy.fixed</code>、<code>strategy.percent_of_equity</code>、<code>strategy.cash</code>。可選。默認值為 <code>strategy.fixed</code>。 |
+| `default_qty_value` | <code>const&nbsp;float</code> | `1` | 在入場調用中未指定數量時使用的默認訂單大小。它的含義取決於`default_qty_type`。可選。默認為 `1.0`。 |
+| `initial_capital` | <code>const&nbsp;float</code> | `1000000` | 回測開始時策略可用的啓動資金，以 `currency` 表示。可選。默認為 `1000000.0`。 |
+| `currency` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | 策略跟蹤資本、利潤和損失所用的基礎貨幣。可選。默認為圖表符號的貨幣。 |
+| `slippage` | <code>const&nbsp;int</code> | `0` | 添加到每個訂單執行價格以模擬執行滑點的價格變動數量。可選。默認為 `0`。 |
+| `commission_type` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/CommissionType">CommissionType</a></code> | `CommissionType.Percent` | 指定如何計算交易佣金。可能的值：`strategy.commission.percent`、`strategy.commission.cash_per_contract`、`strategy.commission.cash_per_order`。可選。默認為 `strategy.commission.percent`。 |
+| `commission_value` | <code>const&nbsp;float</code> | `0` | 佣金金額，根據 `commission_type` 解釋。可選。默認為 `0.0`。 |
+| `process_orders_on_close` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，則在 bar 期間生成的訂單將按該 bar 的收盤價處理，而不是在下一個 bar 的開盤價處理。可選。默認為 `false`。 |
+| `close_entries_rule` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> | `"FIFO"` | 關閉多個打開的條目時應用的排序規則。 `\"FIFO` 首先關閉最舊的條目； `ANY` 允許關閉調用通過 ID 定位特定條目。可選。默認為 `FIFO\"`。 |
+| `margin_long` | <code>const&nbsp;float</code> | `100` | 多頭頭寸的保證金要求，以頭寸價值的百分比表示。值 `100` 表示沒有槓桿。可選。默認為 `100.0`。 |
+| `margin_short` | <code>const&nbsp;float</code> | `100` | 空頭頭寸的保證金要求，以頭寸價值的百分比表示。值 `100` 表示沒有槓桿。可選。默認為 `100.0`。 |
+| `explicit_plot_zorder` | <code>const&nbsp;bool</code> | `false` | 如果 `true`，繪圖、填充和線條將按照它們在腳本代碼中出現的順序呈現，後面的聲明繪製在前面的聲明之上。可選。默認為 `false`。 |
+| `max_lines_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `line` 繪圖的最大數量。可能的值：1–500。可選。默認為 `50`。 |
+| `max_labels_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `label` 繪圖的最大數量。可能的值：1–500。可選。默認為 `50`。 |
+| `max_boxes_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `box` 繪圖的最大數量。可能的值：1–500。可選。默認為 `50`。 |
+| `calc_bars_count` | <code>const&nbsp;int</code> | `na` | 將回測限制為指定的最新 bars 數量。當 `na` 時，策略在所有可用歷史記錄上運行。可選。默認為 `na`。 |
+| `risk_free_rate` | <code>const&nbsp;float</code> | `2` | 計算夏普比率和索爾蒂諾比率時使用的年度無風險利率（百分比）。可選。默認為 `2.0`。 |
+| `use_bar_magnifier` | <code>const&nbsp;bool</code> | `false` | 如果是 `true`，引擎會使用更高分辨率的柱內資料來確定每個 bar 內更準確的訂單執行價格。可選。默認為 `false`。 |
+| `fill_orders_on_standard_ohlc` | <code>const&nbsp;bool</code> | `false` | 如果 `true`，限價單和止損單將根據 bar 的標準 OHLC 價格執行，忽略任何柱內價格路徑。可選。默認為 `false`。 |
+| `max_polylines_count` | <code>const&nbsp;int</code> | `50` | 圖表上保存的最新 `polyline` 繪圖的最大數量。可能的值：1–100。可選。默認為 `50`。 |
+| `dynamic_requests` | <code>const&nbsp;bool</code> | `true` | 指定策略是否可以在條件結構或循環內包含動態 `request.*()` 調用，或者接受通常為非系列參數的“系列”參數的調用。可選。默認為 `true`。 |
+| `behind_chart` | <code>const&nbsp;bool</code> | `true` | 如果是 `true`，則所有圖表和繪圖都將呈現在圖表的燭台或 bars 後面。僅當 `overlay = true` 時生效。可選。默認為 `true`。 |
 
 ---
 
