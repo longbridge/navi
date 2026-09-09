@@ -47,15 +47,15 @@ const _s26 = ref(0)
 new<T>(rows: int = 0, columns: int = 0, initial_value: T = na): const Matrix<T>
 ```
 
-Creates a new matrix with the specified number of rows and columns, initializing all elements to the given initial value.
+創建一個具有指定行數和列數的新矩陣，並將所有元素初始化為給定的初始值。
 
 **參數**
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `rows` | <code>int</code> | `0` | The number of rows in the matrix. |
-| `columns` | <code>int</code> | `0` | The number of columns in the matrix. |
-| `initial_value` | <code>T</code> | `na` | The initial value for all elements. |
+| `rows` | <code>int</code> | `0` | 矩陣中的行數。 |
+| `columns` | <code>int</code> | `0` | 矩陣中的列數。 |
+| `initial_value` | <code>T</code> | `na` | 所有元素的初始值。 |
 
 **返回:** <code>const&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Matrix">Matrix</a>&lt;T&gt;</code>
 
@@ -963,7 +963,7 @@ is_square<T>(id: Matrix<T>): bool
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Matrix">Matrix</a>&lt;float&gt;</code> |  | 用於查找眾數的浮點矩陣。 |
 
-**返回:** <code>float</code> — The most frequently occurring value, or the smallest among tied values.
+**返回:** <code>float</code> — 出現次數最多的值；若有並列，則取其中最小的。
 
 </div>
 

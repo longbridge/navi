@@ -146,18 +146,16 @@ atan(value: float): float
 atan2(y: float, x: float): float
 ```
 
-Returns the four-quadrant arctangent of `y/x` in degrees.
-
-Unlike <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/#atan">atan</a>, this function takes two arguments and determines the correct quadrant using the signs of both. Useful for computing angles between vectors or points.
+返回 `y/x` 的四象限反正切，以度為單位。與 <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/#atan">atan</a> 不同，此函數接受兩個參數，並利用兩者的符號確定正確的象限。適用於計算向量或點之間的夾角。
 
 **參數**
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `y` | <code>float</code> |  | The Y component (numerator). |
-| `x` | <code>float</code> |  | The X component (denominator). |
+| `y` | <code>float</code> |  | Y 分量（分子）。 |
+| `x` | <code>float</code> |  | X 分量（分母）。 |
 
-**返回:** <code>float</code> — An angle in degrees in the range (-180, 180].
+**返回:** <code>float</code> — 以度為單位的角度，範圍為 (-180, 180]。
 
 **參見:** <a class="stdlib-ref" data-key="math::atan" href="/zh-HK/api/stdlib/math/#atan">math.atan</a>
 

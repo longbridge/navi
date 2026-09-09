@@ -18,9 +18,9 @@ heikin_ashi(ticker_id: series String): series String
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id to modify (e.g. `syminfo.tickerid`). |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要修改的基础代码标识符（例如 `syminfo.tickerid`）。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -36,10 +36,10 @@ inherit(from_ticker_id: series String, ticker_id: series String): series String
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `from_ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The ticker id whose modifiers are inherited. |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id supplying the symbol. |
+| `from_ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 其修饰符被继承的代码标识符。 |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 提供交易品种的基础代码标识符。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -59,11 +59,11 @@ kagi(
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id (e.g. `symbol_info.tickerid`). |
-| `param` | <code>series&nbsp;float</code> |  | Reversal amount (Traditional) or ATR length (ATR). |
-| `style` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BoxStyle">BoxStyle</a></code> | `BoxStyle.Traditional` | Box size assignment method. |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 基础代码标识符（例如 `symbol_info.tickerid`）。 |
+| `param` | <code>series&nbsp;float</code> |  | 反转量（Traditional）或 ATR 周期（ATR）。 |
+| `style` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BoxStyle">BoxStyle</a></code> | `BoxStyle.Traditional` | 箱体大小的确定方式。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -79,10 +79,10 @@ line_break(ticker_id: series String, num_lines: series int = 3): series String
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id to modify (e.g. `symbol_info.tickerid`). |
-| `num_lines` | <code>series&nbsp;int</code> | `3` | Number of lines used for break calculation. |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要修改的基础代码标识符（例如 `symbol_info.tickerid`）。 |
+| `num_lines` | <code>series&nbsp;int</code> | `3` | 用于折线计算的线数。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -104,13 +104,13 @@ modify(
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The ticker id to modify. |
-| `session` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Session">Session</a></code> | `na` | Session type. Optional. |
-| `adjustment` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Adjustment">Adjustment</a></code> | `na` | Price adjustment. Optional. |
-| `backadjustment` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BackAdjustment">BackAdjustment</a></code> | `na` | Continuous-futures back-adjustment. Optional. |
-| `settlement_as_close` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/SettlementAsClose">SettlementAsClose</a></code> | `na` | Settlement-as-close. Optional. |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要修改的代码标识符。 |
+| `session` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Session">Session</a></code> | `na` | 时段类型。可选。 |
+| `adjustment` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Adjustment">Adjustment</a></code> | `na` | 价格复权类型。可选。 |
+| `backadjustment` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BackAdjustment">BackAdjustment</a></code> | `na` | 连续期货合约的历史价格复权方式。可选。 |
+| `settlement_as_close` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/SettlementAsClose">SettlementAsClose</a></code> | `na` | 是否以结算价作为收盘价。可选。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -133,14 +133,14 @@ new(
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `market` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | Market of the symbol (e.g. `symbol_info.market`). |
-| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | Ticker name (e.g. `symbol_info.ticker`). |
-| `session` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Session">Session</a></code> | `Session.Regular` | Session type. Optional. |
-| `adjustment` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Adjustment">Adjustment</a></code> | `Adjustment.None` | Price adjustment. Optional. |
-| `backadjustment` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BackAdjustment">BackAdjustment</a></code> | `BackAdjustment.Inherit` | Continuous-futures back-adjustment. Optional. |
-| `settlement_as_close` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/SettlementAsClose">SettlementAsClose</a></code> | `SettlementAsClose.Inherit` | Settlement-as-close. Optional. |
+| `market` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 交易品种所属市场（例如 `symbol_info.market`）。 |
+| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 代码名称（例如 `symbol_info.ticker`）。 |
+| `session` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Session">Session</a></code> | `Session.Regular` | 时段类型。可选。 |
+| `adjustment` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Adjustment">Adjustment</a></code> | `Adjustment.None` | 价格复权类型。可选。 |
+| `backadjustment` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BackAdjustment">BackAdjustment</a></code> | `BackAdjustment.Inherit` | 连续期货合约的历史价格复权方式。可选。 |
+| `settlement_as_close` | <code>simple&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/SettlementAsClose">SettlementAsClose</a></code> | `SettlementAsClose.Inherit` | 是否以结算价作为收盘价。可选。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -162,13 +162,13 @@ point_figure(
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id (e.g. `symbol_info.tickerid`). |
-| `source` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/PnfSource">PnfSource</a></code> |  | Source used to calculate boxes (Hl / Close). |
-| `style` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BoxStyle">BoxStyle</a></code> |  | Box size assignment method. |
-| `param` | <code>series&nbsp;float</code> |  | ATR length, box size, or percentage, depending on `style`. |
-| `reversal` | <code>series&nbsp;int</code> |  | Reversal amount, in boxes. |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 基础代码标识符（例如 `symbol_info.tickerid`）。 |
+| `source` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/PnfSource">PnfSource</a></code> |  | 计算箱体所用的价格来源（Hl / Close）。 |
+| `style` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BoxStyle">BoxStyle</a></code> |  | 箱体大小的确定方式。 |
+| `param` | <code>series&nbsp;float</code> |  | ATR 周期、箱体大小或百分比，取决于 `style`。 |
+| `reversal` | <code>series&nbsp;int</code> |  | 反转量，以箱体数计。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -190,13 +190,13 @@ renko(
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id (e.g. `symbol_info.tickerid`). |
-| `style` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BoxStyle">BoxStyle</a></code> | `BoxStyle.Atr` | Box size assignment method (ATR / Traditional / PercentageLtp). |
-| `param` | <code>series&nbsp;float</code> | `10` | ATR length, box size, or percentage, depending on `style`. |
-| `request_wicks` | <code>series&nbsp;bool</code> | `false` | Whether Renko bricks include wick values. |
-| `source` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/RenkoSource">RenkoSource</a></code> | `RenkoSource.Close` | Source used to calculate bricks (Close / OHLC). |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 基础代码标识符（例如 `symbol_info.tickerid`）。 |
+| `style` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/BoxStyle">BoxStyle</a></code> | `BoxStyle.Atr` | 箱体大小的确定方式（ATR / Traditional / PercentageLtp）。 |
+| `param` | <code>series&nbsp;float</code> | `10` | ATR 周期、箱体大小或百分比，取决于 `style`。 |
+| `request_wicks` | <code>series&nbsp;bool</code> | `false` | 砖形图砖块是否包含影线值。 |
+| `source` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/RenkoSource">RenkoSource</a></code> | `RenkoSource.Close` | 计算砖块所用的价格来源（Close / OHLC）。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。
 
 ---
 
@@ -212,6 +212,6 @@ standard(ticker_id: series String): series String
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | The base ticker id to modify (e.g. `syminfo.tickerid`). |
+| `ticker_id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> |  | 要修改的基础代码标识符（例如 `syminfo.tickerid`）。 |
 
-**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — A ticker id string usable with `request.security`.
+**返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> — 可用于 `request.security` 的代码标识符字符串。

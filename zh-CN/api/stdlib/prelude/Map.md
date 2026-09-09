@@ -16,7 +16,7 @@ title: "Map<K, V>"
 new<K, V>(): const Map<K, V>
 ```
 
-Creates a new empty map of the specified key and value types.
+创建一个具有指定键类型和值类型的新空映射。
 
 **返回:** <code>const&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Map">Map</a>&lt;K, V&gt;</code>
 

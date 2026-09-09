@@ -311,7 +311,7 @@ chop(length: simple int): series float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `length` | <code>simple&nbsp;int</code> |  | The lookback period (must be &gt;= 2). |
+| `length` | <code>simple&nbsp;int</code> |  | 回溯週期（必須 &gt;= 2）。 |
 
 **返回:** <code>series&nbsp;float</code>
 
@@ -329,7 +329,7 @@ cmf(length: simple int): series float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `length` | <code>simple&nbsp;int</code> |  | The number of bars to accumulate. |
+| `length` | <code>simple&nbsp;int</code> |  | 用於累積的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code>
 
@@ -512,8 +512,8 @@ dema(source: series float, length: simple int): series float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `source` | <code>series&nbsp;float</code> |  | The series to smooth. |
-| `length` | <code>simple&nbsp;int</code> |  | The smoothing period. |
+| `source` | <code>series&nbsp;float</code> |  | 要平滑的系列。 |
+| `length` | <code>simple&nbsp;int</code> |  | 平滑週期。 |
 
 **返回:** <code>series&nbsp;float</code>
 
@@ -1188,8 +1188,8 @@ pivot_point_levels(
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `type` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/ta/PivotType">PivotType</a></code> |  | The pivot calculation method. |
-| `change` | <code>series&nbsp;bool</code> |  | `true` on the first bar of a new pivot period. |
+| `type` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/ta/PivotType">PivotType</a></code> |  | 樞軸點計算方法。 |
+| `change` | <code>series&nbsp;bool</code> |  | 在新樞軸週期的第一根 bar 上為 `true`。 |
 
 **返回:** <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Array">Array</a>&lt;float&gt;</code>
 
@@ -1479,8 +1479,8 @@ tema(source: series float, length: simple int): series float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `source` | <code>series&nbsp;float</code> |  | The series to smooth. |
-| `length` | <code>simple&nbsp;int</code> |  | The smoothing period. |
+| `source` | <code>series&nbsp;float</code> |  | 要平滑的系列。 |
+| `length` | <code>simple&nbsp;int</code> |  | 平滑週期。 |
 
 **返回:** <code>series&nbsp;float</code>
 
@@ -1592,8 +1592,8 @@ vhf(source: series float, length: simple int): series float
 
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
-| `source` | <code>series&nbsp;float</code> |  | The price series to analyze. |
-| `length` | <code>simple&nbsp;int</code> |  | The lookback period. |
+| `source` | <code>series&nbsp;float</code> |  | 要分析的價格系列。 |
+| `length` | <code>simple&nbsp;int</code> |  | 回溯週期。 |
 
 **返回:** <code>series&nbsp;float</code>
 

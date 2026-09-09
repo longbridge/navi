@@ -43,13 +43,13 @@ const _s22 = ref(0)
 from<T>(values: T): Array<T>
 ```
 
-Creates a new array containing the provided `values`.
+创建一个包含所给 `values` 的新数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `values` | <code>T</code> |  | Variable number of elements to include in the array. |
+| `values` | <code>T</code> |  | 要放入数组的元素，数量可变。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code>
 
@@ -61,14 +61,14 @@ Creates a new array containing the provided `values`.
 new<T>(size: int = 0, initial_value: T = na): const Array<T>
 ```
 
-Creates a new empty array of type `T`.
+创建一个类型为 `T` 的新空数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | The initial size of the array. |
-| `initial_value` | <code>T</code> | `na` | The initial value for all elements. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。 |
+| `initial_value` | <code>T</code> | `na` | 所有元素的初始值。 |
 
 **返回:** <code>const&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code>
 
@@ -80,14 +80,14 @@ Creates a new empty array of type `T`.
 new_bool(size: int = 0, initial_value: bool = na): Array<bool>
 ```
 
-Creates a new array of `bool` values.
+创建一个新的 `bool` 值数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code>bool</code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code>bool</code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;bool&gt;</code>
 
@@ -99,14 +99,14 @@ Creates a new array of `bool` values.
 new_box(size: int = 0, initial_value: Box = na): Array<Box>
 ```
 
-Creates a new array of `Box` ids.
+创建一个新的 `Box` id 数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Box">Box</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Box">Box</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Box">Box</a>&gt;</code>
 
@@ -118,14 +118,14 @@ Creates a new array of `Box` ids.
 new_color(size: int = 0, initial_value: Color = na): Array<Color>
 ```
 
-Creates a new array of `color` values.
+创建一个新的 `color` 值数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Color">Color</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Color">Color</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Color">Color</a>&gt;</code>
 
@@ -137,14 +137,14 @@ Creates a new array of `color` values.
 new_float(size: int = 0, initial_value: float = na): Array<float>
 ```
 
-Creates a new array of `float` values.
+创建一个新的 `float` 值数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code>float</code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code>float</code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;float&gt;</code>
 
@@ -156,14 +156,14 @@ Creates a new array of `float` values.
 new_int(size: int = 0, initial_value: int = na): Array<int>
 ```
 
-Creates a new array of `int` values.
+创建一个新的 `int` 值数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code>int</code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code>int</code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;int&gt;</code>
 
@@ -175,14 +175,14 @@ Creates a new array of `int` values.
 new_label(size: int = 0, initial_value: Label = na): Array<Label>
 ```
 
-Creates a new array of `Label` ids.
+创建一个新的 `Label` id 数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Label">Label</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Label">Label</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Label">Label</a>&gt;</code>
 
@@ -194,14 +194,14 @@ Creates a new array of `Label` ids.
 new_line(size: int = 0, initial_value: Line = na): Array<Line>
 ```
 
-Creates a new array of `Line` ids.
+创建一个新的 `Line` id 数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Line">Line</a>&gt;</code>
 
@@ -213,14 +213,14 @@ Creates a new array of `Line` ids.
 new_line_fill(size: int = 0, initial_value: LineFill = na): Array<LineFill>
 ```
 
-Creates a new array of `LineFill` ids.
+创建一个新的 `LineFill` id 数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/LineFill">LineFill</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/LineFill">LineFill</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/LineFill">LineFill</a>&gt;</code>
 
@@ -232,14 +232,14 @@ Creates a new array of `LineFill` ids.
 new_string(size: int = 0, initial_value: String = na): Array<String>
 ```
 
-Creates a new array of `String` values.
+创建一个新的 `String` 值数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a>&gt;</code>
 
@@ -251,14 +251,14 @@ Creates a new array of `String` values.
 new_table(size: int = 0, initial_value: Table = na): Array<Table>
 ```
 
-Creates a new array of `Table` ids.
+创建一个新的 `Table` id 数组。
 
 **参数**
 
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `size` | <code>int</code> | `0` | Initial size of the array. Default is 0. |
-| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Table">Table</a></code> | `na` | Initial value for all elements. Default is `na`. |
+| `size` | <code>int</code> | `0` | 数组的初始大小。默认为 0。 |
+| `initial_value` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Table">Table</a></code> | `na` | 所有元素的初始值。默认为 `na`。 |
 
 **返回:** <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Table">Table</a>&gt;</code>
 
@@ -961,7 +961,7 @@ lastindexof<T>(id: Array<T>, value: T): int
 | --- | --- | --- | --- |
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;float&gt;</code> |  | 输入浮点数数组。 |
 
-**返回:** <code>float</code> — The most frequently occurring value, or the smallest among tied values.
+**返回:** <code>float</code> — 出现次数最多的值；若有并列，则取其中最小的。
 
 </div>
 
@@ -997,7 +997,7 @@ lastindexof<T>(id: Array<T>, value: T): int
 | `id` | <code><a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/Array">Array</a>&lt;float&gt;</code> |  | 输入浮点数数组。 |
 | `index` | <code>int</code> |  | 元素的索引。 |
 
-**返回:** <code>float</code> — A value between 0 and 100 indicating the percentage of elements that are less than or equal to the element at `index`.
+**返回:** <code>float</code> — 0 到 100 之间的值，表示小于或等于 `index` 处元素的元素所占的百分比。
 
 </div>
 
