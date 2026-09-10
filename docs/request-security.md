@@ -277,10 +277,23 @@ Each symbol in the expression is subject to the same `max_security_calls` limit 
 
 ## Limitations
 
-- **Nesting depth**: by default, an expression inside `request.security` may
-  itself call `request.security` up to 3 levels deep (configurable via
-  `ExecutionLimits::max_security_depth`).
-- **Call site limit**: each `request.*` call site counts toward
-  `ExecutionLimits::max_security_calls` (default 40). Call sites naming the
-  same `(symbol, timeframe)` share the data that is fetched but not the
-  count, so four fields of one symbol are four.
+- **Nesting**: an expression inside `request.security` may itself call
+  `request.security`, to any depth. There is no separate depth limit; what
+  bounds nesting is the child limit below, since every level builds at least
+  one child.
+- **Circular expressions are refused**: if a chain of requests comes back to a
+  call site it has already passed through, nothing would ever end it. The run
+  stops with an error naming the cycle instead of exhausting memory.
+- **Child limit**: `ExecutionLimits::max_security_calls` (default 40) caps how
+  many children one run may build. A child is a whole sub-instance — its own
+  state, series buffers and `bar_index` — and **one call site can cost more
+  than one**:
+  - naming a different `symbol` or `timeframe` on a later bar opens a child for
+    that series too, and keeps the earlier one in case the call site returns to
+    it;
+  - an expression that reads another request's result makes that request part
+    of what this child evaluates, against its own series, so a chain of four
+    requests reading each other costs ten children rather than four.
+
+  Call sites naming the same `(symbol, timeframe)` share the data that is
+  fetched but not the count, so four fields of one symbol are four.
