@@ -1,6 +1,14 @@
 strategy(
-    title: @locale { default: "Technical Ratings Strategy", "zh-CN": "技术评级策略", "zh-HK": "技術評級策略" },
-    short_title: @locale { default: "Technicals Strategy", "zh-CN": "技术策略", "zh-HK": "技術策略" },
+    title: @locale {
+        default: "Technical Ratings Strategy",
+        "zh-CN": "技术评级策略",
+        "zh-HK": "技術評級策略"
+    },
+    short_title: @locale {
+        default: "Technicals Strategy",
+        "zh-CN": "技术策略",
+        "zh-HK": "技術策略"
+    },
     default_qty_type: DefaultQtyType.PercentOfEquity,
     default_qty_value: 5,
     overlay: true
@@ -142,7 +150,10 @@ fn aroon(length: simple int) {
 fn atr2(length: series float) {
     if length < 1 {
         runtime.error(
-            String.format("Invalid length ({0}). The value must be greater than or equal to 1.", length)
+            String.format(
+                "Invalid length ({0}). The value must be greater than or equal to 1.",
+                length
+            )
         );
     }
     let alpha: float = 1.0 / length;
@@ -211,7 +222,10 @@ fn dema(source: series float, length: simple int) {
 fn ema2(source: series float, length: series float) {
     if length < 1 {
         runtime.error(
-            String.format("Invalid length ({0}). The value must be greater than or equal to 1.", length)
+            String.format(
+                "Invalid length ({0}). The value must be greater than or equal to 1.",
+                length
+            )
         );
     }
     let alpha: float = 2.0 / (math.max(1.0, length) + 1.0);
@@ -489,7 +503,12 @@ fn checkLTF(lowerTimeframe: series String) {
         timeframe.main_period
     ) {
         runtime.error(
-            String.format("Invalid lower timeframe: {2}{0}{2}. The timeframe must be lower than or equal to {2}{1}{2}", lowerTimeframe, timeframe.main_period, "'")
+            String.format(
+                "Invalid lower timeframe: {2}{0}{2}. The timeframe must be lower than or equal to {2}{1}{2}",
+                lowerTimeframe,
+                timeframe.main_period,
+                "'"
+            )
         );
     }
 }
@@ -528,7 +547,10 @@ fn requestVolumeDelta(
 fn rma2(source: series float, length: series float) {
     if length < 1 {
         runtime.error(
-            String.format("Invalid length ({0}). The value must be greater than or equal to 1.", length)
+            String.format(
+                "Invalid length ({0}). The value must be greater than or equal to 1.",
+                length
+            )
         );
     }
     let alpha: float = 1.0 / length;
@@ -560,27 +582,9 @@ fn specialK(
         ta.roc(source, 15),
         10
     ) + ta.sma(ta.roc(source, 65), 65) + ta.sma(ta.roc(source, 265), 130)) + 3.0 * (ta.sma(
-        ta.roc(
-            source,
-            20
-        ),
+        ta.roc(source, 20),
         10
-    ) + ta.sma(
-        ta.roc(
-            source,
-            75
-        ),
-        75
-    ) + ta.sma(
-        ta.roc(
-            source,
-            390
-        ),
-        130
-    )) + 4.0 * (ta.sma(
-        ta.roc(source, 30),
-        15
-    ) + ta.sma(ta.roc(source, 100), 100) + ta.sma(ta.roc(source, 530), 195));
+    ) + ta.sma(ta.roc(source, 75), 75) + ta.sma(ta.roc(source, 390), 130)) + 4.0 * (ta.sma(ta.roc(source, 30), 15) + ta.sma(ta.roc(source, 100), 100) + ta.sma(ta.roc(source, 530), 195));
     let signal: float = ta.sma(ta.sma(sk, sigLen1), sigLen2);
     (sk, signal);
 }
@@ -921,9 +925,6 @@ fn calcRatingAll() {
     indRatings.push(calcRatingMA(ta.ema(close, 50), close));
     indRatings.push(calcRatingMA(ta.ema(close, 100), close));
     indRatings.push(calcRatingMA(ta.ema(close, 200), close));
-    // `ta.hma` spans `floor(sqrt(9))` bars on top of the 9 it averages, and a
-    // square root is past what the compiler can follow. Everything else here is
-    // proved, and reaches deeper than this.
     max_bars_back(close, 9);
     indRatings.push(calcRatingMA(ta.hma(close, 9), close));
     indRatings.push(calcRatingMA(ta.vwma(close, 20), close));
@@ -1019,17 +1020,44 @@ fn ratingStatus(
 ) {
     let result: String = switch {
         na(ratingValue) => "-",
-        ratingValue < -strongBound => @locale { default: "Strong\nSell", "zh-CN": "强烈\n卖出", "zh-HK": "強烈\n賣出" },
-        ratingValue < -weakBound => @locale { default: "Sell", "zh-CN": "卖出", "zh-HK": "賣出" },
-        ratingValue > strongBound => @locale { default: "Strong\nBuy ", "zh-CN": "强烈\n买入 ", "zh-HK": "強烈\n買入 " },
-        ratingValue > weakBound => @locale { default: "Buy", "zh-CN": "买入", "zh-HK": "買入" },
-        => @locale { default: "Neutral", "zh-CN": "中性", "zh-HK": "中性" },
+        ratingValue < -strongBound => @locale {
+            default: "Strong\nSell",
+            "zh-CN": "强烈\n卖出",
+            "zh-HK": "強烈\n賣出"
+        },
+        ratingValue < -weakBound => @locale {
+            default: "Sell",
+            "zh-CN": "卖出",
+            "zh-HK": "賣出"
+        },
+        ratingValue > strongBound => @locale {
+            default: "Strong\nBuy ",
+            "zh-CN": "强烈\n买入 ",
+            "zh-HK": "強烈\n買入 "
+        },
+        ratingValue > weakBound => @locale {
+            default: "Buy",
+            "zh-CN": "买入",
+            "zh-HK": "買入"
+        },
+        => @locale {default: "Neutral", "zh-CN": "中性", "zh-HK": "中性"},
     };
 }
-let res = input.timeframe("", title: @locale { default: "Indicator Timeframe", "zh-CN": "指标时间框架", "zh-HK": "指標時間框架" });
+let res = input.timeframe(
+    "",
+    title: @locale {
+        default: "Indicator Timeframe",
+        "zh-CN": "指标时间框架",
+        "zh-HK": "指標時間框架"
+    }
+);
 let ratingSignal = input.string(
     defval: "All",
-    title: @locale { default: "Rating is based on", "zh-CN": "评级基于", "zh-HK": "評級基於" },
+    title: @locale {
+        default: "Rating is based on",
+        "zh-CN": "评级基于",
+        "zh-HK": "評級基於"
+    },
     options: ["MAs", "Oscillators", "All"]
 );
 

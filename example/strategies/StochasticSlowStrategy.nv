@@ -1,7 +1,38 @@
-strategy(@locale { default: "Stochastic Slow Strategy", "zh-CN": "随机慢速策略", "zh-HK": "隨機慢速策略" }, overlay: true);
-let length = input.int(14, @locale { default: "Length", "zh-CN": "周期", "zh-HK": "週期" }, minval: 1);
-let OverBought = input(80, @locale { default: "Overbought", "zh-CN": "超买", "zh-HK": "超買" });
-let OverSold = input(20, @locale { default: "Oversold", "zh-CN": "超卖", "zh-HK": "超賣" });
+strategy(
+    @locale {
+        default: "Stochastic Slow Strategy",
+        "zh-CN": "随机慢速策略",
+        "zh-HK": "隨機慢速策略"
+    },
+    default_qty_type: DefaultQtyType.PercentOfEquity,
+    default_qty_value: 10,
+    overlay: true
+);
+let length = input.int(
+    14,
+    @locale {
+        default: "Length",
+        "zh-CN": "周期",
+        "zh-HK": "週期"
+    },
+    minval: 1
+);
+let OverBought = input(
+    80,
+    @locale {
+        default: "Overbought",
+        "zh-CN": "超买",
+        "zh-HK": "超買"
+    }
+);
+let OverSold = input(
+    20,
+    @locale {
+        default: "Oversold",
+        "zh-CN": "超卖",
+        "zh-HK": "超賣"
+    }
+);
 let smoothK = 3;
 let smoothD = 3;
 let k = ta.sma(ta.stoch(close, high, low, length), smoothK);

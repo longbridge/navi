@@ -1,10 +1,23 @@
-strategy(@locale { default: "Bollinger Bands Strategy directed", "zh-CN": "布林带定向策略", "zh-HK": "布林帶定向策略" }, overlay: true);
+strategy(
+    @locale {
+        default: "Bollinger Bands Strategy directed",
+        "zh-CN": "布林带定向策略",
+        "zh-HK": "布林帶定向策略"
+    },
+    default_qty_type: DefaultQtyType.PercentOfEquity,
+    default_qty_value: 10,
+    overlay: true
+);
 let source = close;
 let length = input.int(20, minval: 1);
 let mult = input.float(2.0, minval: 0.001, maxval: 50);
 let direction = input.int(
     0,
-    title: @locale { default: "Strategy Direction", "zh-CN": "策略方向", "zh-HK": "策略方向" },
+    title: @locale {
+        default: "Strategy Direction",
+        "zh-CN": "策略方向",
+        "zh-HK": "策略方向"
+    },
     minval: -1,
     maxval: 1
 );
