@@ -70,7 +70,7 @@ const overviewMetrics = computed(() => {
   const d = (k: string) => t(`strategy.desc.${k}`)
   return [
     { label: t('strategy.netProfit'), value: fmtCurrency(p.netProfit), sub: fmtPct(p.netProfitPercent), pl: plClass(p.netProfit), desc: d('netProfit') },
-    { label: t('strategy.totalTrades'), value: fmtInt(p.totalClosedTrades), sub: null, pl: '', desc: d('totalClosed') },
+    { label: t('strategy.annualizedReturn'), value: fmtOpt(p.annualizedReturnPercent, fmtPct), sub: null, pl: plClass(p.annualizedReturnPercent ?? 0), desc: d('annualizedReturn') },
     { label: t('strategy.percentProfitable'), value: fmtOpt(p.percentProfitable, fmtPct), sub: null, pl: '', desc: d('percentProfitable') },
     { label: t('strategy.profitFactor'), value: fmtOpt(p.profitFactor, fmtRatio), sub: null, pl: '', desc: d('profitFactor') },
     { label: t('strategy.maxDrawdown'), value: fmtCurrency(p.maxDrawdown), sub: fmtPct(p.maxDrawdownPercent), pl: 'loss', desc: d('maxDrawdown') },
@@ -291,7 +291,12 @@ function ovRender() {
   ctx.fillText(eqLabel, lx, eqLY + 2); lx += ctx.measureText(eqLabel).width + 3
   if (hovering) {
     ctx.font = FONT_MONO; ctx.fillStyle = GREEN
-    const ev = fmtCurrency(eqData[idx])
+    // Net value rides alongside the currency figure rather than getting a
+    // curve of its own: it is the same shape, just rescaled.
+    const nv = props.report.netValueCurve?.[idx]
+    const ev = nv === undefined
+      ? fmtCurrency(eqData[idx])
+      : `${fmtCurrency(eqData[idx])} (${fmtRatio(nv)})`
     ctx.fillText(ev, lx, eqLY + 2); lx += ctx.measureText(ev).width
     ctx.font = FONT_UI
   }
@@ -735,6 +740,7 @@ const perfRows = computed<PerfRow[]>(() => {
     { section: t('strategy.sections.equity'), label: t('strategy.maxDrawdown'), getValue: m => cp(m, 'maxDrawdown', 'maxDrawdownPercent'), getClass: () => 'loss', allOnly: true, desc: d('maxDrawdown') },
     { label: t('strategy.maxRunup'), getValue: m => cp(m, 'maxRunup', 'maxRunupPercent'), allOnly: true, desc: d('maxRunup') },
     { label: t('strategy.buyHoldReturn'), getValue: m => fmtOpt(m.buyHoldReturn, v => `${fmtCurrency(v)} (${fmtOpt(m.buyHoldReturnPercent, fmtPct)})`), allOnly: true, desc: d('buyHoldReturn') },
+    { label: t('strategy.annualizedReturn'), getValue: m => fmtOpt(m.annualizedReturnPercent, fmtPct), getClass: m => plClass(m.annualizedReturnPercent ?? 0), allOnly: true, desc: d('annualizedReturn') },
     // Risk metrics
     { section: t('strategy.sections.risk'), label: t('strategy.sharpeRatio'), getValue: m => fmtOpt(m.sharpeRatio, fmtRatio), allOnly: true, desc: d('sharpeRatio') },
     { label: t('strategy.sortinoRatio'), getValue: m => fmtOpt(m.sortinoRatio, fmtRatio), allOnly: true, desc: d('sortinoRatio') },

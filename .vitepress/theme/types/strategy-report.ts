@@ -10,8 +10,12 @@ export interface StrategyReport {
   equityCurve: number[]
   drawdownCurve: number[]
   buyHoldCurve: number[]
+  /** Unit net value per bar (equity / initialCapital, starting at 1.0). */
+  netValueCurve: number[]
   dailyReturns: DailyReturnReport[]
   tradingRange: TradingRangeReport | null
+  /** First bar to last bar, unlike tradingRange which covers only the traded stretch. */
+  backtestRange: TradingRangeReport | null
 }
 
 export interface PerformanceMetrics {
@@ -27,6 +31,8 @@ export interface PerformanceMetrics {
   maxRunupPercent: number
   buyHoldReturn: number | null
   buyHoldReturnPercent: number | null
+  /** Compound annual growth rate over backtestRange, in percent. */
+  annualizedReturnPercent: number | null
   sharpeRatio: number | null
   sortinoRatio: number | null
   profitFactor: number | null

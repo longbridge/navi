@@ -167,9 +167,9 @@ there is no wrapper to unwrap:
 ```
 
 The kinds are `config`, `orderSubmitted`, `orderFilled`, `orderCancelled`, `tradeOpened`,
-`tradeClosed`, `openTradeUpdated`, `equitySnapshot`, `dailyReturn`, `marginCall` and
-`riskFlatten`. A backtest emits an `equitySnapshot` per bar, so filter for what you care
-about: `jq 'select(.type == "orderFilled")'`.
+`tradeClosed`, `openTradeUpdated`, `equitySnapshot`, `marginCall` and `riskFlatten`. A
+backtest emits an `equitySnapshot` per bar — and per tick on a live feed — so filter for
+what you care about: `jq 'select(.type == "orderFilled")'`.
 
 ### Flags worth knowing
 
