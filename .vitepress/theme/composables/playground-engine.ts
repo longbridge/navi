@@ -49,14 +49,14 @@ type RequiredHistory =
  * Which bars a stream should load — mirrors the engine's `HistoryRange`.
  *
  * The two shapes that leave room for extra history carry the depth as
- * `warmup`: `covering`, which may reach back past its anchor, and `latest`,
- * which sets no cap. The other two are bounds with nothing to spend it on.
+ * `warmup`: `anchor`, which may be reached back past, and `all`, which sets no
+ * cap. The other two are bounds with nothing to spend it on.
  */
 type HistoryRange =
-  | { type: 'startingAt'; time: number }
-  | { type: 'covering'; time: number; warmup: RequiredHistory }
-  | { type: 'recent'; bars: number }
-  | { type: 'latest'; warmup: RequiredHistory }
+  | { type: 'floor'; time: number }
+  | { type: 'anchor'; time: number; warmup: RequiredHistory }
+  | { type: 'window'; bars: number }
+  | { type: 'all'; warmup: RequiredHistory }
 
 /**
  * Which series a request was opened for — informational, and this store has no
@@ -70,9 +70,9 @@ type SeriesRole = 'main' | 'secondary'
  *
  * `candlesticks` yields CandlestickItem values (serde internally tagged,
  * camelCase): `{ type: 'bar', ... }` for each bar, then `{ type: 'historyEnd' }`.
- * It honours `range`: `startingAt` never reaches back past its time, while
- * `covering` may — that stream is a secondary series that needs warm-up, and
- * this store holds it all anyway.
+ * It honours `range`: a `floor` is never reached back past, while an `anchor`
+ * may be — that stream is a secondary series that needs warm-up, and this store
+ * holds it all anyway.
  *
  * `historyBarsBefore` returns a plain array of Candlestick objects with
  * `time < beforeTime`, newest-of-old last, for incremental history extension.
@@ -102,14 +102,14 @@ export class StaticCandlestickAdapter {
     // nothing extra to offer against — it holds everything either way.
     const allBars = this.data.barsFor(symbol, timeframe, 0)
     const bars =
-      range.type === 'startingAt'
+      range.type === 'floor'
         ? allBars.filter((b: any) => (b.time ?? 0) >= range.time)
-        : range.type === 'recent'
+        : range.type === 'window'
           ? // `Math.max` rather than a negative slice index: a cap wider than
             // what is held keeps everything, and a cap of zero keeps none.
             allBars.slice(Math.max(0, allBars.length - range.bars))
-          : // 'covering' and 'latest': everything held. Reaching back is
-            // invited for 'covering', and it costs nothing here.
+          : // 'anchor' and 'all': everything held. Reaching back past an
+            // anchor is invited, and it costs nothing here.
             allBars
     for (const b of bars) {
       yield {
