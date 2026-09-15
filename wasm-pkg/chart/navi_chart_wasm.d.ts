@@ -673,23 +673,24 @@ export interface ChartStreamRequest {
 /**
  * Which bars a stream should load. Exactly one shape applies per request.
  *
- * The two time-anchored shapes are inclusive but pull in opposite directions.
- * `startingAt` is a hard floor: send nothing earlier, because the script has
- * already run those bars and a repeat double-counts every `var` it touched.
- * `covering` is an anchor: send everything from `time`, and reach further back
- * if it helps — that stream is a secondary series warming up, and its `warmup`
- * says how deep its expression reads. Treat `warmup` as a floor rather than a
- * recipe; a small margin beyond it settles the opening bars.
+ * Both time-anchored shapes are inclusive, and the name says which way each
+ * leans. A `floor` is not to be crossed: send nothing earlier, because the
+ * script has already run those bars and a repeat double-counts every `var` it
+ * touched. An `anchor` may be reached back past: send everything from `time`,
+ * and reach further back if it helps — that stream is a secondary series
+ * warming up, and its `warmup` says how deep its expression reads. Treat
+ * `warmup` as a floor rather than a recipe; a small margin beyond it settles
+ * the opening bars.
  *
  * Only the two shapes that leave room for extra history carry a `warmup`:
- * `covering`, which may reach back, and `latest`, which sets no cap at all.
- * `startingAt` and `recent` are bounds with nothing to spend it on.
+ * `anchor`, which may be reached back past, and `all`, which sets no cap at
+ * all. `floor` and `window` are bounds with nothing to spend it on.
  */
 export type HistoryRange =
-  | { type: "startingAt"; time: number }
-  | { type: "covering"; time: number; warmup: RequiredHistory }
-  | { type: "recent"; bars: number }
-  | { type: "latest"; warmup: RequiredHistory };
+  | { type: "floor"; time: number }
+  | { type: "anchor"; time: number; warmup: RequiredHistory }
+  | { type: "window"; bars: number }
+  | { type: "all"; warmup: RequiredHistory };
 
 /**
  * How far back the script reads before its values are right.
@@ -736,11 +737,11 @@ export interface DataProvider {
   /**
    * Stream candlestick items for `(symbol, tf)`.
    *
-   * `range` says which bars: `{type:"startingAt",time}` is every bar at or
+   * `range` says which bars: `{type:"floor",time}` is every bar at or
    * after that epoch-ms time and **none from before it**;
-   * `{type:"covering",time,warmup}` is the same window but earlier bars are
+   * `{type:"anchor",time,warmup}` is the same window but earlier bars are
    * welcome — that stream is a secondary series warming up;
-   * `{type:"recent",bars}` is the last `bars`; `{type:"latest",warmup}` is no
+   * `{type:"window",bars}` is the last `bars`; `{type:"all",warmup}` is no
    * cap. Where a `warmup` is present it says how far back the script reads
    * before its values are right — advice you may ignore, though a shorter
    * warm-up leaves indicators `na` or unsettled.
