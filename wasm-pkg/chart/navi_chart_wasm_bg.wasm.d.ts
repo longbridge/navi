@@ -1,7 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
+export const __wbg_imageregistry_free: (a: number, b: number) => void;
+export const imageregistry_add: (a: number, b: number, c: any) => void;
+export const imageregistry_remove: (a: number, b: number) => void;
 export const __wbg_chart_free: (a: number, b: number) => void;
+export const __wbg_localcharthandle_free: (a: number, b: number) => void;
+export const __wbg_localchartprovider_free: (a: number, b: number) => void;
 export const chart_activeTool: (a: number) => [number, number];
 export const chart_addAnnotation: (a: number, b: any) => [number, number];
 export const chart_addScript: (a: number, b: any, c: any) => any;
@@ -75,6 +80,7 @@ export const chart_removeSystemAnnotation: (a: number, b: number, c: number) => 
 export const chart_requestTextEdit: (a: number, b: number, c: number) => number;
 export const chart_resetAnnotationToDefault: (a: number, b: number, c: number) => number;
 export const chart_resetCandlestickConfig: (a: number) => void;
+export const chart_rightPadBars: (a: number) => number;
 export const chart_saveSnapshot: (a: number) => any;
 export const chart_scriptConfig: (a: number, b: any) => any;
 export const chart_scriptError: (a: number, b: any) => any;
@@ -103,6 +109,7 @@ export const chart_setLastPriceLineVisible: (a: number, b: number) => void;
 export const chart_setLocale: (a: number, b: number, c: number) => void;
 export const chart_setMagnet: (a: number, b: any) => void;
 export const chart_setPaneRatios: (a: number, b: any) => void;
+export const chart_setRightPadBars: (a: number, b: number) => void;
 export const chart_setScriptConfig: (a: number, b: any, c: any) => void;
 export const chart_setScripts: (a: number, b: any) => any;
 export const chart_setScrollOffset: (a: number, b: number) => void;
@@ -131,11 +138,6 @@ export const chart_updateSystemAnnotation: (a: number, b: number, c: number, d: 
 export const chart_yAxisMode: (a: number) => number;
 export const darkTheme: () => any;
 export const lightTheme: () => any;
-export const __wbg_imageregistry_free: (a: number, b: number) => void;
-export const imageregistry_add: (a: number, b: number, c: any) => void;
-export const imageregistry_remove: (a: number, b: number) => void;
-export const __wbg_localcharthandle_free: (a: number, b: number) => void;
-export const __wbg_localchartprovider_free: (a: number, b: number) => void;
 export const localcharthandle_addScript: (a: number, b: any) => [number, number, number];
 export const localcharthandle_extendHistory: (a: number, b: number) => number;
 export const localcharthandle_removeScript: (a: number, b: number) => void;

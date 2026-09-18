@@ -235,6 +235,12 @@ export function lightTheme() {
     return ret;
 }
 
+function takeFromExternrefTable0(idx) {
+    const value = wasm.__wbindgen_externrefs.get(idx);
+    wasm.__externref_table_dealloc(idx);
+    return value;
+}
+
 let cachedFloat64ArrayMemory0 = null;
 
 function getFloat64ArrayMemory0() {
@@ -247,12 +253,6 @@ function getFloat64ArrayMemory0() {
 function getArrayF64FromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     return getFloat64ArrayMemory0().subarray(ptr / 8, ptr / 8 + len);
-}
-
-function takeFromExternrefTable0(idx) {
-    const value = wasm.__wbindgen_externrefs.get(idx);
-    wasm.__externref_table_dealloc(idx);
-    return value;
 }
 /**
  * Module entry point: route Rust panics through `console.error` with a
@@ -448,6 +448,15 @@ export class Chart {
      */
     removeScript(tag) {
         wasm.chart_removeScript(this.__wbg_ptr, tag);
+    }
+    /**
+     * The chosen number of blank slots past the last bar, or `undefined`
+     * while the proportional default is in force.
+     * @returns {number | undefined}
+     */
+    rightPadBars() {
+        const ret = wasm.chart_rightPadBars(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
     }
     /**
      * Serialize the current chart state to a snapshot object.
@@ -736,6 +745,20 @@ export class Chart {
     scriptOverrides(tag) {
         const ret = wasm.chart_scriptOverrides(this.__wbg_ptr, tag);
         return ret;
+    }
+    /**
+     * Hold `bars` blank slots open past the last bar — TradingView's right
+     * offset. Pass `undefined` to restore the default, a margin proportional
+     * to the visible window.
+     *
+     * Those slots scroll, carry projected future trading times, and are where
+     * a forecast annotation past the last bar lives. `0` pins the last bar to
+     * the right edge. A script drawing past the last bar opens what it needs
+     * regardless; the wider of the two wins.
+     * @param {number | null} [bars]
+     */
+    setRightPadBars(bars) {
+        wasm.chart_setRightPadBars(this.__wbg_ptr, isLikeNone(bars) ? 0x100000001 : (bars) >>> 0);
     }
     /**
      * Override visual properties and/or input values for the script with
@@ -2585,14 +2608,14 @@ function __wbg_get_imports() {
         const ret = BigInt.asUintN(64, arg0);
         return ret;
     };
+    imports.wbg.__wbindgen_cast_54af78d8ba30b887 = function(arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 2190, function: Function { arguments: [Externref], shim_idx: 2191, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
+        return ret;
+    };
     imports.wbg.__wbindgen_cast_9ae0607507abb057 = function(arg0) {
         // Cast intrinsic for `I64 -> Externref`.
         const ret = arg0;
-        return ret;
-    };
-    imports.wbg.__wbindgen_cast_9df0e7e45bfadce9 = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 2199, function: Function { arguments: [Externref], shim_idx: 2200, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
         return ret;
     };
     imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {

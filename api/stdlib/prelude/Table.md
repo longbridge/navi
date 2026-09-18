@@ -6,6 +6,9 @@ title: "Table"
 import { ref } from 'vue'
 const _s0 = ref(0)
 const _s1 = ref(0)
+const _s2 = ref(0)
+const _s3 = ref(0)
+const _s4 = ref(0)
 </script>
 
 # Table
@@ -214,14 +217,9 @@ Sets the text color of a specific cell in a table.
 
 ### cell_set_text_font_family {#cell_set_text_font_family}
 
-```navi
-cell_set_text_font_family(
-    table_id: series Table,
-    column: series int,
-    row: series int,
-    text_font_family: series String
-  )
-```
+<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_font_family</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_font_family</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> FontFamily)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_font_family</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_font_family</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span>"]' />
+
+<div v-show="_s1 === 0">
 
 Sets the font family of the text in a specific cell in a table.
 
@@ -232,7 +230,24 @@ Sets the font family of the text in a specific cell in a table.
 | `table_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Table">Table</a></code> |  | The table object to modify. |
 | `column` | <code>series&nbsp;int</code> |  | The column index of the cell (0-based). |
 | `row` | <code>series&nbsp;int</code> |  | The row index of the cell (0-based). |
-| `text_font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The font family: FontFamily.Default or font.family_monospace. |
+| `text_font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/FontFamily">FontFamily</a></code> |  | The font family: FontFamily.Default or FontFamily.Monospace. |
+
+</div>
+
+<div v-show="_s1 === 1">
+
+Sets the font family of a table cell, by name.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `table_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Table">Table</a></code> |  | The table to modify. |
+| `column` | <code>series&nbsp;int</code> |  | The column index of the cell (0-based). |
+| `row` | <code>series&nbsp;int</code> |  | The row index of the cell (0-based). |
+| `text_font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The font family: "default" or "monospace". Kept so a script that spells the value out keeps working; new code should pass `FontFamily`. |
+
+</div>
 
 ---
 
@@ -262,14 +277,9 @@ Sets the text formatting of the text in a specific cell in a table.
 
 ### cell_set_text_halign {#cell_set_text_halign}
 
-```navi
-cell_set_text_halign(
-    table_id: series Table,
-    column: series int,
-    row: series int,
-    text_halign: series String
-  )
-```
+<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_halign</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_halign</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> TextHAlign)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_halign</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_halign</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span>"]' />
+
+<div v-show="_s2 === 0">
 
 Sets the horizontal alignment of the text in a specific cell in a table.
 
@@ -280,15 +290,32 @@ Sets the horizontal alignment of the text in a specific cell in a table.
 | `table_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Table">Table</a></code> |  | The table object to modify. |
 | `column` | <code>series&nbsp;int</code> |  | The column index of the cell (0-based). |
 | `row` | <code>series&nbsp;int</code> |  | The row index of the cell (0-based). |
-| `text_halign` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The horizontal text alignment: text.align_left, text.align_center, or text.align_right. |
+| `text_halign` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/TextHAlign">TextHAlign</a></code> |  | The horizontal text alignment: TextHAlign.Left, TextHAlign.Center, or TextHAlign.Right. |
+
+</div>
+
+<div v-show="_s2 === 1">
+
+Sets the horizontal alignment of a table cell, by name.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `table_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Table">Table</a></code> |  | The table to modify. |
+| `column` | <code>series&nbsp;int</code> |  | The column index of the cell (0-based). |
+| `row` | <code>series&nbsp;int</code> |  | The row index of the cell (0-based). |
+| `text_halign` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The horizontal text alignment: "left", "center" or "right". Kept so a script that spells the value out keeps working; new code should pass `TextHAlign`. |
+
+</div>
 
 ---
 
 ### cell_set_text_size {#cell_set_text_size}
 
-<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Size)</span>"]' />
+<OverloadTabs v-model="_s3" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Size)</span>"]' />
 
-<div v-show="_s1 === 0">
+<div v-show="_s3 === 0">
 
 Sets the text size of a specific cell in a table.
 
@@ -303,7 +330,7 @@ Sets the text size of a specific cell in a table.
 
 </div>
 
-<div v-show="_s1 === 1">
+<div v-show="_s3 === 1">
 
 Sets the text size of a specific cell in a table.
 
@@ -324,14 +351,9 @@ Overload with named size constant.
 
 ### cell_set_text_valign {#cell_set_text_valign}
 
-```navi
-cell_set_text_valign(
-    table_id: series Table,
-    column: series int,
-    row: series int,
-    text_valign: series String
-  )
-```
+<OverloadTabs v-model="_s4" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_valign</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_valign</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> TextVAlign)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">cell_set_text_valign</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(table_id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Table, column</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, row</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">, text_valign</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span>"]' />
+
+<div v-show="_s4 === 0">
 
 Sets the vertical alignment of the text in a specific cell in a table.
 
@@ -342,7 +364,24 @@ Sets the vertical alignment of the text in a specific cell in a table.
 | `table_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Table">Table</a></code> |  | The table object to modify. |
 | `column` | <code>series&nbsp;int</code> |  | The column index of the cell (0-based). |
 | `row` | <code>series&nbsp;int</code> |  | The row index of the cell (0-based). |
-| `text_valign` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The vertical text alignment: text.align_top, text.align_center, or text.align_bottom. |
+| `text_valign` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/TextVAlign">TextVAlign</a></code> |  | The vertical text alignment: TextVAlign.Top, TextVAlign.Center, or TextVAlign.Bottom. |
+
+</div>
+
+<div v-show="_s4 === 1">
+
+Sets the vertical alignment of a table cell, by name.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `table_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Table">Table</a></code> |  | The table to modify. |
+| `column` | <code>series&nbsp;int</code> |  | The column index of the cell (0-based). |
+| `row` | <code>series&nbsp;int</code> |  | The row index of the cell (0-based). |
+| `text_valign` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The vertical text alignment: "top", "center" or "bottom". Kept so a script that spells the value out keeps working; new code should pass `TextVAlign`. |
+
+</div>
 
 ---
 

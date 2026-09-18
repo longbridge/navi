@@ -6,6 +6,7 @@ title: "Box"
 import { ref } from 'vue'
 const _s0 = ref(0)
 const _s1 = ref(0)
+const _s2 = ref(0)
 </script>
 
 # Box
@@ -483,9 +484,9 @@ Sets the text color of the box.
 
 ### set_text_font_family {#set_text_font_family}
 
-```navi
-set_text_font_family(id: series Box, font_family: series String)
-```
+<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_font_family</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, font_family</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> FontFamily)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_font_family</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, font_family</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span>"]' />
+
+<div v-show="_s1 === 0">
 
 Sets the font family of the box text.
 
@@ -494,7 +495,22 @@ Sets the font family of the box text.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Box">Box</a></code> |  | The box to modify. |
-| `font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The font family: FontFamily.Default or FontFamily.Monospace. |
+| `font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/FontFamily">FontFamily</a></code> |  | The font family: FontFamily.Default or FontFamily.Monospace. |
+
+</div>
+
+<div v-show="_s1 === 1">
+
+Sets the font family of the box text, by name.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Box">Box</a></code> |  | The box to modify. |
+| `font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | The font family: "default" or "monospace". Kept so a script that spells the value out keeps working; new code should pass `FontFamily`. |
+
+</div>
 
 ---
 
@@ -534,9 +550,9 @@ Sets the horizontal alignment of the box text.
 
 ### set_text_size {#set_text_size}
 
-<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Size)</span>"]' />
+<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Size)</span>"]' />
 
-<div v-show="_s1 === 0">
+<div v-show="_s2 === 0">
 
 Sets the text size of the box.
 
@@ -549,7 +565,7 @@ Sets the text size of the box.
 
 </div>
 
-<div v-show="_s1 === 1">
+<div v-show="_s2 === 1">
 
 Sets the text size of the box.
 

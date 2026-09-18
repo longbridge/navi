@@ -586,13 +586,38 @@ export interface TaggedScriptEvent {
  * - `{ type: "script", … }` — an event produced by a specific script.
  * - `{ type: "error", error }` — session-level unrecoverable error; the stream
  *   terminates.
+ * - `{ type: "calendar", exceptions }` — the main symbol's trading-calendar
+ *   exceptions, replacing whatever was sent before.
  */
 export type ChartStreamEvent =
   | ({ type: "bar" } & Candlestick)
   | { type: "historyEnd" }
   | ({ type: "script" } & TaggedScriptEvent)
   | { type: "error"; error: ScriptError }
+  | { type: "calendar"; exceptions: CalendarException[] }
   | { type: "scriptReady"; scriptId: number };
+
+/**
+ * One date on which the market does not follow its usual session.
+ *
+ * Only future dates are meaningful: the calendar shapes the bars the chart
+ * projects past its last one, and applying it backwards would contradict
+ * results already computed. Send the whole set each time — an announcement
+ * replaces the calendar rather than patching it.
+ *
+ * ```ts
+ * { date: "2026-01-01", kind: "closed" }
+ * { date: "2026-12-24", kind: "earlyClose", close: "13:00" }
+ * ```
+ */
+export type CalendarException = {
+  /** The date in the market's own timezone, `YYYY-MM-DD`. */
+  date: string;
+} & (
+  | { kind: "closed" }
+  /** Every session period on that date is cut off at `close`, local `HH:MM`. */
+  | { kind: "earlyClose"; close: string }
+);
 
 /** A script descriptor inside {@link ChartStreamRequest}. */
 export interface ScriptDescriptor {
@@ -985,6 +1010,11 @@ export class Chart {
    */
   removeScript(tag: any): void;
   /**
+   * The chosen number of blank slots past the last bar, or `undefined`
+   * while the proportional default is in force.
+   */
+  rightPadBars(): number | undefined;
+  /**
    * Serialize the current chart state to a snapshot object.
    */
   saveSnapshot(): any;
@@ -1133,6 +1163,17 @@ export class Chart {
    * `null`.
    */
   scriptOverrides(tag: any): any;
+  /**
+   * Hold `bars` blank slots open past the last bar — TradingView's right
+   * offset. Pass `undefined` to restore the default, a margin proportional
+   * to the visible window.
+   *
+   * Those slots scroll, carry projected future trading times, and are where
+   * a forecast annotation past the last bar lives. `0` pins the last bar to
+   * the right edge. A script drawing past the last bar opens what it needs
+   * regardless; the wider of the two wins.
+   */
+  setRightPadBars(bars?: number | null): void;
   /**
    * Override visual properties and/or input values for the script with
    * `tag`. `json` is a `ScriptConfig` object.
@@ -1679,7 +1720,12 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
   readonly chart_addScript: (a: number, b: any, c: any) => any;
@@ -1753,6 +1799,7 @@ export interface InitOutput {
   readonly chart_requestTextEdit: (a: number, b: number, c: number) => number;
   readonly chart_resetAnnotationToDefault: (a: number, b: number, c: number) => number;
   readonly chart_resetCandlestickConfig: (a: number) => void;
+  readonly chart_rightPadBars: (a: number) => number;
   readonly chart_saveSnapshot: (a: number) => any;
   readonly chart_scriptConfig: (a: number, b: any) => any;
   readonly chart_scriptError: (a: number, b: any) => any;
@@ -1781,6 +1828,7 @@ export interface InitOutput {
   readonly chart_setLocale: (a: number, b: number, c: number) => void;
   readonly chart_setMagnet: (a: number, b: any) => void;
   readonly chart_setPaneRatios: (a: number, b: any) => void;
+  readonly chart_setRightPadBars: (a: number, b: number) => void;
   readonly chart_setScriptConfig: (a: number, b: any, c: any) => void;
   readonly chart_setScripts: (a: number, b: any) => any;
   readonly chart_setScrollOffset: (a: number, b: number) => void;
@@ -1809,11 +1857,6 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
   readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
   readonly localcharthandle_extendHistory: (a: number, b: number) => number;
   readonly localcharthandle_removeScript: (a: number, b: number) => void;

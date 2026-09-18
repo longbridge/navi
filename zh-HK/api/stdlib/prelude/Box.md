@@ -6,6 +6,7 @@ title: "Box"
 import { ref } from 'vue'
 const _s0 = ref(0)
 const _s1 = ref(0)
+const _s2 = ref(0)
 </script>
 
 # Box
@@ -483,9 +484,9 @@ set_text_color(id: series Box, text_color: series Color)
 
 ### set_text_font_family {#set_text_font_family}
 
-```navi
-set_text_font_family(id: series Box, font_family: series String)
-```
+<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_font_family</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, font_family</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> FontFamily)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_font_family</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, font_family</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> String)</span>"]' />
+
+<div v-show="_s1 === 0">
 
 設定框文本的字體系列。
 
@@ -494,7 +495,22 @@ set_text_font_family(id: series Box, font_family: series String)
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
 | `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Box">Box</a></code> |  | 要修改的框。 |
-| `font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 字體系列：FontFamily.Default 或 FontFamily.Monospace。 |
+| `font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/FontFamily">FontFamily</a></code> |  | 字體系列：FontFamily.Default 或 FontFamily.Monospace。 |
+
+</div>
+
+<div v-show="_s1 === 1">
+
+按名稱設定框文本的字體系列。
+
+**參數**
+
+| 名稱 | 類型 | 預設值 | 說明 |
+| --- | --- | --- | --- |
+| `id` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/Box">Box</a></code> |  | 要修改的框。 |
+| `font_family` | <code>series&nbsp;<a class="stdlib-ref" href="/zh-HK/api/stdlib/prelude/String">String</a></code> |  | 字體系列：「default」或「monospace」。 |
+
+</div>
 
 ---
 
@@ -534,9 +550,9 @@ set_text_halign(id: series Box, text_halign: series TextHAlign)
 
 ### set_text_size {#set_text_size}
 
-<OverloadTabs v-model="_s1" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Size)</span>"]' />
+<OverloadTabs v-model="_s2" :labels='["<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">)</span>","<span style=\"color:#6F42C1;--shiki-dark:#B392F0\">set_text_size</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">(id</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Box, text_size</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">:</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> series</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> Size)</span>"]' />
 
-<div v-show="_s1 === 0">
+<div v-show="_s2 === 0">
 
 設定框的文本大小。
 
@@ -549,7 +565,7 @@ set_text_halign(id: series Box, text_halign: series TextHAlign)
 
 </div>
 
-<div v-show="_s1 === 1">
+<div v-show="_s2 === 1">
 
 設定框的文本大小。
 
