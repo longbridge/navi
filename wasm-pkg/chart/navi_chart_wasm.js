@@ -214,6 +214,14 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 /**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start() {
+    wasm.start();
+}
+
+/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -235,12 +243,6 @@ export function lightTheme() {
     return ret;
 }
 
-function takeFromExternrefTable0(idx) {
-    const value = wasm.__wbindgen_externrefs.get(idx);
-    wasm.__externref_table_dealloc(idx);
-    return value;
-}
-
 let cachedFloat64ArrayMemory0 = null;
 
 function getFloat64ArrayMemory0() {
@@ -254,14 +256,12 @@ function getArrayF64FromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     return getFloat64ArrayMemory0().subarray(ptr / 8, ptr / 8 + len);
 }
-/**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start() {
-    wasm.start();
-}
 
+function takeFromExternrefTable0(idx) {
+    const value = wasm.__wbindgen_externrefs.get(idx);
+    wasm.__externref_table_dealloc(idx);
+    return value;
+}
 function wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2) {
     wasm.wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2);
 }
@@ -1923,10 +1923,33 @@ export class LocalChartProvider {
     }
     /**
      * Create a new `LocalChartProvider` backed by `data_provider`.
+     *
+     * `tradingCalendar` is optional: a function returning a stream of
+     * exception lists for the main symbol. It is called once per session —
+     * the chart starts a new one whenever a script is added or the symbol
+     * changes — and each list replaces the one before it, so yield the
+     * current set immediately and keep the stream open to announce a closure
+     * later.
+     *
+     * ```typescript
+     * const provider = new LocalChartProvider(feed, () =>
+     *   new ReadableStream({
+     *     start(c) {
+     *       c.enqueue([{ date: "2026-01-01", kind: "closed" }]);
+     *       // …enqueue again when an announcement lands
+     *     },
+     *   }),
+     * );
+     * ```
+     *
+     * Without it the chart still projects future bars from the symbol's
+     * session — weekends and non-trading hours are skipped — it just does not
+     * know which of those days are holidays.
      * @param {any} data_provider
+     * @param {Function | null} [trading_calendar]
      */
-    constructor(data_provider) {
-        const ret = wasm.localchartprovider_new(data_provider);
+    constructor(data_provider, trading_calendar) {
+        const ret = wasm.localchartprovider_new(data_provider, isLikeNone(trading_calendar) ? 0 : addToExternrefTable0(trading_calendar));
         this.__wbg_ptr = ret >>> 0;
         LocalChartProviderFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -2608,14 +2631,14 @@ function __wbg_get_imports() {
         const ret = BigInt.asUintN(64, arg0);
         return ret;
     };
-    imports.wbg.__wbindgen_cast_54af78d8ba30b887 = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 2190, function: Function { arguments: [Externref], shim_idx: 2191, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
-        return ret;
-    };
     imports.wbg.__wbindgen_cast_9ae0607507abb057 = function(arg0) {
         // Cast intrinsic for `I64 -> Externref`.
         const ret = arg0;
+        return ret;
+    };
+    imports.wbg.__wbindgen_cast_9df0e7e45bfadce9 = function(arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 2199, function: Function { arguments: [Externref], shim_idx: 2200, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
         return ret;
     };
     imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {

@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
+/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -12,11 +17,6 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
-/**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -1712,17 +1712,36 @@ export class LocalChartProvider {
   chartStream(symbol: string, tf: string, request: any): any;
   /**
    * Create a new `LocalChartProvider` backed by `data_provider`.
+   *
+   * `tradingCalendar` is optional: a function returning a stream of
+   * exception lists for the main symbol. It is called once per session —
+   * the chart starts a new one whenever a script is added or the symbol
+   * changes — and each list replaces the one before it, so yield the
+   * current set immediately and keep the stream open to announce a closure
+   * later.
+   *
+   * ```typescript
+   * const provider = new LocalChartProvider(feed, () =>
+   *   new ReadableStream({
+   *     start(c) {
+   *       c.enqueue([{ date: "2026-01-01", kind: "closed" }]);
+   *       // …enqueue again when an announcement lands
+   *     },
+   *   }),
+   * );
+   * ```
+   *
+   * Without it the chart still projects future bars from the symbol's
+   * session — weekends and non-trading hours are skipped — it just does not
+   * know which of those days are holidays.
    */
-  constructor(data_provider: any);
+  constructor(data_provider: any, trading_calendar?: Function | null);
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
   readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
@@ -1861,8 +1880,11 @@ export interface InitOutput {
   readonly localcharthandle_extendHistory: (a: number, b: number) => number;
   readonly localcharthandle_removeScript: (a: number, b: number) => void;
   readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any) => number;
+  readonly localchartprovider_new: (a: any, b: number) => number;
   readonly start: () => void;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;
