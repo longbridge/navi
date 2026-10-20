@@ -214,14 +214,6 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 /**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start() {
-    wasm.start();
-}
-
-/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -262,12 +254,20 @@ function takeFromExternrefTable0(idx) {
     wasm.__externref_table_dealloc(idx);
     return value;
 }
-function wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2) {
-    wasm.wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2);
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start() {
+    wasm.start();
 }
 
-function wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2, arg3) {
-    wasm.wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____(arg0, arg1, arg2, arg3);
+function wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue_____(arg0, arg1, arg2) {
+    wasm.wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue_____(arg0, arg1, arg2);
+}
+
+function wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue__wasm_bindgen_6405f317d9cf11df___JsValue_____(arg0, arg1, arg2, arg3) {
+    wasm.wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue__wasm_bindgen_6405f317d9cf11df___JsValue_____(arg0, arg1, arg2, arg3);
 }
 
 const __wbindgen_enum_ReadableStreamType = ["bytes"];
@@ -2392,7 +2392,7 @@ function __wbg_get_imports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue__wasm_bindgen_45ad0a76945cad40___JsValue_____(a, state0.b, arg0, arg1);
+                    return wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue__wasm_bindgen_6405f317d9cf11df___JsValue_____(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -2636,9 +2636,9 @@ function __wbg_get_imports() {
         const ret = arg0;
         return ret;
     };
-    imports.wbg.__wbindgen_cast_9df0e7e45bfadce9 = function(arg0, arg1) {
-        // Cast intrinsic for `Closure(Closure { dtor_idx: 2199, function: Function { arguments: [Externref], shim_idx: 2200, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_45ad0a76945cad40___closure__destroy___dyn_core_f0fd674eaa06beef___ops__function__FnMut__wasm_bindgen_45ad0a76945cad40___JsValue____Output_______, wasm_bindgen_45ad0a76945cad40___convert__closures_____invoke___wasm_bindgen_45ad0a76945cad40___JsValue_____);
+    imports.wbg.__wbindgen_cast_c701fd38e364c1e8 = function(arg0, arg1) {
+        // Cast intrinsic for `Closure(Closure { dtor_idx: 2177, function: Function { arguments: [Externref], shim_idx: 2178, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+        const ret = makeMutClosure(arg0, arg1, wasm.wasm_bindgen_6405f317d9cf11df___closure__destroy___dyn_core_608f92abc48d28da___ops__function__FnMut__wasm_bindgen_6405f317d9cf11df___JsValue____Output_______, wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue_____);
         return ret;
     };
     imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
