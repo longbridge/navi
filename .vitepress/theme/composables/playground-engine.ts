@@ -69,7 +69,9 @@ type SeriesRole = 'main' | 'secondary'
  * constructor, backed by StaticDataProvider.
  *
  * `candlesticks` yields CandlestickItem values (serde internally tagged,
- * camelCase): `{ type: 'bar', ... }` for each bar, then `{ type: 'historyEnd' }`.
+ * camelCase): `{ type: 'bar', ... }` for each bar, then
+ * `{ type: 'historyEnd', realtimeFollows: false }`: the data is static, so no
+ * realtime bar follows and the last bar is the chart's last.
  * It honours `range`: a `floor` is never reached back past, while an `anchor`
  * may be — that stream is a secondary series that needs warm-up, and this store
  * holds it all anyway.
@@ -120,7 +122,7 @@ export class StaticCandlestickAdapter {
         ...b,
       }
     }
-    yield { type: 'historyEnd' }
+    yield { type: 'historyEnd', realtimeFollows: false }
   }
 
   async historyBarsBefore(
