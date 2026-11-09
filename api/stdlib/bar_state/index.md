@@ -10,7 +10,7 @@ title: "bar_state"
 
 **Type:** <code>series&nbsp;bool</code>
 
-Returns `true` if the script is calculating the last (closing) update of the current bar.
+Returns `true` if the script is calculating the last (closing) update of the current bar: on every historical bar, and on a real-time bar's last update.
 
 The next script calculation will be on the new bar data.
 

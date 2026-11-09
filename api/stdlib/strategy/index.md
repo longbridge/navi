@@ -20,7 +20,7 @@ Returns the currency code used for the strategy's account, as set in the <a clas
 
 Returns the average loss per losing trade in account currency.
 
-Calculated as gross loss / number of losing trades. Expressed as a positive number.
+Calculated as gross loss / number of losing trades; `na` before there is one. Expressed as a positive number.
 
 ---
 
@@ -28,9 +28,9 @@ Calculated as gross loss / number of losing trades. Expressed as a positive numb
 
 **Type:** <code>series&nbsp;float</code>
 
-Returns the average loss per losing trade as a percentage of initial capital.
+Returns the average loss per losing trade as a percentage.
 
-Calculated as gross loss percent / number of losing trades. Expressed as a positive number.
+Calculated as the mean of the losing trades' own profit percentages; `na` before there is one. Expressed as a negative number, unlike `avg_losing_trade`.
 
 ---
 
@@ -40,7 +40,7 @@ Calculated as gross loss percent / number of losing trades. Expressed as a posit
 
 Returns the average profit/loss per closed trade in account currency.
 
-Calculated as net profit / number of closed trades.
+Calculated as net profit / number of closed trades; `na` before any trade has closed.
 
 ---
 
@@ -48,9 +48,9 @@ Calculated as net profit / number of closed trades.
 
 **Type:** <code>series&nbsp;float</code>
 
-Returns the average profit/loss per closed trade as a percentage of initial capital.
+Returns the average profit/loss per closed trade as a percentage.
 
-Calculated as net profit percent / number of closed trades.
+Calculated as the mean of the closed trades' own profit percentages; `na` before any trade has closed.
 
 ---
 
@@ -60,7 +60,7 @@ Calculated as net profit percent / number of closed trades.
 
 Returns the average profit per winning trade in account currency.
 
-Calculated as gross profit / number of winning trades.
+Calculated as gross profit / number of winning trades; `na` before there is one.
 
 ---
 
@@ -68,9 +68,9 @@ Calculated as gross profit / number of winning trades.
 
 **Type:** <code>series&nbsp;float</code>
 
-Returns the average profit per winning trade as a percentage of initial capital.
+Returns the average profit per winning trade as a percentage.
 
-Calculated as gross profit percent / number of winning trades.
+Calculated as the mean of the winning trades' own profit percentages; `na` before there is one.
 
 ---
 

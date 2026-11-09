@@ -10,7 +10,7 @@ title: "strategy.closed_trades"
 
 **類型:** <code>series&nbsp;int</code>
 
-傳回第一筆平倉交易的 bar 索引，通常為 0。
+傳回仍可讀取的最早一筆平倉交易的編號。通常為 0；當有平倉交易的出場早於 `max_bars_back` 根 bar 而被丟棄後，它會隨之後移。
 
 ## 函數
 

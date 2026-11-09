@@ -94,7 +94,7 @@ max_intraday_loss(value: simple float, type: simple DefaultQtyType)
 max_position_size(size: simple float)
 ```
 
-設定最大絕對頭寸大小。超過此限制的訂單將受到限制；如果仍然超過最小可能訂單，則不會下訂單。
+設定最大絕對頭寸大小。超過此限制的訂單將受到限制；如果仍然超過最小可能訂單，則不會下訂單。減少或平掉頭寸的訂單不受限制。為零或負數時，不會開立任何頭寸。
 
 **參數**
 

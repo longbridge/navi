@@ -22,9 +22,9 @@ Returns the exchange rate for converting one unit of `from` currency into `to` c
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `from` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Source currency code, e.g. `"USD"` or `currency.USD`. |
-| `to` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Target currency code, e.g. `"EUR"` or `currency.EUR`. |
-| `ignore_invalid_currency` | <code>series&nbsp;bool</code> | `false` | If `true`, returns `na` when the conversion rate cannot be determined instead of raising a runtime error. |
+| `from` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Source currency code, e.g. `"USD"` or `currency.USD`. |
+| `to` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Target currency code, e.g. `"EUR"` or `currency.EUR`. |
+| `ignore_invalid_currency` | <code>series&nbsp;bool</code> | `false` | If `true`, returns `na` when the conversion rate cannot be determined instead of raising a runtime error. |
 
 **Returns:** <code>series&nbsp;float</code>
 
@@ -47,10 +47,10 @@ Calls a user-defined function on the engine's DataProvider and maps the resultin
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `function` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Name of the DataProvider function to call. |
-| `args` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Map">Map</a>&lt;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a>, any&gt;</code> | `na` | Optional `Map&lt;String, any&gt;` of typed parameters passed to the function. |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
-| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls lookahead semantics for backtesting correctness. |
+| `function` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Name of the DataProvider function to call. |
+| `args` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Map">Map</a>&lt;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a>, any&gt;</code> | `na` | Optional `Map&lt;String, any&gt;` of typed parameters passed to the function. |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
+| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls lookahead semantics for backtesting correctness. |
 
 **Returns:** <code>series&nbsp;T</code>
 
@@ -75,12 +75,12 @@ Queries the engine's DataProvider for a dividend value at the current bar. Suppo
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.tickerid` | Ticker whose dividends to query; defaults to the chart symbol. |
-| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/DividendsField">DividendsField</a></code> | `DividendsField.Gross` | Which dividend figure to retrieve: <a class="stdlib-ref" data-key="prelude::DividendsField" href="/api/stdlib/prelude/DividendsField">DividendsField.Gross</a> (before withholding) or <a class="stdlib-ref" data-key="prelude::DividendsField" href="/api/stdlib/prelude/DividendsField">DividendsField.Net</a> (after withholding). |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
-| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls whether the value appears on the event bar itself (`lookahead_on`) or only after confirmation (`lookahead_off`). |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised tickers silently yield `na`. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | Currency code for value conversion. |
+| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.tickerid` | Ticker whose dividends to query; defaults to the chart symbol. |
+| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/DividendsField">DividendsField</a></code> | `DividendsField.Gross` | Which dividend figure to retrieve: <a class="stdlib-ref" data-key="prelude::DividendsField" href="/api/stdlib/prelude/DividendsField">DividendsField.Gross</a> (before withholding) or <a class="stdlib-ref" data-key="prelude::DividendsField" href="/api/stdlib/prelude/DividendsField">DividendsField.Net</a> (after withholding). |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
+| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls whether the value appears on the event bar itself (`lookahead_on`) or only after confirmation (`lookahead_off`). |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised tickers silently yield `na`. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | Currency code for value conversion. |
 
 **Returns:** <code>series&nbsp;float</code>
 
@@ -105,12 +105,12 @@ Queries the engine's DataProvider for an earnings value at the current bar. Supp
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.tickerid` | Ticker whose earnings to query; defaults to the chart symbol. |
-| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/EarningsField">EarningsField</a></code> | `EarningsField.Actual` | Which earnings figure to retrieve: <a class="stdlib-ref" data-key="prelude::EarningsField" href="/api/stdlib/prelude/EarningsField">EarningsField.Actual</a>, <a class="stdlib-ref" data-key="prelude::EarningsField" href="/api/stdlib/prelude/EarningsField">EarningsField.Estimate</a>, or <a class="stdlib-ref" data-key="prelude::EarningsField" href="/api/stdlib/prelude/EarningsField">EarningsField.Standardized</a>. |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
-| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | When <a class="stdlib-ref" data-key="prelude::BarmergeLookahead" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead.Off</a> (default), a data point becomes visible only after a subsequent point confirms it, preventing future-leak in backtests. |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised tickers silently yield `na`. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | Currency code for value conversion. |
+| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.tickerid` | Ticker whose earnings to query; defaults to the chart symbol. |
+| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/EarningsField">EarningsField</a></code> | `EarningsField.Actual` | Which earnings figure to retrieve: <a class="stdlib-ref" data-key="prelude::EarningsField" href="/api/stdlib/prelude/EarningsField">EarningsField.Actual</a>, <a class="stdlib-ref" data-key="prelude::EarningsField" href="/api/stdlib/prelude/EarningsField">EarningsField.Estimate</a>, or <a class="stdlib-ref" data-key="prelude::EarningsField" href="/api/stdlib/prelude/EarningsField">EarningsField.Standardized</a>. |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
+| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | When <a class="stdlib-ref" data-key="prelude::BarmergeLookahead" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead.Off</a> (default), a data point becomes visible only after a subsequent point confirms it, preventing future-leak in backtests. |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised tickers silently yield `na`. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | Currency code for value conversion. |
 
 **Returns:** <code>series&nbsp;float</code>
 
@@ -133,10 +133,10 @@ Queries the engine's DataProvider for a macroeconomic indicator value at the cur
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `country_code` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | ISO 3166-1 alpha-2 country code, e.g. `"US"`, `"CN"`. |
-| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Identifier of the economic indicator to retrieve. |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised identifiers silently yield `na`. |
+| `country_code` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | ISO 3166-1 alpha-2 country code, e.g. `"US"`, `"CN"`. |
+| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Identifier of the economic indicator to retrieve. |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised identifiers silently yield `na`. |
 
 **Returns:** <code>series&nbsp;float</code>
 
@@ -161,12 +161,12 @@ Queries the engine's DataProvider for a financial metric value at the current ba
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `symbol` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Symbol whose financials to query. |
-| `financial_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Identifier of the financial metric to retrieve. |
-| `period` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Reporting period: `"FQ"` (quarterly) or `"FY"` (annual). |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Controls bar mapping when the data point does not align with a chart bar. <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> forward-fills; <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a> leaves gaps as `na`. |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised symbols silently yield `na`. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | Currency code for value conversion; defaults to the chart symbol's currency. |
+| `symbol` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Symbol whose financials to query. |
+| `financial_id` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Identifier of the financial metric to retrieve. |
+| `period` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Reporting period: `"FQ"` (quarterly) or `"FY"` (annual). |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Controls bar mapping when the data point does not align with a chart bar. <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> forward-fills; <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a> leaves gaps as `na`. |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised symbols silently yield `na`. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.currency` | Currency code for value conversion; defaults to the chart symbol's currency. |
 
 **Returns:** <code>series&nbsp;float</code>
 
@@ -193,14 +193,14 @@ Evaluates `expression` on another symbol or timeframe and maps the result onto t
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `symbol` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Symbol to request. |
-| `timeframe` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Requested timeframe String, such as `"D"`, `"60"`, or `"W"`. |
-| `expression` | <code>instructions&lt;T&gt;</code> |  | Expression to execute in the requested context. |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | How missing requested bars are mapped back onto the current chart. |
-| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Whether requested values may look ahead on historical bars. |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Quote the requested series in this currency instead of the symbol's own. The data provider serves the converted bars, so `syminfo.currency` inside `expression` reports this one. |
-| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical bars to request. Those bars are all the data `expression` sees — it begins on the first of them — so a limit below what the expression reads back leaves its opening values unsettled. Read once, on the bar this call first runs on; changing it later has no effect. |
+| `symbol` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Symbol to request. |
+| `timeframe` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Requested timeframe String, such as `"D"`, `"60"`, or `"W"`. |
+| `expression` | <code>instructions&lt;T&gt;</code> |  | Expression to execute in the requested context. |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | How missing requested bars are mapped back onto the current chart. |
+| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Whether requested values may look ahead on historical bars. |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Quote the requested series in this currency instead of the symbol's own. The data provider serves the converted bars, so `syminfo.currency` inside `expression` reports this one. |
+| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical bars to request. Those bars are all the data `expression` sees — it begins on the first of them — so a limit below what the expression reads back leaves its opening values unsettled. Read once, on the bar this call first runs on; changing it later has no effect. |
 
 **Returns:** <code>series&nbsp;T</code>
 
@@ -241,13 +241,13 @@ Evaluates `expression` on a lower timeframe and returns one array element per lo
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `symbol` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Symbol to request. |
-| `timeframe` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Lower or equal timeframe String, such as `"1"` or `"5"`. |
-| `expression` | <code>instructions&lt;T&gt;</code> |  | Expression to evaluate for each lower-timeframe bar. |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
-| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Quote the requested intrabars in this currency instead of the symbol's own. The data provider serves the converted bars. |
-| `ignore_invalid_timeframe` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` when the requested timeframe is not lower than the chart timeframe. |
-| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical intrabars to request. Those intrabars are all the data `expression` sees — it begins on the first of them. Read once, on the bar this call first runs on; changing it later has no effect. |
+| `symbol` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Symbol to request. |
+| `timeframe` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> |  | Lower or equal timeframe String, such as `"1"` or `"5"`. |
+| `expression` | <code>instructions&lt;T&gt;</code> |  | Expression to evaluate for each lower-timeframe bar. |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` for unknown symbols instead of raising an error. |
+| `currency` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Quote the requested intrabars in this currency instead of the symbol's own. The data provider serves the converted bars. |
+| `ignore_invalid_timeframe` | <code>input&nbsp;bool</code> | `false` | If `true`, returns `na` when the requested timeframe is not lower than the chart timeframe. |
+| `calc_bars_count` | <code>simple&nbsp;int</code> | `na` | Optional positive limit on how many of the most recent historical intrabars to request. Those intrabars are all the data `expression` sees — it begins on the first of them. Read once, on the bar this call first runs on; changing it later has no effect. |
 
 **Returns:** <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/Array">Array</a>&lt;T&gt;</code>
 
@@ -271,10 +271,10 @@ Queries the engine's DataProvider for a stock-split value at the current bar. Su
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.tickerid` | Ticker whose splits to query; defaults to the chart symbol. |
-| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/SplitsField">SplitsField</a></code> | `SplitsField.Denominator` | Which component of the split ratio to retrieve: <a class="stdlib-ref" data-key="prelude::SplitsField" href="/api/stdlib/prelude/SplitsField">SplitsField.Numerator</a> or <a class="stdlib-ref" data-key="prelude::SplitsField" href="/api/stdlib/prelude/SplitsField">SplitsField.Denominator</a>. |
-| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
-| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls whether the value appears on the event bar itself (`lookahead_on`) or only after confirmation (`lookahead_off`). |
-| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised tickers silently yield `na`. |
+| `ticker` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `symbol_info.tickerid` | Ticker whose splits to query; defaults to the chart symbol. |
+| `field` | <code>series&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/SplitsField">SplitsField</a></code> | `SplitsField.Denominator` | Which component of the split ratio to retrieve: <a class="stdlib-ref" data-key="prelude::SplitsField" href="/api/stdlib/prelude/SplitsField">SplitsField.Numerator</a> or <a class="stdlib-ref" data-key="prelude::SplitsField" href="/api/stdlib/prelude/SplitsField">SplitsField.Denominator</a>. |
+| `gaps` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps</a></code> | `BarmergeGaps.Off` | Bar-mapping mode (see <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.Off</a> / <a class="stdlib-ref" data-key="prelude::BarmergeGaps" href="/api/stdlib/prelude/BarmergeGaps">BarmergeGaps.On</a>). |
+| `lookahead` | <code>simple&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/BarmergeLookahead">BarmergeLookahead</a></code> | `BarmergeLookahead.Off` | Controls whether the value appears on the event bar itself (`lookahead_on`) or only after confirmation (`lookahead_off`). |
+| `ignore_invalid_symbol` | <code>input&nbsp;bool</code> | `false` | When `true`, unrecognised tickers silently yield `na`. |
 
 **Returns:** <code>series&nbsp;float</code>

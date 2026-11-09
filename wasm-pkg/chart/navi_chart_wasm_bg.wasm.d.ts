@@ -1,9 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
-export const __wbg_chart_free: (a: number, b: number) => void;
+export const __wbg_imageregistry_free: (a: number, b: number) => void;
+export const imageregistry_add: (a: number, b: number, c: any) => void;
+export const imageregistry_remove: (a: number, b: number) => void;
 export const __wbg_localcharthandle_free: (a: number, b: number) => void;
 export const __wbg_localchartprovider_free: (a: number, b: number) => void;
+export const localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+export const localcharthandle_extendHistory: (a: number, b: number) => number;
+export const localcharthandle_removeScript: (a: number, b: number) => void;
+export const localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+export const localchartprovider_new: (a: any, b: number) => number;
+export const __wbg_chart_free: (a: number, b: number) => void;
 export const chart_activeTool: (a: number) => [number, number];
 export const chart_addAnnotation: (a: number, b: any) => [number, number];
 export const chart_addScript: (a: number, b: any, c: any) => any;
@@ -135,14 +143,6 @@ export const chart_updateSystemAnnotation: (a: number, b: number, c: number, d: 
 export const chart_yAxisMode: (a: number) => number;
 export const darkTheme: () => any;
 export const lightTheme: () => any;
-export const localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-export const localcharthandle_extendHistory: (a: number, b: number) => number;
-export const localcharthandle_removeScript: (a: number, b: number) => void;
-export const localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-export const localchartprovider_new: (a: any, b: number) => number;
-export const __wbg_imageregistry_free: (a: number, b: number) => void;
-export const imageregistry_add: (a: number, b: number, c: any) => void;
-export const imageregistry_remove: (a: number, b: number) => void;
 export const start: () => void;
 export const __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
 export const __wbg_intounderlyingsink_free: (a: number, b: number) => void;
@@ -157,9 +157,9 @@ export const intounderlyingsink_write: (a: number, b: any) => any;
 export const __wbg_intounderlyingsource_free: (a: number, b: number) => void;
 export const intounderlyingsource_cancel: (a: number) => void;
 export const intounderlyingsource_pull: (a: number, b: any) => any;
-export const wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue_____: (a: number, b: number, c: any) => void;
-export const wasm_bindgen_6405f317d9cf11df___closure__destroy___dyn_core_608f92abc48d28da___ops__function__FnMut__wasm_bindgen_6405f317d9cf11df___JsValue____Output_______: (a: number, b: number) => void;
-export const wasm_bindgen_6405f317d9cf11df___convert__closures_____invoke___wasm_bindgen_6405f317d9cf11df___JsValue__wasm_bindgen_6405f317d9cf11df___JsValue_____: (a: number, b: number, c: any, d: any) => void;
+export const wasm_bindgen_fd2aaf0240c8bf3a___convert__closures_____invoke___wasm_bindgen_fd2aaf0240c8bf3a___JsValue_____: (a: number, b: number, c: any) => void;
+export const wasm_bindgen_fd2aaf0240c8bf3a___closure__destroy___dyn_core_37ee0ce0c4cd57d5___ops__function__FnMut__wasm_bindgen_fd2aaf0240c8bf3a___JsValue____Output_______: (a: number, b: number) => void;
+export const wasm_bindgen_fd2aaf0240c8bf3a___convert__closures_____invoke___wasm_bindgen_fd2aaf0240c8bf3a___JsValue__wasm_bindgen_fd2aaf0240c8bf3a___JsValue_____: (a: number, b: number, c: any, d: any) => void;
 export const __wbindgen_malloc: (a: number, b: number) => number;
 export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
 export const __wbindgen_exn_store: (a: number) => void;

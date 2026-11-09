@@ -10,7 +10,7 @@ title: "bar_state"
 
 **類型:** <code>series&nbsp;bool</code>
 
-如果腳本正在計算當前 bar 的最後（結束）更新，則傳回 `true`。下一個腳本計算將基於新的 bar 資料。
+如果腳本正在計算當前 bar 的最後（結束）更新，則傳回 `true`：所有歷史 bar 上均為 `true`，實時 bar 上僅在其最後一次更新時為 `true`。下一個腳本計算將基於新的 bar 資料。
 
 ---
 

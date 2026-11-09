@@ -104,7 +104,7 @@ max_position_size(size: simple float)
 
 Sets the max absolute position size.
 
-Orders that would exceed this limit will be capped; if the minimum possible order still exceeds, no order is placed.
+Orders that would exceed this limit will be capped; if the minimum possible order still exceeds, no order is placed. Orders that reduce or close the position are not limited. At zero or below, no position is opened.
 
 **Parameters**
 

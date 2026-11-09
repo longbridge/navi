@@ -10,7 +10,7 @@ title: "strategy.closed_trades"
 
 **类型:** <code>series&nbsp;int</code>
 
-返回第一笔平仓交易的 bar 索引，通常为 0。
+返回仍可读取的最早一笔平仓交易的编号。通常为 0；当有平仓交易的出场早于 `max_bars_back` 根 bar 而被丢弃后，它会随之后移。
 
 ## 函数
 

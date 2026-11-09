@@ -10,7 +10,7 @@ title: "strategy.closed_trades"
 
 **Type:** <code>series&nbsp;int</code>
 
-Returns the bar index of the first closed trade, usually 0.
+Returns the number of the oldest closed trade still readable. Zero unless trades closed further back than `max_bars_back` bars have been dropped.
 
 ## Functions
 
