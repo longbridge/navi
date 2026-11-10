@@ -285,6 +285,8 @@
         "time_close",
         "time_now",
         "time_tradingday",
+        "turnover",
+        "turnover_rate",
         "volume",
         "week_of_year",
         "year"
@@ -595,6 +597,8 @@
         "time_close",
         "time_now",
         "time_tradingday",
+        "turnover",
+        "turnover_rate",
         "volume",
         "week_of_year",
         "year"
@@ -905,6 +909,8 @@
         "time_close",
         "time_now",
         "time_tradingday",
+        "turnover",
+        "turnover_rate",
         "volume",
         "week_of_year",
         "year"

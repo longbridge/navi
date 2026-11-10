@@ -266,6 +266,22 @@ UNIX 格式的當前實際時間（自 1970-01-01 00:00:00 UTC 以來的毫秒�
 
 ---
 
+### turnover {#turnover}
+
+**類型:** <code>series&nbsp;float</code>
+
+當前 K 線的成交額，即該 K 線內成交的總金額。tick 週期下為各筆成交額之和。資料源未提供時返回 `na`；`nT` K 線中只要有一筆缺少成交額，也返回 `na`。
+
+---
+
+### turnover_rate {#turnover_rate}
+
+**類型:** <code>series&nbsp;float</code>
+
+當前 K 線的換手率，即該 K 線內成交量佔流通股本的比例，例如 `0.01` 表示 1%。資料源未提供時返回 `na`；tick 週期下逐筆成交不含流通股本資訊，恆為 `na`，可用 `volume / syminfo.shares_outstanding_float` 自行計算。
+
+---
+
 ### volume {#volume}
 
 **類型:** <code>series&nbsp;float</code>

@@ -1,11 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
-/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -17,6 +12,11 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
+/**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -70,8 +70,13 @@ export interface Tick {
   price: number;
   /** Volume traded in this tick. */
   volume: number;
-  /** Aggressor side: `"buy"`, `"sell"`, or `null` when unknown. */
-  side: string | null;
+  /** Value traded in this tick. Omit when unavailable. */
+  turnover?: number;
+  /** Best ask price at the time of the tick. Omit when unavailable. */
+  ask?: number;
+  /** Best bid price at the time of the tick. Omit when unavailable. */
+  bid?: number;
+  tradeSession?: TradeSession;
 }
 
 /**
@@ -880,7 +885,7 @@ export interface LibraryLoader {
 
 
 /** Trading session that a candlestick belongs to. */
-export type TradeSession = "PreMarket" | "Regular" | "AfterHours" | "Overnight";
+export type TradeSession = "preMarket" | "regular" | "afterHours" | "overnight";
 
 /**
  * Timeframe string identifying a bar interval.
@@ -1747,16 +1752,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any, b: number) => number;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1889,6 +1884,16 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any, b: number) => number;
   readonly start: () => void;
   readonly __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
   readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
@@ -1903,9 +1908,9 @@ export interface InitOutput {
   readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
   readonly intounderlyingsource_cancel: (a: number) => void;
   readonly intounderlyingsource_pull: (a: number, b: any) => any;
-  readonly wasm_bindgen_fd2aaf0240c8bf3a___convert__closures_____invoke___wasm_bindgen_fd2aaf0240c8bf3a___JsValue_____: (a: number, b: number, c: any) => void;
-  readonly wasm_bindgen_fd2aaf0240c8bf3a___closure__destroy___dyn_core_37ee0ce0c4cd57d5___ops__function__FnMut__wasm_bindgen_fd2aaf0240c8bf3a___JsValue____Output_______: (a: number, b: number) => void;
-  readonly wasm_bindgen_fd2aaf0240c8bf3a___convert__closures_____invoke___wasm_bindgen_fd2aaf0240c8bf3a___JsValue__wasm_bindgen_fd2aaf0240c8bf3a___JsValue_____: (a: number, b: number, c: any, d: any) => void;
+  readonly wasm_bindgen_41306405d8783cce___convert__closures_____invoke___wasm_bindgen_41306405d8783cce___JsValue_____: (a: number, b: number, c: any) => void;
+  readonly wasm_bindgen_41306405d8783cce___closure__destroy___dyn_core_37ee0ce0c4cd57d5___ops__function__FnMut__wasm_bindgen_41306405d8783cce___JsValue____Output_______: (a: number, b: number) => void;
+  readonly wasm_bindgen_41306405d8783cce___convert__closures_____invoke___wasm_bindgen_41306405d8783cce___JsValue__wasm_bindgen_41306405d8783cce___JsValue_____: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;

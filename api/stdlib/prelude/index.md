@@ -300,6 +300,26 @@ The result stays identical for all bars that share the same trading session, whi
 
 ---
 
+### turnover {#turnover}
+
+**Type:** <code>series&nbsp;float</code>
+
+Turnover of the current bar.
+
+The total traded value during the bar. On tick timeframes it is the sum of the ticks' turnover. Returns `na` when the data feed does not report it, including an `nT` bar where any one tick lacks it.
+
+---
+
+### turnover_rate {#turnover_rate}
+
+**Type:** <code>series&nbsp;float</code>
+
+Turnover rate of the current bar.
+
+The fraction of the free float traded during the bar, e.g. `0.01` for 1%. Returns `na` when the data feed does not report it, and always on tick timeframes, since a tick does not know the float. There it can be derived as `volume / syminfo.shares_outstanding_float`.
+
+---
+
 ### volume {#volume}
 
 **Type:** <code>series&nbsp;float</code>
