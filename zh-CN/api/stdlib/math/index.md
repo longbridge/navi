@@ -606,7 +606,7 @@ sum(source: series float, length: series int): series float
 | 名称 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `source` | <code>series&nbsp;float</code> |  | 系列总结。 |
-| `length` | <code>series&nbsp;int</code> |  | 要包含的 bars 数量（必须 &gt;= 1）。 |
+| `length` | <code>series&nbsp;int</code> |  | 要包含的 bars 数量；小于 1 时结果为 0。 |
 
 **返回:** <code>series&nbsp;float</code> — 系列中最新 `length` 值的总数。
 

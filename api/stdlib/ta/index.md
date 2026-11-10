@@ -1311,7 +1311,7 @@ Checks if the `source` series is rising over the specified `length`.
 ### rma {#rma}
 
 ```navi
-rma(source: series float, length: series int): series float
+rma(source: series float, length: simple int): series float
 ```
 
 Recursive Moving Average (RMA).
@@ -1323,7 +1323,7 @@ It is similar to an Exponential Moving Average (EMA) but uses a different smooth
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `source` | <code>series&nbsp;float</code> |  | The input series for the calculation. |
-| `length` | <code>series&nbsp;int</code> |  | The length for the RMA calculation. |
+| `length` | <code>simple&nbsp;int</code> |  | The length for the RMA calculation. |
 
 **Returns:** <code>series&nbsp;float</code>
 
@@ -1357,7 +1357,7 @@ It measures the percentage change between the current value and the value `lengt
 ### rsi {#rsi}
 
 ```navi
-rsi(source: series float, length: series int): series float
+rsi(source: series float, length: simple int): series float
 ```
 
 Relative Strength Index (RSI).
@@ -1369,7 +1369,7 @@ It measures the speed and change of price movements over the specified `length`.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `source` | <code>series&nbsp;float</code> |  | The input series for the calculation. |
-| `length` | <code>series&nbsp;int</code> |  | The number of bars for the calculation. |
+| `length` | <code>simple&nbsp;int</code> |  | The number of bars for the calculation. |
 
 **Returns:** <code>series&nbsp;float</code> — A value between 0 and 100. Values above 70 typically indicate overbought, below 30 oversold.
 

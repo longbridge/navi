@@ -651,7 +651,7 @@ Calculates the rolling sum of `source` over the last `length` bars.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `source` | <code>series&nbsp;float</code> |  | The series to sum. |
-| `length` | <code>series&nbsp;int</code> |  | Number of bars to include (must be &gt;= 1). |
+| `length` | <code>series&nbsp;int</code> |  | Number of bars to include; below one the sum is 0. |
 
 **Returns:** <code>series&nbsp;float</code> — The total of the most recent `length` values in the series.
 

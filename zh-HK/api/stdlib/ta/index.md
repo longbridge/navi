@@ -1257,7 +1257,7 @@ rising(source: series float, length: series int): series bool
 ### rma {#rma}
 
 ```navi
-rma(source: series float, length: series int): series float
+rma(source: series float, length: simple int): series float
 ```
 
 遞歸移動平均線 (RMA)。它類似於指數移動平均線 (EMA)，但使用不同的平滑因子。
@@ -1267,7 +1267,7 @@ rma(source: series float, length: series int): series float
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
 | `source` | <code>series&nbsp;float</code> |  | 用於計算的傳入系列。 |
-| `length` | <code>series&nbsp;int</code> |  | RMA 計算的長度。 |
+| `length` | <code>simple&nbsp;int</code> |  | RMA 計算的長度。 |
 
 **返回:** <code>series&nbsp;float</code>
 
@@ -1299,7 +1299,7 @@ roc(source: series float, length: series int): series float
 ### rsi {#rsi}
 
 ```navi
-rsi(source: series float, length: series int): series float
+rsi(source: series float, length: simple int): series float
 ```
 
 相對強弱指數（RSI）。它測量指定 `length` 內價格變動的速度和變化。
@@ -1309,7 +1309,7 @@ rsi(source: series float, length: series int): series float
 | 名稱 | 類型 | 預設值 | 說明 |
 | --- | --- | --- | --- |
 | `source` | <code>series&nbsp;float</code> |  | 用於計算的傳入系列。 |
-| `length` | <code>series&nbsp;int</code> |  | 用於計算的 bars 數量。 |
+| `length` | <code>simple&nbsp;int</code> |  | 用於計算的 bars 數量。 |
 
 **返回:** <code>series&nbsp;float</code> — 介於 0 和 100 之間的值。高於 70 的值通常表示超買，低於 30 的值通常表示超賣。
 
