@@ -394,7 +394,7 @@ bar_color(
     editable: input bool = true,
     show_last: input int = na,
     title: const String = na,
-    display: input PlotDisplay
+    display: input PlotDisplay = PlotDisplay.ALL
   )
 ```
 
@@ -411,7 +411,7 @@ Each bar can have its own color, allowing for dynamic coloring based on indicato
 | `editable` | <code>input&nbsp;bool</code> | `true` | If true, the setting can be edited in the style dialog. |
 | `show_last` | <code>input&nbsp;int</code> | `na` | If set, only colors the last N bars. |
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/String">String</a></code> | `na` | Title shown in the style dialog. |
-| `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> |  | Controls where the coloring is visible. |
+| `display` | <code>input&nbsp;<a class="stdlib-ref" href="/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | Controls where the coloring is visible. |
 
 **See Also:** <a class="stdlib-ref" data-key="prelude::bg_color" href="/api/stdlib/prelude/#bg_color">bg_color</a>
 

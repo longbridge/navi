@@ -1,6 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ * Module entry point: route Rust panics through `console.error` with a
+ * readable message and source location instead of a bare wasm `unreachable`.
+ */
+export function start(): void;
+/**
  * Returns a JS object representing the built-in dark theme.
  *
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
@@ -12,11 +17,6 @@ export function darkTheme(): any;
  * Use this as the `theme` argument to `new Chart(...)` or `chart.setTheme()`.
  */
 export function lightTheme(): any;
-/**
- * Module entry point: route Rust panics through `console.error` with a
- * readable message and source location instead of a bare wasm `unreachable`.
- */
-export function start(): void;
 /**
  * The `ReadableStreamType` enum.
  *
@@ -695,7 +695,7 @@ export interface ChartStreamRequest {
  * const provider: DataProvider = {
  *   async *candlesticks(symbol, timeframe, modifier, range, role) {
  *     const bars = await fetchHistory(symbol, timeframe, range);
- *     yield* bars;
+ *     for (const bar of bars) yield { type: "closedBar", ...bar };
  *     yield { type: "historyEnd", realtimeFollows: true };
  *     // keep yielding realtime bars...
  *   },
@@ -917,11 +917,17 @@ export interface Candlestick {
 }
 
 /**
- * Item yielded by `DataProvider.candlesticks()`.
+ * Item yielded by `DataProvider.candlesticks()`. The candlestick's own fields
+ * sit alongside `type`.
  *
- * - `{ type: "bar", ... }` — a confirmed historical bar (before the boundary)
- *   or the current forming realtime bar (after it). The candlestick's own
- *   fields sit alongside `type`.
+ * - `{ type: "closedBar", ... }` — a closed bar. Before the boundary, a
+ *   historical bar: the only kind the history has. After it, the final values
+ *   of the forming bar with its time, which confirm it without waiting for
+ *   the next bar; with a later time, a bar opened and confirmed at once. A
+ *   closed bar takes no more updates.
+ * - `{ type: "bar", ... }` — the current forming realtime bar, after the
+ *   boundary only: one before it fails the stream. The same time updates it,
+ *   a later one confirms it and opens the next.
  * - `{ type: "historyEnd", realtimeFollows }` — boundary marker emitted
  *   once, after all historical bars and before the first realtime bar.
  *   `realtimeFollows` is `true` while the market is open (a forming bar comes
@@ -929,6 +935,7 @@ export interface Candlestick {
  *   last bar, and `bar_state.is_last` holds on it.
  */
 export type CandlestickItem =
+  | ({ type: "closedBar" } & Candlestick)
   | ({ type: "bar" } & Candlestick)
   | { type: "historyEnd"; realtimeFollows: boolean };
 
@@ -1752,6 +1759,17 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
+  readonly imageregistry_add: (a: number, b: number, c: any) => void;
+  readonly imageregistry_remove: (a: number, b: number) => void;
+  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
+  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
+  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
+  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
+  readonly localcharthandle_removeScript: (a: number, b: number) => void;
+  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
+  readonly localchartprovider_new: (a: any, b: number) => number;
+  readonly start: () => void;
   readonly __wbg_chart_free: (a: number, b: number) => void;
   readonly chart_activeTool: (a: number) => [number, number];
   readonly chart_addAnnotation: (a: number, b: any) => [number, number];
@@ -1884,33 +1902,22 @@ export interface InitOutput {
   readonly chart_yAxisMode: (a: number) => number;
   readonly darkTheme: () => any;
   readonly lightTheme: () => any;
-  readonly __wbg_imageregistry_free: (a: number, b: number) => void;
-  readonly imageregistry_add: (a: number, b: number, c: any) => void;
-  readonly imageregistry_remove: (a: number, b: number) => void;
-  readonly __wbg_localcharthandle_free: (a: number, b: number) => void;
-  readonly __wbg_localchartprovider_free: (a: number, b: number) => void;
-  readonly localcharthandle_addScript: (a: number, b: any) => [number, number, number];
-  readonly localcharthandle_extendHistory: (a: number, b: number) => number;
-  readonly localcharthandle_removeScript: (a: number, b: number) => void;
-  readonly localchartprovider_chartStream: (a: number, b: number, c: number, d: number, e: number, f: any) => [number, number, number];
-  readonly localchartprovider_new: (a: any, b: number) => number;
-  readonly start: () => void;
   readonly __wbg_intounderlyingbytesource_free: (a: number, b: number) => void;
-  readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
+  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
   readonly intounderlyingbytesource_autoAllocateChunkSize: (a: number) => number;
   readonly intounderlyingbytesource_cancel: (a: number) => void;
   readonly intounderlyingbytesource_pull: (a: number, b: any) => any;
   readonly intounderlyingbytesource_start: (a: number, b: any) => void;
   readonly intounderlyingbytesource_type: (a: number) => number;
+  readonly intounderlyingsource_cancel: (a: number) => void;
+  readonly intounderlyingsource_pull: (a: number, b: any) => any;
+  readonly __wbg_intounderlyingsink_free: (a: number, b: number) => void;
   readonly intounderlyingsink_abort: (a: number, b: any) => any;
   readonly intounderlyingsink_close: (a: number) => any;
   readonly intounderlyingsink_write: (a: number, b: any) => any;
-  readonly __wbg_intounderlyingsource_free: (a: number, b: number) => void;
-  readonly intounderlyingsource_cancel: (a: number) => void;
-  readonly intounderlyingsource_pull: (a: number, b: any) => any;
-  readonly wasm_bindgen_41306405d8783cce___convert__closures_____invoke___wasm_bindgen_41306405d8783cce___JsValue_____: (a: number, b: number, c: any) => void;
-  readonly wasm_bindgen_41306405d8783cce___closure__destroy___dyn_core_37ee0ce0c4cd57d5___ops__function__FnMut__wasm_bindgen_41306405d8783cce___JsValue____Output_______: (a: number, b: number) => void;
-  readonly wasm_bindgen_41306405d8783cce___convert__closures_____invoke___wasm_bindgen_41306405d8783cce___JsValue__wasm_bindgen_41306405d8783cce___JsValue_____: (a: number, b: number, c: any, d: any) => void;
+  readonly wasm_bindgen_134f77c538d4411a___convert__closures_____invoke___wasm_bindgen_134f77c538d4411a___JsValue_____: (a: number, b: number, c: any) => void;
+  readonly wasm_bindgen_134f77c538d4411a___closure__destroy___dyn_core_d941ad8722425d2e___ops__function__FnMut__wasm_bindgen_134f77c538d4411a___JsValue____Output_______: (a: number, b: number) => void;
+  readonly wasm_bindgen_134f77c538d4411a___convert__closures_____invoke___wasm_bindgen_134f77c538d4411a___JsValue__wasm_bindgen_134f77c538d4411a___JsValue_____: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;

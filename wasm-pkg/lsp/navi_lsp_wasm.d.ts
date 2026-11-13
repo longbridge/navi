@@ -759,6 +759,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly stdlib_docs: (a: number, b: number) => any;
   readonly __wbg_analyzer_free: (a: number, b: number) => void;
   readonly analyzer_allInlayHints: (a: number) => any;
   readonly analyzer_analyze: (a: number, b: number, c: number, d: number, e: number) => any;
@@ -789,7 +790,6 @@ export interface InitOutput {
   readonly analyzer_typeDefinitionAt: (a: number, b: number, c: number) => any;
   readonly analyzer_withLocale: (a: number, b: number) => number;
   readonly analyzer_workspaceSymbols: (a: number, b: number, c: number) => any;
-  readonly stdlib_docs: (a: number, b: number) => any;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_externrefs: WebAssembly.Table;

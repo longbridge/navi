@@ -354,7 +354,7 @@ bar_color(
     editable: input bool = true,
     show_last: input int = na,
     title: const String = na,
-    display: input PlotDisplay
+    display: input PlotDisplay = PlotDisplay.ALL
   )
 ```
 
@@ -369,7 +369,7 @@ bar_color(
 | `editable` | <code>input&nbsp;bool</code> | `true` | 如果为 true，则可以在样式对话框中编辑该设置。 |
 | `show_last` | <code>input&nbsp;int</code> | `na` | 如果设置，则仅对最后 N 个 bars 着色。 |
 | `title` | <code>const&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/String">String</a></code> | `na` | 标题显示在样式对话框中。 |
-| `display` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> |  | 控制颜色可见的位置。 |
+| `display` | <code>input&nbsp;<a class="stdlib-ref" href="/zh-CN/api/stdlib/prelude/PlotDisplay">PlotDisplay</a></code> | `PlotDisplay.ALL` | 控制颜色可见的位置。 |
 
 **参见:** <a class="stdlib-ref" data-key="prelude::bg_color" href="/zh-CN/api/stdlib/prelude/#bg_color">bg_color</a>
 
