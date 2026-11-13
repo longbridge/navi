@@ -69,7 +69,7 @@ type SeriesRole = 'main' | 'secondary'
  * constructor, backed by StaticDataProvider.
  *
  * `candlesticks` yields CandlestickItem values (serde internally tagged,
- * camelCase): `{ type: 'bar', ... }` for each bar, then
+ * camelCase): `{ type: 'closedBar', ... }` for each bar, then
  * `{ type: 'historyEnd', realtimeFollows: false }`: the data is static, so no
  * realtime bar follows and the last bar is the chart's last.
  * It honours `range`: a `floor` is never reached back past, while an `anchor`
@@ -115,7 +115,7 @@ export class StaticCandlestickAdapter {
             allBars
     for (const b of bars) {
       yield {
-        type: 'bar',
+        type: 'closedBar',
         tradeSession: 'regular',
         ask: NaN,
         bid: NaN,
